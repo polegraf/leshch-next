@@ -1,9 +1,12 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import Nav from './Nav';
 import Footer from './Footer';
 import { toSlug } from '@/lib/db';
+
+const AdminPanel = dynamic(() => import('./AdminPanel'), { ssr: false });
 
 const HN = { fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" };
 
@@ -47,7 +50,9 @@ function ThumbMedia({ project }) {
   return <img src={src} alt={project.title} style={{ width: '100%', display: 'block' }} />;
 }
 
-export default function HomeClient({ projects, seo }) {
+export default function HomeClient({ projects: initialProjects, seo: initialSeo }) {
+  const [projects, setProjects] = useState(initialProjects);
+  const [seo, setSeo] = useState(initialSeo);
   const [filter, setFilter] = useState('all');
   const [hovered, setHovered] = useState(null);
   const [pwPrompt, setPwPrompt] = useState(false);
@@ -79,10 +84,14 @@ export default function HomeClient({ projects, seo }) {
     }
   };
 
-  // Admin mode - lazy load admin panel
   if (adminMode) {
-    const AdminPanel = require('./AdminPanel').default;
-    return <AdminPanel projects={projects} seo={seo} onBack={() => setAdminMode(false)} />;
+    return (
+      <AdminPanel
+        projects={projects}
+        seo={seo}
+        onBack={() => setAdminMode(false)}
+      />
+    );
   }
 
   return (
