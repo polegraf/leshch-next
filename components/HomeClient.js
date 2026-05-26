@@ -46,7 +46,7 @@ function ThumbMedia({ project }) {
   const src = project.thumbnail || project.cover;
   const type = project.thumbnail ? (project.thumbType || 'image') : project.coverType;
   if (!src) return <div style={{ width: '100%', height: 240, background: '#111' }} />;
-  if (type === 'video') return <video src={src} autoPlay muted loop playsInline style={{ width: '100%', display: 'block' }} />;
+  if (type === 'video') return <video preload="none" src={src} autoPlay muted loop playsInline style={{ width: '100%', display: 'block' }} />;
   return <img src={src} alt={project.title} style={{ width: '100%', display: 'block' }} />;
 }
 

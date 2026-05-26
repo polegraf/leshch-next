@@ -21,7 +21,7 @@ function CoverMedia({ project, style }) {
   if (!project.cover) return <div style={style} />;
   if (project.coverType === 'video') return (
     <div style={{ ...style, overflow: 'hidden' }}>
-      <video src={project.cover} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      <video preload="none" src={project.cover} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
     </div>
   );
   return (
@@ -36,8 +36,8 @@ function MediaSlot({ src, type, caption, ratio, autoplay }) {
   if (type === 'video') return (
     <div style={{ width: '100%', aspectRatio: ratio, background: '#111', overflow: 'hidden' }}>
       {autoplay
-        ? <video src={src} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        : <video src={src} controls style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
+        ? <video preload="none" src={src} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        : <video preload="none" src={src} controls style={{ width: '100%', height: '100%', objectFit: 'cover' }} />}
     </div>
   );
   return (
