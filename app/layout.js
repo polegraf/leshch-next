@@ -1,4 +1,5 @@
 import { getSettings } from '@/lib/db';
+import CookieBanner from '@/components/CookieBanner';
 
 export async function generateMetadata() {
   const seo = await getSettings();
@@ -25,11 +26,10 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body style={{ margin: 0, background: '#000', color: '#fff', fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
         {children}
+        <CookieBanner />
       </body>
     </html>
   );
