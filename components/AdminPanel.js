@@ -419,7 +419,11 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
               <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
                 <input type="checkbox" checked={form.featured || false} onChange={e => setForm({ ...form, featured: e.target.checked })} />
                 <span style={{ fontSize: 11, color: 'rgba(255,255,255,.45)', letterSpacing: '.04em' }}>Featured</span>
-              </label>
+              </label> 
+              <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
+  <input type="checkbox" checked={form.ageGate || false} onChange={e => setForm({ ...form, ageGate: e.target.checked })} />
+  <span style={{ fontSize: 11, color: 'rgba(255,255,255,.45)', letterSpacing: '.04em' }}>Age verification (21+)</span>
+</label>
               <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
                 <input type="checkbox" checked={form.ready || false} onChange={e => setForm({ ...form, ready: e.target.checked })} />
                 <span style={{ fontSize: 11, color: form.ready ? '#fff' : 'rgba(255,255,255,.45)', letterSpacing: '.04em', fontWeight: form.ready ? 700 : 400 }}>Ready ✓</span>
