@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Nav from './Nav';
 import Footer from './Footer';
+import AgeGate from './AgeGate';
 
 const HN = { fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" };
 
@@ -26,7 +27,7 @@ function CoverMedia({ project, style }) {
   );
   return (
     <div style={{ ...style, overflow: 'hidden' }}>
-      <img src={project.cover} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      <img loading="lazy" src={project.cover} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
     </div>
   );
 }
@@ -42,7 +43,7 @@ function MediaSlot({ src, type, caption, ratio, autoplay }) {
   );
   return (
     <div style={{ width: '100%', aspectRatio: ratio, background: '#111', overflow: 'hidden' }}>
-      <img src={src} alt={caption || ''} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+      <img loading="lazy" src={src} alt={caption || ''} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
     </div>
   );
 }
@@ -110,7 +111,7 @@ function ContentBlock({ block, isMobile }) {
   return null;
 }
 
-export default function ProjectClient({ project, seo }) {
+function ProjectContent({ project, seo }) {
   const isMobile = useIsMobile();
   const px = isMobile ? '20px' : '40px';
 
@@ -165,4 +166,15 @@ export default function ProjectClient({ project, seo }) {
       <Footer seo={seo} isMobile={isMobile} />
     </div>
   );
+}
+
+export default function ProjectClient({ project, seo }) {
+  if (project.ageGate) {
+    return (
+      <AgeGate>
+        <ProjectContent project={project} seo={seo} />
+      </AgeGate>
+    );
+  }
+  return <ProjectContent project={project} seo={seo} />;
 }
