@@ -38,4 +38,15 @@ export default function AgeGate({ children }) {
 
   return (
     <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.96)', zIndex: 9998, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-      <div
+      <div style={{ background: '#0a0a0a', border: '1px solid rgba(255,255,255,.12)', padding: '48px 56px', maxWidth: 480, width: '90%', textAlign: 'center', ...HN }}>
+        <div style={{ marginBottom: 28 }}><WarningIcon /></div>
+        <div style={{ fontSize: 11, letterSpacing: '.12em', color: 'rgba(255,255,255,.3)', textTransform: 'uppercase', marginBottom: 24 }}>Age Verification</div>
+        <p style={{ fontSize: 30, fontWeight: 300, lineHeight: 1.75, color: 'rgba(255,255,255,.85)', marginBottom: 36 }}>Are you 21 or older?<br /><span style={{ fontSize: 13, color: 'rgba(255,255,255,.4)', fontWeight: 400 }}>This project contains cannabis-related content.</span></p>
+        <div style={{ display: 'flex', gap: 10, justifyContent: 'center' }}>
+          <button onClick={confirm} style={{ padding: '12px 32px', background: '#fff', border: 'none', color: '#000', fontSize: 11, fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer', ...HN }}>Yes, I am 21+</button>
+          <button onClick={deny} style={{ padding: '12px 20px', background: 'transparent', border: '1px solid rgba(255,255,255,.15)', color: 'rgba(255,255,255,.4)', fontSize: 11, cursor: 'pointer', ...HN }}>No</button>
+        </div>
+      </div>
+    </div>
+  );
+}
