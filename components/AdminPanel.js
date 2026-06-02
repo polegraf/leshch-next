@@ -195,7 +195,7 @@ function PhotoAdminEditor({ photos, onChange, inputStyle, labelStyle }) {
   );
 }
 
-export default function AdminPanel({ projects: initialProjects, seo: initialSeo, onBack }) {
+export default function AdminPanel({ projects: initialProjects, seo: initialSeo, onBack, adminPassword }) {
   const [projects, setProjects] = useState(initialProjects);
   const [seo, setSeo] = useState(initialSeo);
   const [tab, setTab] = useState('projects');
@@ -224,16 +224,24 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
       : [...projects, updated];
     setProjects(newProjects);
     setSaving(true);
-    await saveProjects(newProjects);
+    try {
+      await saveProjects(newProjects, adminPassword);
+      setEditId(null); setForm(null);
+    } catch (e) {
+      alert('Save failed: ' + e.message);
+    }
     setSaving(false);
-    setEditId(null); setForm(null);
   };
 
   const del = async id => {
     if (!window.confirm('Delete this project?')) return;
     const newProjects = projects.filter(p => p.id !== id);
     setProjects(newProjects);
-    await saveProjects(newProjects);
+    try {
+      await saveProjects(newProjects, adminPassword);
+    } catch (e) {
+      alert('Delete failed: ' + e.message);
+    }
   };
 
   const addBlock = type => setForm({ ...form, blocks: [...(form.blocks || []), { id: String(Date.now()), type, layout: 'wide', content: '', src: '', src2: '', src3: '', src4: '', caption: '' }] });
@@ -269,14 +277,23 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
     if (!window.confirm('Save new order?')) return;
     [arr[i], arr[ni]] = [arr[ni], arr[i]];
     setProjects(arr);
-    await saveProjects(arr);
+    try {
+      await saveProjects(arr, adminPassword);
+    } catch (e) {
+      alert('Save failed: ' + e.message);
+    }
   };
 
   const saveSeo = async () => {
     setSaving(true);
-    setSeo(seoForm);
-    await saveSettings(seoForm);
-    setSaving(false); setSaved(true); setTimeout(() => setSaved(false), 2000);
+    try {
+      await saveSettings(seoForm, adminPassword);
+      setSeo(seoForm);
+      setSaved(true); setTimeout(() => setSaved(false), 2000);
+    } catch (e) {
+      alert('Save failed: ' + e.message);
+    }
+    setSaving(false);
   };
 
   return (
