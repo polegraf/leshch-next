@@ -9,6 +9,7 @@ const CATEGORIES = ["all", "brand", "logo", "packaging", "ui", "photo", "motion"
 const BLOCK_TYPES = ["text", "quote", "image", "video"];
 const LAYOUTS = ["wide", "two-square", "three-square", "three-vertical", "four-vertical"];
 const LAYOUT_LABELS = { "wide": "1 wide (16:9)", "two-square": "2 square (1:1)", "three-square": "3 square (1:1)", "three-vertical": "3 vertical (9:16)", "four-vertical": "4 vertical (9:16)" };
+const SECTIONS = [["work", "Works"], ["brand-for-sale", "Brand for sale"], ["shop", "Shop"]];
 
 async function uploadFile(file) {
   const ext = file.name.split('.').pop();
@@ -209,11 +210,12 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
 
   const inputStyle = { width: '100%', background: '#111', border: '1px solid rgba(255,255,255,.12)', color: '#fff', padding: '9px 12px', fontSize: 13, ...HN, outline: 'none', borderRadius: 2, boxSizing: 'border-box' };
   const labelStyle = { fontSize: 10, letterSpacing: '.08em', color: 'rgba(255,255,255,.5)', textTransform: 'uppercase', display: 'block', marginBottom: 6 };
+  const selectStyle = { width: '100%', background: '#111', border: '1px solid rgba(255,255,255,.12)', color: '#fff', padding: '9px 12px', fontSize: 13, ...HN, outline: 'none', borderRadius: 2 };
 
   const startEdit = p => { setForm({ ...p, categoryStr: (p.category || []).join(', ') }); setEditId(p.id); };
   const startNew = () => {
     const id = Date.now();
-    setForm({ id, title: '', subtitle: '', categoryStr: '', year: String(new Date().getFullYear()), location: '', coverType: 'image', cover: '', desc: '', blocks: [], featured: false, ready: false });
+    setForm({ id, title: '', subtitle: '', categoryStr: '', year: String(new Date().getFullYear()), location: '', coverType: 'image', cover: '', desc: '', blocks: [], featured: false, ready: false, type: 'work', price: '', status: 'available', buyUrl: '' });
     setEditId(id);
   };
 
@@ -335,6 +337,7 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
                     <div style={{ fontSize: 10, color: 'rgba(255,255,255,.2)', marginTop: 2 }}>/project/{toSlug(p.title)}</div>
                   </div>
                   <div style={{ display: 'flex', gap: 6 }}>
+                    {p.type && p.type !== 'work' && <span style={{ fontSize: 9, letterSpacing: '.07em', textTransform: 'uppercase', color: 'rgba(120,180,255,.85)', border: '1px solid rgba(120,180,255,.35)', padding: '3px 7px' }}>{p.type === 'brand-for-sale' ? 'Brand' : 'Shop'}</span>}
                     {p.featured && <span style={{ fontSize: 9, letterSpacing: '.07em', textTransform: 'uppercase', color: 'rgba(255,255,255,.3)', border: '1px solid rgba(255,255,255,.1)', padding: '3px 7px' }}>Featured</span>}
                     {p.ready && <span style={{ fontSize: 9, letterSpacing: '.07em', textTransform: 'uppercase', color: '#4caf86', border: '1px solid #4caf86', padding: '3px 7px' }}>Live</span>}
                     <button onClick={() => moveProject(p.id, -1)} style={{ padding: '6px 10px', border: '1px solid rgba(255,255,255,.1)', background: 'transparent', color: 'rgba(255,255,255,.4)', fontSize: 12, cursor: 'pointer', ...HN }}>↑</button>
@@ -355,6 +358,40 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
               <button onClick={() => { setEditId(null); setForm(null); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,.4)', fontSize: 10, padding: 0, ...HN, letterSpacing: '.07em', textTransform: 'uppercase' }}>← Back</button>
               <h2 style={{ fontSize: 20, fontWeight: 700, letterSpacing: '-.02em' }}>{projects.find(p => p.id === form.id) ? 'Edit project' : 'New project'}</h2>
             </div>
+
+            {/* Section */}
+            <div style={{ marginBottom: 20 }}>
+              <label style={labelStyle}>Section</label>
+              <div style={{ display: 'flex', gap: 8 }}>
+                {SECTIONS.map(([v, l]) => (
+                  <button key={v} onClick={() => setForm({ ...form, type: v })}
+                    style={{ padding: '6px 16px', background: (form.type || 'work') === v ? '#fff' : 'transparent', color: (form.type || 'work') === v ? '#000' : 'rgba(255,255,255,.4)', border: '1px solid rgba(255,255,255,.15)', fontSize: 10, cursor: 'pointer', ...HN, fontWeight: 700, letterSpacing: '.06em', textTransform: 'uppercase', borderRadius: 2 }}>{l}</button>
+                ))}
+              </div>
+            </div>
+
+            {/* Sale fields (only for brand-for-sale / shop) */}
+            {(form.type === 'brand-for-sale' || form.type === 'shop') && (
+              <div style={{ marginBottom: 24, padding: 16, background: '#0a0a0a', border: '1px solid rgba(255,255,255,.08)', borderRadius: 4 }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14, marginBottom: 14 }}>
+                  <div>
+                    <label style={labelStyle}>Price</label>
+                    <input value={form.price || ''} onChange={e => setForm({ ...form, price: e.target.value })} placeholder="$2,500 / Make an offer" style={inputStyle} />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Status</label>
+                    <select value={form.status || 'available'} onChange={e => setForm({ ...form, status: e.target.value })} style={selectStyle}>
+                      <option value="available">Available</option>
+                      <option value="sold">Sold</option>
+                    </select>
+                  </div>
+                </div>
+                <div>
+                  <label style={labelStyle}>Buy URL (GoDaddy / Gumroad / Stripe)</label>
+                  <input value={form.buyUrl || ''} onChange={e => setForm({ ...form, buyUrl: e.target.value })} placeholder="https://..." style={inputStyle} />
+                </div>
+              </div>
+            )}
 
             {/* Thumbnail */}
             <div style={{ marginBottom: 20 }}>
