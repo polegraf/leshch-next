@@ -2,6 +2,7 @@ import { getProjects, getSettings } from '@/lib/db';
 import HomeClient from '@/components/HomeClient';
 export default async function HomePage() {
   const [projects, seo] = await Promise.all([getProjects(), getSettings()]);
-  const works = projects.filter((p) => !p.type || p.type === 'work');
-  return <HomeClient projects={works} seo={seo} />;
+  // Полный список уходит в HomeClient: главная сама показывает только Works,
+  // а админка внутри получает все проекты (включая brand-for-sale / shop).
+  return <HomeClient projects={projects} seo={seo} />;
 }

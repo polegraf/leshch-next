@@ -64,8 +64,11 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
   const router = useRouter();
   const px = isMobile ? '20px' : '40px';
 
-  const allCategories = Array.from(new Set(projects.flatMap((p) => p.category || [])));
-  const filtered = filter === 'all' ? projects : projects.filter((p) => p.category.includes(filter));
+  // Главная показывает только Works; бренды/шоп — в своих разделах.
+  // Админка при этом получает ПОЛНЫЙ список projects (см. <AdminPanel/>).
+  const works = projects.filter((p) => !p.type || p.type === 'work');
+  const allCategories = Array.from(new Set(works.flatMap((p) => p.category || [])));
+  const filtered = filter === 'all' ? works : works.filter((p) => p.category.includes(filter));
 
   const handleAdminSubmit = async () => {
     const ok = await verifyAdmin(pwInput);
