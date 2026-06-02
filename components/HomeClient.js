@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Nav from './Nav';
 import Footer from './Footer';
-import { toSlug } from '@/lib/db';
+import { toSlug, verifyAdmin } from '@/lib/db';
 
 const AdminPanel = dynamic(() => import('./AdminPanel'), { ssr: false });
 
@@ -59,6 +59,7 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
   const [pwInput, setPwInput] = useState('');
   const [pwError, setPwError] = useState(false);
   const [adminMode, setAdminMode] = useState(false);
+  const [adminPw, setAdminPw] = useState('');
   const isMobile = useIsMobile();
   const router = useRouter();
   const px = isMobile ? '20px' : '40px';
@@ -66,8 +67,10 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
   const allCategories = Array.from(new Set(projects.flatMap((p) => p.category || [])));
   const filtered = filter === 'all' ? projects : projects.filter((p) => p.category.includes(filter));
 
-  const handleAdminSubmit = () => {
-    if (pwInput === (seo?.adminPassword || '1234')) {
+  const handleAdminSubmit = async () => {
+    const ok = await verifyAdmin(pwInput);
+    if (ok) {
+      setAdminPw(pwInput);
       setPwPrompt(false);
       setAdminMode(true);
     } else {
@@ -89,6 +92,7 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
       <AdminPanel
         projects={projects}
         seo={seo}
+        adminPassword={adminPw}
         onBack={() => setAdminMode(false)}
       />
     );
