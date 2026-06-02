@@ -111,9 +111,30 @@ function ContentBlock({ block, isMobile }) {
   return null;
 }
 
+function SaleMeta({ project, isMobile }) {
+  const sold = project.status === 'sold';
+  if (!project.price && !sold) return null;
+  return (
+    <div style={{ marginTop: 18, display: 'flex', gap: 12, justifyContent: 'center', alignItems: 'center' }}>
+      <span style={{ fontSize: isMobile ? 20 : 26, fontWeight: 700, letterSpacing: '-.02em', color: sold ? 'rgba(255,255,255,.4)' : '#fff' }}>
+        {sold ? 'Sold' : project.price}
+      </span>
+      {!sold && (
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: '#4caf86', border: '1px solid #4caf86', padding: '3px 9px' }}>Available</span>
+      )}
+    </div>
+  );
+}
+
 function ProjectContent({ project, seo }) {
   const isMobile = useIsMobile();
   const px = isMobile ? '20px' : '40px';
+
+  const isSale = project.type === 'brand-for-sale' || project.type === 'shop';
+  const sold = project.status === 'sold';
+  const backHref = project.type === 'brand-for-sale' ? '/brands-for-sale' : project.type === 'shop' ? '/shop' : '/';
+  const backLabel = project.type === 'brand-for-sale' ? '← Back to Brands' : project.type === 'shop' ? '← Back to Shop' : '← Back to Work';
+  const buyLabel = project.type === 'brand-for-sale' ? 'Make an offer →' : 'Buy →';
 
   return (
     <div style={{ minHeight: '100vh', background: '#000', color: '#fff', ...HN, overflowX: 'hidden' }}>
@@ -128,6 +149,7 @@ function ProjectContent({ project, seo }) {
             <div style={{ width: '100%', maxWidth: isMobile ? '100%' : '80%', margin: '0 auto' }}>
               <h1 style={{ fontSize: isMobile ? 'clamp(32px,9vw,52px)' : 'clamp(48px,6vw,88px)', fontWeight: 700, letterSpacing: '-.04em', lineHeight: .93, color: '#fff', marginBottom: 14, textAlign: 'center' }}>{project.title}</h1>
               <div style={{ fontSize: 13, color: 'rgba(255,255,255,.45)', letterSpacing: '.05em', textTransform: 'uppercase', textAlign: 'center' }}>{project.subtitle} {project.location} {project.year}</div>
+              {isSale && <SaleMeta project={project} isMobile={isMobile} />}
             </div>
           </div>
         </>
@@ -135,6 +157,7 @@ function ProjectContent({ project, seo }) {
         <div style={{ width: '100%', padding: isMobile ? '34px 20px 24px' : '48px 40px 36px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid rgba(255,255,255,.07)', textAlign: 'center' }}>
           <h1 style={{ fontSize: isMobile ? 'clamp(43px,11vw,62px)' : 'clamp(64px,8vw,120px)', fontWeight: 700, letterSpacing: '-.04em', lineHeight: .92, color: '#fff', textAlign: 'center', marginBottom: 14 }}>{project.title}</h1>
           <div style={{ fontSize: 13, color: 'rgba(255,255,255,.45)', letterSpacing: '.05em', textTransform: 'uppercase', textAlign: 'center' }}>{project.subtitle} {project.location} {project.year}</div>
+          {isSale && <SaleMeta project={project} isMobile={isMobile} />}
         </div>
       )}
 
@@ -142,9 +165,9 @@ function ProjectContent({ project, seo }) {
         <div style={{ width: '100%' }}>
           {!isMobile && (
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 56 }}>
-              <Link href="/" style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,.4)', fontSize: 12, padding: 0, display: 'flex', alignItems: 'center', gap: 8, letterSpacing: '.06em', textTransform: 'uppercase', ...HN, textDecoration: 'none' }}>← Back to Work</Link>
+              <Link href={backHref} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,.4)', fontSize: 12, padding: 0, display: 'flex', alignItems: 'center', gap: 8, letterSpacing: '.06em', textTransform: 'uppercase', ...HN, textDecoration: 'none' }}>{backLabel}</Link>
               <div style={{ display: 'flex', gap: 6, flexWrap: 'wrap' }}>
-                {project.category.map((c) => (
+                {(project.category || []).map((c) => (
                   <span key={c} style={{ fontSize: 11, letterSpacing: '.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,.45)', border: '1px solid rgba(255,255,255,.15)', padding: '4px 12px' }}>{c}</span>
                 ))}
               </div>
@@ -157,8 +180,18 @@ function ProjectContent({ project, seo }) {
             <ContentBlock key={b.id} block={b} isMobile={isMobile} />
           ))}
 
-          <div style={{ marginTop: 80, paddingTop: 48, borderTop: '1px solid rgba(255,255,255,.07)', display: 'flex', justifyContent: 'center' }}>
-            <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: 'pointer', textDecoration: 'none', ...HN }}>Start a project →</Link>
+          <div style={{ marginTop: 80, paddingTop: 48, borderTop: '1px solid rgba(255,255,255,.07)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 14 }}>
+            {isSale ? (
+              sold ? (
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: 'transparent', color: 'rgba(255,255,255,.4)', border: '1px solid rgba(255,255,255,.15)', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', ...HN }}>Sold</span>
+              ) : project.buyUrl ? (
+                <a href={project.buyUrl} target="_blank" rel="nofollow sponsored noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: 'pointer', textDecoration: 'none', ...HN }}>{buyLabel}</a>
+              ) : (
+                <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: 'pointer', textDecoration: 'none', ...HN }}>Inquire →</Link>
+              )
+            ) : (
+              <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: 'pointer', textDecoration: 'none', ...HN }}>Start a project →</Link>
+            )}
           </div>
         </div>
       </div>
