@@ -207,6 +207,7 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
   const [saving, setSaving] = useState(false);
   const coverRef = useRef();
   const thumbRef = useRef();
+  const titleLogoRef = useRef();
 
   const inputStyle = { width: '100%', background: '#111', border: '1px solid rgba(255,255,255,.12)', color: '#fff', padding: '9px 12px', fontSize: 13, ...HN, outline: 'none', borderRadius: 2, boxSizing: 'border-box' };
   const labelStyle = { fontSize: 10, letterSpacing: '.08em', color: 'rgba(255,255,255,.5)', textTransform: 'uppercase', display: 'block', marginBottom: 6 };
@@ -267,6 +268,14 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
     const f = e.target.files[0]; if (!f) return;
     setSaving(true);
     try { const url = await uploadFile(f); setForm(prev => ({ ...prev, thumbnail: url })); }
+    catch { alert('Upload failed, try again'); }
+    setSaving(false);
+  };
+
+  const handleTitleLogo = async e => {
+    const f = e.target.files[0]; if (!f) return;
+    setSaving(true);
+    try { const url = await uploadFile(f); setForm(prev => ({ ...prev, titleLogo: url })); }
     catch { alert('Upload failed, try again'); }
     setSaving(false);
   };
@@ -433,6 +442,18 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
                     </div>}
               </div>
               {form.cover && <button onClick={() => setForm({ ...form, cover: '' })} style={{ background: 'none', border: 'none', color: 'rgba(255,80,80,.5)', fontSize: 10, cursor: 'pointer', ...HN, marginTop: 6 }}>Remove</button>}
+            </div>
+
+            {/* Title logo (optional) — заменяет текстовый заголовок на странице */}
+            <div style={{ marginBottom: 24 }}>
+              <label style={labelStyle}>Title logo (optional — replaces text title on page; alt = title for SEO)</label>
+              <input ref={titleLogoRef} type="file" accept="image/*" style={{ display: 'none' }} onChange={handleTitleLogo} />
+              <div style={{ width: '100%', height: 120, background: '#0a0a0a', border: '1px dashed rgba(255,255,255,.1)', cursor: 'pointer', overflow: 'hidden', display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => titleLogoRef.current?.click()}>
+                {form.titleLogo
+                  ? <img src={form.titleLogo} alt="" style={{ maxWidth: '70%', maxHeight: '70%', objectFit: 'contain' }} />
+                  : <div style={{ fontSize: 10, color: 'rgba(255,255,255,.25)', letterSpacing: '.07em', textTransform: 'uppercase' }}>Upload title logo</div>}
+              </div>
+              {form.titleLogo && <button onClick={() => setForm({ ...form, titleLogo: '' })} style={{ background: 'none', border: 'none', color: 'rgba(255,80,80,.5)', fontSize: 10, cursor: 'pointer', ...HN, marginTop: 6 }}>Remove</button>}
             </div>
 
             {/* Fields */}

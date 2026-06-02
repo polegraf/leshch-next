@@ -113,16 +113,35 @@ function ContentBlock({ block, isMobile }) {
 
 function SaleMeta({ project, isMobile }) {
   const sold = project.status === 'sold';
-  if (!project.price && !sold) return null;
+  // Показываем цифру-цену; призывы вроде "Make an offer" не дублируем (они на кнопке)
+  const looksLikePrice = project.price && /[\d$€£₽]/.test(project.price);
+  const showPrice = sold || looksLikePrice;
   return (
     <div style={{ marginTop: 18, display: 'flex', gap: 12, justifyContent: 'center', alignItems: 'center' }}>
-      <span style={{ fontSize: isMobile ? 20 : 26, fontWeight: 700, letterSpacing: '-.02em', color: sold ? 'rgba(255,255,255,.4)' : '#fff' }}>
-        {sold ? 'Sold' : project.price}
-      </span>
+      {showPrice && (
+        <span style={{ fontSize: isMobile ? 20 : 26, fontWeight: 700, letterSpacing: '-.02em', color: sold ? 'rgba(255,255,255,.4)' : '#fff' }}>
+          {sold ? 'Sold' : project.price}
+        </span>
+      )}
       {!sold && (
         <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: '#4caf86', border: '1px solid #4caf86', padding: '3px 9px' }}>Available</span>
       )}
     </div>
+  );
+}
+
+// H1 — настоящий заголовок. Если загружен titleLogo, рисуем картинку внутри H1
+// с alt = название (текст для SEO сохраняется, на экране видно лого).
+function TitleHeading({ project, isMobile, fontSize }) {
+  if (project.titleLogo) {
+    return (
+      <h1 style={{ margin: '0 auto 14px', display: 'flex', justifyContent: 'center', lineHeight: 0 }}>
+        <img src={project.titleLogo} alt={project.title} style={{ maxWidth: '100%', maxHeight: isMobile ? 110 : 180, display: 'block', objectFit: 'contain' }} />
+      </h1>
+    );
+  }
+  return (
+    <h1 style={{ fontSize, fontWeight: 700, letterSpacing: '-.04em', lineHeight: .92, color: '#fff', marginBottom: 14, textAlign: 'center' }}>{project.title}</h1>
   );
 }
 
@@ -147,7 +166,7 @@ function ProjectContent({ project, seo }) {
           </div>
           <div style={{ padding: isMobile ? '28px 20px 0' : '48px 40px 0', textAlign: 'center' }}>
             <div style={{ width: '100%', maxWidth: isMobile ? '100%' : '80%', margin: '0 auto' }}>
-              <h1 style={{ fontSize: isMobile ? 'clamp(32px,9vw,52px)' : 'clamp(48px,6vw,88px)', fontWeight: 700, letterSpacing: '-.04em', lineHeight: .93, color: '#fff', marginBottom: 14, textAlign: 'center' }}>{project.title}</h1>
+              <TitleHeading project={project} isMobile={isMobile} fontSize={isMobile ? 'clamp(32px,9vw,52px)' : 'clamp(48px,6vw,88px)'} />
               <div style={{ fontSize: 13, color: 'rgba(255,255,255,.45)', letterSpacing: '.05em', textTransform: 'uppercase', textAlign: 'center' }}>{project.subtitle} {project.location} {project.year}</div>
               {isSale && <SaleMeta project={project} isMobile={isMobile} />}
             </div>
@@ -155,7 +174,7 @@ function ProjectContent({ project, seo }) {
         </>
       ) : (
         <div style={{ width: '100%', padding: isMobile ? '34px 20px 24px' : '48px 40px 36px', boxSizing: 'border-box', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', borderBottom: '1px solid rgba(255,255,255,.07)', textAlign: 'center' }}>
-          <h1 style={{ fontSize: isMobile ? 'clamp(43px,11vw,62px)' : 'clamp(64px,8vw,120px)', fontWeight: 700, letterSpacing: '-.04em', lineHeight: .92, color: '#fff', textAlign: 'center', marginBottom: 14 }}>{project.title}</h1>
+          <TitleHeading project={project} isMobile={isMobile} fontSize={isMobile ? 'clamp(43px,11vw,62px)' : 'clamp(64px,8vw,120px)'} />
           <div style={{ fontSize: 13, color: 'rgba(255,255,255,.45)', letterSpacing: '.05em', textTransform: 'uppercase', textAlign: 'center' }}>{project.subtitle} {project.location} {project.year}</div>
           {isSale && <SaleMeta project={project} isMobile={isMobile} />}
         </div>
