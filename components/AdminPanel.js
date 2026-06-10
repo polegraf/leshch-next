@@ -391,6 +391,7 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
                     <label style={labelStyle}>Status</label>
                     <select value={form.status || 'available'} onChange={e => setForm({ ...form, status: e.target.value })} style={selectStyle}>
                       <option value="available">Available</option>
+              <option value="preorder">Pre-order</option>
                       <option value="sold">Sold</option>
                     </select>
                   </div>
