@@ -48,7 +48,6 @@ function ThumbMedia({ project }) {
 }
 
 export default function ListingClient({ projects, seo, title, subtitle }) {
-  const [hovered, setHovered] = useState(null);
   const isMobile = useIsMobile();
   const router = useRouter();
   const px = isMobile ? '20px' : '40px';
@@ -64,11 +63,10 @@ export default function ListingClient({ projects, seo, title, subtitle }) {
   const Card = ({ p, delay }) => (
     <RevealCard delay={delay}
       onClick={() => go(p)}
-      onMouseEnter={() => setHovered(p.id)}
-      onMouseLeave={() => setHovered(null)}
+      className="listing-card"
       style={{ cursor: 'pointer', position: 'relative' }}>
       <div style={{ overflow: 'hidden', background: '#111', position: 'relative' }}>
-        <div style={{ transition: 'transform .6s cubic-bezier(.16,1,.3,1)', transform: hovered === p.id ? 'scale(1.03)' : 'scale(1)' }}>
+        <div className="listing-card-media" style={{ transition: 'transform .6s cubic-bezier(.16,1,.3,1)' }}>
           <ThumbMedia project={p} />
         </div>
         {p.status === 'sold' && (
@@ -89,6 +87,11 @@ export default function ListingClient({ projects, seo, title, subtitle }) {
 
   return (
     <div style={{ minHeight: '100vh', background: '#000', color: '#fff', ...HN, overflowX: 'hidden' }}>
+      {/* hover-zoom через чистый CSS — не вызывает перерисовку React, поэтому соседние карточки не мигают */}
+      <style>{`
+        .listing-card:hover .listing-card-media { transform: scale(1.03); }
+      `}</style>
+
       <Nav seo={seo} onAdminClick={() => {}} isMobile={isMobile} />
 
       <div style={{ padding: `0 ${px} 120px` }}>
