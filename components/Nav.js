@@ -9,7 +9,7 @@ export default function Nav({ seo, onAdminClick, isMobile }) {
   const links = [
     { href: '/', label: 'Works' },
     { href: '/brands-for-sale', label: 'Brands for Sale' },
-    { href: '/shop', label: 'Shop' },
+    { href: '/shop', label: seo?.shopTitle || 'Art Shop' },,
     { href: '/photo', label: 'Photo' },
     { href: '/contact', label: 'Contact' },
   ];
