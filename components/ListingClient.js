@@ -95,10 +95,10 @@ export default function ListingClient({ projects, seo, title, subtitle, intro })
       <Nav seo={seo} onAdminClick={() => {}} isMobile={isMobile} />
 
       <div style={{ padding: `0 ${px} 120px` }}>
-        <div style={{ padding: isMobile ? '48px 0 40px' : '48px 0 36px', borderBottom: '1px solid rgba(255,255,255,.07)', marginBottom: isMobile ? 32 : 56 }}>
-          <h1 style={{ fontSize: isMobile ? 'clamp(43px,11vw,62px)' : 'clamp(64px,8vw,120px)', fontWeight: 700, letterSpacing: '-.04em', lineHeight: .92, color: '#fff' }}>{title}</h1>
-          {intro && <p style={{ fontSize: isMobile ? 15 : 19, lineHeight: 1.65, color: 'rgba(255,255,255,.6)', fontWeight: 300, maxWidth: 620, marginTop: isMobile ? 18 : 24 }}>{intro}</p>}
-          {subtitle && <div style={{ fontSize: isMobile ? 13 : 15, color: 'rgba(255,255,255,.45)', letterSpacing: '.03em', marginTop: 14 }}>{subtitle}</div>}
+        <div style={{ padding: isMobile ? '48px 0 40px' : '48px 0 36px', borderBottom: '1px solid rgba(255,255,255,.07)', marginBottom: isMobile ? 32 : 56, textAlign: 'center' }}>
+          <h1 style={{ fontSize: isMobile ? 'clamp(43px,11vw,62px)' : 'clamp(64px,8vw,120px)', fontWeight: 700, letterSpacing: '-.04em', lineHeight: .92, color: '#fff', textAlign: 'center' }}>{title}</h1>
+          {intro && <p style={{ ...HN, fontSize: isMobile ? 17 : 30, lineHeight: 1.75, color: 'rgba(255,255,255,.85)', fontWeight: 300, textAlign: 'center', maxWidth: 820, margin: isMobile ? '18px auto 0' : '24px auto 0' }}>{intro}</p>}
+          {subtitle && <div style={{ fontSize: isMobile ? 13 : 15, color: 'rgba(255,255,255,.45)', letterSpacing: '.03em', marginTop: 14, textAlign: 'center' }}>{subtitle}</div>}
         </div>
 
         {projects.length === 0 ? (
