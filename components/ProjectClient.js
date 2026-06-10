@@ -113,6 +113,7 @@ function ContentBlock({ block, isMobile }) {
 
 function SaleMeta({ project, isMobile }) {
   const sold = project.status === 'sold';
+  const preorder = project.status === 'preorder';
   // Показываем цифру-цену; призывы вроде "Make an offer" не дублируем (они на кнопке)
   const looksLikePrice = project.price && /[\d$€£₽]/.test(project.price);
   const showPrice = sold || looksLikePrice;
@@ -123,9 +124,81 @@ function SaleMeta({ project, isMobile }) {
           {sold ? 'Sold' : project.price}
         </span>
       )}
-      {!sold && (
+      {preorder && (
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: '#e0a23b', border: '1px solid #e0a23b', padding: '3px 9px' }}>Pre-order</span>
+      )}
+      {!sold && !preorder && (
         <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: '#4caf86', border: '1px solid #4caf86', padding: '3px 9px' }}>Available</span>
       )}
+    </div>
+  );
+}
+
+// Форма предзаказа: собирает лид (имя, email, сообщение) и шлёт POST на /api/lead.
+// company — honeypot: скрытое поле, которое заполняют только боты.
+function PreorderForm({ project, isMobile }) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [message, setMessage] = useState('');
+  const [company, setCompany] = useState('');
+  const [state, setState] = useState('idle'); // idle | sending | done | error
+  const [err, setErr] = useState('');
+
+  const inputStyle = {
+    width: '100%', background: '#0a0a0a', border: '1px solid rgba(255,255,255,.15)',
+    color: '#fff', padding: '12px 14px', fontSize: 14, ...HN, outline: 'none',
+    borderRadius: 2, boxSizing: 'border-box',
+  };
+
+  const submit = async () => {
+    if (state === 'sending') return;
+    setErr('');
+    if (name.trim().length < 2) { setErr('Enter your name'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setErr('Enter a valid email'); return; }
+    setState('sending');
+    try {
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name, email, message, company,
+          projectId: project.id,
+          projectSlug: project.slug || '',
+          projectTitle: project.title,
+        }),
+      });
+      if (!res.ok) throw new Error('failed');
+      setState('done');
+    } catch {
+      setState('error');
+      setErr('Something went wrong. Please try again.');
+    }
+  };
+
+  if (state === 'done') {
+    return (
+      <div style={{ textAlign: 'center', maxWidth: 420, margin: '0 auto' }}>
+        <div style={{ fontSize: isMobile ? 18 : 22, fontWeight: 700, color: '#fff', marginBottom: 8, letterSpacing: '-.02em' }}>You&apos;re on the list ✓</div>
+        <div style={{ fontSize: 14, color: 'rgba(255,255,255,.5)', lineHeight: 1.6 }}>We&apos;ll email you the moment it&apos;s available.</div>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{ width: '100%', maxWidth: 420, margin: '0 auto' }}>
+      <div style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: '#fff', marginBottom: 6, letterSpacing: '-.02em', textAlign: 'center' }}>Pre-order</div>
+      <div style={{ fontSize: 13, color: 'rgba(255,255,255,.5)', marginBottom: 20, lineHeight: 1.6, textAlign: 'center' }}>Leave your details and we&apos;ll get in touch as soon as it&apos;s ready.</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        <input value={name} onChange={e => setName(e.target.value)} placeholder="Name" style={inputStyle} />
+        <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" type="email" style={inputStyle} />
+        <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Message (optional)" rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
+        {/* honeypot: скрыто от людей, заполняют только боты */}
+        <input value={company} onChange={e => setCompany(e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
+        {err && <div style={{ fontSize: 12, color: 'rgba(255,90,90,.9)', textAlign: 'center' }}>{err}</div>}
+        <button onClick={submit} disabled={state === 'sending'} style={{ marginTop: 4, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: state === 'sending' ? 'default' : 'pointer', opacity: state === 'sending' ? .6 : 1, ...HN }}>
+          {state === 'sending' ? 'Sending...' : 'Pre-order →'}
+        </button>
+      </div>
     </div>
   );
 }
@@ -151,6 +224,7 @@ function ProjectContent({ project, seo }) {
 
   const isSale = project.type === 'brand-for-sale' || project.type === 'shop';
   const sold = project.status === 'sold';
+  const preorder = project.status === 'preorder';
   const backHref = project.type === 'brand-for-sale' ? '/brands-for-sale' : project.type === 'shop' ? '/shop' : '/';
   const backLabel = project.type === 'brand-for-sale' ? '← Back to Brands' : project.type === 'shop' ? '← Back to Shop' : '← Back to Work';
   const buyLabel = project.type === 'brand-for-sale' ? 'Make an offer →' : 'Buy →';
@@ -203,6 +277,8 @@ function ProjectContent({ project, seo }) {
             {isSale ? (
               sold ? (
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: 'transparent', color: 'rgba(255,255,255,.4)', border: '1px solid rgba(255,255,255,.15)', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', ...HN }}>Sold</span>
+              ) : preorder ? (
+                <PreorderForm project={project} isMobile={isMobile} />
               ) : project.buyUrl ? (
                 <a href={project.buyUrl} target="_blank" rel="nofollow sponsored noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: 'pointer', textDecoration: 'none', ...HN }}>{buyLabel}</a>
               ) : (
