@@ -146,7 +146,7 @@ function PreorderForm({ project, isMobile }) {
 
   const inputStyle = {
     width: '100%', background: '#0a0a0a', border: '1px solid rgba(255,255,255,.15)',
-    color: '#fff', padding: '12px 14px', fontSize: 14, ...HN, outline: 'none',
+    color: '#fff', padding: isMobile ? '16px 18px' : '22px 26px', fontSize: isMobile ? 18 : 28, ...HN, outline: 'none',
     borderRadius: 2, boxSizing: 'border-box',
   };
 
@@ -177,25 +177,25 @@ function PreorderForm({ project, isMobile }) {
 
   if (state === 'done') {
     return (
-      <div style={{ textAlign: 'center', maxWidth: 420, margin: '0 auto' }}>
-        <div style={{ fontSize: isMobile ? 18 : 22, fontWeight: 700, color: '#fff', marginBottom: 8, letterSpacing: '-.02em' }}>You&apos;re on the list ✓</div>
-        <div style={{ fontSize: 14, color: 'rgba(255,255,255,.5)', lineHeight: 1.6 }}>We&apos;ll email you the moment it&apos;s available.</div>
+      <div style={{ textAlign: 'center', maxWidth: isMobile ? 460 : 720, margin: '0 auto' }}>
+        <div style={{ fontSize: isMobile ? 30 : 44, fontWeight: 700, color: '#fff', marginBottom: 14, letterSpacing: '-.02em' }}>You&apos;re on the list ✓</div>
+        <div style={{ fontSize: isMobile ? 17 : 24, color: 'rgba(255,255,255,.5)', lineHeight: 1.6 }}>We&apos;ll email you the moment it&apos;s available.</div>
       </div>
     );
   }
 
   return (
-    <div style={{ width: '100%', maxWidth: 420, margin: '0 auto' }}>
-      <div style={{ fontSize: isMobile ? 16 : 18, fontWeight: 700, color: '#fff', marginBottom: 6, letterSpacing: '-.02em', textAlign: 'center' }}>Pre-order</div>
-      <div style={{ fontSize: 13, color: 'rgba(255,255,255,.5)', marginBottom: 20, lineHeight: 1.6, textAlign: 'center' }}>Leave your details and we&apos;ll get in touch as soon as it&apos;s ready.</div>
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+    <div style={{ width: '100%', maxWidth: isMobile ? 460 : 720, margin: '0 auto' }}>
+      <div style={{ fontSize: isMobile ? 30 : 40, fontWeight: 700, color: '#fff', marginBottom: 12, letterSpacing: '.04em', textTransform: 'uppercase', textAlign: 'center' }}>Pre-order</div>
+      <div style={{ fontSize: isMobile ? 17 : 26, color: 'rgba(255,255,255,.5)', marginBottom: isMobile ? 28 : 40, lineHeight: 1.6, textAlign: 'center' }}>Leave your details and we&apos;ll get in touch as soon as it&apos;s ready.</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? 14 : 18 }}>
         <input value={name} onChange={e => setName(e.target.value)} placeholder="Name" style={inputStyle} />
         <input value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" type="email" style={inputStyle} />
         <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Message (optional)" rows={3} style={{ ...inputStyle, resize: 'vertical' }} />
         {/* honeypot: скрыто от людей, заполняют только боты */}
         <input value={company} onChange={e => setCompany(e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
-        {err && <div style={{ fontSize: 12, color: 'rgba(255,90,90,.9)', textAlign: 'center' }}>{err}</div>}
-        <button onClick={submit} disabled={state === 'sending'} style={{ marginTop: 4, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: state === 'sending' ? 'default' : 'pointer', opacity: state === 'sending' ? .6 : 1, ...HN }}>
+        {err && <div style={{ fontSize: isMobile ? 14 : 18, color: 'rgba(255,90,90,.9)', textAlign: 'center' }}>{err}</div>}
+        <button onClick={submit} disabled={state === 'sending'} style={{ marginTop: 8, padding: isMobile ? '20px 32px' : '28px 48px', background: '#fff', color: '#000', border: 'none', fontSize: isMobile ? 17 : 24, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: state === 'sending' ? 'default' : 'pointer', opacity: state === 'sending' ? .6 : 1, ...HN }}>
           {state === 'sending' ? 'Sending...' : 'Pre-order →'}
         </button>
       </div>
