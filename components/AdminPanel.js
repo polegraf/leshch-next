@@ -205,6 +205,18 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
   const [seoForm, setSeoForm] = useState({ ...initialSeo });
   const [saved, setSaved] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [leads, setLeads] = useState([]);
+  const [leadsLoading, setLeadsLoading] = useState(false);
+
+  useEffect(() => {
+    if (tab !== 'leads') return;
+    setLeadsLoading(true);
+    fetch('/api/lead', { headers: { 'x-admin-secret': adminPassword } })
+      .then(r => r.json())
+      .then(d => setLeads(d.leads || []))
+      .catch(() => setLeads([]))
+      .finally(() => setLeadsLoading(false));
+  }, [tab, adminPassword]);
   const coverRef = useRef();
   const thumbRef = useRef();
   const titleLogoRef = useRef();
@@ -314,7 +326,7 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
         <div style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
           <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '.1em', textTransform: 'uppercase', color: 'rgba(255,255,255,.3)' }}>Admin</span>
           <div style={{ width: 1, height: 14, background: 'rgba(255,255,255,.1)' }} />
-          {[['projects', 'Projects'], ['seo', 'SEO'], ['contacts', 'Contacts']].map(([k, l]) => (
+          {[['projects', 'Projects'], ['seo', 'SEO'], ['leads', 'Leads'], ['contacts', 'Contacts']].map(([k, l]) => (
             <button key={k} onClick={() => { setTab(k); setEditId(null); setForm(null); }}
               style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 11, fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', color: tab === k ? '#fff' : 'rgba(255,255,255,.3)', ...HN, padding: '4px 0', borderBottom: tab === k ? '1px solid #fff' : '1px solid transparent' }}>{l}</button>
           ))}
@@ -575,6 +587,34 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
               <button onClick={saveSeo} style={{ alignSelf: 'flex-start', padding: '11px 28px', background: '#fff', color: '#000', border: 'none', fontSize: 10, fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer', ...HN }}>
                 {saving ? 'Saving...' : 'Save'}
               </button>
+            </div>
+          </div>
+        )}
+{/* ── LEADS ── */}
+        {tab === 'leads' && (
+          <div style={{ maxWidth: 720 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 24 }}>
+              <h2 style={{ fontSize: 26, fontWeight: 700, letterSpacing: '-.03em' }}>Leads <span style={{ fontSize: 13, color: 'rgba(255,255,255,.25)', fontWeight: 400 }}>({leads.length})</span></h2>
+              {leadsLoading && <span style={{ fontSize: 10, color: 'rgba(255,255,255,.3)', letterSpacing: '.06em' }}>Loading...</span>}
+            </div>
+            {!leadsLoading && leads.length === 0 && (
+              <p style={{ fontSize: 13, color: 'rgba(255,255,255,.4)', lineHeight: 1.7 }}>No leads yet. Pre-order requests will appear here.</p>
+            )}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {leads.map(l => (
+                <div key={l.id} style={{ background: '#0a0a0a', border: '1px solid rgba(255,255,255,.06)', padding: '16px 18px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 6, gap: 12 }}>
+                    <span style={{ fontSize: 14, fontWeight: 700, color: '#fff' }}>{l.name}</span>
+                    <span style={{ fontSize: 10, color: 'rgba(255,255,255,.3)', letterSpacing: '.04em', whiteSpace: 'nowrap' }}>{l.created_at ? new Date(l.created_at).toLocaleString() : ''}</span>
+                  </div>
+                  <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: l.message ? 8 : 0 }}>
+                    <a href={`mailto:${l.email}`} style={{ fontSize: 12, color: 'rgba(120,180,255,.85)', textDecoration: 'none' }}>{l.email}</a>
+                    {l.project_title && <span style={{ fontSize: 10, letterSpacing: '.06em', textTransform: 'uppercase', color: 'rgba(255,255,255,.35)', border: '1px solid rgba(255,255,255,.12)', padding: '2px 8px' }}>{l.project_title}</span>}
+                    {l.source && <span style={{ fontSize: 10, letterSpacing: '.06em', textTransform: 'uppercase', color: 'rgba(224,162,59,.85)', border: '1px solid rgba(224,162,59,.4)', padding: '2px 8px' }}>{l.source}</span>}
+                  </div>
+                  {l.message && <div style={{ fontSize: 13, color: 'rgba(255,255,255,.6)', lineHeight: 1.5 }}>{l.message}</div>}
+                </div>
+              ))}
             </div>
           </div>
         )}
