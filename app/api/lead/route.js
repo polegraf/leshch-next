@@ -45,3 +45,27 @@ export async function POST(request) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+export async function GET(request) {
+  const auth = request.headers.get("x-admin-secret");
+  if (!auth || auth !== process.env.ADMIN_SECRET) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  const res = await fetch(
+    `${process.env.SUPABASE_URL}/rest/v1/leads?select=*&order=created_at.desc`,
+    {
+      headers: {
+        apikey: process.env.SUPABASE_SERVICE_KEY,
+        Authorization: `Bearer ${process.env.SUPABASE_SERVICE_KEY}`,
+      },
+      cache: "no-store",
+    }
+  );
+
+  if (!res.ok) {
+    return NextResponse.json({ error: "Fetch failed" }, { status: 500 });
+  }
+
+  const leads = await res.json();
+  return NextResponse.json({ leads });
+}
