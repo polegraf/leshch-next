@@ -557,6 +557,8 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
             <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
               {[
                 { k: 'siteName', l: 'Site name' }, { k: 'tagline', l: 'Tagline' },
+                { k: 'shopTitle', l: 'Art Shop — title' }, { k: 'shopIntro', l: 'Art Shop — intro' },
+                { k: 'brandsTitle', l: 'Brands — title' }, { k: 'brandsIntro', l: 'Brands — intro' },
                 { k: 'metaTitle', l: 'Meta title', max: 60 }, { k: 'email', l: 'Email' },
                 { k: 'instagramUrl', l: 'Instagram URL' }, { k: 'whatsappUrl', l: 'WhatsApp URL (wa.me/...)' },
                 { k: 'behance', l: 'Behance' }, { k: 'ogImage', l: 'OG image URL' },
