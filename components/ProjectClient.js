@@ -50,7 +50,8 @@ function MediaSlot({ src, type, caption, ratio, autoplay }) {
 
 function ContentBlock({ block, isMobile }) {
   if (block.type === 'text') return (
-    <p style={{ ...HN, fontSize: isMobile ? 17 : 30, lineHeight: 1.75, color: 'rgba(255,255,255,.85)', marginBottom: isMobile ? 24 : 72, fontWeight: 300, textAlign: 'center', whiteSpace: 'pre-wrap' }}>{block.content}</p>
+    
+    <p style={{ ...HN, fontSize: isMobile ? 17 : 30, lineHeight: 1.75, color: 'rgba(255,255,255,.85)', marginBottom: isMobile ? 24 : 72, fontWeight: 300, textAlign: 'center', whiteSpace: 'pre-wrap', maxWidth: isMobile ? '100%' : '80%', marginLeft: 'auto', marginRight: 'auto' }}>{block.content}</p>
   );
 
   if (block.type === 'quote') return (
