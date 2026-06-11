@@ -1,10 +1,13 @@
 import { getProjects, getSettings } from '@/lib/db';
 import ListingClient from '@/components/ListingClient';
 
+const DEFAULT_TITLE = 'Brands for Sale';
+const DEFAULT_INTRO = 'Ready-made brand identities looking for an owner. Each one comes fully built — name, logo, visual system — so you can launch fast instead of starting from zero. Browse what is available and make it yours.';
+
 export async function generateMetadata() {
   const seo = await getSettings();
-  const title = `Brands for Sale | ${seo?.siteName || 'Portfolio'}`;
-  const description = 'Ready-made brand identities and domains for sale — name, logo, and visual system.';
+  const title = `${seo?.brandsTitle || DEFAULT_TITLE} | ${seo?.siteName || 'Portfolio'}`;
+  const description = seo?.brandsIntro || DEFAULT_INTRO;
   return {
     title,
     description,
@@ -20,8 +23,8 @@ export default async function BrandsForSalePage() {
     <ListingClient
       projects={items}
       seo={seo}
-      title="Brands for Sale"
-      subtitle="Ready-made brand identities & domains"
+      title={seo?.brandsTitle || DEFAULT_TITLE}
+      intro={seo?.brandsIntro || DEFAULT_INTRO}
     />
   );
 }

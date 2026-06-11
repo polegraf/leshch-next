@@ -47,8 +47,7 @@ function ThumbMedia({ project }) {
   return <img src={src} alt={project.title} style={{ width: '100%', display: 'block' }} />;
 }
 
-export default function ListingClient({ projects, seo, title, subtitle }) {
-  const [hovered, setHovered] = useState(null);
+export default function ListingClient({ projects, seo, title, subtitle, intro }) {
   const isMobile = useIsMobile();
   const router = useRouter();
   const px = isMobile ? '20px' : '40px';
@@ -64,11 +63,10 @@ export default function ListingClient({ projects, seo, title, subtitle }) {
   const Card = ({ p, delay }) => (
     <RevealCard delay={delay}
       onClick={() => go(p)}
-      onMouseEnter={() => setHovered(p.id)}
-      onMouseLeave={() => setHovered(null)}
+      className="listing-card"
       style={{ cursor: 'pointer', position: 'relative' }}>
       <div style={{ overflow: 'hidden', background: '#111', position: 'relative' }}>
-        <div style={{ transition: 'transform .6s cubic-bezier(.16,1,.3,1)', transform: hovered === p.id ? 'scale(1.03)' : 'scale(1)' }}>
+        <div className="listing-card-media" style={{ transition: 'transform .6s cubic-bezier(.16,1,.3,1)' }}>
           <ThumbMedia project={p} />
         </div>
         {p.status === 'sold' && (
@@ -89,12 +87,18 @@ export default function ListingClient({ projects, seo, title, subtitle }) {
 
   return (
     <div style={{ minHeight: '100vh', background: '#000', color: '#fff', ...HN, overflowX: 'hidden' }}>
+      {/* hover-zoom через чистый CSS — не вызывает перерисовку React, поэтому соседние карточки не мигают */}
+      <style>{`
+        .listing-card:hover .listing-card-media { transform: scale(1.03); }
+      `}</style>
+
       <Nav seo={seo} onAdminClick={() => {}} isMobile={isMobile} />
 
       <div style={{ padding: `0 ${px} 120px` }}>
-        <div style={{ padding: isMobile ? '48px 0 40px' : '48px 0 36px', borderBottom: '1px solid rgba(255,255,255,.07)', marginBottom: isMobile ? 32 : 56 }}>
-          <h1 style={{ fontSize: isMobile ? 'clamp(43px,11vw,62px)' : 'clamp(64px,8vw,120px)', fontWeight: 700, letterSpacing: '-.04em', lineHeight: .92, color: '#fff' }}>{title}</h1>
-          {subtitle && <div style={{ fontSize: isMobile ? 13 : 15, color: 'rgba(255,255,255,.45)', letterSpacing: '.03em', marginTop: 14 }}>{subtitle}</div>}
+        <div style={{ padding: isMobile ? '48px 0 40px' : '48px 0 36px', borderBottom: '1px solid rgba(255,255,255,.07)', marginBottom: isMobile ? 32 : 56, textAlign: 'center' }}>
+          <h1 style={{ fontSize: isMobile ? 'clamp(43px,11vw,62px)' : 'clamp(64px,8vw,120px)', fontWeight: 700, letterSpacing: '-.04em', lineHeight: .92, color: '#fff', textAlign: 'center' }}>{title}</h1>
+          {intro && <p style={{ ...HN, fontSize: isMobile ? 17 : 30, lineHeight: 1.75, color: 'rgba(255,255,255,.85)', fontWeight: 300, textAlign: 'center', maxWidth: isMobile ? '100%' : '80%', marginLeft: 'auto', marginRight: 'auto', marginTop: isMobile ? 18 : 24 }}>{intro}</p>}
+          {subtitle && <div style={{ fontSize: isMobile ? 13 : 15, color: 'rgba(255,255,255,.45)', letterSpacing: '.03em', marginTop: 14, textAlign: 'center' }}>{subtitle}</div>}
         </div>
 
         {projects.length === 0 ? (
