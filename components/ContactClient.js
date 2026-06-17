@@ -18,13 +18,36 @@ function useIsMobile() {
 
 export default function ContactClient({ seo }) {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
-  const [sent, setSent] = useState(false);
+  const [company, setCompany] = useState(''); // honeypot
+  const [state, setState] = useState('idle'); // idle | sending | sent | error
+  const [err, setErr] = useState('');
   const isMobile = useIsMobile();
 
-  const handleSend = () => {
-    if (form.name && form.email && form.message) {
-      setSent(true);
-      setTimeout(() => { setSent(false); setForm({ name: '', email: '', message: '' }); }, 3000);
+  const handleSend = async () => {
+    if (state === 'sending') return;
+    setErr('');
+    if (form.name.trim().length < 2) { setErr('Enter your name'); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setErr('Enter a valid email'); return; }
+    if (form.message.trim().length < 2) { setErr('Write a short message'); return; }
+    setState('sending');
+    try {
+      const res = await fetch('/api/lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          message: form.message,
+          company, // honeypot
+          source: 'contact',
+        }),
+      });
+      if (!res.ok) throw new Error('failed');
+      setState('sent');
+      setForm({ name: '', email: '', message: '' });
+    } catch {
+      setState('error');
+      setErr('Something went wrong. Please try again.');
     }
   };
 
@@ -32,11 +55,11 @@ export default function ContactClient({ seo }) {
     <div style={{ minHeight: '100vh', background: '#000', color: '#fff', ...HN }}>
       <Nav seo={seo} onAdminClick={() => {}} isMobile={isMobile} />
       <div style={{ maxWidth: 860, margin: '0 auto', padding: isMobile ? '64px 20px 100px' : '112px 40px 160px' }}>
-        <h1 style={{ fontSize: isMobile ? 'clamp(48px,11vw,72px)' : 'clamp(64px,8vw,112px)', fontWeight: 700, letterSpacing: '-.04em', lineHeight: .92, color: '#fff', marginBottom: isMobile ? 56 : 80 }}>Let's work<br />together.</h1>
-        {sent ? (
+        <h1 style={{ fontSize: isMobile ? 'clamp(48px,11vw,72px)' : 'clamp(64px,8vw,112px)', fontWeight: 700, letterSpacing: '-.04em', lineHeight: .92, color: '#fff', marginBottom: isMobile ? 56 : 80 }}>Let&apos;s work<br />together.</h1>
+        {state === 'sent' ? (
           <div style={{ padding: '40px 0' }}>
             <div style={{ fontSize: 24, fontWeight: 700, color: '#fff', marginBottom: 10 }}>Message sent.</div>
-            <div style={{ fontSize: 16, color: 'rgba(255,255,255,.5)' }}>I'll get back to you within 24 hours.</div>
+            <div style={{ fontSize: 16, color: 'rgba(255,255,255,.5)' }}>I&apos;ll get back to you within 24 hours.</div>
           </div>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column' }}>
@@ -52,7 +75,10 @@ export default function ContactClient({ seo }) {
               <textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={5}
                 style={{ width: '100%', background: 'transparent', border: 'none', fontSize: isMobile ? 20 : 26, fontWeight: 700, color: '#fff', ...HN, outline: 'none', resize: 'none', letterSpacing: '-.02em' }} />
             </div>
-            <button onClick={handleSend} style={{ marginTop: 32, alignSelf: 'flex-start', padding: '15px 36px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: 'pointer', ...HN }}>Send →</button>
+            {/* honeypot: скрыто от людей, заполняют только боты */}
+            <input value={company} onChange={(e) => setCompany(e.target.value)} tabIndex={-1} autoComplete="off" aria-hidden="true" style={{ position: 'absolute', left: '-9999px', width: 1, height: 1, opacity: 0 }} />
+            {err && <div style={{ marginTop: 20, fontSize: 14, color: 'rgba(255,90,90,.9)' }}>{err}</div>}
+            <button onClick={handleSend} disabled={state === 'sending'} style={{ marginTop: 32, alignSelf: 'flex-start', padding: '15px 36px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: state === 'sending' ? 'default' : 'pointer', opacity: state === 'sending' ? .6 : 1, ...HN }}>{state === 'sending' ? 'Sending...' : 'Send →'}</button>
           </div>
         )}
         <div style={{ marginTop: 80, display: 'flex', gap: isMobile ? 36 : 56, flexWrap: 'wrap' }}>
