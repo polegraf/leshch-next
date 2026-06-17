@@ -28,7 +28,7 @@ async function sendNotification({ name, email, message, source, projectTitle }) 
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: "Leshch site <onboarding@resend.dev>",
+        from: "Leshch site <d@leshch.com>",
         to: recipients,
         reply_to: email, // ответишь прямо из почты — уйдёт клиенту
         subject: subjectBits.join(" "),
