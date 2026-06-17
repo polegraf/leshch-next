@@ -50,7 +50,7 @@ function MediaSlot({ src, type, caption, ratio, autoplay }) {
 
 function ContentBlock({ block, isMobile }) {
   if (block.type === 'text') return (
-    
+
     <p style={{ ...HN, fontSize: isMobile ? 17 : 30, lineHeight: 1.75, color: 'rgba(255,255,255,.85)', marginBottom: isMobile ? 24 : 72, fontWeight: 300, textAlign: 'center', whiteSpace: 'pre-wrap', maxWidth: isMobile ? '100%' : '80%', marginLeft: 'auto', marginRight: 'auto' }}>{block.content}</p>
   );
 
@@ -286,7 +286,10 @@ function ProjectContent({ project, seo }) {
                 <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: 'pointer', textDecoration: 'none', ...HN }}>Inquire →</Link>
               )
             ) : (
-              <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: 'pointer', textDecoration: 'none', ...HN }}>Start a project →</Link>
+              <>
+                <div style={{ fontSize: isMobile ? 'clamp(30px,8vw,46px)' : 'clamp(44px,5vw,76px)', fontWeight: 700, letterSpacing: '-.035em', lineHeight: 1, color: '#fff', textAlign: 'center', marginBottom: isMobile ? 18 : 28 }}>Have a project in mind?</div>
+                <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: 'pointer', textDecoration: 'none', ...HN }}>Let&apos;s discuss →</Link>
+              </>
             )}
           </div>
         </div>
