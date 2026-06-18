@@ -268,7 +268,7 @@ function ProjectContent({ project, seo }) {
             </div>
           )}
 
-          <p style={{ ...HN, fontSize: isMobile ? 17 : 30, fontWeight: 700, lineHeight: 1.75, color: '#fff', letterSpacing: '-.01em', marginBottom: isMobile ? 12 : 16, textAlign: 'center' }}>{project.desc}</p>
+          <p style={{ ...HN, fontSize: isMobile ? 34 : 60, fontWeight: 700, lineHeight: 1.75, color: '#fff', letterSpacing: '-.01em', marginBottom: isMobile ? 12 : 16, textAlign: 'center', maxWidth: isMobile ? '100%' : '60%', marginLeft: 'auto', marginRight: 'auto' }}>{project.desc}</p>
 
           {(project.blocks || []).map((b) => (
             <ContentBlock key={b.id} block={b} isMobile={isMobile} />
