@@ -1,4 +1,5 @@
 import { GoogleAnalytics } from '@next/third-parties/google';
+import WhatsAppButton from './WhatsAppButton';
 import { getSettings } from '@/lib/db';
 import CookieBanner from '@/components/CookieBanner';
 
@@ -33,6 +34,7 @@ export default function RootLayout({ children }) {
         {children}
         <CookieBanner />
             <GoogleAnalytics gaId="G-4MYGT2TVRJ" />
+        <WhatsAppButton />
       </body>
     </html>
   );
