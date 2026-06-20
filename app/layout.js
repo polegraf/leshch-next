@@ -1,3 +1,4 @@
+import { GoogleAnalytics } from '@next/third-parties/google';
 import { getSettings } from '@/lib/db';
 import CookieBanner from '@/components/CookieBanner';
 
@@ -31,6 +32,7 @@ export default function RootLayout({ children }) {
       <body style={{ margin: 0, background: '#000', color: '#fff', fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" }}>
         {children}
         <CookieBanner />
+            <GoogleAnalytics gaId="G-4MYGT2TVRJ" />
       </body>
     </html>
   );
