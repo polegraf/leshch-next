@@ -1,12 +1,9 @@
 'use client';
 import { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
-import dynamic from 'next/dynamic';
 import Nav from './Nav';
 import Footer from './Footer';
-import { toSlug, verifyAdmin } from '@/lib/db';
-
-const AdminPanel = dynamic(() => import('./AdminPanel'), { ssr: false });
+import { toSlug } from '@/lib/db';
 
 const HN = { fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" };
 
@@ -51,38 +48,21 @@ function ThumbMedia({ project }) {
 }
 
 export default function HomeClient({ projects: initialProjects, seo: initialSeo }) {
-  const [projects, setProjects] = useState(initialProjects);
-  const [seo, setSeo] = useState(initialSeo);
+  const [projects] = useState(initialProjects);
+  const [seo] = useState(initialSeo);
   const [filter, setFilter] = useState('all');
   const [hovered, setHovered] = useState(null);
-  const [pwPrompt, setPwPrompt] = useState(false);
-  const [pwInput, setPwInput] = useState('');
-  const [pwError, setPwError] = useState(false);
-  const [adminMode, setAdminMode] = useState(false);
-  const [adminPw, setAdminPw] = useState('');
   const isMobile = useIsMobile();
   const router = useRouter();
   const px = isMobile ? '20px' : '40px';
 
   // Главная показывает только Works; бренды/шоп — в своих разделах.
-  // Админка при этом получает ПОЛНЫЙ список projects (см. <AdminPanel/>).
   const works = projects.filter((p) => !p.type || p.type === 'work');
   // Теги — регистронезависимо: Branding / branding / BRANDING = один чип
   const allCategories = Array.from(new Set(works.flatMap((p) => (p.category || []).map((c) => String(c).toLowerCase()))));
   const filtered = filter === 'all'
     ? works
     : works.filter((p) => (p.category || []).some((c) => String(c).toLowerCase() === filter));
-
-  const handleAdminSubmit = async () => {
-    const ok = await verifyAdmin(pwInput);
-    if (ok) {
-      setAdminPw(pwInput);
-      setPwPrompt(false);
-      setAdminMode(true);
-    } else {
-      setPwError(true);
-    }
-  };
 
   const handleProjectClick = (p) => {
     if (p.ready) {
@@ -93,37 +73,9 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
     }
   };
 
-  if (adminMode) {
-    return (
-      <AdminPanel
-        projects={projects}
-        seo={seo}
-        adminPassword={adminPw}
-        onBack={() => setAdminMode(false)}
-      />
-    );
-  }
-
   return (
     <div style={{ minHeight: '100vh', background: '#000', color: '#fff', ...HN, overflowX: 'hidden' }}>
-      <Nav seo={seo} onAdminClick={() => { setPwPrompt(true); setPwInput(''); setPwError(false); }} isMobile={isMobile} />
-
-      {pwPrompt && (
-        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,.88)', zIndex: 999, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setPwPrompt(false)}>
-          <div style={{ background: '#0a0a0a', border: '1px solid rgba(255,255,255,.1)', padding: '40px 48px', minWidth: 320 }} onClick={(e) => e.stopPropagation()}>
-            <div style={{ fontSize: 11, letterSpacing: '.1em', color: 'rgba(255,255,255,.35)', textTransform: 'uppercase', marginBottom: 28 }}>Enter password</div>
-            <input autoFocus type="password" value={pwInput}
-              onChange={(e) => { setPwInput(e.target.value); setPwError(false); }}
-              onKeyDown={(e) => e.key === 'Enter' && handleAdminSubmit()}
-              style={{ width: '100%', background: 'transparent', border: 'none', borderBottom: `1px solid ${pwError ? 'rgba(255,80,80,.6)' : 'rgba(255,255,255,.2)'}`, color: '#fff', fontSize: 24, fontWeight: 700, padding: '8px 0', outline: 'none', ...HN, marginBottom: 8 }} />
-            {pwError && <div style={{ fontSize: 11, color: 'rgba(255,80,80,.7)', letterSpacing: '.06em', marginTop: 8 }}>Incorrect password</div>}
-            <div style={{ display: 'flex', gap: 10, marginTop: 28 }}>
-              <button onClick={handleAdminSubmit} style={{ padding: '10px 24px', background: '#fff', color: '#000', border: 'none', fontSize: 11, fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer', ...HN }}>Enter →</button>
-              <button onClick={() => setPwPrompt(false)} style={{ padding: '10px 16px', background: 'transparent', color: 'rgba(255,255,255,.3)', border: '1px solid rgba(255,255,255,.1)', fontSize: 11, cursor: 'pointer', ...HN }}>Cancel</button>
-            </div>
-          </div>
-        </div>
-      )}
+      <Nav seo={seo} isMobile={isMobile} />
 
       <div style={{ padding: `0 ${px} 120px` }}>
         <div style={{ padding: isMobile ? '48px 0 40px' : '48px 0 36px', borderBottom: '1px solid rgba(255,255,255,.07)' }}>

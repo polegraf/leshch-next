@@ -7,8 +7,8 @@ const R2_PUBLIC_URL = 'https://pub-1d609b9fa58348d39ec4c351d671a989.r2.dev';
 
 const CATEGORIES = ["all", "brand", "logo", "packaging", "ui", "photo", "motion", "print", "illustration"];
 const BLOCK_TYPES = ["text", "quote", "image", "video"];
-const LAYOUTS = ["wide", "two-square", "three-square", "three-vertical", "four-vertical"];
-const LAYOUT_LABELS = { "wide": "1 wide (16:9)", "two-square": "2 square (1:1)", "three-square": "3 square (1:1)", "three-vertical": "3 vertical (9:16)", "four-vertical": "4 vertical (9:16)" };
+const LAYOUTS = ["wide", "two-square", "three-square", "three-vertical", "three-portrait", "four-vertical"];
+const LAYOUT_LABELS = { "wide": "1 wide (16:9)", "two-square": "2 square (1:1)", "three-square": "3 square (1:1)", "three-vertical": "3 vertical (9:16)", "three-portrait": "3 portrait (4:5)", "four-vertical": "4 vertical (9:16)" };
 const SECTIONS = [["work", "Works"], ["brand-for-sale", "Brand for sale"], ["shop", "Shop"]];
 
 async function uploadFile(file) {
@@ -68,6 +68,7 @@ function BlockEditor({ block, onChange, onDelete, onUp, onDown }) {
     'two-square': ['Left (1:1)', 'Right (1:1)'],
     'three-square': ['Left (1:1)', 'Center (1:1)', 'Right (1:1)'],
     'three-vertical': ['Left (9:16)', 'Center (9:16)', 'Right (9:16)'],
+    'three-portrait': ['Left (4:5)', 'Center (4:5)', 'Right (4:5)'],
     'four-vertical': ['1 (9:16)', '2 (9:16)', '3 (9:16)', '4 (9:16)'],
   };
 
@@ -560,6 +561,7 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
                 { k: 'metaTitle', l: 'Meta title', max: 60 }, { k: 'email', l: 'Email' },
                 { k: 'instagramUrl', l: 'Instagram URL' }, { k: 'whatsappUrl', l: 'WhatsApp URL (wa.me/...)' },
                 { k: 'behance', l: 'Behance' }, { k: 'ogImage', l: 'OG image URL' },
+                { k: 'starLink', l: 'Star link — nav ✳ (full URL or /path)' },
                 { k: 'adminPassword', l: 'Admin password' },
               ].map(({ k, l, max }) => (
                 <div key={k}>

@@ -67,6 +67,7 @@ function ContentBlock({ block, isMobile }) {
 
     const getRatio = () => {
       if (layout === 'three-vertical' || layout === 'four-vertical') return '9/16';
+      if (layout === 'three-portrait') return '4/5';
       if (layout === 'two-square' || layout === 'three-square') return '1/1';
       return '16/9';
     };
@@ -76,6 +77,7 @@ function ContentBlock({ block, isMobile }) {
       'two-square': [block.src, block.src2],
       'three-square': [block.src, block.src2, block.src3],
       'three-vertical': [block.src, block.src2, block.src3],
+      'three-portrait': [block.src, block.src2, block.src3],
       'four-vertical': [block.src, block.src2, block.src3, block.src4],
     }[layout] || [block.src];
 
@@ -97,6 +99,7 @@ function ContentBlock({ block, isMobile }) {
       'two-square': '1fr 1fr',
       'three-square': '1fr 1fr 1fr',
       'three-vertical': '1fr 1fr 1fr',
+      'three-portrait': '1fr 1fr 1fr',
       'four-vertical': '1fr 1fr 1fr 1fr',
     }[layout];
 
@@ -232,7 +235,7 @@ function ProjectContent({ project, seo }) {
 
   return (
     <div style={{ minHeight: '100vh', background: '#000', color: '#fff', ...HN, overflowX: 'hidden' }}>
-      <Nav seo={seo} onAdminClick={() => {}} isMobile={isMobile} />
+      <Nav seo={seo} isMobile={isMobile} />
 
       {project.cover ? (
         <>
