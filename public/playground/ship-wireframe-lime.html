@@ -34159,6 +34159,8 @@ void main() {
     // насколько можно приблизиться (доля от базовой дистанции)
     zoomMax: 2.2,
     // насколько можно отдалиться
+    initialZoom: 0.45,
+    // стартовый zoom при загрузке -- крупный кадр на весь экран, а не "вписано с запасом"
     wheelZoomSpeed: 16e-4,
     pinchZoomSpeed: 1
   };
@@ -34195,7 +34197,7 @@ void main() {
   }
   var modelRadius = 12;
   var baseDist = 40;
-  var zoomFactor = 1;
+  var zoomFactor = CONFIG.initialZoom;
   function fitCamera(W, H) {
     const aspect2 = W / H;
     const vFov = camera.fov * Math.PI / 180;
