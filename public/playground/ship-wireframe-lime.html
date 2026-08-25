@@ -10,15 +10,85 @@
     width: 100%; height: 100%;
     background: #b5ff00;
     overflow: hidden;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
   #stage { position: relative; width: 100vw; height: 100vh; }
   canvas#fx { position: absolute; inset: 0; width: 100%; height: 100%; display: block; cursor: grab; touch-action: none; }
   canvas#fx.dragging { cursor: grabbing; }
+
+  /* Интерфейсные панели -- один в один с tanker-procedural.html (тот же
+     класс-набор, та же типографика/цвета), чтобы весь lime-семейство
+     смотрелось как одна система. */
+  .eyebrow {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .headline {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+  }
+  .mono { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; font-weight: 700; letter-spacing: 0.08em; }
+
+  .panel-top-left {
+    position: absolute; top: 6%; left: 6%; max-width: 420px; pointer-events: none; z-index: 2;
+  }
+  .panel-top-left .eyebrow { color: #000; font-size: 11px; margin-bottom: 12px; }
+  .panel-top-left h2 {
+    color: #000; font-size: clamp(42px, 6vw, 66px); line-height: 0.96; margin: 0 0 14px;
+  }
+  .panel-top-left p { color: rgba(0,0,0,.6); font-size: 13.5px; line-height: 1.6; margin: 0; max-width: 340px; font-weight: 300; }
+
+  .panel-bottom-left { position: absolute; bottom: 6%; left: 6%; pointer-events: none; z-index: 2; }
+  .panel-bottom-left .vessel {
+    color: rgba(0,0,0,.55); font-size: 10.5px; letter-spacing: 0.08em; margin-bottom: 8px;
+  }
+  .panel-bottom-left .row { display: flex; gap: 28px; }
+  .panel-bottom-left .label { color: rgba(0,0,0,.55); font-size: 9.5px; letter-spacing: 0.1em; margin-bottom: 4px; }
+  .panel-bottom-left .value { color: #000; font-size: 13px; }
+
+  .hint-top-right {
+    position: absolute; top: 6%; right: 6%;
+    color: rgba(0,0,0,.5); font-size: 10.5px;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    pointer-events: none;
+    z-index: 2;
+  }
 </style>
 </head>
 <body>
 <div id="stage">
   <canvas id="fx"></canvas>
+
+  <div class="panel-top-left">
+    <div class="eyebrow">Sec. 01 / Vessel 3D Model</div>
+    <h2 class="headline">Full Hull<br>Detail</h2>
+    <p>Every plate, rail and superstructure line traced from the source scan. Drag to inspect the vessel from any angle.</p>
+  </div>
+
+  <div class="panel-bottom-left">
+    <div class="vessel mono">MT HORIZON BEARING &nbsp;&middot;&nbsp; IMO 9482173</div>
+    <div class="row">
+      <div>
+        <div class="label mono">TYPE</div>
+        <div class="value mono">BULK CARRIER</div>
+      </div>
+      <div>
+        <div class="label mono">SOURCE</div>
+        <div class="value mono">3D SCAN</div>
+      </div>
+      <div>
+        <div class="label mono">STATUS</div>
+        <div class="value mono">MODEL LOADED</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hint-top-right">DRAG TO ROTATE</div>
 </div>
 <script>
 (() => {
