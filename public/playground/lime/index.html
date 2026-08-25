@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Secton — lime family</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html {
+    width: 100%;
+    overflow-x: hidden;
+    background: #b5ff00;
+    scroll-snap-type: y proximity;
+  }
+  body {
+    width: 100%;
+    background: #b5ff00;
+  }
+  .block {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    scroll-snap-align: start;
+  }
+  .block iframe {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+</style>
+</head>
+<body>
+  <div class="block"><iframe src="logo.html" loading="lazy" title="Secton — logo line effect (lime)"></iframe></div>
+  <div class="block"><iframe src="tanker-procedural.html" loading="lazy" title="Secton — tanker wireframe (lime)"></iframe></div>
+  <div class="block"><iframe src="ship-3d.html" loading="lazy" title="Secton — 3D ship wireframe (lime)"></iframe></div>
+</body>
+</html>
