@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Secton — playground</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%;
+    background: #000;
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+  body {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 8vh 6vw;
+  }
+  .eyebrow {
+    color: rgba(255,255,255,.4);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    margin-bottom: 4vh;
+  }
+  nav {
+    display: flex;
+    flex-direction: column;
+  }
+  a.item {
+    display: block;
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    font-size: clamp(40px, 9vw, 128px);
+    padding: 0.18em 0;
+    border-top: 1px solid rgba(255,255,255,.15);
+    transition: opacity 0.2s ease, padding-left 0.2s ease;
+  }
+  nav a.item:last-child {
+    border-bottom: 1px solid rgba(255,255,255,.15);
+  }
+  a.item:hover, a.item:focus-visible {
+    opacity: .55;
+    padding-left: 0.2em;
+  }
+  a.item .num {
+    display: inline-block;
+    font-size: 0.28em;
+    font-weight: 700;
+    letter-spacing: 0;
+    color: rgba(255,255,255,.35);
+    vertical-align: 6%;
+    margin-right: 0.3em;
+    width: 1.6em;
+  }
+</style>
+</head>
+<body>
+  <div class="eyebrow">Secton &nbsp;/&nbsp; Playground</div>
+  <nav>
+    <a class="item" href="/playground/logo-line-effect.html"><span class="num">01</span>Logo</a>
+    <a class="item" href="/playground/ship-wireframe-bloom.html"><span class="num">02</span>3D Ship — Dark</a>
+    <a class="item" href="/playground/ship-wireframe-lime.html"><span class="num">03</span>3D Ship — Lime</a>
+    <a class="item" href="/playground/archive/index.html"><span class="num">04</span>Tanker Archive</a>
+    <a class="item" href="/playground/archive/secton-tanker-lime.html"><span class="num">05</span>Tanker Archive — Lime</a>
+    <a class="item" href="/playground/lime/index.html"><span class="num">06</span>Lime Family</a>
+  </nav>
+</body>
+</html>
