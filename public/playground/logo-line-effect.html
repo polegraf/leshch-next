@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Secton — line effect</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body {
+    width: 100%; height: 100%;
+    background: #0b0e11;
+    overflow: hidden;
+  }
+  #stage { position: relative; width: 100vw; height: 100vh; }
+  canvas#fx { position: absolute; inset: 0; display: block; }
+  .hint {
+    position: absolute;
+    left: 50%;
+    bottom: 28px;
+    transform: translateX(-50%);
+    font: 500 12px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: rgba(232, 220, 196, 0.35);
+    pointer-events: none;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+<div id="stage">
+  <canvas id="fx"></canvas>
+  <div class="hint">Двигай курсор / палец по экрану</div>
+</div>
+
+<script>
+(function () {
+  // ---------------------------------------------------------------
+  // Настройки — можно крутить под бренд
+  // ---------------------------------------------------------------
+  const CONFIG = {
+    bg:              '#0b0e11',   // фон
+    lineColor:       '229, 217, 191', // RGB строкой, тёплый оффвайт под якорь/латунь
+    lineWidth:       0.9,          // чуть толще 0.7 — тонкие sub-pixel линии сильнее всего "плывут" между движками
+    rows:            96,          // число рядов — чем больше, тем глаже "рельеф"
+    colSpacing:      4,           // шаг точек по горизонтали, px
+    logoWidthRatio:  0.8,         // ширина лого относительно ширины канваса
+    maskBlurScale:   1 / 7,       // во сколько раз даунсемплим маску перед апсемплом — источник мягкого "объёма"
+    maxLift:         46,          // максимальный подъём линий внутри заливки лого, px
+    liftGamma:       1.35,        // резкость перехода фон -> лого (>1 — резче)
+    idleAmp:         1.8,         // лёгкое "дыхание" поверх подъёма, px
+    idleSpeed:       0.5,         // скорость дыхания
+    refWidth:        1600,        // ширина (px), на которой откалиброван эффект — см. fxScale ниже
+    mouseRadius:     140,         // радиус влияния курсора, px (при refWidth)
+    mousePush:       50,          // сила отталкивания, px
+    spring:          0.10,        // упругость возврата к базовой позиции
+    damping:         0.82,        // затухание
+  };
+
+  // ---------------------------------------------------------------
+  // Логотип Secton (исходный SVG, вставлен как есть)
+  // ---------------------------------------------------------------
+  const LOGO_SVG = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1467.07 334.75">
+  <path fill="#fff" d="M1258.52,61.35v148.6l-78.21-148.6h-66.15v108.69c-11.48-63.15-65.37-113.9-136.87-113.9-44.21,0-81.64,19.25-106.56,48.79v-43.9h-173.37v44.09c-25.58-29.63-63.78-48.97-106.23-48.97-62.88,0-114.79,41.92-132.74,97.13-17.49-55.51-69.85-97.13-132.85-97.13-80.82,0-139.47,64.85-139.47,139.15,0,9.31.91,18.46,2.67,27.36-10.53-35.87-43.39-47.36-80.88-59.95-19.88-6.84-36.5-12.38-36.5-29,0-11.73,9.45-20.86,24.12-20.86,17.6,0,26.07,12.38,26.72,28.02l59.96.33c-.33-51.16-34.54-85.05-86.68-85.05-48.56,0-86.03,30.63-86.03,76.58s26.4,64.52,73,80.82c28.68,10.1,43.67,17.27,43.67,35.19,0,15.32-11.41,26.4-29.65,26.4-21.18,0-31.61-14.99-32.26-32.59H0c.33,54.42,39.1,91.57,96.78,91.57,54.1,0,95.48-31.28,95.48-84.4,0-6.65-.52-12.71-1.49-18.26,15.42,58.24,67.39,103.32,134.77,103.32,63.87,0,115.03-39.76,132.31-94.5h-70.72c-12.06,20.86-35.19,34.54-61.92,34.54-39.43,0-69.74-26.4-74.63-60.29h202.39c9.29,66.29,66.63,120.25,138.15,120.25s134.26-57.68,139.15-126.77h-66.48c-5.21,33.89-34.22,61.26-72.67,61.26-42.69,0-73.65-34.54-73.65-73.65s30.96-73.65,73.65-73.65c38.13,0,67.46,27.05,72.67,60.61h66.15c-1.51-21.29-8.38-41.52-19.3-59.31h40.48v206.6h65.5V123.26h41.02c-12.71,21.28-19.84,46.07-19.84,72.02,0,74.63,58.33,139.47,139.47,139.47,71.49,0,125.38-50.75,136.87-114.13v109.24h65.83v-149.9l79.19,149.9h65.18V61.35h-65.83ZM254.51,165.63c9.12-28.03,36.5-48.56,70.39-48.56s61.59,20.2,70.06,48.56h-140.45ZM977.3,268.93c-42.69,0-73.65-33.56-73.65-73.65s30.96-73.32,73.65-73.32,73.32,33.24,73.32,73.32-30.96,73.65-73.32,73.65Z"/>
+  <g>
+    <path fill="#fff" d="M1409.79,29.48c-2.7,0-4.9,2.2-4.9,4.9s2.2,4.9,4.9,4.9,4.9-2.2,4.9-4.9-2.2-4.9-4.9-4.9Z"/>
+    <path fill="#fff" d="M1409.79,0c-31.59,0-57.28,25.7-57.28,57.28s25.7,57.28,57.28,57.28,57.28-25.7,57.28-57.28S1441.38,0,1409.79,0ZM1409.79,92.39c-12.73,0-23.95-8.57-27.29-20.84l8.62-2.35c1.88,6.92,7.44,12.11,14.21,13.72v-24.49h-9.66v-8.93h9.66v-4.43c-4.18-1.75-7.12-5.88-7.12-10.69,0-6.39,5.2-11.58,11.58-11.58s11.58,5.2,11.58,11.58c0,4.8-2.94,8.93-7.12,10.69v4.43h9.66v8.93h-9.66v24.49c6.77-1.61,12.32-6.8,14.21-13.72l8.62,2.35c-3.34,12.27-14.56,20.84-27.29,20.84Z"/>
+  </g>
+</svg>`;
+
+  const LOGO_ASPECT = 1467.07 / 334.75;
+
+  // ---------------------------------------------------------------
+  // Canvas setup
+  // ---------------------------------------------------------------
+  const stage = document.getElementById('stage');
+  const canvas = document.getElementById('fx');
+  const ctx = canvas.getContext('2d');
+  // Берём реальный DPR устройства и не срезаем его так агрессивно — на встраивании
+  // (iframe/widget внутри чужой страницы, которую хост может ещё и масштабировать
+  // CSS-трансформом) заниженное разрешение растра — главная причина того, что
+  // тонкие линии выглядят по-разному чётко в разных браузерах.
+  const DPR = Math.min(window.devicePixelRatio || 1, 3);
+
+  let W = 0, H = 0;
+  let lines = [];        // массив рядов, каждый — массив точек
+  let maskData = null;   // ImageData мягкой (блюрнутой) альфа-маски логотипа
+  // Во сколько раз реальный отображаемый размер отличается от refWidth, на котором
+  // подобраны px-константы (радиус курсора, толщина линий и т.д.). Без этого при
+  // встраивании в хост (Readymag), который рисует блок то крупнее, то мельче —
+  // в зависимости от ширины окна/брейкпоинта — эффект курсора и линии выглядят
+  // непропорционально сильнее или слабее, хотя код тот же самый.
+  let fxScale = 1;
+
+  const mouse = { x: -9999, y: -9999, active: false };
+  let t0 = performance.now();
+
+  function resize() {
+    // Меряем реальный отрендеренный размер контейнера (а не window.innerWidth/Height) —
+    // это остаётся верным и тогда, когда страница-хост (например, Readymag) масштабирует
+    // блок со встройкой своим CSS-transform: window.innerWidth в этом случае "врёт".
+    const rect = stage.getBoundingClientRect();
+    W = Math.max(1, Math.round(rect.width));
+    H = Math.max(1, Math.round(rect.height));
+    fxScale = Math.min(1.8, Math.max(0.55, W / CONFIG.refWidth));
+    canvas.width = W * DPR;
+    canvas.height = H * DPR;
+    canvas.style.width = W + 'px';
+    canvas.style.height = H + 'px';
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    buildGrid();
+    buildMask();
+  }
+
+  // Растеризуем SVG-лого в маленьком разрешении и апскейлим — быстрый способ
+  // получить мягкую, "заблюренную" альфа-маску формы (источник объёма/рельефа)
+  function buildMask() {
+    const smallW = Math.max(80, Math.round(W * CONFIG.maskBlurScale));
+    const smallH = Math.max(60, Math.round(H * CONFIG.maskBlurScale));
+
+    const small = document.createElement('canvas');
+    small.width = smallW;
+    small.height = smallH;
+    const sctx = small.getContext('2d');
+
+    const logoW = smallW * CONFIG.logoWidthRatio;
+    const logoH = logoW / LOGO_ASPECT;
+    const x = (smallW - logoW) / 2;
+    const y = (smallH - logoH) / 2;
+
+    const svgBlob = new Blob([LOGO_SVG], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(svgBlob);
+    const img = new Image();
+    img.onload = function () {
+      sctx.clearRect(0, 0, smallW, smallH);
+      sctx.drawImage(img, x, y, logoW, logoH);
+      URL.revokeObjectURL(url);
+
+      const off = document.createElement('canvas');
+      off.width = W;
+      off.height = H;
+      const octx = off.getContext('2d');
+      octx.imageSmoothingEnabled = true;
+      octx.imageSmoothingQuality = 'high';
+      octx.drawImage(small, 0, 0, smallW, smallH, 0, 0, W, H);
+      maskData = octx.getImageData(0, 0, W, H);
+      applyMaskToGrid();
+    };
+    img.src = url;
+  }
+
+  function alphaAt(px, py) {
+    if (!maskData) return 0;
+    const xi = px | 0, yi = py | 0;
+    if (xi < 0 || yi < 0 || xi >= W || yi >= H) return 0;
+    const idx = (yi * W + xi) * 4 + 3;
+    return maskData.data[idx] / 255;
+  }
+
+  function buildGrid() {
+    lines = [];
+    const rowSpacing = H / CONFIG.rows;
+    const cols = Math.ceil(W / CONFIG.colSpacing) + 1;
+
+    for (let r = 0; r < CONFIG.rows; r++) {
+      const baseY = r * rowSpacing + rowSpacing / 2;
+      const pts = [];
+      for (let c = 0; c < cols; c++) {
+        const baseX = c * CONFIG.colSpacing;
+        pts.push({
+          bx: baseX, by: baseY,
+          x: baseX, y: baseY,
+          vx: 0, vy: 0,
+          m: 0,           // локальное значение маски (0..1), задаёт "высоту рельефа"
+          lift: 0,        // итоговый подъём вверх, px
+          phase: Math.random() * Math.PI * 2,
+          freq: CONFIG.idleSpeed * (0.7 + Math.random() * 0.6),
+        });
+      }
+      lines.push(pts);
+    }
+  }
+
+  // Пересчитываем "рельеф" (подъём каждой точки) один раз, когда маска готова —
+  // это не зависит от времени/курсора, поэтому не нужно делать это каждый кадр
+  function applyMaskToGrid() {
+    for (let r = 0; r < lines.length; r++) {
+      const pts = lines[r];
+      for (let i = 0; i < pts.length; i++) {
+        const p = pts[i];
+        const m = alphaAt(p.bx, p.by);
+        p.m = m;
+        p.lift = Math.pow(m, CONFIG.liftGamma) * CONFIG.maxLift * fxScale;
+      }
+    }
+  }
+
+  function step(now) {
+    const t = (now - t0) / 1000;
+    ctx.fillStyle = CONFIG.bg;
+    ctx.fillRect(0, 0, W, H);
+    ctx.strokeStyle = `rgba(${CONFIG.lineColor}, 0.9)`;
+    ctx.lineWidth = CONFIG.lineWidth * fxScale;
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+
+    for (let r = 0; r < lines.length; r++) {
+      const pts = lines[r];
+      ctx.beginPath();
+      for (let i = 0; i < pts.length; i++) {
+        const p = pts[i];
+
+        const idleWobble = Math.sin(t * p.freq + p.phase) * CONFIG.idleAmp * fxScale * p.m;
+
+        let targetX = p.bx;
+        let targetY = p.by - p.lift + idleWobble;
+
+        if (mouse.active) {
+          const dx = p.x - mouse.x;
+          const dy = p.y - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const mouseRadius = CONFIG.mouseRadius * fxScale;
+          const mousePush = CONFIG.mousePush * fxScale;
+          if (dist < mouseRadius && dist > 0.001) {
+            const force = (1 - dist / mouseRadius);
+            targetX += (dx / dist) * force * mousePush;
+            targetY += (dy / dist) * force * mousePush;
+          }
+        }
+
+        p.vx += (targetX - p.x) * CONFIG.spring;
+        p.vy += (targetY - p.y) * CONFIG.spring;
+        p.vx *= CONFIG.damping;
+        p.vy *= CONFIG.damping;
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (i === 0) {
+          ctx.moveTo(p.x, p.y);
+        } else {
+          const prev = pts[i - 1];
+          const mx = (prev.x + p.x) / 2;
+          const my = (prev.y + p.y) / 2;
+          ctx.quadraticCurveTo(prev.x, prev.y, mx, my);
+        }
+      }
+      ctx.stroke();
+    }
+
+    requestAnimationFrame(step);
+  }
+
+  function setMouse(clientX, clientY) {
+    mouse.x = clientX;
+    mouse.y = clientY;
+    mouse.active = true;
+  }
+
+  window.addEventListener('mousemove', (e) => setMouse(e.clientX, e.clientY));
+  window.addEventListener('mouseleave', () => { mouse.active = false; });
+  window.addEventListener('touchmove', (e) => {
+    if (e.touches.length) setMouse(e.touches[0].clientX, e.touches[0].clientY);
+  }, { passive: true });
+  window.addEventListener('touchend', () => { mouse.active = false; });
+  window.addEventListener('resize', resize);
+  // На случай, если хост-страница (например Readymag) меняет размер/масштаб блока
+  // со встройкой без событие window resize — ловим это через ResizeObserver.
+  if (window.ResizeObserver) {
+    new ResizeObserver(() => resize()).observe(stage);
+  }
+
+  resize();
+  requestAnimationFrame(step);
+})();
+</script>
+</body>
+</html>
