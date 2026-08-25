@@ -304,7 +304,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
   });
 
   // clipped oil solid
-  const fillPlane = new THREE.Plane(new THREE.Vector3(0, 1, 0), 0);
+  const fillPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), 0);
   const oilMat = new THREE.MeshBasicMaterial({
     vertexColors: true,
     transparent: true,
@@ -420,7 +420,7 @@ function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"f
     }
 
     const fillLevel = bottomY + (topY - bottomY) * (pct / 100);
-    fillPlane.constant = -fillLevel;
+    fillPlane.constant = fillLevel;
     cap.position.y = fillLevel;
     cap.material.opacity = 0.78 + Math.sin(now * 0.003) * 0.06;
 
