@@ -8,7 +8,7 @@
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html, body {
     width: 100%; height: 100%;
-    background: #0b0e11;
+    background: #b5ff00;
     overflow: hidden;
   }
   #stage { position: relative; width: 100vw; height: 100vh; }
@@ -21,7 +21,7 @@
     font: 500 12px/1.4 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     letter-spacing: .12em;
     text-transform: uppercase;
-    color: rgba(232, 220, 196, 0.35);
+    color: rgba(0, 0, 0, 0.4);
     pointer-events: none;
     user-select: none;
   }
@@ -39,8 +39,8 @@
   // Настройки — можно крутить под бренд
   // ---------------------------------------------------------------
   const CONFIG = {
-    bg:              '#0b0e11',   // фон
-    lineColor:       '181, 255, 0',   // RGB строкой, #b5ff00
+    bg:              '#b5ff00',   // фон -- инвертный вариант: брендовый лайм
+    lineColor:       '0, 0, 0',   // чёрные линии на лайм-фоне
     lineWidth:       0.9,          // чуть толще 0.7 — тонкие sub-pixel линии сильнее всего "плывут" между движками
     rows:            96,          // число рядов — чем больше, тем глаже "рельеф"
     colSpacing:      4,           // шаг точек по горизонтали, px
