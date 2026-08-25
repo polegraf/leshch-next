@@ -34069,15 +34069,13 @@ void main() {
     // ниже ватерлинии/палубы (корпус) линии сетки вдвое толще -- визуальная иерархия, как на судостроительных чертежах
     deckYFraction: 0.485,
     // высота ватерлинии/палубы как доля от полной высоты модели (киль..топ мачты); определено анализом реальной геометрии (пик площади плоских треугольников = палуба)
-    meshOpacity: 0.22,
-    // плотная сетка -- тонкая и приглушённая
-    meshOpacityBelowDeck: 0.38,
-    // корпус ниже палубы плотнее -- но умеренно: bloom сам добавляет яркость, а этой версии важно оставаться просвечивающей (x-ray), а не сплошной
-    accentOpacity: 0.55,
-    // акцентные грани поверх сетки -- ярче, читаются как силуэт/конструкция; снижено, т.к. в плотных зонах (рубка) много перекрывающихся линий стакуются в сплошной белый
-    accentOpacityBelowDeck: 0.85,
-    // акцентные грани корпуса ярче/плотнее -- честной 2x-ширины через GL не добиться (браузеры игнорируют lineWidth), поэтому "тяжелее" передаём непрозрачностью
-    bloomStrength: 0.32,
+    meshOpacity: 1,
+    // все линии сплошные, один и тот же лайм без прозрачности/подмешивания
+    meshOpacityBelowDeck: 1,
+    accentOpacity: 1,
+    accentOpacityBelowDeck: 1,
+    bloomStrength: 0,
+    // bloom выключен -- он и был источником "жёлтого"/белёсого свечения в плотных зонах вместо ровного лайма
     bloomRadius: 0.22,
     bloomThreshold: 0.35,
     dragSensitivity: 62e-4,
@@ -34105,8 +34103,7 @@ void main() {
   canvas.addEventListener("webglcontextrestored", () => {
     location.reload();
   }, false);
-  renderer.toneMapping = ACESFilmicToneMapping;
-  renderer.toneMappingExposure = 1;
+  renderer.toneMapping = NoToneMapping;
   var scene = new Scene();
   scene.background = new Color(CONFIG.bg);
   var camera = new PerspectiveCamera(42, 1, 0.1, 5e3);
