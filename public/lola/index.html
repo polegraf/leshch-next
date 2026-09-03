@@ -60,12 +60,15 @@
         </a>
       </sc-if>
       <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
-        <a href="#cart" aria-label="Cart" style="margin-right: auto; position: relative; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(36,71,240,0.1); color: #16213e; flex-shrink: 0" style-hover="background: rgba(36,71,240,0.18)">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L4 3H2"/></svg>
-        </a>
-        <button aria-label="Menu" onClick="{{ toggleMenu }}" style="display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(36,71,240,0.1); color: #16213e; border: none; cursor: pointer; flex-shrink: 0">
+        <button aria-label="Menu" onClick="{{ toggleMenu }}" style="margin-right: auto; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(36,71,240,0.1); color: #16213e; border: none; cursor: pointer; flex-shrink: 0">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
         </button>
+        <button aria-label="Search" style="display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(36,71,240,0.1); color: #16213e; border: none; cursor: pointer; flex-shrink: 0" style-hover="background: rgba(36,71,240,0.18)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </button>
+        <a href="#cart" aria-label="Cart" style="position: relative; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(36,71,240,0.1); color: #16213e; flex-shrink: 0" style-hover="background: rgba(36,71,240,0.18)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L4 3H2"/></svg>
+        </a>
       </sc-if>
     </div>
     <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
@@ -80,18 +83,34 @@
   </header>
 
   <section id="top" style="position: relative; padding: clamp(18px, 3vw, 32px) clamp(10px, 3vw, 28px) clamp(40px, 6vw, 80px)">
-    
-  <div style="position: relative; max-width: 1520px; margin: 0 auto; border-radius: clamp(24px, 3vw, 44px); overflow: hidden; min-height: clamp(420px, 62vh, 660px); display: grid; align-items: center; background-image: url('/lola/img/hero-blue-right.png'); background-size: cover; background-position: {{ heroBgPos }}; animation: fade 1.1s ease both">
-      <div style="max-width: {{ heroTextMaxWidth }}; min-width: 200px; margin: {{ heroTextMargin }}; padding: clamp(16px, 2.8vw, 52px) clamp(16px, 2.8vw, 52px) clamp(16px, 2.8vw, 52px) clamp(16px, 2.8vw, 52px); display: grid; gap: clamp(8px, 1.1vw, 16px); justify-items: {{ colAlign }}; text-align: {{ textAlignVal }}; color: #ffffff">
-        <span style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.4); padding: 8px 15px; border-radius: 999px; white-space: nowrap">● Four natural solutions</span>
-        <h1 style="margin: 0; font-family: 'Bebas Neue', Oswald, sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(34px, 4.4vw, 72px); line-height: 0.94; letter-spacing: 0.01em; color: #ffffff; text-wrap: balance">Tuned to your nervous system</h1>
-        <p style="margin: 0; max-width: 40ch; font-size: clamp(14px, 1.25vw, 18px); line-height: 1.5; color: rgba(255,255,255,0.84); text-wrap: pretty">Hemp-derived CBD paired with targeted botanicals — sleep, focus, relief, and desire in four capsules built on the same base.</p>
-        <div style="display: flex; flex-wrap: wrap; justify-content: {{ colAlign }}; gap: 8px; margin-top: 4px">
-          <a href="#state" style="flex: 0 1 auto; min-width: 150px; max-width: 260px; text-align: center; font-family: Oswald, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; background: #ffffff; color: #10162e; padding: 15px 32px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(255,255,255,0.86)">Find your state</a>
-          <a href="#shop" style="flex: 0 1 auto; min-width: 150px; max-width: 260px; text-align: center; font-family: Oswald, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.45); backdrop-filter: blur(10px); color: #ffffff; padding: 15px 32px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(255,255,255,0.24)">Shop the line</a>
+    <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+      <div style="position: relative; max-width: 1520px; margin: 0 auto; border-radius: clamp(24px, 3vw, 44px); overflow: hidden; min-height: clamp(420px, 62vh, 660px); display: grid; align-items: center; background-image: url('/lola/img/hero-blue-right.png'); background-size: cover; background-position: 100% 55%; animation: fade 1.1s ease both">
+        <div style="max-width: min(52%, 62ch); min-width: 200px; padding: clamp(16px, 2.8vw, 52px) clamp(16px, 2.8vw, 52px) clamp(16px, 2.8vw, 52px) clamp(16px, 2.8vw, 52px); display: grid; gap: clamp(8px, 1.1vw, 16px); justify-items: start; text-align: left; color: #ffffff">
+          <span style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.4); padding: 8px 15px; border-radius: 999px; white-space: nowrap">● Four natural solutions</span>
+          <h1 style="margin: 0; font-family: 'Bebas Neue', Oswald, sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(34px, 4.4vw, 72px); line-height: 0.94; letter-spacing: 0.01em; color: #ffffff; text-wrap: balance">Tuned to your nervous system</h1>
+          <p style="margin: 0; max-width: 40ch; font-size: clamp(14px, 1.25vw, 18px); line-height: 1.5; color: rgba(255,255,255,0.84); text-wrap: pretty">Hemp-derived CBD paired with targeted botanicals — sleep, focus, relief, and desire in four capsules built on the same base.</p>
+          <div style="display: flex; flex-wrap: wrap; justify-content: start; gap: 8px; margin-top: 4px">
+            <a href="#state" style="flex: 0 1 auto; min-width: 150px; max-width: 260px; text-align: center; font-family: Oswald, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; background: #ffffff; color: #10162e; padding: 15px 32px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(255,255,255,0.86)">Find your state</a>
+            <a href="#shop" style="flex: 0 1 auto; min-width: 150px; max-width: 260px; text-align: center; font-family: Oswald, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.45); backdrop-filter: blur(10px); color: #ffffff; padding: 15px 32px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(255,255,255,0.24)">Shop the line</a>
+          </div>
         </div>
       </div>
-    </div></section>
+    </sc-if>
+    <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width: 1520px; margin: 0 auto; border-radius: clamp(24px, 3vw, 44px); overflow: hidden; animation: fade 1.1s ease both">
+        <div role="img" aria-label="Lola bottles: Sleep, Neuro Bloom, Love, Relief" style="width: 100%; aspect-ratio: 4 / 3; background-color: #15253a; background-image: url('/lola/img/hero-blue-right.png'); background-size: contain; background-position: center; background-repeat: no-repeat"></div>
+        <div style="background: #15253a; padding: 28px 20px; display: grid; gap: 14px; justify-items: center; text-align: center; color: #ffffff">
+          <span style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.4); padding: 8px 15px; border-radius: 999px; white-space: nowrap">● Four natural solutions</span>
+          <h1 style="margin: 0; font-family: 'Bebas Neue', Oswald, sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(34px, 9vw, 52px); line-height: 0.98; letter-spacing: 0.01em; color: #ffffff; text-wrap: balance">Tuned to your nervous system</h1>
+          <p style="margin: 0; max-width: 40ch; font-size: 15px; line-height: 1.5; color: rgba(255,255,255,0.84); text-wrap: pretty">Hemp-derived CBD paired with targeted botanicals — sleep, focus, relief, and desire in four capsules built on the same base.</p>
+          <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin-top: 4px; width: 100%">
+            <a href="#state" style="flex: 1 1 150px; text-align: center; font-family: Oswald, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; background: #ffffff; color: #10162e; padding: 15px 20px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(255,255,255,0.86)">Find your state</a>
+            <a href="#shop" style="flex: 1 1 150px; text-align: center; font-family: Oswald, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.45); backdrop-filter: blur(10px); color: #ffffff; padding: 15px 20px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(255,255,255,0.24)">Shop the line</a>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+  </section>
 
   <section id="concept" style="padding: clamp(30px, 5vw, 70px) clamp(10px, 3vw, 28px)">
     <div class="rv" style="max-width: 1340px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: clamp(24px, 4vw, 64px); align-items: center">
@@ -119,10 +138,10 @@
             <div role="img" aria-label="{{ p.alt }}" style="height: clamp(200px, 22vw, 260px); background-image: url({{ p.img }}); background-size: contain; background-position: center; background-repeat: no-repeat"></div>
             <div style="display: grid; gap: 10px">
               <h3 style="margin: 0; font-family: Oswald, sans-serif; font-weight: 600; text-transform: uppercase; font-size: 27px; line-height: 0.94">{{ p.name }}</h3>
-              <p style="margin: 0; font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(16,22,46,0.55)">{{ p.claim }}</p>
-              <p style="margin: 0; font-size: 14px; line-height: 1.5; color: rgba(16,22,46,0.7)">{{ p.actives }}</p>
+              <p style="margin: 0; font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(16,22,46,0.55); line-height: {{ cardLineHeight }}">{{ p.claim }}</p>
+              <p style="margin: 0; font-size: 14px; line-height: {{ cardLineHeight }}; color: rgba(16,22,46,0.7)">{{ p.actives }}</p>
               <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-top: 4px">
-                <span style="font-size: 13px; color: rgba(16,22,46,0.6)"><strong style="font-family: Oswald, sans-serif; font-size: 17px; font-weight: 600; color: #10162e">$54</strong>/mo</span>
+                <span style="font-size: 13px; color: rgba(16,22,46,0.6)"><strong style="font-family: Oswald, sans-serif; font-size: {{ cardPriceSize }}; font-weight: 600; color: #10162e">$54</strong>/mo</span>
                 <button style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; border: none; cursor: pointer; border: 1px solid rgba(255,255,255,0.55); background: linear-gradient(135deg, #192f44 0%, #355274 55%, #5a83aa 100%); color: #f4f6fb; padding: 13px 30px; border-radius: 999px" style-hover="background: linear-gradient(135deg, #264261 0%, #3d5e81 55%, #6b95bd 100%)">Shop</button>
               </div>
             </div>
@@ -170,14 +189,16 @@
               <span style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; background: linear-gradient(160deg, rgba(36,71,240,0.1), rgba(36,71,240,0.04)); padding: 9px 14px; border-radius: 999px; color: rgba(16,22,46,0.72)">{{ c }}</span>
             </sc-for>
           </div>
-          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; margin-top: 4px">
-            <sc-for list="{{ facts }}" as="f" hint-placeholder-count="3">
-              <div style="border-radius: 18px; padding: 14px 16px; background: linear-gradient(160deg, rgba(255,255,255,0.85), rgba(226,232,255,0.6)); border: 1px solid rgba(255,255,255,0.9); display: grid; gap: 4px">
-                <span style="font-family: Oswald, sans-serif; font-size: 21px; font-weight: 600">{{ f.value }}</span>
-                <span style="font-family: Oswald, sans-serif; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(16,22,46,0.5)">{{ f.label }}</span>
-              </div>
-            </sc-for>
-          </div>
+          <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+            <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 4px; width: 100%">
+              <sc-for list="{{ facts }}" as="f" hint-placeholder-count="3">
+                <div style="border-radius: 18px; padding: 14px 16px; background: linear-gradient(160deg, rgba(255,255,255,0.85), rgba(226,232,255,0.6)); border: 1px solid rgba(255,255,255,0.9); display: grid; gap: 4px">
+                  <span style="font-family: Oswald, sans-serif; font-size: 21px; font-weight: 600">{{ f.value }}</span>
+                  <span style="font-family: Oswald, sans-serif; font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(16,22,46,0.5)">{{ f.label }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
         </div>
       </div>
     </div>
@@ -385,6 +406,8 @@ class Component extends DCLogic {
       heroTextMaxWidth: this.state.mobile ? '100%' : 'min(52%, 62ch)',
       heroTextMargin: this.state.mobile ? '0 auto' : '0',
       bundleImgOrder: this.state.mobile ? -1 : 1,
+      cardLineHeight: this.state.mobile ? 0.75 : 1.5,
+      cardPriceSize: this.state.mobile ? '27px' : '17px',
       balmFeatures: ['1oz & 3oz Sizes', 'Natural Ingredients', 'Sustainably Made', 'Fast Absorption', 'Deep Relief', 'Multipurpose Use'],
       concept: [
         { title: 'Natural first', body: 'Botanicals and cannabinoids, not stimulants or sedatives.' },
