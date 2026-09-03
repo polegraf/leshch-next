@@ -44,30 +44,49 @@
 
   <header style="position: sticky; top: 0; z-index: 60; padding: 12px clamp(10px, 3vw, 28px)">
     <div style="max-width: 1520px; margin: 0 auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end; gap: 6px 10px; padding: 16px 22px; border-radius: 16px; background: linear-gradient(160deg, rgba(255,255,255,0.72), rgba(228,234,255,0.5)); backdrop-filter: blur(18px) saturate(1.3); border: 1px solid rgba(255,255,255,0.7); box-shadow: 0 20px 40px -24px rgba(16,22,46,0.4)">
-      <button aria-label="Search" style="display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: rgba(36,71,240,0.1); color: #16213e; border: none; cursor: pointer; flex-shrink: 0; margin-right: auto" style-hover="background: rgba(36,71,240,0.18)">
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-      </button>
-      <nav style="display: contents; font-family: Oswald, sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(16,22,46,0.8)">
-        <a href="#shop" style="padding: 6px 10px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(36,71,240,0.12)">Shop</a>
-        <a href="#wholesale" style="padding: 6px 10px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(36,71,240,0.12)">Wholesale</a>
-        <a href="#locator" style="padding: 6px 10px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(36,71,240,0.12)">Store locator</a>
-        <a href="#secrets" style="padding: 6px 10px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(36,71,240,0.12)">Secrets of Lola</a>
-      </nav>
-      <a href="#account" aria-label="Sign in" style="font-family: Oswald, sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 10px; border-radius: 999px; color: rgba(16,22,46,0.8); white-space: nowrap" style-hover="background: rgba(36,71,240,0.12)">Sign in</a>
-      <a href="#cart" aria-label="Cart" style="position: relative; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: rgba(36,71,240,0.1); color: #16213e; flex-shrink: 0" style-hover="background: rgba(36,71,240,0.18)">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L4 3H2"/></svg>
-      </a>
+      <sc-if value="{{ desktop }}" hint-placeholder-val="{{ true }}">
+        <button aria-label="Search" style="display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: rgba(36,71,240,0.1); color: #16213e; border: none; cursor: pointer; flex-shrink: 0; margin-right: auto" style-hover="background: rgba(36,71,240,0.18)">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+        </button>
+        <nav style="display: contents; font-family: Oswald, sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(16,22,46,0.8)">
+          <a href="#shop" style="padding: 6px 10px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(36,71,240,0.12)">Shop</a>
+          <a href="#wholesale" style="padding: 6px 10px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(36,71,240,0.12)">Wholesale</a>
+          <a href="#locator" style="padding: 6px 10px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(36,71,240,0.12)">Store locator</a>
+          <a href="#secrets" style="padding: 6px 10px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(36,71,240,0.12)">Secrets of Lola</a>
+        </nav>
+        <a href="#account" aria-label="Sign in" style="font-family: Oswald, sans-serif; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 10px; border-radius: 999px; color: rgba(16,22,46,0.8); white-space: nowrap" style-hover="background: rgba(36,71,240,0.12)">Sign in</a>
+        <a href="#cart" aria-label="Cart" style="position: relative; display: grid; place-items: center; width: 38px; height: 38px; border-radius: 50%; background: rgba(36,71,240,0.1); color: #16213e; flex-shrink: 0" style-hover="background: rgba(36,71,240,0.18)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L4 3H2"/></svg>
+        </a>
+      </sc-if>
+      <sc-if value="{{ mobile }}" hint-placeholder-val="{{ false }}">
+        <a href="#cart" aria-label="Cart" style="margin-right: auto; position: relative; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(36,71,240,0.1); color: #16213e; flex-shrink: 0" style-hover="background: rgba(36,71,240,0.18)">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6h15l-1.5 9h-12z"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/><path d="M6 6L4 3H2"/></svg>
+        </a>
+        <button aria-label="Menu" onClick="{{ toggleMenu }}" style="display: grid; place-items: center; width: 40px; height: 40px; border-radius: 50%; background: rgba(36,71,240,0.1); color: #16213e; border: none; cursor: pointer; flex-shrink: 0">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+        </button>
+      </sc-if>
     </div>
+    <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+      <div style="max-width: 1520px; margin: 8px auto 0; border-radius: 20px; background: linear-gradient(160deg, rgba(255,255,255,0.9), rgba(228,234,255,0.75)); backdrop-filter: blur(18px) saturate(1.3); border: 1px solid rgba(255,255,255,0.7); box-shadow: 0 20px 40px -24px rgba(16,22,46,0.4); padding: 18px; display: grid; gap: 6px; text-align: center; font-family: Oswald, sans-serif; font-size: 14px; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(16,22,46,0.85)">
+        <a href="#shop" onClick="{{ closeMenu }}" style="padding: 12px">Shop</a>
+        <a href="#wholesale" onClick="{{ closeMenu }}" style="padding: 12px">Wholesale</a>
+        <a href="#locator" onClick="{{ closeMenu }}" style="padding: 12px">Store locator</a>
+        <a href="#secrets" onClick="{{ closeMenu }}" style="padding: 12px">Secrets of Lola</a>
+        <a href="#account" onClick="{{ closeMenu }}" style="padding: 12px">Sign in</a>
+      </div>
+    </sc-if>
   </header>
 
   <section id="top" style="position: relative; padding: clamp(18px, 3vw, 32px) clamp(10px, 3vw, 28px) clamp(40px, 6vw, 80px)">
     
-  <div style="position: relative; max-width: 1520px; margin: 0 auto; border-radius: clamp(24px, 3vw, 44px); overflow: hidden; aspect-ratio: 1919 / 830; min-height: clamp(380px, 46vh, 660px); display: grid; align-items: center; background-image: url('/lola/img/hero-blue-right.png'); background-size: cover; background-position: 100% 55%; animation: fade 1.1s ease both">
-      <div style="max-width: min(52%, 62ch); min-width: 200px; padding: clamp(16px, 2.8vw, 52px) clamp(6px, 1vw, 16px) clamp(16px, 2.8vw, 52px) clamp(16px, 2.8vw, 52px); display: grid; gap: clamp(8px, 1.1vw, 16px); justify-items: stretch; color: #ffffff">
-        <span style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.4); padding: 8px 15px; border-radius: 999px; justify-self: start; white-space: nowrap">● Four natural solutions</span>
+  <div style="position: relative; max-width: 1520px; margin: 0 auto; border-radius: clamp(24px, 3vw, 44px); overflow: hidden; min-height: clamp(420px, 62vh, 660px); display: grid; align-items: center; background-image: url('/lola/img/hero-blue-right.png'); background-size: cover; background-position: {{ heroBgPos }}; animation: fade 1.1s ease both">
+      <div style="max-width: {{ heroTextMaxWidth }}; min-width: 200px; margin: {{ heroTextMargin }}; padding: clamp(16px, 2.8vw, 52px) clamp(16px, 2.8vw, 52px) clamp(16px, 2.8vw, 52px) clamp(16px, 2.8vw, 52px); display: grid; gap: clamp(8px, 1.1vw, 16px); justify-items: {{ colAlign }}; text-align: {{ textAlignVal }}; color: #ffffff">
+        <span style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.85); border: 1px solid rgba(255,255,255,0.4); padding: 8px 15px; border-radius: 999px; white-space: nowrap">● Four natural solutions</span>
         <h1 style="margin: 0; font-family: 'Bebas Neue', Oswald, sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(34px, 4.4vw, 72px); line-height: 0.94; letter-spacing: 0.01em; color: #ffffff; text-wrap: balance">Tuned to your nervous system</h1>
         <p style="margin: 0; max-width: 40ch; font-size: clamp(14px, 1.25vw, 18px); line-height: 1.5; color: rgba(255,255,255,0.84); text-wrap: pretty">Hemp-derived CBD paired with targeted botanicals — sleep, focus, relief, and desire in four capsules built on the same base.</p>
-        <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px">
+        <div style="display: flex; flex-wrap: wrap; justify-content: {{ colAlign }}; gap: 8px; margin-top: 4px">
           <a href="#state" style="flex: 0 1 auto; min-width: 150px; max-width: 260px; text-align: center; font-family: Oswald, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; background: #ffffff; color: #10162e; padding: 15px 32px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(255,255,255,0.86)">Find your state</a>
           <a href="#shop" style="flex: 0 1 auto; min-width: 150px; max-width: 260px; text-align: center; font-family: Oswald, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.45); backdrop-filter: blur(10px); color: #ffffff; padding: 15px 32px; border-radius: 999px; white-space: nowrap" style-hover="background: rgba(255,255,255,0.24)">Shop the line</a>
         </div>
@@ -79,7 +98,7 @@
       <div style="position: relative; width: 100%; max-width: 420px; aspect-ratio: 1; justify-self: center; border-radius: 50%; overflow: hidden; background: #060c2c; box-shadow: 0 28px 54px -26px rgba(16,22,46,0.4), inset 0 0 0 1px rgba(255,255,255,0.5)">
         <video src="/lola/img/brain.mp4" autoplay="" loop="" muted="" playsinline="" poster="/lola/img/brain.png" style="width: 100%; height: 100%; object-fit: cover; display: block"></video>
       </div>
-      <div style="display: grid; gap: 16px; justify-items: start">
+      <div style="display: grid; gap: 16px; justify-items: {{ colAlign }}; text-align: {{ textAlignVal }}">
         <span style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(16,22,46,0.5)">● The concept</span>
         <h2 style="margin: 0; font-family: 'Bebas Neue', Oswald, sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(28px, 3.8vw, 52px); line-height: 0.98; letter-spacing: 0.01em; text-wrap: balance">Start with the brain, the body follows</h2>
         <p style="margin: 0; max-width: 46ch; font-size: clamp(15px, 1.4vw, 18px); line-height: 1.6; color: rgba(16,22,46,0.68); text-wrap: pretty">Working naturally with the brain and nervous system is the most effective — and safest — way to improve how you feel, physically and mentally. Sleep, focus, pain and desire are not four separate problems; they are four outputs of the same system. So every formula in the line starts from the same hemp-derived CBD base that steadies that system, then adds the botanicals one state actually needs.</p>
@@ -118,7 +137,7 @@
       <div style="position: relative; width: 100%; max-width: 420px; aspect-ratio: 1; justify-self: center; border-radius: 50%; overflow: hidden; background: #1a1030; box-shadow: 0 28px 54px -26px rgba(16,22,46,0.4), inset 0 0 0 1px rgba(255,255,255,0.5)">
         <video src="/lola/img/lotus.mp4" autoplay="" loop="" muted="" playsinline="" style="width: 100%; height: 100%; object-fit: cover; display: block"></video>
       </div>
-      <div style="display: grid; gap: 16px; justify-items: start">
+      <div style="display: grid; gap: 16px; justify-items: {{ colAlign }}; text-align: {{ textAlignVal }}">
         <span style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(16,22,46,0.5)">● The ingredients</span>
         <h2 style="margin: 0; font-family: 'Bebas Neue', Oswald, sans-serif; font-weight: 400; text-transform: uppercase; font-size: clamp(28px, 3.8vw, 52px); line-height: 0.98; letter-spacing: 0.01em; text-wrap: balance">Lola's natural magic</h2>
         <p style="margin: 0; max-width: 46ch; font-size: clamp(15px, 1.4vw, 18px); line-height: 1.6; color: rgba(16,22,46,0.68); text-wrap: pretty">Every formula is built from rare, studied botanicals — blue lotus, black maca, lion's mane, valerian root — sourced for potency, not novelty. No proprietary blends and no filler actives: each ingredient earns its place at a dose that actually does something, in formulas our team develops and tests in-house.</p>
@@ -141,12 +160,12 @@
         <div role="img" aria-label="{{ active.photoAlt }}" style="position: relative; min-height: clamp(300px, 34vw, 420px); border-radius: 28px; overflow: hidden; background-color: {{ active.color }}; background-image: url({{ active.photo }}); background-size: cover; background-position: center; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.4)">
           <div style="position: absolute; inset: 0; background: {{ active.veil }}; mix-blend-mode: multiply"></div>
         </div>
-        <div style="display: grid; gap: 16px; align-content: start">
+        <div style="display: grid; gap: 16px; justify-items: {{ colAlign }}; text-align: {{ textAlignVal }}">
           <span style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(16,22,46,0.5)">● {{ active.code }}</span>
           <h3 style="margin: 0; font-family: Oswald, sans-serif; font-weight: 600; text-transform: uppercase; font-size: clamp(34px, 5vw, 60px); line-height: 0.88">{{ active.name }}</h3>
           <p style="margin: 0; font-family: Oswald, sans-serif; font-size: clamp(13px, 1.4vw, 16px); letter-spacing: 0.1em; text-transform: uppercase; color: rgba(16,22,46,0.6)">{{ active.support }}</p>
           <p style="margin: 0; font-size: clamp(15px, 1.5vw, 18px); line-height: 1.6; color: rgba(16,22,46,0.75); text-wrap: pretty">{{ active.copy }}</p>
-          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: {{ colAlign }}; gap: 8px">
             <sc-for list="{{ active.chips }}" as="c" hint-placeholder-count="4">
               <span style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; background: linear-gradient(160deg, rgba(36,71,240,0.1), rgba(36,71,240,0.04)); padding: 9px 14px; border-radius: 999px; color: rgba(16,22,46,0.72)">{{ c }}</span>
             </sc-for>
@@ -166,13 +185,13 @@
 
   <section id="bundle" style="padding: clamp(30px, 5vw, 70px) clamp(10px, 3vw, 28px)">
     <div class="rv" style="max-width: 1520px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: clamp(12px, 1.4vw, 20px)">
-      <div style="border-radius: clamp(24px, 3vw, 40px); padding: clamp(26px, 3.4vw, 52px); background: linear-gradient(160deg, #15253a, #395e84 55%, #6b93b8); backdrop-filter: blur(16px) saturate(1.15); color: #f4f6fb; display: grid; gap: 18px; align-content: center">
-        <span style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.3); padding: 8px 14px; border-radius: 999px; justify-self: start">{{ bundleBadge }}</span>
+      <div style="order: 1; border-radius: clamp(24px, 3vw, 40px); padding: clamp(26px, 3.4vw, 52px); background: linear-gradient(160deg, #15253a, #395e84 55%, #6b93b8); backdrop-filter: blur(16px) saturate(1.15); color: #f4f6fb; display: grid; gap: 18px; justify-items: {{ colAlign }}; text-align: {{ textAlignVal }}; align-content: center">
+        <span style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; background: rgba(255,255,255,0.16); border: 1px solid rgba(255,255,255,0.3); padding: 8px 14px; border-radius: 999px">{{ bundleBadge }}</span>
         <h2 style="margin: 0; font-family: Oswald, sans-serif; font-weight: 500; text-transform: uppercase; font-size: clamp(28px, 3.6vw, 46px); line-height: 0.96; text-wrap: balance">Day and night, on one shelf.</h2>
         <p style="margin: 0; max-width: 44ch; font-size: clamp(15px, 1.4vw, 18px); line-height: 1.6; color: rgba(244,246,251,0.82)">Neuro Bloom for the working hours, Sleep for the wind-down. The pair that most people start with — and the easiest way to feel the base formula work.</p>
-        <a href="#shop" style="justify-self: start; font-family: Oswald, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; background: #f4f6fb; color: #10162e; padding: 17px 40px; border-radius: 999px" style-hover="background: #ffffff">{{ ctaLabel }}</a>
+        <a href="#shop" style="justify-self: {{ colAlign }}; font-family: Oswald, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; background: #f4f6fb; color: #10162e; padding: 17px 40px; border-radius: 999px" style-hover="background: #ffffff">{{ ctaLabel }}</a>
       </div>
-      <div role="img" aria-label="The four Lola cartons: Sleep, Neuro Bloom, Love, Relief" style="border-radius: clamp(24px, 3vw, 40px); overflow: hidden; min-height: clamp(300px, 30vw, 460px); background-color: #0b1d33; background-image: url('/lola/img/boxes-2.png'); background-size: cover; background-position: center"></div>
+      <div role="img" aria-label="The four Lola cartons: Sleep, Neuro Bloom, Love, Relief" style="order: {{ bundleImgOrder }}; border-radius: clamp(24px, 3vw, 40px); overflow: hidden; min-height: clamp(300px, 30vw, 460px); background-color: #0b1d33; background-image: url('/lola/img/boxes-2.png'); background-size: cover; background-position: center"></div>
     </div>
   </section>
 
@@ -210,17 +229,17 @@
       </div>
       <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: clamp(20px, 3vw, 46px); align-items: center">
         <div role="img" aria-label="Lola Balm — 1oz relief topical balm tube" style="min-height: clamp(300px, 34vw, 420px); border-radius: 28px; overflow: hidden; background-image: url('/lola/img/balm-2.png'); background-size: cover; background-position: center"></div>
-        <div style="display: grid; gap: 16px; align-content: start">
+        <div style="display: grid; gap: 16px; justify-items: {{ colAlign }}; text-align: {{ textAlignVal }}">
           <span style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(16,22,46,0.5)">● RL–BALM</span>
           <h3 style="margin: 0; font-family: Oswald, sans-serif; font-weight: 600; text-transform: uppercase; font-size: clamp(34px, 5vw, 60px); line-height: 0.88">Lola Balm</h3>
           <p style="margin: 0; font-family: Oswald, sans-serif; font-size: clamp(13px, 1.4vw, 16px); letter-spacing: 0.1em; text-transform: uppercase; color: rgba(16,22,46,0.6)">Targeted topical relief</p>
           <p style="margin: 0; font-size: clamp(15px, 1.5vw, 18px); line-height: 1.6; color: rgba(16,22,46,0.75); text-wrap: pretty">A powerful blend of beeswax, jojoba oil and shea butter infused with 360 mg CBD per jar. It penetrates deep to ease sore muscles and everyday aches while nourishing the skin.</p>
-          <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <div style="display: flex; flex-wrap: wrap; justify-content: {{ colAlign }}; gap: 8px">
             <sc-for list="{{ balmFeatures }}" as="bf" hint-placeholder-count="6">
               <span style="font-family: Oswald, sans-serif; font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; background: rgba(38,90,75,0.1); padding: 9px 14px; border-radius: 999px; color: rgba(16,22,46,0.72)">{{ bf }}</span>
             </sc-for>
           </div>
-          <a href="#shop" style="justify-self: start; margin-top: 4px; font-family: Oswald, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.55); background: linear-gradient(135deg, #1e3a2d 0%, #265a4b 55%, #3f8168 100%); color: #f4f6fb; padding: 15px 32px; border-radius: 999px" style-hover="filter: brightness(1.12)">Shop the balm</a>
+          <a href="#shop" style="justify-self: {{ colAlign }}; margin-top: 4px; font-family: Oswald, sans-serif; font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; border: 1px solid rgba(255,255,255,0.55); background: linear-gradient(135deg, #1e3a2d 0%, #265a4b 55%, #3f8168 100%); color: #f4f6fb; padding: 15px 32px; border-radius: 999px" style-hover="filter: brightness(1.12)">Shop the balm</a>
         </div>
       </div>
     </div>
@@ -301,13 +320,16 @@ const DATA = [
 ];
 
 class Component extends DCLogic {
-  state = { active: 'love', cols: 4 };
+  state = { active: 'love', cols: 4, mobile: false, menuOpen: false };
 
   updateCols = () => {
     const w = window.innerWidth;
     const cols = w >= 1180 ? 4 : w >= 640 ? 2 : 1;
-    if (cols !== this.state.cols) this.setState({ cols });
+    const mobile = w < 720;
+    if (cols !== this.state.cols || mobile !== this.state.mobile) this.setState({ cols, mobile });
   };
+
+  toggleMenu = () => this.setState(s => ({ menuOpen: !s.menuOpen }));
 
   componentDidMount() {
     this.updateCols();
@@ -352,6 +374,17 @@ class Component extends DCLogic {
       bundleBadge: this.props.bundleBadge ?? 'Bundle + save 20%',
       showMarquee: this.props.showMarquee ?? true,
       shopCols: 'repeat(' + this.state.cols + ', 1fr)',
+      mobile: this.state.mobile,
+      desktop: !this.state.mobile,
+      menuOpen: this.state.menuOpen,
+      toggleMenu: this.toggleMenu,
+      closeMenu: () => this.setState({ menuOpen: false }),
+      colAlign: this.state.mobile ? 'center' : 'start',
+      textAlignVal: this.state.mobile ? 'center' : 'left',
+      heroBgPos: this.state.mobile ? '72% 45%' : '100% 55%',
+      heroTextMaxWidth: this.state.mobile ? '100%' : 'min(52%, 62ch)',
+      heroTextMargin: this.state.mobile ? '0 auto' : '0',
+      bundleImgOrder: this.state.mobile ? -1 : 1,
       balmFeatures: ['1oz & 3oz Sizes', 'Natural Ingredients', 'Sustainably Made', 'Fast Absorption', 'Deep Relief', 'Multipurpose Use'],
       concept: [
         { title: 'Natural first', body: 'Botanicals and cannabinoids, not stimulants or sedatives.' },
