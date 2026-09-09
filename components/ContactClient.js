@@ -16,12 +16,24 @@ function useIsMobile() {
   return mobile;
 }
 
+function useDealContext() {
+  const [isDeal, setIsDeal] = useState(false);
+  useEffect(() => {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      setIsDeal(params.get('ctx') === 'brand');
+    } catch {}
+  }, []);
+  return isDeal;
+}
+
 export default function ContactClient({ seo }) {
   const [form, setForm] = useState({ name: '', email: '', message: '' });
   const [company, setCompany] = useState(''); // honeypot
   const [state, setState] = useState('idle'); // idle | sending | sent | error
   const [err, setErr] = useState('');
   const isMobile = useIsMobile();
+  const isDeal = useDealContext();
 
   const handleSend = async () => {
     if (state === 'sending') return;
@@ -39,7 +51,7 @@ export default function ContactClient({ seo }) {
           email: form.email,
           message: form.message,
           company, // honeypot
-          source: 'contact',
+          source: isDeal ? 'brand-for-sale' : 'contact',
         }),
       });
       if (!res.ok) throw new Error('failed');
@@ -55,7 +67,7 @@ export default function ContactClient({ seo }) {
     <div style={{ minHeight: '100vh', background: '#000', color: '#fff', ...HN }}>
       <Nav seo={seo} onAdminClick={() => {}} isMobile={isMobile} />
       <div style={{ maxWidth: 860, margin: '0 auto', padding: isMobile ? '64px 20px 100px' : '112px 40px 160px' }}>
-        <h1 style={{ fontSize: isMobile ? 'clamp(48px,11vw,72px)' : 'clamp(64px,8vw,112px)', fontWeight: 700, letterSpacing: '-.04em', lineHeight: .92, color: '#fff', marginBottom: isMobile ? 56 : 80 }}>Let&apos;s work<br />together.</h1>
+        <h1 style={{ fontSize: isMobile ? 'clamp(48px,11vw,72px)' : 'clamp(64px,8vw,112px)', fontWeight: 700, letterSpacing: '-.04em', lineHeight: .92, color: '#fff', marginBottom: isMobile ? 56 : 80 }}>{isDeal ? <>Let&apos;s discuss<br />the deal.</> : <>Let&apos;s work<br />together.</>}</h1>
         {state === 'sent' ? (
           <div style={{ padding: '40px 0' }}>
             <div style={{ fontSize: 24, fontWeight: 700, color: '#fff', marginBottom: 10 }}>Message sent.</div>
