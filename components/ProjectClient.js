@@ -286,12 +286,12 @@ function ProjectContent({ project, seo }) {
               ) : project.buyUrl ? (
                 <a href={project.buyUrl} target="_blank" rel="nofollow sponsored noopener noreferrer" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: 'pointer', textDecoration: 'none', ...HN }}>{buyLabel}</a>
               ) : (
-                <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: 'pointer', textDecoration: 'none', ...HN }}>Inquire →</Link>
+                <Link href={project.type === 'brand-for-sale' ? '/contact?ctx=brand' : '/contact'} style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: 'pointer', textDecoration: 'none', ...HN }}>Inquire →</Link>
               )
             ) : (
               <>
                 <div style={{ fontSize: isMobile ? 'clamp(30px,8vw,46px)' : 'clamp(44px,5vw,76px)', fontWeight: 700, letterSpacing: '-.035em', lineHeight: 1, color: '#fff', textAlign: 'center', marginBottom: isMobile ? 18 : 28 }}>Have a project in mind?</div>
-                <Link href="/contact?ctx=brand" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: 'pointer', textDecoration: 'none', ...HN }}>Let&apos;s discuss →</Link>
+                <Link href="/contact" style={{ display: 'inline-flex', alignItems: 'center', gap: 10, padding: '15px 32px', background: '#fff', color: '#000', border: 'none', fontSize: 13, fontWeight: 700, letterSpacing: '.07em', textTransform: 'uppercase', cursor: 'pointer', textDecoration: 'none', ...HN }}>Let&apos;s discuss →</Link>
               </>
             )}
           </div>
