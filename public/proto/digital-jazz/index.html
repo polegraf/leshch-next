@@ -161,6 +161,9 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 .fallback-mark .d{font-size:39px;font-weight:500;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
 .fallback-mark .m{font-size:15px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);margin-top:4px}
 
+.deadline{font-size:18.75px;line-height:1.35;font-weight:500;color:var(--ink)}
+.deadline.soft{font-weight:400;color:var(--muted)}
+
 .chip{
   display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:100px;
   border:1px solid var(--line);font-size:17.25px;color:var(--ink-2);white-space:nowrap;
@@ -328,7 +331,7 @@ img{max-width:100%}
           <button type="button" class="row-item" data-go="p2">
             <div class="grow">
               <div class="h2">Ночь длинных треков</div>
-              <p class="cap">26 сен · Москва · Завод №5</p>
+              <p class="cap">26 сентября · Москва · Завод №5</p>
               <div class="fillbar"><i style="width:42.8%"></i></div>
               <p class="cap num" style="margin-top:6px">214 из 500 · до безубытка 92</p>
             </div>
@@ -338,8 +341,8 @@ img{max-width:100%}
           <button type="button" class="row-item" data-go="p2">
             <div class="grow">
               <div class="h2">Открытый джем</div>
-              <p class="cap">3 окт · Москва · Мосты</p>
-              <div class="chips" style="margin-top:8px"><span class="chip">Продажи не открыты</span></div>
+              <p class="cap">3 октября · Москва · Мосты</p>
+              <p class="cap" style="margin-top:6px">Продажи не открыты</p>
             </div>
             <span class="chev">›</span>
           </button>
@@ -347,8 +350,8 @@ img{max-width:100%}
           <button type="button" class="row-item" data-go="p2">
             <div class="grow">
               <div class="h2">Ангар 12 · Лето</div>
-              <p class="cap">16 авг · прошло</p>
-              <div class="chips" style="margin-top:8px"><span class="chip">Отчёт не сведён</span></div>
+              <p class="cap">16 августа · прошло</p>
+              <p class="cap" style="margin-top:6px">Отчёт не сведён</p>
             </div>
             <span class="chev">›</span>
           </button>
@@ -431,10 +434,10 @@ img{max-width:100%}
         <div class="sec">
           <span class="lab">Ближайшее</span>
           <div>
-            <div class="time"><span class="t num">12 сен</span><span class="grow"><span class="body">Отправить райдер площадке</span></span></div>
-            <div class="time"><span class="t num">19 сен</span><span class="grow"><span class="body">Анонс лайн-апа, промо артистам</span></span></div>
-            <div class="time"><span class="t num">25 сен</span><span class="grow"><span class="body">Закрыть гостевой список</span></span></div>
-            <div class="time"><span class="t num">26 сен</span><span class="grow"><span class="body">18:00 саундчек · 22:00 двери</span></span></div>
+            <div class="time"><span class="t num">12.09</span><span class="grow"><span class="body">Отправить райдер площадке</span></span></div>
+            <div class="time"><span class="t num">19.09</span><span class="grow"><span class="body">Анонс лайн-апа, промо артистам</span></span></div>
+            <div class="time"><span class="t num">25.09</span><span class="grow"><span class="body">Закрыть гостевой список</span></span></div>
+            <div class="time"><span class="t num">26.09</span><span class="grow"><span class="body">18:00 саундчек · 22:00 двери</span></span></div>
           </div>
         </div>
 
@@ -490,7 +493,7 @@ img{max-width:100%}
             <span class="grow">
               <span class="h2" style="display:block">Ночь длинных треков</span>
               <span class="cap" style="display:block">Кира Верёвкина · ЛЕС · Аня Кострова</span>
-              <span class="cap" style="display:block">пт 26 сен, 22:00 · Завод №5 · от 800 ₽</span>
+              <span class="cap" style="display:block">26 сентября, 22:00 · Завод №5 · от 800 ₽</span>
             </span>
           </button>
 
@@ -504,7 +507,7 @@ img{max-width:100%}
             <span class="grow">
               <span class="h2" style="display:block">Открытый джем</span>
               <span class="cap" style="display:block">Сборный состав · открытый микрофон</span>
-              <span class="cap" style="display:block">сб 3 окт, 20:00 · Мосты · вход свободный</span>
+              <span class="cap" style="display:block">3 октября, 20:00 · Мосты · вход свободный</span>
             </span>
           </button>
         </div>
@@ -583,9 +586,9 @@ img{max-width:100%}
               <span class="thumb"></span>
               <span class="grow">
                 <span class="h2" style="display:block">Ночь длинных треков</span>
-                <span class="cap" style="display:block">26 сен · Завод №5 · выход 02:30</span>
+                <span class="cap" style="display:block">26 сентября · Завод №5 · выход 02:30</span>
                 <span class="h2 num" style="display:block;margin-top:5px">45 000 ₽</span>
-                <span class="chips" style="margin-top:7px"><span class="chip solid">Ответить до 12 сен</span></span>
+                <span class="deadline" style="display:block;margin-top:7px">Ответить до 12 сентября</span>
               </span>
               <span class="chev">›</span>
             </button>
@@ -593,9 +596,9 @@ img{max-width:100%}
               <span class="thumb"></span>
               <span class="grow">
                 <span class="h2" style="display:block">Ангар 12 · Осень</span>
-                <span class="cap" style="display:block">18 окт · Ангар 12 · выход 01:00</span>
+                <span class="cap" style="display:block">18 октября · Ангар 12 · выход 01:00</span>
                 <span class="h2 num" style="display:block;margin-top:5px">60 000 ₽</span>
-                <span class="chips" style="margin-top:7px"><span class="chip">Ответить до 30 сен</span></span>
+                <span class="deadline soft" style="display:block;margin-top:7px">Ответить до 30 сентября</span>
               </span>
               <span class="chev">›</span>
             </button>
@@ -611,8 +614,8 @@ img{max-width:100%}
               <span class="thumb"></span>
               <span class="grow">
                 <span class="h2" style="display:block">Открытый джем</span>
-                <span class="cap" style="display:block">3 окт · Мосты · выход 21:00</span>
-                <span class="chips" style="margin-top:7px"><span class="chip">Райдер принят</span><span class="chip">Трансфер есть</span></span>
+                <span class="cap" style="display:block">3 октября · Мосты · выход 21:00</span>
+                <span class="cap" style="display:block;margin-top:7px">Райдер принят · трансфер есть</span>
               </span>
             </div>
           </div>
