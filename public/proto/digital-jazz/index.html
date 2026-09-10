@@ -24,7 +24,9 @@
   --scaffold-line:#C8CDD4;
   --on-ink:#FFFFFF;
 
-  --app:Futura,"Futura PT",Jost,"Century Gothic",-apple-system,system-ui,sans-serif;
+  /* Futura и Century Gothic убраны намеренно: в них нет кириллицы,
+     и строка разваливалась на два шрифта — цифры одним, буквы другим */
+  --app:Jost,system-ui,-apple-system,"Segoe UI",sans-serif;
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
 
   --phone-h:clamp(680px,86vh,1180px);
