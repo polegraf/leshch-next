@@ -132,7 +132,8 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 .nav button[aria-current="page"]{color:var(--ink)}
 .glyph{width:24px;height:24px;border:1.5px solid currentColor;border-radius:3px}
 .glyph.round{border-radius:50%}
-.glyph.bar{border-radius:1px;height:18px;border-width:1.5px;position:relative}
+/* рисунок ниже остальных — добираем поля, чтобы бокс остался 24px и подписи стояли на одной линии */
+.glyph.bar{border-radius:1px;height:18px;margin-block:3px;border-width:1.5px;position:relative}
 .glyph.bar::after{content:"";position:absolute;inset:3px 3px auto 3px;height:1.5px;background:currentColor}
 
 /* ---------- primitives ---------- */
