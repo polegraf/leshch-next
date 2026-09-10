@@ -254,6 +254,55 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 
 /* ---------- на реальном телефоне рамка не нужна ---------- */
 @media (max-width:700px){
+  body{font-size:14.5px}
+  .scaffold{font-size:10px}
+  .roles button{font-size:10.5px}
+  .note{font-size:11px}
+  .status{font-size:10px}
+  .display{font-size:31px}
+  .h1{font-size:22px}
+  .h2{font-size:16.5px}
+  .body{font-size:14.5px}
+  .cap{font-size:12.5px}
+  .lab{font-size:10px}
+  .back{font-size:19px}
+  .nav button{font-size:10px}
+  .chev{font-size:15px}
+  .fallback-mark .d{font-size:26px}
+  .fallback-mark .m{font-size:10px}
+  .chip{font-size:11.5px}
+  .btn{font-size:14.5px}
+  .field{font-size:14px}
+  .tick span{font-size:10px}
+  .fig .v{font-size:19px}
+  .time .t{font-size:13px}
+  .brandmark{font-size:19px}
+  .skip{font-size:13px}
+  .input .k{font-size:10px}
+  .input .v{font-size:15.5px}
+  .compare .t{font-size:10.5px}
+  .stepper{font-size:10.5px}
+  .reset{font-size:10.5px}
+
+  /* фиксированные размеры тоже возвращаются к 1x */
+  .brandmark{width:44px;height:44px}
+  .thumb{width:52px;height:52px}
+  .glyph{width:17px;height:17px}
+  .glyph.bar{height:13px}
+  .back{width:22px}
+  .time .t{flex:0 0 46px}
+  .meter{height:8px}
+  .dots i{width:26px;height:5px}
+  .fillbar{height:3px}
+  .stepper .pos{min-width:44px}
+
+  /* леса не должны распирать страницу шире экрана */
+  html,body{overflow-x:hidden}
+  .wrap{width:100%}
+  .rail-top{flex-wrap:wrap;gap:6px 10px}
+  .roles{flex-wrap:wrap}
+  .stepper{gap:8px}
+
   body{
     padding-inline:0;padding-block:8px 0;
     height:100dvh;display:flex;flex-direction:column;
