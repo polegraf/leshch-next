@@ -27,7 +27,7 @@
   --app:Futura,"Futura PT",Jost,"Century Gothic",-apple-system,system-ui,sans-serif;
   --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
 
-  --phone-h:clamp(540px,74vh,760px);
+  --phone-h:clamp(680px,86vh,1180px);
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
@@ -68,7 +68,7 @@ body{
   background:var(--ground);
   color:var(--ink);
   font-family:var(--app);
-  font-size:14.5px;
+  font-size:21.75px;
   line-height:1.45;
   -webkit-font-smoothing:antialiased;
 }
@@ -77,19 +77,19 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 
 /* ---------- prototype scaffolding (mono) ---------- */
-.wrap{max-width:430px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
-.scaffold{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--scaffold)}
+.wrap{max-width:620px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.scaffold{font-family:var(--mono);font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--scaffold)}
 .rail{display:flex;flex-direction:column;gap:8px}
 .rail-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .roles{display:flex;gap:0;border:1px dashed var(--scaffold-line);border-radius:3px;overflow:hidden}
 .roles button{
-  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  font-family:var(--mono);font-size:15.75px;letter-spacing:.08em;text-transform:uppercase;
   padding:6px 10px;color:var(--scaffold);border-right:1px dashed var(--scaffold-line);
 }
 .roles button:last-child{border-right:none}
 .roles button[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
 .note{
-  font-family:var(--mono);font-size:11px;line-height:1.55;color:var(--scaffold);
+  font-family:var(--mono);font-size:16.5px;line-height:1.55;color:var(--scaffold);
   border-left:1px dashed var(--scaffold-line);padding-left:10px;margin-top:2px;
 }
 
@@ -100,23 +100,23 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 }
 .status{
   flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;
-  padding:8px 16px 0;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.04em;
+  padding:8px 16px 0;font-family:var(--mono);font-size:15px;color:var(--muted);letter-spacing:.04em;
 }
 .view{flex:1 1 auto;overflow-y:auto;overscroll-behavior:contain}
 .pad{padding:14px 16px 22px;display:flex;flex-direction:column;gap:18px}
 
 /* ---------- type scale ---------- */
-.display{font-size:31px;line-height:1;font-weight:500;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
-.h1{font-size:22px;line-height:1.12;font-weight:500;letter-spacing:-.015em;text-wrap:balance;margin:0}
-.h2{font-size:16.5px;line-height:1.2;font-weight:500;letter-spacing:-.008em;margin:0}
-.body{font-size:14.5px;line-height:1.45;color:var(--ink-2);margin:0}
-.cap{font-size:12.5px;line-height:1.35;color:var(--muted);margin:0}
-.lab{font-size:10px;font-weight:500;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
+.display{font-size:46.5px;line-height:1;font-weight:500;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.h1{font-size:33px;line-height:1.12;font-weight:500;letter-spacing:-.015em;text-wrap:balance;margin:0}
+.h2{font-size:24.75px;line-height:1.2;font-weight:500;letter-spacing:-.008em;margin:0}
+.body{font-size:21.75px;line-height:1.45;color:var(--ink-2);margin:0}
+.cap{font-size:18.75px;line-height:1.35;color:var(--muted);margin:0}
+.lab{font-size:15px;font-weight:500;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
 .num{font-variant-numeric:tabular-nums}
 
 /* ---------- app chrome ---------- */
 .topbar{display:flex;align-items:center;gap:12px;padding:10px 16px 12px;border-bottom:1px solid var(--line-soft);flex:0 0 auto}
-.back{font-size:19px;line-height:1;width:22px;text-align:left;color:var(--ink-2)}
+.back{font-size:28.5px;line-height:1;width:30px;text-align:left;color:var(--ink-2)}
 .topbar .h2{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 .nav{
@@ -125,12 +125,12 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 }
 .nav button{
   padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:5px;
-  font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;
+  font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;
 }
 .nav button[aria-current="page"]{color:var(--ink)}
-.glyph{width:17px;height:17px;border:1.5px solid currentColor;border-radius:3px}
+.glyph{width:24px;height:24px;border:1.5px solid currentColor;border-radius:3px}
 .glyph.round{border-radius:50%}
-.glyph.bar{border-radius:1px;height:13px;border-width:1.5px;position:relative}
+.glyph.bar{border-radius:1px;height:18px;border-width:1.5px;position:relative}
 .glyph.bar::after{content:"";position:absolute;inset:3px 3px auto 3px;height:1.5px;background:currentColor}
 
 /* ---------- primitives ---------- */
@@ -144,9 +144,9 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 .row-item:first-child{padding-top:2px}
 .row-item:last-child{border-bottom:none}
 .grow{flex:1;min-width:0}
-.chev{color:var(--muted);font-size:15px;line-height:1.3;flex:0 0 auto}
+.chev{color:var(--muted);font-size:22.5px;line-height:1.3;flex:0 0 auto}
 
-.thumb{flex:0 0 auto;width:52px;height:52px;border:1px solid var(--line);border-radius:4px;background:var(--fill-2)}
+.thumb{flex:0 0 auto;width:72px;height:72px;border:1px solid var(--line);border-radius:4px;background:var(--fill-2)}
 .cover{
   width:100%;aspect-ratio:16/9;max-width:100%;border:1px solid var(--line);border-radius:5px;
   background:var(--fill-2);display:flex;align-items:flex-end;padding:9px;
@@ -156,50 +156,50 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
   align-items:center;justify-content:center;
 }
 .fallback-mark{text-align:center}
-.fallback-mark .d{font-size:26px;font-weight:500;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
-.fallback-mark .m{font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.fallback-mark .d{font-size:39px;font-weight:500;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
+.fallback-mark .m{font-size:15px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);margin-top:4px}
 
 .chip{
   display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:100px;
-  border:1px solid var(--line);font-size:11.5px;color:var(--ink-2);white-space:nowrap;
+  border:1px solid var(--line);font-size:17.25px;color:var(--ink-2);white-space:nowrap;
 }
 .chip.solid{background:var(--ink);color:var(--on-ink);border-color:var(--ink);font-weight:500}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 
 .btn{
   display:block;width:100%;text-align:center;padding:13px 16px;border-radius:6px;
-  background:var(--ink);color:var(--on-ink);font-weight:500;font-size:14.5px;letter-spacing:.01em;
+  background:var(--ink);color:var(--on-ink);font-weight:500;font-size:21.75px;letter-spacing:.01em;
 }
 .btn.ghost{background:none;color:var(--ink);border:1px solid var(--line);font-weight:400}
 .btn-row{display:flex;flex-direction:column;gap:8px}
 
 .field{
-  border:1px solid var(--line);border-radius:6px;padding:11px 13px;color:var(--muted);font-size:14px;
+  border:1px solid var(--line);border-radius:6px;padding:11px 13px;color:var(--muted);font-size:21px;
   background:var(--fill-2);
 }
 
 /* progress with break-even tick */
-.meter{position:relative;height:8px;background:var(--fill);border-radius:2px}
+.meter{position:relative;height:11px;background:var(--fill);border-radius:2px}
 .meter i{position:absolute;inset:0 auto 0 0;background:var(--ink);border-radius:2px;display:block}
 .meter b{position:absolute;top:-3px;bottom:-3px;width:1.5px;background:var(--ink);border-radius:1px}
 .tick{position:relative;height:14px;margin-top:7px}
-.tick span{position:absolute;top:0;transform:translateX(-50%);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.tick span{position:absolute;top:0;transform:translateX(-50%);font-size:15px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
 
 .figs{display:flex;gap:22px;align-items:flex-end}
 .fig{display:flex;flex-direction:column;gap:3px}
-.fig .v{font-size:19px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.fig .v{font-size:28.5px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
 
 /* attention list — state encoded by form, not colour */
 .att{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line-soft);align-items:flex-start;text-align:left;width:100%}
 .att:last-child{border-bottom:none}
-.att .mark{flex:0 0 auto;width:3px;align-self:stretch;background:var(--ink);border-radius:2px;min-height:30px}
+.att .mark{flex:0 0 auto;width:4px;align-self:stretch;background:var(--ink);border-radius:2px;min-height:30px}
 .att .mark.soft{background:var(--line)}
 
 .time{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--line-soft);align-items:baseline}
 .time:last-child{border-bottom:none}
-.time .t{flex:0 0 46px;font-variant-numeric:tabular-nums;font-size:13px;color:var(--muted);letter-spacing:.02em}
+.time .t{flex:0 0 68px;font-variant-numeric:tabular-nums;font-size:19.5px;color:var(--muted);letter-spacing:.02em}
 
-.fillbar{height:3px;background:var(--fill);border-radius:2px;overflow:hidden;margin-top:7px}
+.fillbar{height:4px;background:var(--fill);border-radius:2px;overflow:hidden;margin-top:7px}
 .fillbar i{display:block;height:100%;background:var(--ink)}
 
 .legend{display:flex;flex-direction:column;gap:9px;padding-top:4px}
@@ -207,9 +207,9 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 
 /* ---------- onboarding flow ---------- */
 .hero{display:flex;flex-direction:column;gap:7px;padding-top:26px}
-.mark{
-  width:44px;height:44px;border:1.5px solid var(--ink);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:500;margin-bottom:16px;
+.brandmark{
+  width:62px;height:62px;border:1.5px solid var(--ink);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:28.5px;font-weight:500;margin-bottom:16px;
 }
 .pick{
   display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
@@ -217,11 +217,11 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 }
 .pick[aria-pressed="true"]{border-color:var(--ink);border-width:1.5px;padding:14.5px 13.5px}
 .picks{display:flex;flex-direction:column;gap:9px}
-.skip{width:100%;text-align:center;padding:8px;font-size:13px;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+.skip{width:100%;text-align:center;padding:8px;font-size:19.5px;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
 
 .input{border:1px solid var(--line);border-radius:6px;padding:12px 13px;background:var(--surface);display:flex;flex-direction:column;gap:3px}
-.input .k{font-size:10px;font-weight:500;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
-.input .v{font-size:15.5px;color:var(--ink)}
+.input .k{font-size:15px;font-weight:500;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
+.input .v{font-size:23.25px;color:var(--ink)}
 .input .v.empty{color:var(--muted)}
 .inputs{display:flex;flex-direction:column;gap:9px}
 
@@ -230,7 +230,7 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 .empty-state{border:1px solid var(--line-soft);border-radius:8px;padding:20px 16px;display:flex;flex-direction:column;gap:8px;text-align:center;align-items:center}
 
 .dots{display:flex;gap:5px;flex-wrap:wrap}
-.dots i{width:26px;height:5px;border-radius:2px;background:var(--fill);display:block}
+.dots i{width:38px;height:7px;border-radius:2px;background:var(--fill);display:block}
 .dots i.on{background:var(--ink)}
 .dots i.half{background:var(--line)}
 
@@ -244,13 +244,13 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
   transform:rotate(45deg);
 }
 .compare{display:flex;flex-direction:column;gap:7px}
-.compare .t{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.compare .t{font-family:var(--mono);font-size:15.75px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 
-.stepper{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+.stepper{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:15.75px;letter-spacing:.08em;text-transform:uppercase}
 .stepper button{color:var(--ink);padding:3px 0}
 .stepper button[disabled]{color:var(--scaffold-line);cursor:default}
-.stepper .pos{color:var(--scaffold);font-variant-numeric:tabular-nums;min-width:44px;text-align:center}
-.reset{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--scaffold);text-decoration:underline;text-underline-offset:3px}
+.stepper .pos{color:var(--scaffold);font-variant-numeric:tabular-nums;min-width:64px;text-align:center}
+.reset{font-family:var(--mono);font-size:15.75px;letter-spacing:.08em;text-transform:uppercase;color:var(--scaffold);text-decoration:underline;text-underline-offset:3px}
 </style>
 <style>
 :root{color-scheme:light dark}
@@ -683,7 +683,7 @@ img{max-width:100%}
     <section data-screen="f0" hidden>
       <div class="view"><div class="pad">
         <div class="hero">
-          <div class="mark">DJ</div>
+          <div class="brandmark">DJ</div>
           <h1 class="h1">Что вы хотите сделать?</h1>
           <p class="body">Всё остальное спросим позже и только по делу.</p>
         </div>
