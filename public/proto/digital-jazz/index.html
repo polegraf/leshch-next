@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="referrer" content="no-referrer">
+<title>Digital Jazz Лоу-фай</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --ground:#E9EBEE;
+  --surface:#FFFFFF;
+  --fill:#DCDFE4;
+  --fill-2:#EDEFF2;
+  --line:#C2C7CF;
+  --line-soft:#DFE2E7;
+  --ink:#14161A;
+  --ink-2:#454A53;
+  --muted:#787F8A;
+  --scaffold:#8A919C;
+  --scaffold-line:#C8CDD4;
+  --on-ink:#FFFFFF;
+
+  --app:Futura,"Futura PT",Jost,"Century Gothic",-apple-system,system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+  --phone-h:clamp(540px,74vh,760px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#141619;
+    --surface:#1D2024;
+    --fill:#2A2E34;
+    --fill-2:#23272C;
+    --line:#3A3F47;
+    --line-soft:#2C3036;
+    --ink:#EDEFF2;
+    --ink-2:#B4BAC3;
+    --muted:#858C96;
+    --scaffold:#767D87;
+    --scaffold-line:#333840;
+    --on-ink:#14161A;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#141619;
+  --surface:#1D2024;
+  --fill:#2A2E34;
+  --fill-2:#23272C;
+  --line:#3A3F47;
+  --line-soft:#2C3036;
+  --ink:#EDEFF2;
+  --ink-2:#B4BAC3;
+  --muted:#858C96;
+  --scaffold:#767D87;
+  --scaffold-line:#333840;
+  --on-ink:#14161A;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  padding-inline:16px;
+  padding-block:28px 44px;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--app);
+  font-size:14.5px;
+  line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:pointer}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:2px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- prototype scaffolding (mono) ---------- */
+.wrap{max-width:430px;margin:0 auto;display:flex;flex-direction:column;gap:14px}
+.scaffold{font-family:var(--mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--scaffold)}
+.rail{display:flex;flex-direction:column;gap:8px}
+.rail-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.roles{display:flex;gap:0;border:1px dashed var(--scaffold-line);border-radius:3px;overflow:hidden}
+.roles button{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;
+  padding:6px 10px;color:var(--scaffold);border-right:1px dashed var(--scaffold-line);
+}
+.roles button:last-child{border-right:none}
+.roles button[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
+.note{
+  font-family:var(--mono);font-size:11px;line-height:1.55;color:var(--scaffold);
+  border-left:1px dashed var(--scaffold-line);padding-left:10px;
+}
+
+/* ---------- phone ---------- */
+.phone{
+  background:var(--surface);border:1px solid var(--line);border-radius:14px;
+  height:var(--phone-h);display:flex;flex-direction:column;overflow:hidden;max-width:100%;
+}
+.status{
+  flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;
+  padding:8px 16px 0;font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.04em;
+}
+.view{flex:1 1 auto;overflow-y:auto;overscroll-behavior:contain}
+.pad{padding:14px 16px 22px;display:flex;flex-direction:column;gap:18px}
+
+/* ---------- type scale ---------- */
+.display{font-size:31px;line-height:1;font-weight:500;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.h1{font-size:22px;line-height:1.12;font-weight:500;letter-spacing:-.015em;text-wrap:balance;margin:0}
+.h2{font-size:16.5px;line-height:1.2;font-weight:500;letter-spacing:-.008em;margin:0}
+.body{font-size:14.5px;line-height:1.45;color:var(--ink-2);margin:0}
+.cap{font-size:12.5px;line-height:1.35;color:var(--muted);margin:0}
+.lab{font-size:10px;font-weight:500;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+
+/* ---------- app chrome ---------- */
+.topbar{display:flex;align-items:center;gap:12px;padding:10px 16px 12px;border-bottom:1px solid var(--line-soft);flex:0 0 auto}
+.back{font-size:19px;line-height:1;width:22px;text-align:left;color:var(--ink-2)}
+.topbar .h2{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+.nav{
+  flex:0 0 auto;display:grid;border-top:1px solid var(--line-soft);
+  background:var(--surface);
+}
+.nav button{
+  padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:5px;
+  font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;
+}
+.nav button[aria-current="page"]{color:var(--ink)}
+.glyph{width:17px;height:17px;border:1.5px solid currentColor;border-radius:3px}
+.glyph.round{border-radius:50%}
+.glyph.bar{border-radius:1px;height:13px;border-width:1.5px;position:relative}
+.glyph.bar::after{content:"";position:absolute;inset:3px 3px auto 3px;height:1.5px;background:currentColor}
+
+/* ---------- primitives ---------- */
+.sec{display:flex;flex-direction:column;gap:10px}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:10px}
+.rule{height:1px;background:var(--line-soft);border:none;margin:0}
+
+.row{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%}
+.row-list{display:flex;flex-direction:column;gap:0}
+.row-item{padding:13px 0;border-bottom:1px solid var(--line-soft);display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%}
+.row-item:first-child{padding-top:2px}
+.row-item:last-child{border-bottom:none}
+.grow{flex:1;min-width:0}
+.chev{color:var(--muted);font-size:15px;line-height:1.3;flex:0 0 auto}
+
+.thumb{flex:0 0 auto;width:52px;height:52px;border:1px solid var(--line);border-radius:4px;background:var(--fill-2)}
+.cover{
+  width:100%;aspect-ratio:16/9;max-width:100%;border:1px solid var(--line);border-radius:5px;
+  background:var(--fill-2);display:flex;align-items:flex-end;padding:9px;
+}
+.cover.fallback{
+  background:repeating-linear-gradient(-45deg,var(--fill-2) 0 9px,var(--fill) 9px 18px);
+  align-items:center;justify-content:center;
+}
+.fallback-mark{text-align:center}
+.fallback-mark .d{font-size:26px;font-weight:500;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
+.fallback-mark .m{font-size:10px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+
+.chip{
+  display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:100px;
+  border:1px solid var(--line);font-size:11.5px;color:var(--ink-2);white-space:nowrap;
+}
+.chip.solid{background:var(--ink);color:var(--on-ink);border-color:var(--ink);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+
+.btn{
+  display:block;width:100%;text-align:center;padding:13px 16px;border-radius:6px;
+  background:var(--ink);color:var(--on-ink);font-weight:500;font-size:14.5px;letter-spacing:.01em;
+}
+.btn.ghost{background:none;color:var(--ink);border:1px solid var(--line);font-weight:400}
+.btn-row{display:flex;flex-direction:column;gap:8px}
+
+.field{
+  border:1px solid var(--line);border-radius:6px;padding:11px 13px;color:var(--muted);font-size:14px;
+  background:var(--fill-2);
+}
+
+/* progress with break-even tick */
+.meter{position:relative;height:8px;background:var(--fill);border-radius:2px}
+.meter i{position:absolute;inset:0 auto 0 0;background:var(--ink);border-radius:2px;display:block}
+.meter b{position:absolute;top:-3px;bottom:-3px;width:1.5px;background:var(--ink);border-radius:1px}
+.tick{position:relative;height:14px;margin-top:7px}
+.tick span{position:absolute;top:0;transform:translateX(-50%);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+.figs{display:flex;gap:22px;align-items:flex-end}
+.fig{display:flex;flex-direction:column;gap:3px}
+.fig .v{font-size:19px;font-weight:500;line-height:1;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+
+/* attention list — state encoded by form, not colour */
+.att{display:flex;gap:11px;padding:11px 0;border-bottom:1px solid var(--line-soft);align-items:flex-start;text-align:left;width:100%}
+.att:last-child{border-bottom:none}
+.att .mark{flex:0 0 auto;width:3px;align-self:stretch;background:var(--ink);border-radius:2px;min-height:30px}
+.att .mark.soft{background:var(--line)}
+
+.time{display:flex;gap:12px;padding:9px 0;border-bottom:1px solid var(--line-soft);align-items:baseline}
+.time:last-child{border-bottom:none}
+.time .t{flex:0 0 46px;font-variant-numeric:tabular-nums;font-size:13px;color:var(--muted);letter-spacing:.02em}
+
+.fillbar{height:3px;background:var(--fill);border-radius:2px;overflow:hidden;margin-top:7px}
+.fillbar i{display:block;height:100%;background:var(--ink)}
+
+.legend{display:flex;flex-direction:column;gap:9px;padding-top:4px}
+.legend p{margin:0}
+
+/* ---------- onboarding flow ---------- */
+.hero{display:flex;flex-direction:column;gap:7px;padding-top:26px}
+.mark{
+  width:44px;height:44px;border:1.5px solid var(--ink);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;font-size:19px;font-weight:500;margin-bottom:16px;
+}
+.pick{
+  display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;
+  border:1px solid var(--line);border-radius:8px;padding:15px 14px;
+}
+.pick[aria-pressed="true"]{border-color:var(--ink);border-width:1.5px;padding:14.5px 13.5px}
+.picks{display:flex;flex-direction:column;gap:9px}
+.skip{width:100%;text-align:center;padding:8px;font-size:13px;color:var(--muted);text-decoration:underline;text-underline-offset:3px}
+
+.input{border:1px solid var(--line);border-radius:6px;padding:12px 13px;background:var(--surface);display:flex;flex-direction:column;gap:3px}
+.input .k{font-size:10px;font-weight:500;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
+.input .v{font-size:15.5px;color:var(--ink)}
+.input .v.empty{color:var(--muted)}
+.inputs{display:flex;flex-direction:column;gap:9px}
+
+.banner{border:1px dashed var(--line);border-radius:6px;padding:11px 12px;display:flex;flex-direction:column;gap:3px}
+
+.empty-state{border:1px solid var(--line-soft);border-radius:8px;padding:20px 16px;display:flex;flex-direction:column;gap:8px;text-align:center;align-items:center}
+
+.dots{display:flex;gap:5px;flex-wrap:wrap}
+.dots i{width:26px;height:5px;border-radius:2px;background:var(--fill);display:block}
+.dots i.on{background:var(--ink)}
+.dots i.half{background:var(--line)}
+
+.city{
+  font:inherit;color:inherit;border-bottom:1.5px solid var(--line);
+  padding-bottom:1px;position:relative;padding-right:15px;
+}
+.city::after{
+  content:"";position:absolute;right:2px;bottom:7px;width:6px;height:6px;
+  border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);
+  transform:rotate(45deg);
+}
+.compare{display:flex;flex-direction:column;gap:7px}
+.compare .t{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+
+.stepper{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase}
+.stepper button{color:var(--ink);padding:3px 0}
+.stepper button[disabled]{color:var(--scaffold-line);cursor:default}
+.stepper .pos{color:var(--scaffold);font-variant-numeric:tabular-nums;min-width:44px;text-align:center}
+.reset{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--scaffold);text-decoration:underline;text-underline-offset:3px}
+</style>
+<style>
+:root{color-scheme:light dark}
+html,body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="rail">
+    <div class="rail-top">
+      <div class="roles" role="group" aria-label="Ветка" id="roles">
+        <button type="button" data-branch="guest" aria-pressed="false">Гость</button>
+        <button type="button" data-branch="artist" aria-pressed="false">Артист</button>
+        <button type="button" data-branch="promo" aria-pressed="false">Промоутер</button>
+        <button type="button" data-branch="supply" aria-pressed="false">Площадка</button>
+      </div>
+      <div class="scaffold" id="screenName">вход</div>
+    </div>
+    <div class="rail-top">
+      <div class="stepper">
+        <button type="button" id="prev" aria-label="Предыдущий экран">← Назад</button>
+        <span class="pos" id="pos">1 / 6</span>
+        <button type="button" id="next" aria-label="Следующий экран">Далее →</button>
+      </div>
+      <button type="button" class="reset" id="reset">В начало</button>
+    </div>
+  </div>
+
+  <div class="phone">
+    <div class="status"><span>9:41</span><span>Digital Jazz</span></div>
+
+    <!-- ============ ПРОМОУТЕР ============ -->
+
+    <section data-screen="p1" hidden>
+      <div class="view"><div class="pad">
+        <div class="sec">
+          <div class="lab">Четверг, 10 сентября</div>
+          <h1 class="h1">Мои события</h1>
+        </div>
+
+        <div class="row-list">
+          <button type="button" class="row-item" data-go="p2">
+            <div class="grow">
+              <div class="h2">Ночь длинных треков</div>
+              <p class="cap">26 сен · Москва · Завод №5</p>
+              <div class="fillbar"><i style="width:42.8%"></i></div>
+              <p class="cap num" style="margin-top:6px">214 из 500 · до безубытка 92</p>
+            </div>
+            <span class="chev">›</span>
+          </button>
+
+          <button type="button" class="row-item" data-go="p2">
+            <div class="grow">
+              <div class="h2">Открытый джем</div>
+              <p class="cap">3 окт · Москва · Мосты</p>
+              <div class="chips" style="margin-top:8px"><span class="chip">Продажи не открыты</span></div>
+            </div>
+            <span class="chev">›</span>
+          </button>
+
+          <button type="button" class="row-item" data-go="p2">
+            <div class="grow">
+              <div class="h2">Ангар 12 · Лето</div>
+              <p class="cap">16 авг · прошло</p>
+              <div class="chips" style="margin-top:8px"><span class="chip">Отчёт не сведён</span></div>
+            </div>
+            <span class="chev">›</span>
+          </button>
+        </div>
+
+        <button type="button" class="btn ghost">Новое событие</button>
+      </div></div>
+      <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
+        <button type="button" aria-current="page"><span class="glyph"></span>События</button>
+        <button type="button"><span class="glyph round"></span>Поиск</button>
+        <button type="button"><span class="glyph bar"></span>Диалоги</button>
+        <button type="button"><span class="glyph round"></span>Профиль</button>
+      </nav>
+    </section>
+
+    <section data-screen="p2" hidden>
+      <div class="topbar">
+        <button type="button" class="back" data-go="p1" aria-label="Назад">‹</button>
+        <div class="h2">Ночь длинных треков</div>
+      </div>
+      <div class="view"><div class="pad">
+
+        <div class="sec">
+          <div class="lab">26 сентября · Завод №5 · 16 дней</div>
+          <div class="figs">
+            <div class="fig">
+              <span class="display num">214</span>
+              <span class="cap">билетов продано из 500</span>
+            </div>
+          </div>
+          <div>
+            <div class="meter"><i style="width:42.8%"></i><b style="left:61.2%"></b></div>
+            <div class="tick">
+              <span style="left:61.2%">безубыток · 306</span>
+            </div>
+          </div>
+          <div class="figs" style="margin-top:14px">
+            <div class="fig"><span class="v num">482 400 ₽</span><span class="cap">сбор</span></div>
+            <div class="fig"><span class="v num">92</span><span class="cap">до нуля</span></div>
+            <div class="fig"><span class="v num">+31</span><span class="cap">за 3 дня</span></div>
+          </div>
+        </div>
+
+        <hr class="rule">
+
+        <div class="sec">
+          <div class="sec-head">
+            <span class="lab">Требует решения · 3</span>
+          </div>
+          <div>
+            <button type="button" class="att">
+              <span class="mark"></span>
+              <span class="grow">
+                <span class="h2" style="display:block">Аня Кострова не подтвердила гонорар</span>
+                <span class="cap">Предложение висит 3 дня · 45 000 ₽</span>
+              </span>
+              <span class="chev">›</span>
+            </button>
+            <button type="button" class="att">
+              <span class="mark"></span>
+              <span class="grow">
+                <span class="h2" style="display:block">Тех. райдер не отправлен площадке</span>
+                <span class="cap">Дедлайн 12 сентября · 4 позиции без проката</span>
+              </span>
+              <span class="chev">›</span>
+            </button>
+            <button type="button" class="att">
+              <span class="mark soft"></span>
+              <span class="grow">
+                <span class="h2" style="display:block">Промокод PRESS истёк</span>
+                <span class="cap">Использован 14 раз из 30</span>
+              </span>
+              <span class="chev">›</span>
+            </button>
+          </div>
+        </div>
+
+        <hr class="rule">
+
+        <div class="sec">
+          <span class="lab">Ближайшее</span>
+          <div>
+            <div class="time"><span class="t num">12 сен</span><span class="grow"><span class="body">Отправить райдер площадке</span></span></div>
+            <div class="time"><span class="t num">19 сен</span><span class="grow"><span class="body">Анонс лайн-апа, промо артистам</span></span></div>
+            <div class="time"><span class="t num">25 сен</span><span class="grow"><span class="body">Закрыть гостевой список</span></span></div>
+            <div class="time"><span class="t num">26 сен</span><span class="grow"><span class="body">18:00 саундчек · 22:00 двери</span></span></div>
+          </div>
+        </div>
+
+        <button type="button" class="btn ghost" data-go="p3">Все разделы события</button>
+      </div></div>
+      <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
+        <button type="button" aria-current="page"><span class="glyph"></span>События</button>
+        <button type="button"><span class="glyph round"></span>Поиск</button>
+        <button type="button"><span class="glyph bar"></span>Диалоги</button>
+        <button type="button"><span class="glyph round"></span>Профиль</button>
+      </nav>
+    </section>
+
+    <section data-screen="p3" hidden>
+      <div class="topbar">
+        <button type="button" class="back" data-go="p2" aria-label="Назад">‹</button>
+        <div class="h2">Разделы события</div>
+      </div>
+      <div class="view"><div class="pad">
+        <p class="cap">Порядок свободный. Заполняется по мере того, как что-то становится известно.</p>
+        <div class="row-list" id="sections"></div>
+      </div></div>
+      <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
+        <button type="button" aria-current="page"><span class="glyph"></span>События</button>
+        <button type="button"><span class="glyph round"></span>Поиск</button>
+        <button type="button"><span class="glyph bar"></span>Диалоги</button>
+        <button type="button"><span class="glyph round"></span>Профиль</button>
+      </nav>
+    </section>
+
+    <!-- ============ ГОСТЬ ============ -->
+
+    <section data-screen="g1" hidden>
+      <div class="view"><div class="pad">
+        <div class="sec">
+          <h1 class="h1">Что в <button type="button" class="city">Москве</button></h1>
+          <div class="banner"><span class="cap">Аккаунт понадобится только при покупке билета.</span></div>
+          <div class="field">Событие, артист, площадка</div>
+          <div class="chips">
+            <span class="chip solid">Все</span>
+            <span class="chip">Сегодня</span>
+            <span class="chip">Выходные</span>
+            <span class="chip">Бесплатно</span>
+            <span class="chip">Рядом</span>
+          </div>
+        </div>
+
+        <div class="sec">
+          <span class="lab">На этой неделе</span>
+
+          <button type="button" class="row" style="flex-direction:column;gap:9px" data-go="g2">
+            <span class="cover"><span class="cap" style="color:var(--muted)">обложка 16:9</span></span>
+            <span class="grow">
+              <span class="h2" style="display:block">Ночь длинных треков</span>
+              <span class="cap" style="display:block">Кира Верёвкина · ЛЕС · Аня Кострова</span>
+              <span class="cap" style="display:block">пт 26 сен, 22:00 · Завод №5 · от 800 ₽</span>
+            </span>
+          </button>
+
+          <button type="button" class="row" style="flex-direction:column;gap:9px" data-go="g2">
+            <span class="cover fallback">
+              <span class="fallback-mark">
+                <span class="d num">03.10</span>
+                <span class="m">Мосты · джем</span>
+              </span>
+            </span>
+            <span class="grow">
+              <span class="h2" style="display:block">Открытый джем</span>
+              <span class="cap" style="display:block">Сборный состав · открытый микрофон</span>
+              <span class="cap" style="display:block">сб 3 окт, 20:00 · Мосты · вход свободный</span>
+            </span>
+          </button>
+        </div>
+      </div></div>
+      <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
+        <button type="button" aria-current="page"><span class="glyph"></span>Афиша</button>
+        <button type="button"><span class="glyph round"></span>Артисты</button>
+        <button type="button"><span class="glyph bar"></span>Билеты</button>
+        <button type="button"><span class="glyph round"></span>Я</button>
+      </nav>
+    </section>
+
+    <section data-screen="g2" hidden>
+      <div class="topbar">
+        <button type="button" class="back" data-go="g1" aria-label="Назад">‹</button>
+        <div class="h2">Событие</div>
+      </div>
+      <div class="view"><div class="pad">
+        <div class="cover"><span class="cap" style="color:var(--muted)">обложка 16:9</span></div>
+
+        <div class="sec">
+          <h1 class="h1">Ночь длинных треков</h1>
+          <p class="cap">пятница 26 сентября, 22:00 — 06:00</p>
+          <p class="cap">Завод №5, Москва, Рощинский проезд 4</p>
+        </div>
+
+        <hr class="rule">
+
+        <div class="sec">
+          <span class="lab">Лайн-ап</span>
+          <div>
+            <div class="time"><span class="t num">23:30</span><span class="grow"><span class="body">Кира Верёвкина</span></span></div>
+            <div class="time"><span class="t num">01:00</span><span class="grow"><span class="body">ЛЕС</span></span></div>
+            <div class="time"><span class="t num">02:30</span><span class="grow"><span class="body">Аня Кострова</span></span></div>
+            <div class="time"><span class="t num">04:00</span><span class="grow"><span class="body">DJ Мурат</span></span></div>
+          </div>
+        </div>
+
+        <hr class="rule">
+
+        <div class="sec">
+          <span class="lab">Билеты</span>
+          <div class="row-list">
+            <div class="row-item"><span class="grow"><span class="body">Ранний вход</span><span class="cap" style="display:block">осталось 12</span></span><span class="h2 num">800 ₽</span></div>
+            <div class="row-item"><span class="grow"><span class="body">Стандарт</span></span><span class="h2 num">1 400 ₽</span></div>
+            <div class="row-item"><span class="grow"><span class="body">Стол на четверых</span><span class="cap" style="display:block">бронь, депозит</span></span><span class="h2 num">9 000 ₽</span></div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn" data-go="fg3">Купить билет</button>
+          <button type="button" class="btn ghost">Следить за Кирой Верёвкиной</button>
+        </div>
+      </div></div>
+      <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
+        <button type="button" aria-current="page"><span class="glyph"></span>Афиша</button>
+        <button type="button"><span class="glyph round"></span>Артисты</button>
+        <button type="button"><span class="glyph bar"></span>Билеты</button>
+        <button type="button"><span class="glyph round"></span>Я</button>
+      </nav>
+    </section>
+
+    <!-- ============ АРТИСТ ============ -->
+
+    <section data-screen="a1" hidden>
+      <div class="view"><div class="pad">
+        <div class="sec">
+          <h1 class="h1">Входящие</h1>
+          <p class="cap">Два новых предложения. На одно ответить до 12 сентября.</p>
+        </div>
+
+        <div class="sec">
+          <span class="lab">Ждут ответа · 2</span>
+          <div class="row-list">
+            <button type="button" class="row-item" data-go="a2">
+              <span class="thumb"></span>
+              <span class="grow">
+                <span class="h2" style="display:block">Ночь длинных треков</span>
+                <span class="cap" style="display:block">26 сен · Завод №5 · выход 02:30</span>
+                <span class="h2 num" style="display:block;margin-top:5px">45 000 ₽</span>
+                <span class="chips" style="margin-top:7px"><span class="chip solid">Ответить до 12 сен</span></span>
+              </span>
+              <span class="chev">›</span>
+            </button>
+            <button type="button" class="row-item" data-go="a2">
+              <span class="thumb"></span>
+              <span class="grow">
+                <span class="h2" style="display:block">Ангар 12 · Осень</span>
+                <span class="cap" style="display:block">18 окт · Ангар 12 · выход 01:00</span>
+                <span class="h2 num" style="display:block;margin-top:5px">60 000 ₽</span>
+                <span class="chips" style="margin-top:7px"><span class="chip">Ответить до 30 сен</span></span>
+              </span>
+              <span class="chev">›</span>
+            </button>
+          </div>
+        </div>
+
+        <hr class="rule">
+
+        <div class="sec">
+          <span class="lab">Подтверждено · 1</span>
+          <div class="row-list">
+            <div class="row-item">
+              <span class="thumb"></span>
+              <span class="grow">
+                <span class="h2" style="display:block">Открытый джем</span>
+                <span class="cap" style="display:block">3 окт · Мосты · выход 21:00</span>
+                <span class="chips" style="margin-top:7px"><span class="chip">Райдер принят</span><span class="chip">Трансфер есть</span></span>
+              </span>
+            </div>
+          </div>
+        </div>
+      </div></div>
+      <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
+        <button type="button" aria-current="page"><span class="glyph bar"></span>Входящие</button>
+        <button type="button"><span class="glyph"></span>График</button>
+        <button type="button"><span class="glyph round"></span>Профиль</button>
+      </nav>
+    </section>
+
+    <section data-screen="a2" hidden>
+      <div class="topbar">
+        <button type="button" class="back" data-go="a1" aria-label="Назад">‹</button>
+        <div class="h2">Предложение</div>
+      </div>
+      <div class="view"><div class="pad">
+        <div class="sec">
+          <div class="lab">От: Марк Гельман · промоутер</div>
+          <h1 class="h1">Ночь длинных треков</h1>
+          <p class="cap">пятница 26 сентября · Завод №5, Москва</p>
+        </div>
+
+        <div class="sec">
+          <span class="display num">45 000 ₽</span>
+          <p class="cap">гонорар, выплата в течение 3 дней после события</p>
+        </div>
+
+        <hr class="rule">
+
+        <div class="sec">
+          <span class="lab">Условия</span>
+          <div class="row-list">
+            <div class="row-item"><span class="grow"><span class="cap" style="display:block">Выход</span><span class="body">02:30 — 04:00, 90 минут</span></span></div>
+            <div class="row-item"><span class="grow"><span class="cap" style="display:block">Сцена</span><span class="body">Основная, вместимость 500</span></span></div>
+            <div class="row-item"><span class="grow"><span class="cap" style="display:block">Райдер</span><span class="body">Ваш райдер приложен, 2 позиции не закрыты</span></span></div>
+            <div class="row-item"><span class="grow"><span class="cap" style="display:block">Трансфер и проживание</span><span class="body">Не предусмотрены</span></span></div>
+          </div>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn">Принять</button>
+          <button type="button" class="btn ghost" data-go="a3">Встречное предложение</button>
+          <button type="button" class="btn ghost">Отказаться</button>
+        </div>
+      </div></div>
+      <nav class="nav" style="grid-template-columns:repeat(3,1fr)">
+        <button type="button" aria-current="page"><span class="glyph bar"></span>Входящие</button>
+        <button type="button"><span class="glyph"></span>График</button>
+        <button type="button"><span class="glyph round"></span>Профиль</button>
+      </nav>
+    </section>
+
+    <section data-screen="a3" hidden>
+      <div class="topbar">
+        <button type="button" class="back" data-go="a2" aria-label="Назад">‹</button>
+        <div class="h2">Встречное предложение</div>
+      </div>
+      <div class="view"><div class="pad">
+        <div class="sec">
+          <span class="lab">Ваш ответ</span>
+          <div class="field" style="color:var(--ink);font-variant-numeric:tabular-nums">60 000 ₽</div>
+          <p class="cap">Было 45 000 ₽</p>
+        </div>
+
+        <div class="sec">
+          <span class="lab">Что меняем</span>
+          <div class="chips">
+            <span class="chip solid">Гонорар</span>
+            <span class="chip">Время выхода</span>
+            <span class="chip">Трансфер</span>
+            <span class="chip">Длительность</span>
+          </div>
+        </div>
+
+        <div class="sec">
+          <span class="lab">Комментарий</span>
+          <div class="field">Могу 02:30, если добавите трансфер из Шереметьево</div>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn" data-go="fend">Отправить промоутеру</button>
+          <button type="button" class="btn ghost" data-go="a2">Назад к предложению</button>
+        </div>
+
+        <p class="cap">Промоутер увидит это в разделе «Требует решения». Пока он не ответил, предложение остаётся вашим.</p>
+      </div></div>
+      <nav class="nav" style="grid-template-columns:repeat(3,1fr)">
+        <button type="button" aria-current="page"><span class="glyph bar"></span>Входящие</button>
+        <button type="button"><span class="glyph"></span>График</button>
+        <button type="button"><span class="glyph round"></span>Профиль</button>
+      </nav>
+    </section>
+
+    <!-- ============ ФЛОУ ВХОДА ============ -->
+
+    <section data-screen="f0" hidden>
+      <div class="view"><div class="pad">
+        <div class="hero">
+          <div class="mark">DJ</div>
+          <h1 class="h1">Что вы хотите сделать?</h1>
+          <p class="body">Всё остальное спросим позже и только по делу.</p>
+        </div>
+
+        <div class="picks">
+          <button type="button" class="pick" data-go="g1">
+            <span class="grow">
+              <span class="h2" style="display:block">Сходить на событие</span>
+              <span class="cap">Афиша города, билеты, любимые артисты</span>
+            </span>
+            <span class="chev">›</span>
+          </button>
+          <button type="button" class="pick" data-go="fa1">
+            <span class="grow">
+              <span class="h2" style="display:block">Выступать</span>
+              <span class="cap">Получать предложения от промоутеров и площадок</span>
+            </span>
+            <span class="chev">›</span>
+          </button>
+          <button type="button" class="pick" data-go="fp1">
+            <span class="grow">
+              <span class="h2" style="display:block">Провести событие</span>
+              <span class="cap">Собрать лайн-ап, команду, смету и продать билеты</span>
+            </span>
+            <span class="chev">›</span>
+          </button>
+          <button type="button" class="pick" data-go="fs1">
+            <span class="grow">
+              <span class="h2" style="display:block">Предложить площадку или услугу</span>
+              <span class="cap">Зал, прокат, звук, свет, охрана, кейтеринг — получать заказы</span>
+            </span>
+            <span class="chev">›</span>
+          </button>
+        </div>
+
+        <button type="button" class="skip" data-go="fg2">Пока просто посмотреть афишу</button>
+      </div></div>
+    </section>
+
+    <!-- площадка / подрядчик -->
+    <section data-screen="fs1" hidden>
+      <div class="topbar"><button type="button" class="back" data-go="f0" aria-label="Назад">‹</button><div class="h2">Площадка и услуги</div></div>
+      <div class="view"><div class="pad">
+        <div class="banner" style="margin-top:8px">
+          <span class="scaffold">Ветка не раскрыта</span>
+          <span class="cap">В прототипе показан только вход. Дальше — отдельная ветка со своей логикой.</span>
+        </div>
+        <div class="sec">
+          <span class="lab">Что здесь будет</span>
+          <p class="body">У площадки — календарь занятости: какие даты заняты, какие запросы висят, сколько принесла каждая дата. У подрядчика — входящие заказы, та же механика, что у артиста.</p>
+          <p class="body">Отдельно: заявка на владение уже созданной страницей — если компанию завели без её ведома.</p>
+        </div>
+        <button type="button" class="btn ghost" data-go="f0">Вернуться к выбору</button>
+      </div></div>
+    </section>
+
+    <!-- гость -->
+    <section data-screen="fg3" hidden>
+      <div class="topbar"><button type="button" class="back" data-go="g2" aria-label="Назад">‹</button><div class="h2">Куда прислать билет</div></div>
+      <div class="view"><div class="pad">
+        <div class="hero" style="padding-top:8px">
+          <h1 class="h1">Ночь длинных треков</h1>
+          <p class="cap">Стандарт · 1 400 ₽</p>
+        </div>
+        <div class="inputs">
+          <div class="input"><span class="k">Почта</span><span class="v empty">для билета и входа</span></div>
+        </div>
+        <p class="cap">Пароль не нужен — пришлём ссылку для входа. Подтверждение не блокирует покупку.</p>
+        <button type="button" class="btn" data-go="fend">Оплатить 1 400 ₽</button>
+      </div></div>
+    </section>
+
+    <!-- артист -->
+    <section data-screen="fa1" hidden>
+      <div class="topbar"><button type="button" class="back" data-go="f0" aria-label="Назад">‹</button><div class="h2">Кто вы</div></div>
+      <div class="view"><div class="pad">
+        <div class="hero" style="padding-top:8px">
+          <h1 class="h1">Три поля, и вас начнут находить</h1>
+          <p class="body">Райдер, сет и фото добавите потом — когда появится первое предложение.</p>
+        </div>
+        <div class="inputs">
+          <div class="input"><span class="k">Имя или псевдоним</span><span class="v">Аня Кострова</span></div>
+          <div class="input"><span class="k">Город</span><span class="v">Москва</span></div>
+          <div class="input"><span class="k">Чем занимаетесь</span><span class="v">Диджей</span></div>
+        </div>
+        <button type="button" class="btn" data-go="fa2">Готово</button>
+      </div></div>
+    </section>
+
+    <section data-screen="fa2" hidden>
+      <div class="view"><div class="pad">
+        <div class="sec">
+          <h1 class="h1">Входящие</h1>
+        </div>
+        <div class="empty-state">
+          <span class="h2">Пока пусто</span>
+          <p class="cap">В Москве 12 событий за ближайший месяц ищут диджея. Чтобы попадать в подборку раньше, добавьте сет и райдер.</p>
+        </div>
+        <div class="sec">
+          <span class="lab">Дособрать профиль</span>
+          <div class="row-list">
+            <button type="button" class="row-item"><span class="grow"><span class="body">Ссылка на сет или микс</span><span class="cap" style="display:block">поднимает в поиске выше всего</span></span><span class="chev">›</span></button>
+            <button type="button" class="row-item"><span class="grow"><span class="body">Технический райдер</span><span class="cap" style="display:block">подставится в предложения автоматически</span></span><span class="chev">›</span></button>
+            <button type="button" class="row-item"><span class="grow"><span class="body">Вилка гонорара</span><span class="cap" style="display:block">видна только промоутерам</span></span><span class="chev">›</span></button>
+          </div>
+        </div>
+        <button type="button" class="btn" data-go="fa3">Сохранить профиль</button>
+      </div></div>
+      <nav class="nav" style="grid-template-columns:repeat(3,1fr)">
+        <button type="button" aria-current="page"><span class="glyph bar"></span>Входящие</button>
+        <button type="button"><span class="glyph"></span>График</button>
+        <button type="button"><span class="glyph round"></span>Профиль</button>
+      </nav>
+    </section>
+
+    <section data-screen="fa3" hidden>
+      <div class="topbar"><button type="button" class="back" data-go="fa2" aria-label="Назад">‹</button><div class="h2">Сохранить</div></div>
+      <div class="view"><div class="pad">
+        <div class="hero" style="padding-top:8px">
+          <h1 class="h1">Куда присылать предложения</h1>
+          <p class="body">Профиль уже работает. Почта нужна, чтобы не потерять его и получать уведомления о заказах.</p>
+        </div>
+        <div class="inputs">
+          <div class="input"><span class="k">Почта</span><span class="v empty">адрес</span></div>
+        </div>
+        <p class="cap">Вход по ссылке из письма. Подтвердить можно позже — профиль работает сразу.</p>
+        <button type="button" class="btn" data-go="a1">Сохранить</button>
+      </div></div>
+    </section>
+
+    <!-- промоутер -->
+    <section data-screen="fp1" hidden>
+      <div class="topbar"><button type="button" class="back" data-go="f0" aria-label="Назад">‹</button><div class="h2">Новое событие</div></div>
+      <div class="view"><div class="pad">
+        <div class="hero" style="padding-top:8px">
+          <h1 class="h1">С чего начнём</h1>
+          <p class="body">Площадку, лайн-ап и смету добавите по ходу. Порядок свободный.</p>
+        </div>
+        <div class="inputs">
+          <div class="input"><span class="k">Название</span><span class="v">Ночь длинных треков</span></div>
+          <div class="input"><span class="k">Дата</span><span class="v num">26 сентября</span></div>
+          <div class="input"><span class="k">Город</span><span class="v">Москва</span></div>
+        </div>
+        <button type="button" class="btn" data-go="fp2">Создать</button>
+      </div></div>
+    </section>
+
+    <section data-screen="fp2" hidden>
+      <div class="topbar"><button type="button" class="back" data-go="fp1" aria-label="Назад">‹</button><div class="h2">Ночь длинных треков</div></div>
+      <div class="view"><div class="pad">
+        <div class="sec">
+          <div class="lab">26 сентября · Москва · 16 дней</div>
+          <div class="figs">
+            <div class="fig"><span class="display num">0</span><span class="cap">билетов продано</span></div>
+          </div>
+          <div class="meter"><i style="width:0%"></i></div>
+          <p class="cap" style="margin-top:8px">Точка безубытка появится, когда будет площадка и смета.</p>
+        </div>
+        <hr class="rule">
+        <div class="sec">
+          <span class="lab">С чего обычно начинают</span>
+          <div class="row-list">
+            <button type="button" class="row-item"><span class="grow"><span class="body">Выбрать площадку</span><span class="cap" style="display:block">в Москве 34 площадки на 300–700 человек</span></span><span class="chev">›</span></button>
+            <button type="button" class="row-item" data-go="fp4"><span class="grow"><span class="body">Позвать артистов</span><span class="cap" style="display:block">предложения уходят прямо отсюда</span></span><span class="chev">›</span></button>
+            <button type="button" class="row-item"><span class="grow"><span class="body">Открыть продажи</span><span class="cap" style="display:block">нужны площадка и типы билетов</span></span><span class="chev">›</span></button>
+          </div>
+        </div>
+        <button type="button" class="btn" data-go="fp4">Позвать артистов</button>
+      </div></div>
+      <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
+        <button type="button" aria-current="page"><span class="glyph"></span>События</button>
+        <button type="button"><span class="glyph round"></span>Поиск</button>
+        <button type="button"><span class="glyph bar"></span>Диалоги</button>
+        <button type="button"><span class="glyph round"></span>Профиль</button>
+      </nav>
+    </section>
+
+    <section data-screen="fp4" hidden>
+      <div class="topbar"><button type="button" class="back" data-go="fp2" aria-label="Назад">‹</button><div class="h2">Приглашение</div></div>
+      <div class="view"><div class="pad">
+        <div class="sec">
+          <div class="lab">Кому</div>
+          <div class="row">
+            <span class="thumb"></span>
+            <span class="grow">
+              <span class="h2" style="display:block">Аня Кострова</span>
+              <span class="cap">Диджей · Москва · хаус, брейкс</span>
+            </span>
+          </div>
+        </div>
+
+        <div class="inputs">
+          <div class="input"><span class="k">Гонорар</span><span class="v num">45 000 ₽</span></div>
+          <div class="input"><span class="k">Выход</span><span class="v">02:30 — 04:00</span></div>
+        </div>
+
+        <hr class="rule">
+
+        <div class="sec">
+          <span class="lab">Так это увидит Аня</span>
+          <div class="banner">
+            <span class="h2">Ночь длинных треков</span>
+            <span class="cap">26 сентября · Москва · 45 000 ₽</span>
+            <span class="cap" style="margin-top:5px">Организатор: <span style="color:var(--ink)">не заполнен</span></span>
+          </div>
+          <p class="body">Артист решает по двум вещам: сколько и кто зовёт. Второе пока пустое.</p>
+        </div>
+
+        <div class="sec">
+          <span class="lab">Кто вы</span>
+          <div class="inputs">
+            <div class="input"><span class="k">Имя или название</span><span class="v empty">Марк Гельман / «Длинные треки»</span></div>
+            <div class="input"><span class="k">Город</span><span class="v">Москва</span></div>
+            <div class="input"><span class="k">Что делали раньше</span><span class="v empty">события, площадки или ссылка</span></div>
+          </div>
+          <p class="cap">Три поля. Дальше профиль дособерётся сам: прошедшие события подтянутся из платформы.</p>
+        </div>
+
+        <button type="button" class="btn" data-go="fp3">Отправить предложение</button>
+        <button type="button" class="skip" data-go="fp3">Отправить без профиля</button>
+      </div></div>
+    </section>
+
+    <section data-screen="fp3" hidden>
+      <div class="topbar"><button type="button" class="back" data-go="fp4" aria-label="Назад">‹</button><div class="h2">Куда прислать ответ</div></div>
+      <div class="view"><div class="pad">
+        <div class="hero" style="padding-top:8px">
+          <h1 class="h1">Предложение ушло</h1>
+          <p class="body">Аня ответит в течение нескольких дней. Почта нужна, чтобы вы об этом узнали и вернулись к событию.</p>
+        </div>
+        <div class="inputs">
+          <div class="input"><span class="k">Почта</span><span class="v empty">адрес</span></div>
+        </div>
+        <p class="cap">Вход по ссылке. Подтверждение не блокирует работу над событием.</p>
+        <button type="button" class="btn" data-go="p1">Сохранить</button>
+      </div></div>
+    </section>
+
+    <section data-screen="fend" hidden>
+      <div class="view"><div class="pad">
+        <div class="hero" style="padding-top:8px">
+          <h1 class="h1">Что изменилось</h1>
+        </div>
+
+        <div class="compare">
+          <span class="t">Сейчас · до первой ценности</span>
+          <div class="dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <p class="cap">Роль → регистрация → детали → тип бизнеса → бизнес → согласие → подтверждение почты. Семь шагов, и почта блокирует вход.</p>
+        </div>
+
+        <hr class="rule">
+
+        <div class="compare">
+          <span class="t">Здесь · до первой ценности</span>
+          <div class="dots"><i class="on"></i><i class="half"></i></div>
+          <p class="cap">Гость видит афишу с первого клика. Артисту и промоутеру нужен ещё один экран из трёх полей. Почта спрашивается тогда, когда появилось что сохранять, и ничего не блокирует.</p>
+        </div>
+
+        <hr class="rule">
+
+        <div class="sec">
+          <span class="lab">Принцип</span>
+          <p class="body">Регистрация — не вход в продукт, а способ не потерять то, что человек уже сделал. Поэтому она стоит после первой ценности, а не до неё.</p>
+        </div>
+
+        <div class="btn-row">
+          <button type="button" class="btn ghost" data-go="f0">Пройти другую ветку</button>
+        </div>
+      </div></div>
+    </section>
+
+  </div>
+
+  <div class="note" id="note"></div>
+
+  <div class="legend scaffold" style="text-transform:none;letter-spacing:0;font-size:11px;line-height:1.6">
+    <p>Один непрерывный сценарий: выбор входа, короткая регистрация, первый полезный экран — и дальше то же место через месяц, когда в нём уже что-то происходит. Ветки переключаются сверху, шаги — стрелками или кнопками под телефоном.</p>
+    <p>Серая шкала намеренно: иерархия держится на кегле, весе и форме, цвет не подключён. Шрифт — Futura, если стоит в системе, иначе Jost.</p>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  var SECTIONS = [
+    ["Детали события", 100], ["Площадка", 100], ["Схема зала", 80],
+    ["Лайн-ап и тайминг", 75], ["Тех. райдер", 40], ["Команда", 60],
+    ["Бар и персонал", 20], ["Промо и PR", 35], ["Партнёры", 0],
+    ["Билеты", 100], ["Мерч", 0], ["Смета", 65]
+  ];
+  var box = document.getElementById("sections");
+  SECTIONS.forEach(function(s){
+    var b = document.createElement("button");
+    b.type = "button";
+    b.className = "row-item";
+    b.innerHTML =
+      '<span class="grow"><span class="h2" style="display:block">' + s[0] + '</span>' +
+      '<span class="fillbar"><i style="width:' + s[1] + '%"></i></span>' +
+      '<span class="cap num" style="display:block;margin-top:6px">' +
+      (s[1] === 100 ? "готово" : s[1] === 0 ? "пусто" : "заполнено " + s[1] + "%") +
+      '</span></span><span class="chev">›</span>';
+    box.appendChild(b);
+  });
+
+  var META = {
+    f0:  ["вход · 1", "Первый экран спрашивает не «кто вы», а «что хотите сделать». Роль выводится из ответа, человеку не нужно опознавать себя в терминах системы. Четыре входа закрывают обе стороны рынка: спрос, предложение и мощности. Внизу — выход в афишу вообще без регистрации."],
+    fs1: ["площадка · заглушка", "Четвёртый вход: предложение мощностей и услуг. Ветка сознательно не раскрыта — у неё своя логика, календарь занятости вместо профиля в каталоге."],
+    fg3: ["гость · покупка", "Почта спрашивается там, где она осмысленна: билет надо куда-то прислать. Пароля нет, подтверждение не блокирует оплату."],
+    fa1: ["артист · 2", "Три поля вместо длинной анкеты со специализациями и жанрами. Остальное дособирается позже и под конкретный повод."],
+    fa2: ["артист · 3", "Пустой экран, который работает: говорит, сколько событий в городе ищут такого специалиста, и что добавить, чтобы находили быстрее."],
+    fa3: ["артист · сохранение", "Профиль уже работает. Почта — чтобы не потерять его и получать предложения, а не чтобы войти."],
+    fp1: ["промоутер · 2", "Событие заводится тремя полями. Площадка, лайн-ап и смета — потом и в любом порядке."],
+    fp2: ["промоутер · 3", "Пустое событие, но уже живое: ноль продаж, честная причина, почему нет безубытка, и три первых шага."],
+    fp4: ["промоутер · профиль под повод", "Момент, когда профиль промоутера впервые кому-то нужен: артист смотрит, кто зовёт. Не «заполните профиль» на пустом месте, а превью того, что увидит Аня, и три поля рядом. Пропустить можно — но видно, чем платишь."],
+    fp3: ["промоутер · сохранение", "Почта появляется после отправки предложения и с понятной причиной: чтобы узнать ответ. Не турникет, а адрес для ответа."],
+    fend:["итог", "Семь шагов с блокирующей почтой против двух. Регистрация — способ не потерять сделанное, а не турникет на входе."],
+    g1: ["гость · афиша", "Первая ценность сразу после выбора, без единого вопроса — город переключается прямо в заголовке. Вторая карточка — фолбэк для события без обложки: дата и площадка вместо серого прямоугольника."],
+    g2: ["гость · событие", "Решение о покупке принимают по имени артиста, времени и цене. Все три — выше кнопки."],
+    a1: ["артист · через месяц", "То же место, что было пустым на входе. Ради этого экрана артист и открывает приложение: пришло что-нибудь или нет."],
+    a2: ["артист · предложение", "Деньги и условия на одном экране. Три действия, включая торг."],
+    a3: ["артист · встречное", "Торг как часть продукта, а не переписка в телеге. Ответ уходит промоутеру в «Требует решения» — один объект с двух сторон."],
+    p1: ["промоутер · через месяц", "События уже идут. Каждая строка отвечает на один вопрос: сколько продано и что с этим не так."],
+    p2: ["промоутер · состояние", "Главный экран. Вместо шага анкеты — состояние: сбор, точка безубытка, что требует решения сегодня. Разделы конструктора уходят на второй уровень."],
+    p3: ["промоутер · разделы", "Тот же конструктор, но не последовательность. Заходить можно в любом порядке, индикатор показывает готовность, а не номер шага."]
+  };
+  var BRANCH = {
+    guest:  ["f0","g1","g2","fg3","fend"],
+    artist: ["f0","fa1","fa2","fa3","a1","a2","a3","fend"],
+    promo:  ["f0","fp1","fp2","fp4","fp3","p1","p2","p3","fend"],
+    supply: ["f0","fs1"]
+  };
+  var SHARED = { f0:1, fend:1 };
+  var ENTRY  = { guest:"g1", artist:"fa1", promo:"fp1", supply:"fs1" };
+
+  var screens  = Array.prototype.slice.call(document.querySelectorAll("[data-screen]"));
+  var nameEl   = document.getElementById("screenName");
+  var noteEl   = document.getElementById("note");
+  var posEl    = document.getElementById("pos");
+  var prevBtn  = document.getElementById("prev");
+  var nextBtn  = document.getElementById("next");
+  var branchBtns = Array.prototype.slice.call(document.querySelectorAll(".roles button"));
+
+  var branch  = "guest";
+  var current = "f0";
+
+  function branchOf(id){
+    if (SHARED[id]) return branch;
+    for (var k in BRANCH) if (BRANCH[k].indexOf(id) > -1) return k;
+    return branch;
+  }
+
+  function show(id){
+    if (!META[id]) return;
+    branch  = branchOf(id);
+    current = id;
+
+    screens.forEach(function(s){ s.hidden = s.getAttribute("data-screen") !== id; });
+
+    nameEl.textContent = META[id][0];
+    noteEl.textContent = META[id][1];
+
+    var v = document.querySelector('[data-screen="' + id + '"] .view');
+    if (v) v.scrollTop = 0;
+
+    branchBtns.forEach(function(b){
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-branch") === branch));
+    });
+
+    var seq = BRANCH[branch];
+    var i   = seq.indexOf(id);
+    posEl.textContent = (i + 1) + " / " + seq.length;
+    prevBtn.disabled = i <= 0;
+    nextBtn.disabled = i < 0 || i >= seq.length - 1;
+  }
+
+  function step(d){
+    var seq = BRANCH[branch];
+    var i   = seq.indexOf(current);
+    if (i < 0) return;
+    var t = i + d;
+    if (t >= 0 && t < seq.length) show(seq[t]);
+  }
+
+  document.addEventListener("click", function(e){
+    var go = e.target.closest("[data-go]");
+    if (go) { show(go.getAttribute("data-go")); return; }
+
+    var b = e.target.closest(".roles button");
+    if (b) { show(ENTRY[b.getAttribute("data-branch")]); return; }
+
+    if (e.target.closest("#prev")) { step(-1); return; }
+    if (e.target.closest("#next")) { step(1);  return; }
+    if (e.target.closest("#reset")) { show("f0"); }
+  });
+
+  document.addEventListener("keydown", function(e){
+    if (e.target.closest("input,textarea")) return;
+    if (e.key === "ArrowRight") step(1);
+    if (e.key === "ArrowLeft")  step(-1);
+  });
+
+  show("f0");
+})();
+</script>
+</body>
+</html>

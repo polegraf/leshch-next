@@ -1,7 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   async rewrites() {
-    return [{ source: '/lola', destination: '/lola/index.html' }];
+    return [
+      { source: '/lola', destination: '/lola/index.html' },
+      { source: '/proto/digital-jazz', destination: '/proto/digital-jazz/index.html' },
+    ];
   },
   images: {
     remotePatterns: [
