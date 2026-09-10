@@ -251,6 +251,24 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 .stepper button[disabled]{color:var(--scaffold-line);cursor:default}
 .stepper .pos{color:var(--scaffold);font-variant-numeric:tabular-nums;min-width:64px;text-align:center}
 .reset{font-family:var(--mono);font-size:15.75px;letter-spacing:.08em;text-transform:uppercase;color:var(--scaffold);text-decoration:underline;text-underline-offset:3px}
+
+/* ---------- на реальном телефоне рамка не нужна ---------- */
+@media (max-width:700px){
+  body{
+    padding-inline:0;padding-block:8px 0;
+    height:100dvh;display:flex;flex-direction:column;
+  }
+  .wrap{max-width:none;flex:1 1 auto;min-height:0;gap:8px}
+  .rail{padding-inline:14px}
+  .note{margin-inline:14px}
+  .phone{
+    flex:1 1 auto;min-height:0;height:auto;
+    border-radius:0;border-left:none;border-right:none;border-bottom:none;
+  }
+  /* настоящая строка состояния уже прямо над страницей */
+  .status{display:none}
+  .pad{padding-bottom:28px}
+}
 </style>
 <style>
 :root{color-scheme:light dark}
