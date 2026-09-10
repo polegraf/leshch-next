@@ -258,18 +258,23 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
   html,body{overflow-x:hidden}
   body{
     padding-inline:0;padding-block:8px 0;
-    height:100dvh;display:flex;flex-direction:column;
+    min-height:100dvh;display:flex;flex-direction:column;
   }
-  .wrap{max-width:none;width:100%;flex:1 1 auto;min-height:0;gap:8px}
+  .wrap{max-width:none;width:100%;flex:1 1 auto;gap:8px}
   .rail{padding-inline:14px}
   .rail-top{flex-wrap:wrap;gap:6px 10px}
   .roles{flex-wrap:wrap}
   .stepper{gap:8px}
   .note{margin-inline:14px}
+
+  /* один скролл — документа. Никакой прокрутки внутри прокрутки */
   .phone{
-    flex:1 1 auto;min-height:0;height:auto;
+    flex:1 1 auto;height:auto;overflow:visible;
     border-radius:0;border-left:none;border-right:none;border-bottom:none;
   }
+  .view{overflow:visible}
+  .nav{position:sticky;bottom:0}
+
   /* настоящая строка состояния уже прямо над страницей */
   .status{display:none}
   .pad{padding-bottom:28px}
