@@ -90,7 +90,7 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 .roles button[aria-pressed="true"]{background:var(--ink);color:var(--on-ink)}
 .note{
   font-family:var(--mono);font-size:11px;line-height:1.55;color:var(--scaffold);
-  border-left:1px dashed var(--scaffold-line);padding-left:10px;
+  border-left:1px dashed var(--scaffold-line);padding-left:10px;margin-top:2px;
 }
 
 /* ---------- phone ---------- */
@@ -957,12 +957,7 @@ img{max-width:100%}
 
   </div>
 
-  <div class="note" id="note"></div>
-
-  <div class="legend scaffold" style="text-transform:none;letter-spacing:0;font-size:11px;line-height:1.6">
-    <p>Один непрерывный сценарий: выбор входа, короткая регистрация, первый полезный экран — и дальше то же место через месяц, когда в нём уже что-то происходит. Ветки переключаются сверху, шаги — стрелками или кнопками под телефоном.</p>
-    <p>Серая шкала намеренно: иерархия держится на кегле, весе и форме, цвет не подключён. Шрифт — Futura, если стоит в системе, иначе Jost.</p>
-  </div>
+  <div class="note" id="note" hidden></div>
 
 </div>
 
@@ -1026,8 +1021,9 @@ img{max-width:100%}
   var nextBtn  = document.getElementById("next");
   var branchBtns = Array.prototype.slice.call(document.querySelectorAll(".roles button"));
 
-  var branch  = "guest";
-  var current = "f0";
+  var branch   = "guest";
+  var current  = "f0";
+  var notesOn  = false;
 
   function branchOf(id){
     if (SHARED[id]) return branch;
@@ -1044,6 +1040,7 @@ img{max-width:100%}
 
     nameEl.textContent = META[id][0];
     noteEl.textContent = META[id][1];
+    noteEl.hidden = !notesOn;
 
     var v = document.querySelector('[data-screen="' + id + '"] .view');
     if (v) v.scrollTop = 0;
@@ -1083,6 +1080,10 @@ img{max-width:100%}
     if (e.target.closest("input,textarea")) return;
     if (e.key === "ArrowRight") step(1);
     if (e.key === "ArrowLeft")  step(-1);
+    if (e.key === "n" || e.key === "N" || e.key === "т" || e.key === "Т") {
+      notesOn = !notesOn;
+      noteEl.hidden = !notesOn;
+    }
   });
 
   show("f0");
