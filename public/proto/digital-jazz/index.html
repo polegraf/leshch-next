@@ -126,14 +126,16 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
   background:var(--surface);
 }
 .nav button{
-  padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:5px;
+  padding:10px 4px 12px;
+  /* жёсткие строки: иконка ровно 24px, подпись стартует с одной высоты во всех вкладках */
+  display:grid;grid-template-rows:24px auto;justify-items:center;align-items:center;gap:6px;
   font-size:15px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:500;
 }
+.nav-label{line-height:1;display:block}
 .nav button[aria-current="page"]{color:var(--ink)}
 .glyph{width:24px;height:24px;border:1.5px solid currentColor;border-radius:3px}
 .glyph.round{border-radius:50%}
-/* рисунок ниже остальных — добираем поля, чтобы бокс остался 24px и подписи стояли на одной линии */
-.glyph.bar{border-radius:1px;height:18px;margin-block:3px;border-width:1.5px;position:relative}
+.glyph.bar{border-radius:1px;height:18px;border-width:1.5px;position:relative}
 .glyph.bar::after{content:"";position:absolute;inset:3px 3px auto 3px;height:1.5px;background:currentColor}
 
 /* ---------- primitives ---------- */
@@ -375,10 +377,10 @@ img{max-width:100%}
         <button type="button" class="btn ghost">Новое событие</button>
       </div></div>
       <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
-        <button type="button" aria-current="page"><span class="glyph"></span>События</button>
-        <button type="button"><span class="glyph round"></span>Поиск</button>
-        <button type="button"><span class="glyph bar"></span>Диалоги</button>
-        <button type="button"><span class="glyph round"></span>Профиль</button>
+        <button type="button" aria-current="page"><span class="glyph"></span><span class="nav-label">События</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Поиск</span></button>
+        <button type="button"><span class="glyph bar"></span><span class="nav-label">Диалоги</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Профиль</span></button>
       </nav>
     </section>
 
@@ -459,10 +461,10 @@ img{max-width:100%}
         <button type="button" class="btn ghost" data-go="p3">Все разделы события</button>
       </div></div>
       <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
-        <button type="button" aria-current="page"><span class="glyph"></span>События</button>
-        <button type="button"><span class="glyph round"></span>Поиск</button>
-        <button type="button"><span class="glyph bar"></span>Диалоги</button>
-        <button type="button"><span class="glyph round"></span>Профиль</button>
+        <button type="button" aria-current="page"><span class="glyph"></span><span class="nav-label">События</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Поиск</span></button>
+        <button type="button"><span class="glyph bar"></span><span class="nav-label">Диалоги</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Профиль</span></button>
       </nav>
     </section>
 
@@ -476,10 +478,10 @@ img{max-width:100%}
         <div class="row-list" id="sections"></div>
       </div></div>
       <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
-        <button type="button" aria-current="page"><span class="glyph"></span>События</button>
-        <button type="button"><span class="glyph round"></span>Поиск</button>
-        <button type="button"><span class="glyph bar"></span>Диалоги</button>
-        <button type="button"><span class="glyph round"></span>Профиль</button>
+        <button type="button" aria-current="page"><span class="glyph"></span><span class="nav-label">События</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Поиск</span></button>
+        <button type="button"><span class="glyph bar"></span><span class="nav-label">Диалоги</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Профиль</span></button>
       </nav>
     </section>
 
@@ -528,10 +530,10 @@ img{max-width:100%}
         </div>
       </div></div>
       <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
-        <button type="button" aria-current="page"><span class="glyph"></span>Афиша</button>
-        <button type="button"><span class="glyph round"></span>Артисты</button>
-        <button type="button"><span class="glyph bar"></span>Билеты</button>
-        <button type="button"><span class="glyph round"></span>Я</button>
+        <button type="button" aria-current="page"><span class="glyph"></span><span class="nav-label">Афиша</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Артисты</span></button>
+        <button type="button"><span class="glyph bar"></span><span class="nav-label">Билеты</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Я</span></button>
       </nav>
     </section>
 
@@ -578,10 +580,10 @@ img{max-width:100%}
         </div>
       </div></div>
       <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
-        <button type="button" aria-current="page"><span class="glyph"></span>Афиша</button>
-        <button type="button"><span class="glyph round"></span>Артисты</button>
-        <button type="button"><span class="glyph bar"></span>Билеты</button>
-        <button type="button"><span class="glyph round"></span>Я</button>
+        <button type="button" aria-current="page"><span class="glyph"></span><span class="nav-label">Афиша</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Артисты</span></button>
+        <button type="button"><span class="glyph bar"></span><span class="nav-label">Билеты</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Я</span></button>
       </nav>
     </section>
 
@@ -637,9 +639,9 @@ img{max-width:100%}
         </div>
       </div></div>
       <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
-        <button type="button" aria-current="page"><span class="glyph bar"></span>Входящие</button>
-        <button type="button"><span class="glyph"></span>График</button>
-        <button type="button"><span class="glyph round"></span>Профиль</button>
+        <button type="button" aria-current="page"><span class="glyph bar"></span><span class="nav-label">Входящие</span></button>
+        <button type="button"><span class="glyph"></span><span class="nav-label">График</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Профиль</span></button>
       </nav>
     </section>
 
@@ -679,9 +681,9 @@ img{max-width:100%}
         </div>
       </div></div>
       <nav class="nav" style="grid-template-columns:repeat(3,1fr)">
-        <button type="button" aria-current="page"><span class="glyph bar"></span>Входящие</button>
-        <button type="button"><span class="glyph"></span>График</button>
-        <button type="button"><span class="glyph round"></span>Профиль</button>
+        <button type="button" aria-current="page"><span class="glyph bar"></span><span class="nav-label">Входящие</span></button>
+        <button type="button"><span class="glyph"></span><span class="nav-label">График</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Профиль</span></button>
       </nav>
     </section>
 
@@ -720,9 +722,9 @@ img{max-width:100%}
         <p class="cap">Промоутер увидит это в разделе «Требует решения». Пока он не ответил, предложение остаётся вашим.</p>
       </div></div>
       <nav class="nav" style="grid-template-columns:repeat(3,1fr)">
-        <button type="button" aria-current="page"><span class="glyph bar"></span>Входящие</button>
-        <button type="button"><span class="glyph"></span>График</button>
-        <button type="button"><span class="glyph round"></span>Профиль</button>
+        <button type="button" aria-current="page"><span class="glyph bar"></span><span class="nav-label">Входящие</span></button>
+        <button type="button"><span class="glyph"></span><span class="nav-label">График</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Профиль</span></button>
       </nav>
     </section>
 
@@ -881,9 +883,9 @@ img{max-width:100%}
         <button type="button" class="btn" data-go="fa3">Сохранить профиль</button>
       </div></div>
       <nav class="nav" style="grid-template-columns:repeat(3,1fr)">
-        <button type="button" aria-current="page"><span class="glyph bar"></span>Входящие</button>
-        <button type="button"><span class="glyph"></span>График</button>
-        <button type="button"><span class="glyph round"></span>Профиль</button>
+        <button type="button" aria-current="page"><span class="glyph bar"></span><span class="nav-label">Входящие</span></button>
+        <button type="button"><span class="glyph"></span><span class="nav-label">График</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Профиль</span></button>
       </nav>
     </section>
 
@@ -941,10 +943,10 @@ img{max-width:100%}
         </div>
       </div></div>
       <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
-        <button type="button" aria-current="page"><span class="glyph"></span>События</button>
-        <button type="button"><span class="glyph round"></span>Поиск</button>
-        <button type="button"><span class="glyph bar"></span>Диалоги</button>
-        <button type="button"><span class="glyph round"></span>Профиль</button>
+        <button type="button" aria-current="page"><span class="glyph"></span><span class="nav-label">События</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Поиск</span></button>
+        <button type="button"><span class="glyph bar"></span><span class="nav-label">Диалоги</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Профиль</span></button>
       </nav>
     </section>
 
