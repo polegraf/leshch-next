@@ -161,6 +161,20 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 .fallback-mark .d{font-size:39px;font-weight:500;letter-spacing:-.02em;line-height:1;font-variant-numeric:tabular-nums}
 .fallback-mark .m{font-size:15px;letter-spacing:.17em;text-transform:uppercase;color:var(--muted);margin-top:4px}
 
+.acc{border-bottom:1px solid var(--line-soft)}
+.acc:last-child{border-bottom:none}
+.acc-head{display:flex;gap:12px;align-items:flex-start;text-align:left;width:100%;padding:13px 0}
+.caret{
+  flex:0 0 auto;width:11px;height:11px;margin-top:8px;
+  border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);
+  transform:rotate(45deg);transition:transform .18s ease;
+}
+.acc-head[aria-expanded="true"] .caret{transform:rotate(-135deg);margin-top:12px}
+.acc-body{padding:0 0 16px;display:flex;flex-direction:column;gap:10px}
+.pair{display:flex;gap:9px}
+.pair .input{flex:1}
+.subrow{display:flex;gap:12px;align-items:center;text-align:left;width:100%;padding-top:2px}
+
 .deadline{font-size:18.75px;line-height:1.35;font-weight:500;color:var(--ink)}
 .deadline.soft{font-weight:400;color:var(--muted)}
 
@@ -817,10 +831,55 @@ img{max-width:100%}
         </div>
         <div class="sec">
           <span class="lab">Дособрать профиль</span>
-          <div class="row-list">
-            <button type="button" class="row-item"><span class="grow"><span class="body">Ссылка на сет или микс</span><span class="cap" style="display:block">поднимает в поиске выше всего</span></span><span class="chev">›</span></button>
-            <button type="button" class="row-item"><span class="grow"><span class="body">Технический райдер</span><span class="cap" style="display:block">подставится в предложения автоматически</span></span><span class="chev">›</span></button>
-            <button type="button" class="row-item"><span class="grow"><span class="body">Вилка гонорара</span><span class="cap" style="display:block">видна только промоутерам</span></span><span class="chev">›</span></button>
+          <div>
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Ссылка на сет или микс</span>
+                  <span class="cap">поднимает в поиске выше всего</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <div class="input"><span class="v empty">soundcloud.com/…</span></div>
+                <p class="cap">Можно несколько — добавите ещё после сохранения.</p>
+              </div>
+            </div>
+
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Технический райдер</span>
+                  <span class="cap">подставится в предложения автоматически</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <button type="button" class="btn ghost">Загрузить файл</button>
+                <p class="cap">PDF, DOCX или фото. Разберём и разложим по позициям: звук, мониторы, свет, бэклайн.</p>
+                <button type="button" class="subrow">
+                  <span class="grow"><span class="body">Заполнить вручную</span></span>
+                  <span class="chev">›</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Вилка гонорара</span>
+                  <span class="cap">видна только промоутерам</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <div class="pair">
+                  <div class="input"><span class="k">от</span><span class="v num">30 000 ₽</span></div>
+                  <div class="input"><span class="k">до</span><span class="v num">80 000 ₽</span></div>
+                </div>
+                <p class="cap">Промоутер видит вилку до того, как напишет — это отсекает заведомо мимо.</p>
+              </div>
+            </div>
           </div>
         </div>
         <button type="button" class="btn" data-go="fa3">Сохранить профиль</button>
@@ -1098,6 +1157,15 @@ img{max-width:100%}
   }
 
   document.addEventListener("click", function(e){
+    var acc = e.target.closest("[data-acc]");
+    if (acc) {
+      var open = acc.getAttribute("aria-expanded") === "true";
+      acc.setAttribute("aria-expanded", String(!open));
+      var panel = acc.nextElementSibling;
+      if (panel) panel.hidden = open;
+      return;
+    }
+
     var go = e.target.closest("[data-go]");
     if (go) { show(go.getAttribute("data-go")); return; }
 
