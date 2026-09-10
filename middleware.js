@@ -2,9 +2,25 @@ import { NextResponse } from 'next/server';
 
 // Basic-auth gate for everything under /proto.
 // Password comes from the PROTO_PASSWORD env var — never from this file,
-// because the repository is public. No env var set = nothing gets through.
+// because the repository is public.
 
 const REALM = 'Prototype';
+
+function noPassword() {
+  // Deliberately not a 401: this says "the deployment has no password
+  // configured", which is a different problem from "you typed it wrong".
+  return new NextResponse(
+    'PROTO_PASSWORD не задан в этом окружении. Добавьте переменную в настройках проекта и передеплойте без кеша сборки.',
+    {
+      status: 503,
+      headers: {
+        'Content-Type': 'text/plain; charset=utf-8',
+        'Cache-Control': 'no-store',
+        'X-Robots-Tag': 'noindex, nofollow',
+      },
+    }
+  );
+}
 
 function unauthorized() {
   return new NextResponse('Нужен пароль', {
@@ -18,8 +34,10 @@ function unauthorized() {
 }
 
 export function middleware(request) {
-  const expected = process.env.PROTO_PASSWORD;
-  if (!expected) return unauthorized();
+  // Trim: a value pasted into a dashboard often carries a trailing newline,
+  // and an untrimmed compare then fails for a password that looks correct.
+  const expected = (process.env.PROTO_PASSWORD || '').trim();
+  if (!expected) return noPassword();
 
   const header = request.headers.get('authorization') || '';
   const [scheme, encoded] = header.split(' ');
@@ -33,7 +51,7 @@ export function middleware(request) {
   }
 
   // Any username is accepted; only the password is checked.
-  const password = decoded.slice(decoded.indexOf(':') + 1);
+  const password = decoded.slice(decoded.indexOf(':') + 1).trim();
   if (password !== expected) return unauthorized();
 
   const response = NextResponse.next();
