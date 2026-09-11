@@ -63,6 +63,8 @@
 }
 
 *{box-sizing:border-box}
+/* свой, а не заимствованный у обёртки: display:flex на панелях перебивает браузерный hidden */
+[hidden]{display:none!important}
 body{
   margin:0;
   padding-inline:16px;
@@ -322,7 +324,6 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 :root{color-scheme:light dark}
 html,body{margin:0}
 img{max-width:100%}
-[hidden]{display:none!important}
 </style>
 </head>
 <body>
@@ -684,13 +685,204 @@ img{max-width:100%}
         </div>
 
         <button type="button" class="btn" data-go="g1">Показать афишу</button>
-        <button type="button" class="skip" data-go="w1">Изменить выбор</button>
+        <button type="button" class="skip" data-go="s1">Тонкая настройка потока</button>
       </div></div>
       <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
         <button type="button" aria-current="page"><span class="glyph"></span><span class="nav-label">Афиша</span></button>
         <button type="button"><span class="glyph round"></span><span class="nav-label">Артисты</span></button>
         <button type="button"><span class="glyph bar"></span><span class="nav-label">Билеты</span></button>
         <button type="button"><span class="glyph round"></span><span class="nav-label">Я</span></button>
+      </nav>
+    </section>
+
+    <section data-screen="s1" hidden>
+      <div class="topbar"><button type="button" class="back" data-go="w3" aria-label="Назад">‹</button><div class="h2">Мой поток</div></div>
+      <div class="view"><div class="pad">
+        <div class="sec">
+          <h1 class="h1">Что показывать в афише</h1>
+          <p class="cap">Живёт в профиле и меняется в любой момент. Визард просто заполнил это в первый раз.</p>
+        </div>
+
+        <div>
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Город</span>
+                  <span class="cap">Москва</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <div class="input"><span class="k">Город</span><span class="v">Москва</span></div>
+              </div>
+            </div>
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Жанры</span>
+                  <span class="cap">техно, хаус, брейкс, эмбиент</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <div class="chips"><span class="chip solid">Техно</span><span class="chip solid">Хаус</span><span class="chip solid">Брейкс</span><span class="chip solid">Эмбиент</span><span class="chip">Дип-хаус</span><span class="chip">Джаз</span><span class="chip">Инди-рок</span></div>
+              </div>
+            </div>
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Артисты</span>
+                  <span class="cap">Аня Кострова, ЛЕС</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <div class="chips"><span class="chip solid">Аня Кострова</span><span class="chip solid">ЛЕС</span><span class="chip">Рита Полевая</span></div>
+                <p class="cap">Присылаем, когда объявляют дату в вашем городе.</p>
+              </div>
+            </div>
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Форматы</span>
+                  <span class="cap">клубные ночи, джемы</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <div class="chips"><span class="chip solid">Клубные ночи</span><span class="chip solid">Джемы</span><span class="chip">Концерты</span><span class="chip">Фестивали</span><span class="chip">Лекции</span><span class="chip">Стендап</span></div>
+              </div>
+            </div>
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Билеты</span>
+                  <span class="cap">до 2 000 ₽</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <div class="pair"><div class="input"><span class="k">от</span><span class="v num">0 ₽</span></div><div class="input"><span class="k">до</span><span class="v num">2 000 ₽</span></div></div>
+                <p class="cap">Бесплатные события показываем всегда.</p>
+              </div>
+            </div>
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Что присылать</span>
+                  <span class="cap">новые даты, старт продаж</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <div class="chips"><span class="chip solid">Новые даты артистов</span><span class="chip solid">Старт продаж</span><span class="chip">Всё в городе</span></div>
+              </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn ghost" data-go="g1">Готово</button>
+      </div></div>
+      <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
+        <button type="button"><span class="glyph"></span><span class="nav-label">Афиша</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Артисты</span></button>
+        <button type="button"><span class="glyph bar"></span><span class="nav-label">Билеты</span></button>
+        <button type="button" aria-current="page"><span class="glyph round"></span><span class="nav-label">Я</span></button>
+      </nav>
+    </section>
+
+    <section data-screen="s2" hidden>
+      <div class="topbar"><button type="button" class="back" data-go="a3" aria-label="Назад">‹</button><div class="h2">Мой поток</div></div>
+      <div class="view"><div class="pad">
+        <div class="sec">
+          <h1 class="h1">Что мне присылать</h1>
+          <p class="cap">То же место в профиле, что у гостя, — только управляет входящими, а не афишей.</p>
+        </div>
+
+        <div>
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Что играю</span>
+                  <span class="cap">хаус, брейкс</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <div class="chips"><span class="chip solid">Хаус</span><span class="chip solid">Брейкс</span><span class="chip">Техно</span><span class="chip">Дип-хаус</span><span class="chip">Драм-н-бейс</span></div>
+              </div>
+            </div>
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Города</span>
+                  <span class="cap">Москва · готова на выезд</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <div class="chips"><span class="chip solid">Москва</span><span class="chip solid">Санкт-Петербург</span><span class="chip solid">Готова на выезд</span></div>
+                <p class="cap">На выезде предложение придёт с пометкой о трансфере.</p>
+              </div>
+            </div>
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Гонорар от</span>
+                  <span class="cap">30 000 ₽</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <div class="input"><span class="k">Не присылать дешевле</span><span class="v num">30 000 ₽</span></div>
+                <p class="cap">Промоутер видит вилку, но не этот порог.</p>
+              </div>
+            </div>
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Занятые даты</span>
+                  <span class="cap">3 отмечено</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <div class="chips"><span class="chip solid">26 сентября</span><span class="chip solid">4 октября</span><span class="chip solid">18 октября</span></div>
+                <p class="cap">В поиске у промоутеров вы в эти дни помечены занятой.</p>
+              </div>
+            </div>
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Какие события</span>
+                  <span class="cap">клубные ночи, фестивали</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <div class="chips"><span class="chip solid">Клубные ночи</span><span class="chip solid">Фестивали</span><span class="chip">Частные вечеринки</span><span class="chip">Корпоративы</span></div>
+                <p class="cap">Снятое не приходит вообще — не придётся отказывать.</p>
+              </div>
+            </div>
+            <div class="acc">
+              <button type="button" class="acc-head" aria-expanded="false" data-acc>
+                <span class="grow">
+                  <span class="body" style="display:block;color:var(--ink)">Что присылать</span>
+                  <span class="cap">предложения, ответы</span>
+                </span>
+                <span class="caret"></span>
+              </button>
+              <div class="acc-body" hidden>
+                <div class="chips"><span class="chip solid">Новые предложения</span><span class="chip solid">Ответы на встречные</span><span class="chip">Дайджест раз в неделю</span></div>
+              </div>
+            </div>
+        </div>
+
+        <button type="button" class="btn ghost" data-go="a1">Готово</button>
+      </div></div>
+      <nav class="nav" style="grid-template-columns:repeat(3,1fr)">
+        <button type="button"><span class="glyph bar"></span><span class="nav-label">Входящие</span></button>
+        <button type="button"><span class="glyph"></span><span class="nav-label">График</span></button>
+        <button type="button" aria-current="page"><span class="glyph round"></span><span class="nav-label">Профиль</span></button>
       </nav>
     </section>
 
@@ -1316,6 +1508,8 @@ img{max-width:100%}
     w1: ["гость · жанры", "Подбор вкуса стоит после афиши, а не до неё: сначала человек увидел, что здесь вообще есть, и только потом ему предлагают настроить. Обратный порядок — это Apple Music, который держит на пороге, пока не натыкаешь жанры."],
     w2: ["гость · артисты", "Второй шаг собран из первого — поэтому он короткий и выглядит умным. Это те же артисты, которых на соседней ветке ищет промоутер: один граф, две двери."],
     w3: ["гость · результат", "Экран обязан показать, что именно изменилось, иначе непонятно, за что платил вниманием. И вот здесь у гостя наконец появляется причина вернуться завтра."],
+    s1: ["гость · поток", "Постоянное место настройки в профиле. Визард — разовое заполнение этого же объекта, поэтому строки показывают текущее значение, а не задают вопрос."],
+    s2: ["артист · поток", "Тот же экран у другой роли: у гостя он управляет афишей, у артиста — входящими. Порог гонорара и снятые типы событий работают тихо: неподходящее просто не приходит, и не надо отказывать."],
     g2: ["гость · событие", "Решение о покупке принимают по имени артиста, времени и цене. Все три — выше кнопки."],
     a1: ["артист · через месяц", "То же место, что было пустым на входе. Ради этого экрана артист и открывает приложение: пришло что-нибудь или нет."],
     a2: ["артист · предложение", "Деньги и условия на одном экране. Три действия, включая торг."],
@@ -1325,8 +1519,8 @@ img{max-width:100%}
     p3: ["промоутер · разделы", "Тот же конструктор, но не последовательность. Заходить можно в любом порядке, индикатор показывает готовность, а не номер шага."]
   };
   var BRANCH = {
-    guest:  ["f0","g1","w1","w2","w3","g2","fg3","fend"],
-    artist: ["f0","fa1","fa2","fa3","a1","a2","a3","fend"],
+    guest:  ["f0","g1","w1","w2","w3","s1","g2","fg3","fend"],
+    artist: ["f0","fa1","fa2","fa3","a1","a2","a3","s2","fend"],
     promo:  ["f0","fp1","fp2","fp5","fp4","fp3","p1","p2","p3","fend"],
     supply: ["f0","fs1"]
   };
