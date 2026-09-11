@@ -4,3 +4,4 @@ node_modules/
 .env*.local
 .env
 _to_delete/
+lola_site/
