@@ -378,8 +378,9 @@ body{background:var(--page)}
 :root:not([data-color="off"]) .pick[data-c="artist"]{background:#E3FF12}
 :root:not([data-color="off"]) .pick[data-c="promo"] {background:#FF8000}
 :root:not([data-color="off"]) .pick[data-c="supply"]{background:#6BD0FF}
-:root:not([data-color="off"]) .pick .cap{color:rgba(20,22,26,.66)}
-:root:not([data-color="off"]) .pick .chev{color:rgba(20,22,26,.5)}
+/* на карточках входа тоже чёрный: в этой версии полупрозрачного текста нет */
+:root:not([data-color="off"]) .pick .cap{color:var(--ink)}
+:root:not([data-color="off"]) .pick .chev{color:var(--ink)}
 
 </style>
 <style>
