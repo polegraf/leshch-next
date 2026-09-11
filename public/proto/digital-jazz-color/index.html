@@ -359,6 +359,9 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 
 /* мелкий кегль набирается плотнее заголовочного: строки короткие,
    глазу не нужен разгон, а воздух между ними разваливает блок */
+/* распорка line-box берёт интерлиньяж контейнера, а не строчного элемента:
+   без этого .cap внутри карточки не может стать плотнее унаследованного 1.45 */
+.phone{line-height:1.25}
 .body{line-height:1.24}
 .cap,.rating,.state{line-height:1.2}
 .lab{line-height:1.25}
@@ -487,7 +490,7 @@ img{max-width:100%}
             </div>
           </div>
           <div class="figs" style="margin-top:14px">
-            <div class="fig"><span class="v num">482 400 ₽</span><span class="cap">сбор</span></div>
+            <div class="fig"><span class="v num">482 400 ₽</span><span class="cap">сбор</span></div>
             <div class="fig"><span class="v num">92</span><span class="cap">до нуля</span></div>
             <div class="fig"><span class="v num">+31</span><span class="cap">за 3 дня</span></div>
           </div>
@@ -504,7 +507,7 @@ img{max-width:100%}
               <span class="mark"></span>
               <span class="grow">
                 <span class="h2" style="display:block">Аня Кострова не подтвердила гонорар</span>
-                <span class="cap">Предложение висит 3 дня · 45 000 ₽</span>
+                <span class="cap">Предложение висит 3 дня · 45 000 ₽</span>
               </span>
               <span class="chev">›</span>
             </button>
@@ -600,7 +603,7 @@ img{max-width:100%}
             <span class="grow">
               <span class="h2" style="display:block">Ночь длинных треков</span>
               <span class="cap" style="display:block">Кира Верёвкина · ЛЕС · Аня Кострова</span>
-              <span class="cap" style="display:block">26 сентября, 22:00 · Завод №5 · от 800 ₽</span>
+              <span class="cap" style="display:block">26 сентября, 22:00 · Завод №5 · от 800 ₽</span>
             </span>
           </button>
 
@@ -821,12 +824,12 @@ img{max-width:100%}
               <button type="button" class="acc-head" aria-expanded="false" data-acc>
                 <span class="grow">
                   <span class="body" style="display:block;color:var(--ink)">Билеты</span>
-                  <span class="cap">до 2 000 ₽</span>
+                  <span class="cap">до 2 000 ₽</span>
                 </span>
                 <span class="caret"></span>
               </button>
               <div class="acc-body" hidden>
-                <div class="pair"><div class="input"><span class="k">от</span><span class="v num">0 ₽</span></div><div class="input"><span class="k">до</span><span class="v num">2 000 ₽</span></div></div>
+                <div class="pair"><div class="input"><span class="k">от</span><span class="v num">0 ₽</span></div><div class="input"><span class="k">до</span><span class="v num">2 000 ₽</span></div></div>
                 <p class="cap">Бесплатные события показываем всегда.</p>
               </div>
             </div>
@@ -892,12 +895,12 @@ img{max-width:100%}
               <button type="button" class="acc-head" aria-expanded="false" data-acc>
                 <span class="grow">
                   <span class="body" style="display:block;color:var(--ink)">Гонорар от</span>
-                  <span class="cap">30 000 ₽</span>
+                  <span class="cap">30 000 ₽</span>
                 </span>
                 <span class="caret"></span>
               </button>
               <div class="acc-body" hidden>
-                <div class="input"><span class="k">Не присылать дешевле</span><span class="v num">30 000 ₽</span></div>
+                <div class="input"><span class="k">Не присылать дешевле</span><span class="v num">30 000 ₽</span></div>
                 <p class="cap">Промоутер видит вилку, но не этот порог.</p>
               </div>
             </div>
@@ -981,9 +984,9 @@ img{max-width:100%}
         <div class="sec">
           <span class="lab">Билеты</span>
           <div class="row-list">
-            <div class="row-item"><span class="grow"><span class="body">Ранний вход</span><span class="cap" style="display:block">осталось 12</span></span><span class="h2 num">800 ₽</span></div>
-            <div class="row-item"><span class="grow"><span class="body">Стандарт</span></span><span class="h2 num">1 400 ₽</span></div>
-            <div class="row-item"><span class="grow"><span class="body">Стол на четверых</span><span class="cap" style="display:block">бронь, депозит</span></span><span class="h2 num">9 000 ₽</span></div>
+            <div class="row-item"><span class="grow"><span class="body">Ранний вход</span><span class="cap" style="display:block">осталось 12</span></span><span class="h2 num">800 ₽</span></div>
+            <div class="row-item"><span class="grow"><span class="body">Стандарт</span></span><span class="h2 num">1 400 ₽</span></div>
+            <div class="row-item"><span class="grow"><span class="body">Стол на четверых</span><span class="cap" style="display:block">бронь, депозит</span></span><span class="h2 num">9 000 ₽</span></div>
           </div>
         </div>
 
@@ -1017,7 +1020,7 @@ img{max-width:100%}
               <span class="grow">
                 <span class="h2" style="display:block">Ночь длинных треков</span>
                 <span class="cap" style="display:block">26 сентября · Завод №5 · выход 02:30</span>
-                <span class="h2 num" style="display:block;margin-top:5px">45 000 ₽</span>
+                <span class="h2 num" style="display:block;margin-top:5px">45 000 ₽</span>
                 <span class="state" style="display:block;margin-top:7px">Ответить до 12 сентября</span>
               </span>
               <span class="chev">›</span>
@@ -1027,7 +1030,7 @@ img{max-width:100%}
               <span class="grow">
                 <span class="h2" style="display:block">Ангар 12 · Осень</span>
                 <span class="cap" style="display:block">18 октября · Ангар 12 · выход 01:00</span>
-                <span class="h2 num" style="display:block;margin-top:5px">60 000 ₽</span>
+                <span class="h2 num" style="display:block;margin-top:5px">60 000 ₽</span>
                 <span class="state soft" style="display:block;margin-top:7px">Ответить до 30 сентября</span>
               </span>
               <span class="chev">›</span>
@@ -1071,7 +1074,7 @@ img{max-width:100%}
         </div>
 
         <div class="sec">
-          <span class="display num">45 000 ₽</span>
+          <span class="display num">45 000 ₽</span>
           <p class="cap">гонорар, выплата в течение 3 дней после события</p>
         </div>
 
@@ -1108,8 +1111,8 @@ img{max-width:100%}
       <div class="view"><div class="pad">
         <div class="sec">
           <span class="lab">Ваш ответ</span>
-          <div class="field" style="color:var(--ink);font-variant-numeric:tabular-nums">60 000 ₽</div>
-          <p class="cap">Было 45 000 ₽</p>
+          <div class="field" style="color:var(--ink);font-variant-numeric:tabular-nums">60 000 ₽</div>
+          <p class="cap">Было 45 000 ₽</p>
         </div>
 
         <div class="sec">
@@ -1203,13 +1206,13 @@ img{max-width:100%}
       <div class="view"><div class="pad">
         <div class="hero" style="padding-top:8px">
           <h1 class="h1">Ночь длинных треков</h1>
-          <p class="cap">Стандарт · 1 400 ₽</p>
+          <p class="cap">Стандарт · 1 400 ₽</p>
         </div>
         <div class="inputs">
           <div class="input"><span class="v empty">Почта для билета</span></div>
         </div>
         <p class="cap">Пароль не нужен — пришлём ссылку для входа. Подтверждение не блокирует покупку.</p>
-        <button type="button" class="btn" data-go="fend">Оплатить 1 400 ₽</button>
+        <button type="button" class="btn" data-go="fend">Оплатить 1 400 ₽</button>
       </div></div>
     </section>
 
@@ -1284,8 +1287,8 @@ img{max-width:100%}
               </button>
               <div class="acc-body" hidden>
                 <div class="pair">
-                  <div class="input"><span class="k">от</span><span class="v num">30 000 ₽</span></div>
-                  <div class="input"><span class="k">до</span><span class="v num">80 000 ₽</span></div>
+                  <div class="input"><span class="k">от</span><span class="v num">30 000 ₽</span></div>
+                  <div class="input"><span class="k">до</span><span class="v num">80 000 ₽</span></div>
                 </div>
                 <p class="cap">Промоутер видит вилку до того, как напишет — это отсекает заведомо мимо.</p>
               </div>
@@ -1384,7 +1387,7 @@ img{max-width:100%}
               <span class="h2" style="display:block">Аня Кострова</span>
               <span class="cap" style="display:block">Диджей · Москва · хаус, брейкс</span>
               <span class="rating"><em>4.8</em> · 12 событий с площадками</span>
-              <span class="h2 num" style="display:block;margin-top:5px">30 000 — 80 000 ₽</span>
+              <span class="h2 num" style="display:block;margin-top:5px">30 000 — 80 000 ₽</span>
               <span class="state" style="display:block;margin-top:7px">свободна 26 сентября</span>
             </span>
             <span class="chev">›</span>
@@ -1396,7 +1399,7 @@ img{max-width:100%}
               <span class="h2" style="display:block">ЛЕС</span>
               <span class="cap" style="display:block">Живой электронный · Москва · эмбиент, даунтемпо</span>
               <span class="rating">новый на платформе · оценок пока нет</span>
-              <span class="h2 num" style="display:block;margin-top:5px">60 000 — 90 000 ₽</span>
+              <span class="h2 num" style="display:block;margin-top:5px">60 000 — 90 000 ₽</span>
               <span class="state" style="display:block;margin-top:7px">свободен 26 сентября</span>
             </span>
             <span class="chev">›</span>
@@ -1415,7 +1418,7 @@ img{max-width:100%}
               <span class="h2" style="display:block">Рита Полевая</span>
               <span class="cap" style="display:block">Диджей · Москва · техно</span>
               <span class="rating"><em>4.6</em> · 21 событие</span>
-              <span class="h2 num" style="display:block;margin-top:5px">40 000 — 70 000 ₽</span>
+              <span class="h2 num" style="display:block;margin-top:5px">40 000 — 70 000 ₽</span>
               <span class="state soft" style="display:block;margin-top:7px">играет в Ангаре 12</span>
             </span>
           </div>
@@ -1448,7 +1451,7 @@ img{max-width:100%}
         </div>
 
         <div class="inputs">
-          <div class="input"><span class="k">Гонорар</span><span class="v num">45 000 ₽</span></div>
+          <div class="input"><span class="k">Гонорар</span><span class="v num">45 000 ₽</span></div>
           <div class="input"><span class="k">Выход</span><span class="v">02:30 — 04:00</span></div>
         </div>
 
@@ -1458,7 +1461,7 @@ img{max-width:100%}
           <span class="lab">Так это увидит Аня</span>
           <div class="banner">
             <span class="h2">Ночь длинных треков</span>
-            <span class="cap">26 сентября · Москва · 45 000 ₽</span>
+            <span class="cap">26 сентября · Москва · 45 000 ₽</span>
             <span class="cap" style="margin-top:5px">Организатор: <span style="color:var(--ink)">не заполнен</span></span>
           </div>
           <p class="body">Артист решает по двум вещам: сколько и кто зовёт. Второе пока пустое.</p>
