@@ -4,6 +4,7 @@ const nextConfig = {
     return [
       { source: '/lola', destination: '/lola/index.html' },
       { source: '/proto/digital-jazz', destination: '/proto/digital-jazz/index.html' },
+      { source: '/proto/digital-jazz-color', destination: '/proto/digital-jazz-color/index.html' },
     ];
   },
   images: {
