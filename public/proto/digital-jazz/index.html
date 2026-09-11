@@ -178,6 +178,11 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 .pair .input{flex:1}
 .subrow{display:flex;gap:12px;align-items:center;text-align:left;width:100%;padding-top:2px}
 
+.offer{border:1px solid var(--line);border-radius:8px;padding:14px;display:flex;flex-direction:column;gap:9px}
+.offer .btn-row{flex-direction:row;gap:8px}
+.offer .btn{padding:10px 14px}
+.fam{display:flex;flex-direction:column;gap:8px}
+
 .rating{font-size:18.75px;line-height:1.35;color:var(--muted);display:block;margin-top:4px}
 .rating em{font-style:normal;font-weight:500;color:var(--ink);font-variant-numeric:tabular-nums}
 
@@ -513,6 +518,15 @@ img{max-width:100%}
           </div>
         </div>
 
+        <div class="offer">
+          <span class="h2">Подобрать афишу под себя</span>
+          <span class="cap">Отметьте жанры — в ленте останется то, что вам близко. Две минуты, можно прервать.</span>
+          <span class="btn-row">
+            <button type="button" class="btn" data-go="w1">Подобрать</button>
+            <button type="button" class="btn ghost">Не сейчас</button>
+          </span>
+        </div>
+
         <div class="sec">
           <span class="lab">На этой неделе</span>
 
@@ -539,6 +553,138 @@ img{max-width:100%}
             </span>
           </button>
         </div>
+      </div></div>
+      <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
+        <button type="button" aria-current="page"><span class="glyph"></span><span class="nav-label">Афиша</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Артисты</span></button>
+        <button type="button"><span class="glyph bar"></span><span class="nav-label">Билеты</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Я</span></button>
+      </nav>
+    </section>
+
+    <section data-screen="w1" hidden>
+      <div class="topbar"><button type="button" class="back" data-go="g1" aria-label="Назад">‹</button><div class="h2">Что слушаете</div></div>
+      <div class="view"><div class="pad">
+        <div class="sec">
+          <div class="lab">Шаг 1 из 2</div>
+          <h1 class="h1">Отметьте, что вам близко</h1>
+          <p class="cap">Выбрано 4. Чем больше отметите, тем точнее лента — но хватит и одного.</p>
+        </div>
+
+        <div class="fam">
+          <span class="lab">Электроника</span>
+          <div class="chips">
+            <span class="chip solid">Техно</span><span class="chip solid">Хаус</span><span class="chip">Дип-хаус</span>
+            <span class="chip">Драм-н-бейс</span><span class="chip solid">Брейкс</span><span class="chip solid">Эмбиент</span>
+            <span class="chip">Даунтемпо</span><span class="chip">Хард-техно</span>
+          </div>
+        </div>
+
+        <div class="fam">
+          <span class="lab">Урбан и клуб</span>
+          <div class="chips">
+            <span class="chip">Хип-хоп</span><span class="chip">Трэп</span><span class="chip">Фонк</span>
+            <span class="chip">Дрилл</span><span class="chip">Афро-хаус</span>
+          </div>
+        </div>
+
+        <div class="fam">
+          <span class="lab">Инди и рок</span>
+          <div class="chips">
+            <span class="chip">Инди-рок</span><span class="chip">Пост-панк</span><span class="chip">Шугейз</span>
+            <span class="chip">Пост-рок</span><span class="chip">Гранж</span>
+          </div>
+        </div>
+
+        <div class="fam">
+          <span class="lab">Живое и корни</span>
+          <div class="chips">
+            <span class="chip">Джаз</span><span class="chip">Соул</span><span class="chip">Фанк</span>
+            <span class="chip">Диско</span><span class="chip">Этника</span>
+          </div>
+        </div>
+
+        <button type="button" class="btn" data-go="w2">Дальше</button>
+        <button type="button" class="skip" data-go="g1">Пропустить — вернусь к этому позже</button>
+      </div></div>
+    </section>
+
+    <section data-screen="w2" hidden>
+      <div class="topbar"><button type="button" class="back" data-go="w1" aria-label="Назад">‹</button><div class="h2">Кого слушать</div></div>
+      <div class="view"><div class="pad">
+        <div class="sec">
+          <div class="lab">Шаг 2 из 2</div>
+          <h1 class="h1">Собрали по вашим жанрам</h1>
+          <p class="cap">Подписка — чтобы узнать, когда они играют в вашем городе.</p>
+        </div>
+
+        <div class="row-list">
+          <div class="row-item">
+            <span class="thumb play"></span>
+            <span class="grow">
+              <span class="h2" style="display:block">Аня Кострова</span>
+              <span class="cap" style="display:block">Диджей · хаус, брейкс</span>
+              <span class="cap" style="display:block">ближайшее — 26 сентября, Завод №5</span>
+            </span>
+            <span class="chip solid">Слежу</span>
+          </div>
+          <div class="row-item">
+            <span class="thumb play"></span>
+            <span class="grow">
+              <span class="h2" style="display:block">ЛЕС</span>
+              <span class="cap" style="display:block">Живой электронный · эмбиент, даунтемпо</span>
+              <span class="cap" style="display:block">ближайшее — 26 сентября, Завод №5</span>
+            </span>
+            <span class="chip solid">Слежу</span>
+          </div>
+          <div class="row-item">
+            <span class="thumb play"></span>
+            <span class="grow">
+              <span class="h2" style="display:block">Рита Полевая</span>
+              <span class="cap" style="display:block">Диджей · техно</span>
+              <span class="cap" style="display:block">ближайшее — 18 октября, Ангар 12</span>
+            </span>
+            <span class="chip">Следить</span>
+          </div>
+        </div>
+
+        <button type="button" class="btn" data-go="w3">Готово</button>
+        <button type="button" class="skip" data-go="w3">Пока никого</button>
+      </div></div>
+    </section>
+
+    <section data-screen="w3" hidden>
+      <div class="view"><div class="pad">
+        <div class="sec" style="padding-top:12px">
+          <h1 class="h1">Лента настроена</h1>
+          <p class="body">9 событий в Москве под ваши жанры за ближайший месяц. Двое артистов будут присылать свои даты.</p>
+        </div>
+
+        <hr class="rule">
+
+        <div class="sec">
+          <span class="lab">Появилось в ленте</span>
+          <div class="row-list">
+            <div class="row-item">
+              <span class="thumb"></span>
+              <span class="grow">
+                <span class="h2" style="display:block">Ночь длинных треков</span>
+                <span class="cap" style="display:block">26 сентября · Завод №5 · хаус, брейкс</span>
+                <span class="state" style="display:block;margin-top:5px">оба ваших артиста в лайн-апе</span>
+              </span>
+            </div>
+            <div class="row-item">
+              <span class="thumb"></span>
+              <span class="grow">
+                <span class="h2" style="display:block">Открытый джем</span>
+                <span class="cap" style="display:block">3 октября · Мосты · эмбиент</span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="btn" data-go="g1">Показать афишу</button>
+        <button type="button" class="skip" data-go="w1">Изменить выбор</button>
       </div></div>
       <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
         <button type="button" aria-current="page"><span class="glyph"></span><span class="nav-label">Афиша</span></button>
@@ -1167,6 +1313,9 @@ img{max-width:100%}
     fp3: ["промоутер · сохранение", "Почта появляется после отправки предложения и с понятной причиной: чтобы узнать ответ. Не турникет, а адрес для ответа."],
     fend:["итог", "Семь шагов с блокирующей почтой против двух. Регистрация — способ не потерять сделанное, а не турникет на входе."],
     g1: ["гость · афиша", "Первая ценность сразу после выбора, без единого вопроса — город переключается прямо в заголовке. Вторая карточка — фолбэк для события без обложки: дата и площадка вместо серого прямоугольника."],
+    w1: ["гость · жанры", "Подбор вкуса стоит после афиши, а не до неё: сначала человек увидел, что здесь вообще есть, и только потом ему предлагают настроить. Обратный порядок — это Apple Music, который держит на пороге, пока не натыкаешь жанры."],
+    w2: ["гость · артисты", "Второй шаг собран из первого — поэтому он короткий и выглядит умным. Это те же артисты, которых на соседней ветке ищет промоутер: один граф, две двери."],
+    w3: ["гость · результат", "Экран обязан показать, что именно изменилось, иначе непонятно, за что платил вниманием. И вот здесь у гостя наконец появляется причина вернуться завтра."],
     g2: ["гость · событие", "Решение о покупке принимают по имени артиста, времени и цене. Все три — выше кнопки."],
     a1: ["артист · через месяц", "То же место, что было пустым на входе. Ради этого экрана артист и открывает приложение: пришло что-нибудь или нет."],
     a2: ["артист · предложение", "Деньги и условия на одном экране. Три действия, включая торг."],
@@ -1176,7 +1325,7 @@ img{max-width:100%}
     p3: ["промоутер · разделы", "Тот же конструктор, но не последовательность. Заходить можно в любом порядке, индикатор показывает готовность, а не номер шага."]
   };
   var BRANCH = {
-    guest:  ["f0","g1","g2","fg3","fend"],
+    guest:  ["f0","g1","w1","w2","w3","g2","fg3","fend"],
     artist: ["f0","fa1","fa2","fa3","a1","a2","a3","fend"],
     promo:  ["f0","fp1","fp2","fp5","fp4","fp3","p1","p2","p3","fend"],
     supply: ["f0","fs1"]
