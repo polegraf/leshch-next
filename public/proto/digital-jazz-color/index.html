@@ -323,38 +323,34 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 
 /* ================= цветовое кодирование веток =================
    Цвет несёт одну работу — «где я», принадлежность к ветке.
-   Действие остаётся чёрным, как в серой версии: два разных языка,
-   и они не спорят. Иерархия внутри белого листа не тронута. */
+   Действие остаётся чёрным, как в серой версии: два языка, они не спорят.
+
+   Внутри рамки цвет идёт на всю плоскость, поэтому серые подложки
+   переопределены в полупрозрачный чёрный: фиксированный серый на
+   насыщенном фоне грязнит, а альфа тонируется самой веткой. */
 :root{--brand:#FFFFFF;--page:#E9EBEE;--on-brand:#14161A}
 :root[data-branch="guest"]:not([data-color="off"]) {--brand:#CB8CFF;--page:color-mix(in srgb,#CB8CFF 20%,#fff)}
 :root[data-branch="artist"]:not([data-color="off"]){--brand:#C6F03C;--page:color-mix(in srgb,#C6F03C 22%,#fff)}
 :root[data-branch="promo"]:not([data-color="off"]) {--brand:#FF9236;--page:color-mix(in srgb,#FF9236 20%,#fff)}
 :root[data-branch="supply"]:not([data-color="off"]){--brand:#6BD0FF;--page:color-mix(in srgb,#6BD0FF 22%,#fff)}
 
+:root:not([data-color="off"]){
+  --surface:transparent;
+  --fill-2:rgba(20,22,26,.07);
+  --fill:rgba(20,22,26,.14);
+  --line:rgba(20,22,26,.28);
+  --line-soft:rgba(20,22,26,.16);
+  --ink:#14161A;
+  --ink-2:rgba(20,22,26,.74);
+  --muted:rgba(20,22,26,.56);
+  --on-ink:#FFFFFF;
+}
+
 body{background:var(--page)}
-
-.phone{background:var(--brand);border-color:rgba(20,22,26,.16)}
-.status{color:rgba(20,22,26,.5)}
-.topbar{border-bottom-color:rgba(20,22,26,.16)}
-.topbar .h2,.back{color:var(--on-brand)}
-.nav{background:transparent;border-top-color:rgba(20,22,26,.16)}
-.nav button{color:rgba(20,22,26,.55)}
-.nav button[aria-current="page"]{color:var(--on-brand)}
-
-/* белый лист с содержимым плавает на цвете ветки */
-:root:not([data-color="off"]) .pad{
-  background:var(--surface);
-  border-radius:18px;
-  margin:10px 10px 14px;
-  padding:18px 16px 24px;
-}
-:root:not([data-color="off"]) .roles button[aria-pressed="true"]{
-  background:var(--brand);color:var(--on-brand);
-}
-
-@media (max-width:700px){
-  :root:not([data-color="off"]) .pad{margin:8px 8px 12px}
-}
+:root:not([data-color="off"]) .phone{background:var(--brand);border-color:rgba(20,22,26,.2)}
+:root:not([data-color="off"]) .nav{background:transparent}
+:root:not([data-color="off"]) .input{background:transparent}
+:root:not([data-color="off"]) .roles button[aria-pressed="true"]{background:var(--brand);color:var(--on-brand)}
 
 </style>
 <style>
