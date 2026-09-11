@@ -4,7 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow, noarchive">
-<meta name="referrer" content="no-referrer">
 <title>Digital Jazz Лоу-фай</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1698,5 +1697,24 @@ img{max-width:100%}
   show("f0");
 })();
 </script>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4MYGT2TVRJ"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments)}
+gtag('js', new Date());
+gtag('config', 'G-4MYGT2TVRJ');
+
+// Что именно смотрели: выбранная ветка и включение цвета.
+document.addEventListener("click", function (e) {
+  var pick = e.target.closest && e.target.closest(".pick");
+  if (pick) { gtag('event', 'proto_branch', {branch: pick.getAttribute("data-c") || "?"}); return; }
+  if (e.target.closest && e.target.closest("#colorToggle")) {
+    var on = document.documentElement.getAttribute("data-color") === "off";
+    gtag('event', 'proto_color', {state: on ? "on" : "off"});
+  }
+}, true);
+</script>
+
 </body>
 </html>
