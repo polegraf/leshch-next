@@ -349,6 +349,14 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
   --on-ink:var(--brand);
 }
 
+/* на насыщенном фоне тонкий шрифт вибрирует и теряет плотность,
+   поэтому заголовочный слой уходит на ступень тяжелее.
+   Абзацы и подписи не трогаем — иначе разница между ними и заголовком съедается. */
+:root:not([data-color="off"]) .display{font-weight:600}
+:root:not([data-color="off"]) .h1{font-weight:600}
+:root:not([data-color="off"]) .h2{font-weight:600}
+:root:not([data-color="off"]) span.body{font-weight:500}
+
 body{background:var(--page)}
 :root:not([data-color="off"]) .phone{background:var(--brand);border-color:rgba(20,22,26,.2)}
 :root:not([data-color="off"]) .nav{background:transparent}
