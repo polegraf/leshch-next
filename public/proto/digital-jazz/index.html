@@ -178,8 +178,16 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 .pair .input{flex:1}
 .subrow{display:flex;gap:12px;align-items:center;text-align:left;width:100%;padding-top:2px}
 
-.deadline{font-size:18.75px;line-height:1.35;font-weight:500;color:var(--ink)}
-.deadline.soft{font-weight:400;color:var(--muted)}
+.state{font-size:18.75px;line-height:1.35;font-weight:500;color:var(--ink)}
+.state.soft{font-weight:400;color:var(--muted)}
+
+/* превью микса: тапаешь по обложке — слушаешь */
+.thumb.play{position:relative}
+.thumb.play::after{
+  content:"";position:absolute;left:50%;top:50%;transform:translate(-40%,-50%);
+  border-left:15px solid var(--ink-2);
+  border-top:9px solid transparent;border-bottom:9px solid transparent;
+}
 
 .chip{
   display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:100px;
@@ -605,7 +613,7 @@ img{max-width:100%}
                 <span class="h2" style="display:block">Ночь длинных треков</span>
                 <span class="cap" style="display:block">26 сентября · Завод №5 · выход 02:30</span>
                 <span class="h2 num" style="display:block;margin-top:5px">45 000 ₽</span>
-                <span class="deadline" style="display:block;margin-top:7px">Ответить до 12 сентября</span>
+                <span class="state" style="display:block;margin-top:7px">Ответить до 12 сентября</span>
               </span>
               <span class="chev">›</span>
             </button>
@@ -615,7 +623,7 @@ img{max-width:100%}
                 <span class="h2" style="display:block">Ангар 12 · Осень</span>
                 <span class="cap" style="display:block">18 октября · Ангар 12 · выход 01:00</span>
                 <span class="h2 num" style="display:block;margin-top:5px">60 000 ₽</span>
-                <span class="deadline soft" style="display:block;margin-top:7px">Ответить до 30 сентября</span>
+                <span class="state soft" style="display:block;margin-top:7px">Ответить до 30 сентября</span>
               </span>
               <span class="chev">›</span>
             </button>
@@ -937,7 +945,7 @@ img{max-width:100%}
           <span class="lab">С чего обычно начинают</span>
           <div class="row-list">
             <button type="button" class="row-item"><span class="grow"><span class="body">Выбрать площадку</span><span class="cap" style="display:block">в Москве 34 площадки на 300–700 человек</span></span><span class="chev">›</span></button>
-            <button type="button" class="row-item" data-go="fp4"><span class="grow"><span class="body">Позвать артистов</span><span class="cap" style="display:block">предложения уходят прямо отсюда</span></span><span class="chev">›</span></button>
+            <button type="button" class="row-item" data-go="fp5"><span class="grow"><span class="body">Позвать артистов</span><span class="cap" style="display:block">предложения уходят прямо отсюда</span></span><span class="chev">›</span></button>
             <button type="button" class="row-item"><span class="grow"><span class="body">Открыть продажи</span><span class="cap" style="display:block">нужны площадка и типы билетов</span></span><span class="chev">›</span></button>
           </div>
         </div>
@@ -950,8 +958,75 @@ img{max-width:100%}
       </nav>
     </section>
 
+    <section data-screen="fp5" hidden>
+      <div class="topbar"><button type="button" class="back" data-go="fp2" aria-label="Назад">‹</button><div class="h2">Кого зовём</div></div>
+      <div class="view"><div class="pad">
+        <div class="sec">
+          <div class="lab">Ночь длинных треков · 26 сентября · Москва</div>
+          <div class="field">Имя, жанр или специализация</div>
+          <div class="chips">
+            <span class="chip solid">Свободны 26 сентября</span>
+            <span class="chip solid">Диджеи</span>
+            <span class="chip">В бюджете</span>
+            <span class="chip">С райдером</span>
+          </div>
+          <p class="cap">12 подходят из 34 диджеев в Москве</p>
+        </div>
+
+        <div class="row-list">
+          <button type="button" class="row-item" data-go="fp4">
+            <span class="thumb play"></span>
+            <span class="grow">
+              <span class="h2" style="display:block">Аня Кострова</span>
+              <span class="cap" style="display:block">Диджей · Москва · хаус, брейкс</span>
+              <span class="h2 num" style="display:block;margin-top:5px">30 000 — 80 000 ₽</span>
+              <span class="state" style="display:block;margin-top:7px">свободна 26 сентября</span>
+            </span>
+            <span class="chev">›</span>
+          </button>
+
+          <button type="button" class="row-item" data-go="fp4">
+            <span class="thumb play"></span>
+            <span class="grow">
+              <span class="h2" style="display:block">ЛЕС</span>
+              <span class="cap" style="display:block">Живой электронный · Москва · эмбиент, даунтемпо</span>
+              <span class="h2 num" style="display:block;margin-top:5px">60 000 — 90 000 ₽</span>
+              <span class="state" style="display:block;margin-top:7px">свободен 26 сентября</span>
+            </span>
+            <span class="chev">›</span>
+          </button>
+
+        </div>
+
+        <hr class="rule">
+
+        <div class="sec">
+          <span class="lab">Заняты в эту дату · 1</span>
+          <div class="row-list">
+          <div class="row-item">
+            <span class="thumb play"></span>
+            <span class="grow">
+              <span class="h2" style="display:block">Рита Полевая</span>
+              <span class="cap" style="display:block">Диджей · Москва · техно</span>
+              <span class="h2 num" style="display:block;margin-top:5px">40 000 — 70 000 ₽</span>
+              <span class="state soft" style="display:block;margin-top:7px">играет в Ангаре 12</span>
+            </span>
+          </div>
+          </div>
+        </div>
+
+        <p class="cap">Вилку видно до того, как написать. Свои даты артист отмечает сам.</p>
+      </div></div>
+      <nav class="nav" style="grid-template-columns:repeat(4,1fr)">
+        <button type="button" aria-current="page"><span class="glyph"></span><span class="nav-label">События</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Поиск</span></button>
+        <button type="button"><span class="glyph bar"></span><span class="nav-label">Диалоги</span></button>
+        <button type="button"><span class="glyph round"></span><span class="nav-label">Профиль</span></button>
+      </nav>
+    </section>
+
     <section data-screen="fp4" hidden>
-      <div class="topbar"><button type="button" class="back" data-go="fp2" aria-label="Назад">‹</button><div class="h2">Приглашение</div></div>
+      <div class="topbar"><button type="button" class="back" data-go="fp5" aria-label="Назад">‹</button><div class="h2">Приглашение</div></div>
       <div class="view"><div class="pad">
         <div class="sec">
           <div class="lab">Кому</div>
@@ -1081,6 +1156,7 @@ img{max-width:100%}
     fa3: ["артист · сохранение", "Профиль уже работает. Почта — чтобы не потерять его и получать предложения, а не чтобы войти."],
     fp1: ["промоутер · 2", "Событие заводится тремя полями. Площадка, лайн-ап и смета — потом и в любом порядке."],
     fp2: ["промоутер · 3", "Пустое событие, но уже живое: ноль продаж, честная причина, почему нет безубытка, и три первых шага."],
+    fp5: ["промоутер · поиск артиста", "Здесь их граф специализаций впервые работает на промоутера. Выбирают по трём вещам: свободен ли на эту дату, попадает ли в бюджет и как звучит — поэтому вилка и превью микса стоят в самой строке, а не в карточке артиста."],
     fp4: ["промоутер · профиль под повод", "Момент, когда профиль промоутера впервые кому-то нужен: артист смотрит, кто зовёт. Не «заполните профиль» на пустом месте, а превью того, что увидит Аня, и три поля рядом. Пропустить можно — но видно, чем платишь."],
     fp3: ["промоутер · сохранение", "Почта появляется после отправки предложения и с понятной причиной: чтобы узнать ответ. Не турникет, а адрес для ответа."],
     fend:["итог", "Семь шагов с блокирующей почтой против двух. Регистрация — способ не потерять сделанное, а не турникет на входе."],
@@ -1096,7 +1172,7 @@ img{max-width:100%}
   var BRANCH = {
     guest:  ["f0","g1","g2","fg3","fend"],
     artist: ["f0","fa1","fa2","fa3","a1","a2","a3","fend"],
-    promo:  ["f0","fp1","fp2","fp4","fp3","p1","p2","p3","fend"],
+    promo:  ["f0","fp1","fp2","fp5","fp4","fp3","p1","p2","p3","fend"],
     supply: ["f0","fs1"]
   };
   var SHARED = { f0:1, fend:1 };
