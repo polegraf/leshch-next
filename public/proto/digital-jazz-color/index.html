@@ -351,6 +351,17 @@ body{background:var(--page)}
 :root:not([data-color="off"]) .nav{background:transparent}
 :root:not([data-color="off"]) .input{background:transparent}
 :root:not([data-color="off"]) .roles button[aria-pressed="true"]{background:var(--brand);color:var(--on-brand)}
+/* на нейтральных экранах ветка ещё не выбрана — метка возвращается к чёрной */
+:root[data-branch="neutral"] .roles button[aria-pressed="true"]{background:#14161A;color:#fff}
+
+/* заходной экран — легенда: здесь цвет и объясняется, поэтому сам экран нейтрален */
+:root:not([data-color="off"]) .pick{border-color:transparent}
+:root:not([data-color="off"]) .pick[data-c="guest"] {background:#CB8CFF}
+:root:not([data-color="off"]) .pick[data-c="artist"]{background:#C6F03C}
+:root:not([data-color="off"]) .pick[data-c="promo"] {background:#FF9236}
+:root:not([data-color="off"]) .pick[data-c="supply"]{background:#6BD0FF}
+:root:not([data-color="off"]) .pick .cap{color:rgba(20,22,26,.66)}
+:root:not([data-color="off"]) .pick .chev{color:rgba(20,22,26,.5)}
 
 </style>
 <style>
@@ -1121,28 +1132,28 @@ img{max-width:100%}
         </div>
 
         <div class="picks">
-          <button type="button" class="pick" data-go="g1">
+          <button type="button" class="pick" data-c="guest" data-go="g1">
             <span class="grow">
               <span class="h2" style="display:block">Сходить на событие</span>
               <span class="cap">Афиша города, билеты, любимые артисты</span>
             </span>
             <span class="chev">›</span>
           </button>
-          <button type="button" class="pick" data-go="fa1">
+          <button type="button" class="pick" data-c="artist" data-go="fa1">
             <span class="grow">
               <span class="h2" style="display:block">Выступать</span>
               <span class="cap">Получать предложения от промоутеров и площадок</span>
             </span>
             <span class="chev">›</span>
           </button>
-          <button type="button" class="pick" data-go="fp1">
+          <button type="button" class="pick" data-c="promo" data-go="fp1">
             <span class="grow">
               <span class="h2" style="display:block">Провести событие</span>
               <span class="cap">Собрать лайн-ап, команду, смету и продать билеты</span>
             </span>
             <span class="chev">›</span>
           </button>
-          <button type="button" class="pick" data-go="fs1">
+          <button type="button" class="pick" data-c="supply" data-go="fs1">
             <span class="grow">
               <span class="h2" style="display:block">Предложить площадку или услугу</span>
               <span class="cap">Зал, прокат, звук, свет, охрана, кейтеринг — получать заказы</span>
@@ -1596,7 +1607,7 @@ img{max-width:100%}
     branchBtns.forEach(function(b){
       b.setAttribute("aria-pressed", String(b.getAttribute("data-branch") === branch));
     });
-    document.documentElement.setAttribute("data-branch", branch);
+    document.documentElement.setAttribute("data-branch", SHARED[id] ? "neutral" : branch);
 
     var seq = BRANCH[branch];
     var i   = seq.indexOf(id);
