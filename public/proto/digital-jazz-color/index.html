@@ -341,9 +341,12 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
   --line:rgba(20,22,26,.28);
   --line-soft:rgba(20,22,26,.16);
   --ink:#14161A;
-  --ink-2:rgba(20,22,26,.74);
-  --muted:rgba(20,22,26,.56);
-  --on-ink:#FFFFFF;
+  /* вся типографика чёрная: на насыщенном фоне серый вымывается,
+     а иерархия и так держится на кегле и весе, не на цвете */
+  --ink-2:#14161A;
+  --muted:#14161A;
+  /* выворотка — цветом фона: текст на чёрном читается как пробитая плоскость */
+  --on-ink:var(--brand);
 }
 
 body{background:var(--page)}
