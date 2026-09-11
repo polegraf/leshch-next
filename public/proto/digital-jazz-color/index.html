@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow, noarchive">
 <meta name="referrer" content="no-referrer">
-<title>Digital Jazz Цветовой код</title>
+<title>Digital Jazz Лоу-фай</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
@@ -289,6 +289,8 @@ span.body{font-weight:600}
 .compare .t{font-family:var(--mono);font-size:15.75px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 
 .rail-top > .reset + .reset{margin-left:14px}
+#colorToggle{text-decoration:none;border:1px dashed var(--scaffold-line);border-radius:3px;padding:4px 9px}
+:root:not([data-color="off"]) #colorToggle{background:#14161A;color:var(--brand);border-color:#14161A}
 .stepper{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:15.75px;letter-spacing:.08em;text-transform:uppercase}
 .stepper button{color:var(--ink);padding:3px 0}
 .stepper button[disabled]{color:var(--scaffold-line);cursor:default}
@@ -412,7 +414,7 @@ img{max-width:100%}
         <span class="pos" id="pos">1 / 6</span>
         <button type="button" id="next" aria-label="Следующий экран">Далее →</button>
       </div>
-      <button type="button" class="reset" id="colorToggle">Без цвета</button>
+      <button type="button" class="reset" id="colorToggle">Вкл Ц</button>
         <button type="button" class="reset" id="reset">В начало</button>
     </div>
   </div>
@@ -1669,7 +1671,7 @@ img{max-width:100%}
       var root = document.documentElement;
       var off = root.getAttribute("data-color") === "off";
       if (off) { root.removeAttribute("data-color"); } else { root.setAttribute("data-color", "off"); }
-      document.getElementById("colorToggle").textContent = off ? "Без цвета" : "Вернуть цвет";
+      document.getElementById("colorToggle").textContent = off ? "Выкл Ц" : "Вкл Ц";
       return;
     }
 
@@ -1685,6 +1687,13 @@ img{max-width:100%}
       noteEl.hidden = !notesOn;
     }
   });
+
+  // по умолчанию серая подача; ссылка с -color в пути открывается сразу в цвете
+  (function(){
+    var wantColor = location.pathname.indexOf("-color") > -1;
+    if (!wantColor) document.documentElement.setAttribute("data-color", "off");
+    document.getElementById("colorToggle").textContent = wantColor ? "Выкл Ц" : "Вкл Ц";
+  })();
 
   show("f0");
 })();

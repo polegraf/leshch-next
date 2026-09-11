@@ -114,7 +114,7 @@ button{font:inherit;color:inherit;background:none;border:none;padding:0;cursor:p
 .h1{font-size:33px;line-height:1.12;font-weight:500;letter-spacing:-.015em;text-wrap:balance;margin:0}
 .h2{font-size:24.75px;line-height:1.2;font-weight:500;letter-spacing:-.008em;margin:0}
 .body{font-size:21.75px;line-height:1.45;color:var(--ink-2);margin:0}
-/* строка-заголовок внутри ряда — не абзац: тяжелее, чтобы читаться заголовком */
+/* строка-заголовок внутри ряда — не абзац */
 span.body{font-weight:600}
 .cap{font-size:18.75px;line-height:1.35;color:var(--muted);margin:0}
 .lab{font-size:15px;font-weight:500;letter-spacing:.17em;text-transform:uppercase;color:var(--muted)}
@@ -288,6 +288,9 @@ span.body{font-weight:600}
 .compare{display:flex;flex-direction:column;gap:7px}
 .compare .t{font-family:var(--mono);font-size:15.75px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 
+.rail-top > .reset + .reset{margin-left:14px}
+#colorToggle{text-decoration:none;border:1px dashed var(--scaffold-line);border-radius:3px;padding:4px 9px}
+:root:not([data-color="off"]) #colorToggle{background:#14161A;color:var(--brand);border-color:#14161A}
 .stepper{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:15.75px;letter-spacing:.08em;text-transform:uppercase}
 .stepper button{color:var(--ink);padding:3px 0}
 .stepper button[disabled]{color:var(--scaffold-line);cursor:default}
@@ -321,9 +324,73 @@ span.body{font-weight:600}
   .status{display:none}
   .pad{padding-bottom:28px}
 }
+
+/* ================= цветовое кодирование веток =================
+   Цвет несёт одну работу — «где я», принадлежность к ветке.
+   Действие остаётся чёрным, как в серой версии: два языка, они не спорят.
+
+   Внутри рамки цвет идёт на всю плоскость, поэтому серые подложки
+   переопределены в полупрозрачный чёрный: фиксированный серый на
+   насыщенном фоне грязнит, а альфа тонируется самой веткой. */
+:root{--brand:#FFFFFF;--page:#E9EBEE;--on-brand:#14161A}
+:root[data-branch="guest"]:not([data-color="off"]) {--brand:#E7C4FF;--page:color-mix(in srgb,#E7C4FF 20%,#fff)}
+:root[data-branch="artist"]:not([data-color="off"]){--brand:#E3FF12;--page:color-mix(in srgb,#E3FF12 22%,#fff)}
+:root[data-branch="promo"]:not([data-color="off"]) {--brand:#FF8000;--page:color-mix(in srgb,#FF8000 20%,#fff)}
+:root[data-branch="supply"]:not([data-color="off"]){--brand:#6BD0FF;--page:color-mix(in srgb,#6BD0FF 22%,#fff)}
+
+:root:not([data-color="off"]){
+  --surface:transparent;
+  --fill-2:rgba(20,22,26,.07);
+  --fill:rgba(20,22,26,.14);
+  --line:rgba(20,22,26,.28);
+  --line-soft:rgba(20,22,26,.16);
+  --ink:#14161A;
+  /* вся типографика чёрная: на насыщенном фоне серый вымывается,
+     а иерархия и так держится на кегле и весе, не на цвете */
+  --ink-2:#14161A;
+  --muted:#14161A;
+  /* выворотка — цветом фона: текст на чёрном читается как пробитая плоскость */
+  --on-ink:var(--brand);
+}
+
+/* на насыщенном фоне тонкий шрифт вибрирует и теряет плотность,
+   поэтому заголовочный слой уходит на ступень тяжелее.
+   Абзацы и подписи не трогаем — иначе разница между ними и заголовком съедается. */
+:root:not([data-color="off"]) .display{font-weight:600}
+:root:not([data-color="off"]) .h1{font-weight:600}
+:root:not([data-color="off"]) .h2{font-weight:600}
+
+/* мелкий кегль набирается плотнее заголовочного: строки короткие,
+   глазу не нужен разгон, а воздух между ними разваливает блок */
+/* распорка line-box берёт интерлиньяж контейнера, а не строчного элемента:
+   без этого .cap внутри карточки не может стать плотнее унаследованного 1.45 */
+.phone{line-height:1.25}
+.body{line-height:1.24}
+.cap,.rating,.state{line-height:1.2}
+.lab{line-height:1.25}
+.chip{line-height:1.15}
+
+body{background:var(--page)}
+:root:not([data-color="off"]) .phone{background:var(--brand);border-color:rgba(20,22,26,.2)}
+:root:not([data-color="off"]) .nav{background:transparent}
+:root:not([data-color="off"]) .input{background:transparent}
+:root:not([data-color="off"]) .roles button[aria-pressed="true"]{background:var(--brand);color:var(--on-brand)}
+/* на нейтральных экранах ветка ещё не выбрана — метка возвращается к чёрной */
+:root[data-branch="neutral"] .roles button[aria-pressed="true"]{background:#14161A;color:#fff}
+
+/* заходной экран — легенда: здесь цвет и объясняется, поэтому сам экран нейтрален */
+:root:not([data-color="off"]) .pick{border-color:transparent}
+:root:not([data-color="off"]) .pick[data-c="guest"] {background:#E7C4FF}
+:root:not([data-color="off"]) .pick[data-c="artist"]{background:#E3FF12}
+:root:not([data-color="off"]) .pick[data-c="promo"] {background:#FF8000}
+:root:not([data-color="off"]) .pick[data-c="supply"]{background:#6BD0FF}
+/* на карточках входа тоже чёрный: в этой версии полупрозрачного текста нет */
+:root:not([data-color="off"]) .pick .cap{color:var(--ink)}
+:root:not([data-color="off"]) .pick .chev{color:var(--ink)}
+
 </style>
 <style>
-:root{color-scheme:light dark}
+:root{color-scheme:light}
 html,body{margin:0}
 img{max-width:100%}
 </style>
@@ -347,7 +414,8 @@ img{max-width:100%}
         <span class="pos" id="pos">1 / 6</span>
         <button type="button" id="next" aria-label="Следующий экран">Далее →</button>
       </div>
-      <button type="button" class="reset" id="reset">В начало</button>
+      <button type="button" class="reset" id="colorToggle">Вкл Ц</button>
+        <button type="button" class="reset" id="reset">В начало</button>
     </div>
   </div>
 
@@ -425,7 +493,7 @@ img{max-width:100%}
             </div>
           </div>
           <div class="figs" style="margin-top:14px">
-            <div class="fig"><span class="v num">482 400 ₽</span><span class="cap">сбор</span></div>
+            <div class="fig"><span class="v num">482 400 ₽</span><span class="cap">сбор</span></div>
             <div class="fig"><span class="v num">92</span><span class="cap">до нуля</span></div>
             <div class="fig"><span class="v num">+31</span><span class="cap">за 3 дня</span></div>
           </div>
@@ -442,7 +510,7 @@ img{max-width:100%}
               <span class="mark"></span>
               <span class="grow">
                 <span class="h2" style="display:block">Аня Кострова не подтвердила гонорар</span>
-                <span class="cap">Предложение висит 3 дня · 45 000 ₽</span>
+                <span class="cap">Предложение висит 3 дня · 45 000 ₽</span>
               </span>
               <span class="chev">›</span>
             </button>
@@ -538,7 +606,7 @@ img{max-width:100%}
             <span class="grow">
               <span class="h2" style="display:block">Ночь длинных треков</span>
               <span class="cap" style="display:block">Кира Верёвкина · ЛЕС · Аня Кострова</span>
-              <span class="cap" style="display:block">26 сентября, 22:00 · Завод №5 · от 800 ₽</span>
+              <span class="cap" style="display:block">26 сентября, 22:00 · Завод №5 · от 800 ₽</span>
             </span>
           </button>
 
@@ -759,12 +827,12 @@ img{max-width:100%}
               <button type="button" class="acc-head" aria-expanded="false" data-acc>
                 <span class="grow">
                   <span class="body" style="display:block;color:var(--ink)">Билеты</span>
-                  <span class="cap">до 2 000 ₽</span>
+                  <span class="cap">до 2 000 ₽</span>
                 </span>
                 <span class="caret"></span>
               </button>
               <div class="acc-body" hidden>
-                <div class="pair"><div class="input"><span class="k">от</span><span class="v num">0 ₽</span></div><div class="input"><span class="k">до</span><span class="v num">2 000 ₽</span></div></div>
+                <div class="pair"><div class="input"><span class="k">от</span><span class="v num">0 ₽</span></div><div class="input"><span class="k">до</span><span class="v num">2 000 ₽</span></div></div>
                 <p class="cap">Бесплатные события показываем всегда.</p>
               </div>
             </div>
@@ -830,12 +898,12 @@ img{max-width:100%}
               <button type="button" class="acc-head" aria-expanded="false" data-acc>
                 <span class="grow">
                   <span class="body" style="display:block;color:var(--ink)">Гонорар от</span>
-                  <span class="cap">30 000 ₽</span>
+                  <span class="cap">30 000 ₽</span>
                 </span>
                 <span class="caret"></span>
               </button>
               <div class="acc-body" hidden>
-                <div class="input"><span class="k">Не присылать дешевле</span><span class="v num">30 000 ₽</span></div>
+                <div class="input"><span class="k">Не присылать дешевле</span><span class="v num">30 000 ₽</span></div>
                 <p class="cap">Промоутер видит вилку, но не этот порог.</p>
               </div>
             </div>
@@ -919,9 +987,9 @@ img{max-width:100%}
         <div class="sec">
           <span class="lab">Билеты</span>
           <div class="row-list">
-            <div class="row-item"><span class="grow"><span class="body">Ранний вход</span><span class="cap" style="display:block">осталось 12</span></span><span class="h2 num">800 ₽</span></div>
-            <div class="row-item"><span class="grow"><span class="body">Стандарт</span></span><span class="h2 num">1 400 ₽</span></div>
-            <div class="row-item"><span class="grow"><span class="body">Стол на четверых</span><span class="cap" style="display:block">бронь, депозит</span></span><span class="h2 num">9 000 ₽</span></div>
+            <div class="row-item"><span class="grow"><span class="body">Ранний вход</span><span class="cap" style="display:block">осталось 12</span></span><span class="h2 num">800 ₽</span></div>
+            <div class="row-item"><span class="grow"><span class="body">Стандарт</span></span><span class="h2 num">1 400 ₽</span></div>
+            <div class="row-item"><span class="grow"><span class="body">Стол на четверых</span><span class="cap" style="display:block">бронь, депозит</span></span><span class="h2 num">9 000 ₽</span></div>
           </div>
         </div>
 
@@ -955,7 +1023,7 @@ img{max-width:100%}
               <span class="grow">
                 <span class="h2" style="display:block">Ночь длинных треков</span>
                 <span class="cap" style="display:block">26 сентября · Завод №5 · выход 02:30</span>
-                <span class="h2 num" style="display:block;margin-top:5px">45 000 ₽</span>
+                <span class="h2 num" style="display:block;margin-top:5px">45 000 ₽</span>
                 <span class="state" style="display:block;margin-top:7px">Ответить до 12 сентября</span>
               </span>
               <span class="chev">›</span>
@@ -965,7 +1033,7 @@ img{max-width:100%}
               <span class="grow">
                 <span class="h2" style="display:block">Ангар 12 · Осень</span>
                 <span class="cap" style="display:block">18 октября · Ангар 12 · выход 01:00</span>
-                <span class="h2 num" style="display:block;margin-top:5px">60 000 ₽</span>
+                <span class="h2 num" style="display:block;margin-top:5px">60 000 ₽</span>
                 <span class="state soft" style="display:block;margin-top:7px">Ответить до 30 сентября</span>
               </span>
               <span class="chev">›</span>
@@ -1009,7 +1077,7 @@ img{max-width:100%}
         </div>
 
         <div class="sec">
-          <span class="display num">45 000 ₽</span>
+          <span class="display num">45 000 ₽</span>
           <p class="cap">гонорар, выплата в течение 3 дней после события</p>
         </div>
 
@@ -1046,8 +1114,8 @@ img{max-width:100%}
       <div class="view"><div class="pad">
         <div class="sec">
           <span class="lab">Ваш ответ</span>
-          <div class="field" style="color:var(--ink);font-variant-numeric:tabular-nums">60 000 ₽</div>
-          <p class="cap">Было 45 000 ₽</p>
+          <div class="field" style="color:var(--ink);font-variant-numeric:tabular-nums">60 000 ₽</div>
+          <p class="cap">Было 45 000 ₽</p>
         </div>
 
         <div class="sec">
@@ -1089,28 +1157,28 @@ img{max-width:100%}
         </div>
 
         <div class="picks">
-          <button type="button" class="pick" data-go="g1">
+          <button type="button" class="pick" data-c="guest" data-go="g1">
             <span class="grow">
               <span class="h2" style="display:block">Сходить на событие</span>
               <span class="cap">Афиша города, билеты, любимые артисты</span>
             </span>
             <span class="chev">›</span>
           </button>
-          <button type="button" class="pick" data-go="fa1">
+          <button type="button" class="pick" data-c="artist" data-go="fa1">
             <span class="grow">
               <span class="h2" style="display:block">Выступать</span>
               <span class="cap">Получать предложения от промоутеров и площадок</span>
             </span>
             <span class="chev">›</span>
           </button>
-          <button type="button" class="pick" data-go="fp1">
+          <button type="button" class="pick" data-c="promo" data-go="fp1">
             <span class="grow">
               <span class="h2" style="display:block">Провести событие</span>
               <span class="cap">Собрать лайн-ап, команду, смету и продать билеты</span>
             </span>
             <span class="chev">›</span>
           </button>
-          <button type="button" class="pick" data-go="fs1">
+          <button type="button" class="pick" data-c="supply" data-go="fs1">
             <span class="grow">
               <span class="h2" style="display:block">Предложить площадку или услугу</span>
               <span class="cap">Зал, прокат, звук, свет, охрана, кейтеринг — получать заказы</span>
@@ -1141,13 +1209,13 @@ img{max-width:100%}
       <div class="view"><div class="pad">
         <div class="hero" style="padding-top:8px">
           <h1 class="h1">Ночь длинных треков</h1>
-          <p class="cap">Стандарт · 1 400 ₽</p>
+          <p class="cap">Стандарт · 1 400 ₽</p>
         </div>
         <div class="inputs">
           <div class="input"><span class="v empty">Почта для билета</span></div>
         </div>
         <p class="cap">Пароль не нужен — пришлём ссылку для входа. Подтверждение не блокирует покупку.</p>
-        <button type="button" class="btn" data-go="fend">Оплатить 1 400 ₽</button>
+        <button type="button" class="btn" data-go="fend">Оплатить 1 400 ₽</button>
       </div></div>
     </section>
 
@@ -1222,8 +1290,8 @@ img{max-width:100%}
               </button>
               <div class="acc-body" hidden>
                 <div class="pair">
-                  <div class="input"><span class="k">от</span><span class="v num">30 000 ₽</span></div>
-                  <div class="input"><span class="k">до</span><span class="v num">80 000 ₽</span></div>
+                  <div class="input"><span class="k">от</span><span class="v num">30 000 ₽</span></div>
+                  <div class="input"><span class="k">до</span><span class="v num">80 000 ₽</span></div>
                 </div>
                 <p class="cap">Промоутер видит вилку до того, как напишет — это отсекает заведомо мимо.</p>
               </div>
@@ -1322,7 +1390,7 @@ img{max-width:100%}
               <span class="h2" style="display:block">Аня Кострова</span>
               <span class="cap" style="display:block">Диджей · Москва · хаус, брейкс</span>
               <span class="rating"><em>4.8</em> · 12 событий с площадками</span>
-              <span class="h2 num" style="display:block;margin-top:5px">30 000 — 80 000 ₽</span>
+              <span class="h2 num" style="display:block;margin-top:5px">30 000 — 80 000 ₽</span>
               <span class="state" style="display:block;margin-top:7px">свободна 26 сентября</span>
             </span>
             <span class="chev">›</span>
@@ -1334,7 +1402,7 @@ img{max-width:100%}
               <span class="h2" style="display:block">ЛЕС</span>
               <span class="cap" style="display:block">Живой электронный · Москва · эмбиент, даунтемпо</span>
               <span class="rating">новый на платформе · оценок пока нет</span>
-              <span class="h2 num" style="display:block;margin-top:5px">60 000 — 90 000 ₽</span>
+              <span class="h2 num" style="display:block;margin-top:5px">60 000 — 90 000 ₽</span>
               <span class="state" style="display:block;margin-top:7px">свободен 26 сентября</span>
             </span>
             <span class="chev">›</span>
@@ -1353,7 +1421,7 @@ img{max-width:100%}
               <span class="h2" style="display:block">Рита Полевая</span>
               <span class="cap" style="display:block">Диджей · Москва · техно</span>
               <span class="rating"><em>4.6</em> · 21 событие</span>
-              <span class="h2 num" style="display:block;margin-top:5px">40 000 — 70 000 ₽</span>
+              <span class="h2 num" style="display:block;margin-top:5px">40 000 — 70 000 ₽</span>
               <span class="state soft" style="display:block;margin-top:7px">играет в Ангаре 12</span>
             </span>
           </div>
@@ -1386,7 +1454,7 @@ img{max-width:100%}
         </div>
 
         <div class="inputs">
-          <div class="input"><span class="k">Гонорар</span><span class="v num">45 000 ₽</span></div>
+          <div class="input"><span class="k">Гонорар</span><span class="v num">45 000 ₽</span></div>
           <div class="input"><span class="k">Выход</span><span class="v">02:30 — 04:00</span></div>
         </div>
 
@@ -1396,7 +1464,7 @@ img{max-width:100%}
           <span class="lab">Так это увидит Аня</span>
           <div class="banner">
             <span class="h2">Ночь длинных треков</span>
-            <span class="cap">26 сентября · Москва · 45 000 ₽</span>
+            <span class="cap">26 сентября · Москва · 45 000 ₽</span>
             <span class="cap" style="margin-top:5px">Организатор: <span style="color:var(--ink)">не заполнен</span></span>
           </div>
           <p class="body">Артист решает по двум вещам: сколько и кто зовёт. Второе пока пустое.</p>
@@ -1564,6 +1632,7 @@ img{max-width:100%}
     branchBtns.forEach(function(b){
       b.setAttribute("aria-pressed", String(b.getAttribute("data-branch") === branch));
     });
+    document.documentElement.setAttribute("data-branch", SHARED[id] ? "neutral" : branch);
 
     var seq = BRANCH[branch];
     var i   = seq.indexOf(id);
@@ -1598,6 +1667,14 @@ img{max-width:100%}
 
     if (e.target.closest("#prev")) { step(-1); return; }
     if (e.target.closest("#next")) { step(1);  return; }
+    if (e.target.closest("#colorToggle")) {
+      var root = document.documentElement;
+      var off = root.getAttribute("data-color") === "off";
+      if (off) { root.removeAttribute("data-color"); } else { root.setAttribute("data-color", "off"); }
+      document.getElementById("colorToggle").textContent = off ? "Выкл Ц" : "Вкл Ц";
+      return;
+    }
+
     if (e.target.closest("#reset")) { show("f0"); }
   });
 
@@ -1610,6 +1687,13 @@ img{max-width:100%}
       noteEl.hidden = !notesOn;
     }
   });
+
+  // по умолчанию серая подача; ссылка с -color в пути открывается сразу в цвете
+  (function(){
+    var wantColor = location.pathname.indexOf("-color") > -1;
+    if (!wantColor) document.documentElement.setAttribute("data-color", "off");
+    document.getElementById("colorToggle").textContent = wantColor ? "Выкл Ц" : "Вкл Ц";
+  })();
 
   show("f0");
 })();
