@@ -37,6 +37,8 @@ body { margin: 0; background: #06040B; }
     @media (prefers-reduced-motion: reduce) {
       .rise, .lift, .layer, .layer-slow { animation: none !important; }
     }
+
+  .rise, .lift, .layer, .layer-slow { animation: none !important; }
   html, body { background: #06040B; }
   body { margin: 0; }
 </style>
@@ -863,8 +865,15 @@ body { margin: 0; background: #06040B; }
 <script>
 (function () {
   var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var native = window.CSS && CSS.supports && CSS.supports('animation-timeline', 'view()');
-  if (reduce || native) return;                 // CSS already handles it, or motion is off
+  if (reduce) return;                            // motion is off, nothing to reveal
+  // Deliberately NOT skipping this when the browser reports native support for
+  // animation-timeline: view() — inside the scale wrapper (transform: scale(...)
+  // on the 1440px design root, needed to fit any viewport width) the native
+  // scroll-driven animation is unreliable: some .rise elements have been
+  // observed stuck at their 0% keyframe (opacity: 0) forever, even while
+  // fully inside the viewport, cutting off real content. The CSS @supports
+  // block below is neutralized for this exported page (see NEUTRALIZE), so
+  // this JS-driven IntersectionObserver reveal is the only path that runs.
 
   var layers = [].slice.call(document.querySelectorAll('.layer, .layer-slow'));
   var rises  = [].slice.call(document.querySelectorAll('.rise, .lift'));
