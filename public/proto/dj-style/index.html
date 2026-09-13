@@ -38,7 +38,7 @@ body { margin: 0; background: #06040B; }
       .rise, .lift, .layer, .layer-slow { animation: none !important; }
     }
 
-  .rise, .lift, .layer, .layer-slow { animation: none !important; }
+  .rise, .lift, .layer, .layer-slow { animation: none !important; opacity: 1 !important; transform: none !important; }
   html, body { background: #06040B; }
   body { margin: 0; }
 </style>
@@ -859,58 +859,6 @@ body { margin: 0; background: #06040B; }
   // Belt-and-braces for older/odd mobile browsers where none of the above fire in time.
   setTimeout(scheduleMeasure, 400);
   setTimeout(scheduleMeasure, 1500);
-})();
-</script>
-
-<script>
-(function () {
-  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (reduce) return;                            // motion is off, nothing to reveal
-  // Deliberately NOT skipping this when the browser reports native support for
-  // animation-timeline: view() — inside the scale wrapper (transform: scale(...)
-  // on the 1440px design root, needed to fit any viewport width) the native
-  // scroll-driven animation is unreliable: some .rise elements have been
-  // observed stuck at their 0% keyframe (opacity: 0) forever, even while
-  // fully inside the viewport, cutting off real content. The CSS @supports
-  // block below is neutralized for this exported page (see NEUTRALIZE), so
-  // this JS-driven IntersectionObserver reveal is the only path that runs.
-
-  var layers = [].slice.call(document.querySelectorAll('.layer, .layer-slow'));
-  var rises  = [].slice.call(document.querySelectorAll('.rise, .lift'));
-
-  rises.forEach(function (el) {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(48px)';
-    el.style.transition = 'opacity .75s ease, transform .75s cubic-bezier(.22,.7,.3,1)';
-  });
-  var io = new IntersectionObserver(function (entries) {
-    entries.forEach(function (e) {
-      if (!e.isIntersecting) return;
-      e.target.style.opacity = '';
-      e.target.style.transform = '';
-      io.unobserve(e.target);
-    });
-  }, { threshold: 0.12 });
-  rises.forEach(function (el) { io.observe(el); });
-
-  function park() {
-    var vh = window.innerHeight;
-    layers.forEach(function (el) {
-      var r = el.getBoundingClientRect();
-      var p = (r.top + r.height / 2 - vh / 2) / vh;
-      if (p < -1.6 || p > 1.6) return;
-      var amp = el.classList.contains('layer') ? 110 : 56;
-      el.style.transform = 'translateY(' + (-p * amp).toFixed(1) + 'px)';
-    });
-  }
-  var queued = false;
-  addEventListener('scroll', function () {
-    if (queued) return;
-    queued = true;
-    requestAnimationFrame(function () { queued = false; park(); });
-  }, { passive: true });
-  addEventListener('resize', park, { passive: true });
-  park();
 })();
 </script>
 </body>
