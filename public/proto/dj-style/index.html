@@ -832,11 +832,31 @@ body { margin: 0; background: #06040B; }
   }
   measureAndApply();
   var queued = false;
-  addEventListener('resize', function () {
+  function scheduleMeasure() {
     if (queued) return;
     queued = true;
     requestAnimationFrame(function () { queued = false; measureAndApply(); });
-  }, { passive: true });
+  }
+  addEventListener('resize', scheduleMeasure, { passive: true });
+  // The very first measureAndApply() often runs before the Jost webfont has
+  // swapped in (font-display: swap serves the fallback font first) and
+  // before every image has finished decoding — both change line-wrapping
+  // and layout height afterwards. On a fast desktop + warm cache this
+  // resolves before anyone notices; on a slower mobile connection it does
+  // not, so the wrap's height (and its overflow:hidden clip) gets locked in
+  // too short and the bottom of the page is cut off. Re-measure once fonts
+  // are ready, once the window 'load' event fires, and keep watching the
+  // content's natural size for any later change (images, font swap, etc.).
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(scheduleMeasure);
+  }
+  addEventListener('load', scheduleMeasure);
+  if (window.ResizeObserver) {
+    new ResizeObserver(scheduleMeasure).observe(inner);
+  }
+  // Belt-and-braces for older/odd mobile browsers where none of the above fire in time.
+  setTimeout(scheduleMeasure, 400);
+  setTimeout(scheduleMeasure, 1500);
 })();
 </script>
 
