@@ -34,6 +34,14 @@ function unauthorized() {
 }
 
 export function middleware(request) {
+  // dj-style is a public prototype link - no password gate for it.
+  const { pathname } = request.nextUrl;
+  if (pathname === '/proto/dj-style' || pathname.startsWith('/proto/dj-style/')) {
+    const response = NextResponse.next();
+    response.headers.set('X-Robots-Tag', 'noindex, nofollow');
+    return response;
+  }
+
   // Trim: a value pasted into a dashboard often carries a trailing newline,
   // and an untrimmed compare then fails for a password that looks correct.
   const expected = (process.env.PROTO_PASSWORD || '').trim();
