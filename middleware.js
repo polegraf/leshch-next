@@ -34,9 +34,13 @@ function unauthorized() {
 }
 
 export function middleware(request) {
-  // dj-style is a public prototype link - no password gate for it.
+  // dj-style (and its sibling preview pages) are public prototype links - no password gate for them.
   const { pathname } = request.nextUrl;
-  if (pathname === '/proto/dj-style' || pathname.startsWith('/proto/dj-style/')) {
+  const PUBLIC_PROTO_PREFIXES = ['/proto/dj-style', '/proto/dj-style-profile'];
+  const isPublicProto = PUBLIC_PROTO_PREFIXES.some(
+    (prefix) => pathname === prefix || pathname.startsWith(prefix + '/')
+  );
+  if (isPublicProto) {
     const response = NextResponse.next();
     response.headers.set('X-Robots-Tag', 'noindex, nofollow');
     return response;
