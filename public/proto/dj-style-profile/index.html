@@ -2,26 +2,16 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Digital Jazz — профиль исполнителя</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Digital Jazz — профиль</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:wght@300;400;500;600;700&display=swap">
 <style>
-body { margin: 0; background: #06040B; }
-  html, body { background: #06040B; }
-  body { margin: 0; }
+  html, body { background: #06040B; margin: 0; }
+  body { -webkit-text-size-adjust: 100%; }
 </style>
 </head>
 <body>
-<div id="dj-scale-wrap" style="width: 100%; overflow: hidden;">
-<div id="dj-scale-inner" style="width: 500px; transform-origin: top left; padding: 35px 35px 60px 35px; background: #06040B; font-family: Jost, system-ui, -apple-system, 'Segoe UI', sans-serif; display: flex; flex-direction: column; align-items: center; gap: 18px;">
-
-  <div style="align-self: flex-start; font-weight: 500; font-size: 10px; letter-spacing: 0.22em; color: #8A84A0;">ПРОФИЛЬ ИСПОЛНИТЕЛЯ · ДО / ПОСЛЕ / КРУПНЕЕ</div>
-
-  <div style="width: 430px; padding: 14px; border-radius: 56px; background: linear-gradient(160deg, #232028, #0c0a10); box-shadow: 0 40px 90px -24px rgba(0,0,0,0.65), inset 0 0 0 1px rgba(255,255,255,0.06);">
-    <div style="position: relative; width: 402px; border-radius: 42px; overflow: hidden; background: #06040B;">
-      <div style="position: absolute; top: 9px; left: 50%; transform: translateX(-50%); width: 88px; height: 24px; background: #000; border-radius: 14px; z-index: 30;"></div>
-
-      <div style="position: relative; width: 402px; padding: 52px 22px 30px 22px; box-sizing: border-box; color: #E6E6F0; background: radial-gradient(60% 40% at 85% 0%, rgba(112,46,204,0.28) 0%, rgba(66,26,128,0) 60%);">
+      <div style="position: relative; width: 100%; max-width: 480px; margin: 0 auto; padding: max(24px, env(safe-area-inset-top)) 22px 40px 22px; box-sizing: border-box; min-height: 100vh; color: #E6E6F0; background: radial-gradient(60% 40% at 85% 0%, rgba(112,46,204,0.28) 0%, rgba(66,26,128,0) 60%);">
 
         <!-- ПРОФИЛЬ -->
         <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
@@ -143,46 +133,5 @@ body { margin: 0; background: #06040B; }
         </div>
 
       </div>
-    </div>
-  </div>
-
-</div>
-</div>
-
-<script>
-(function () {
-  var wrap = document.getElementById('dj-scale-wrap');
-  var inner = document.getElementById('dj-scale-inner');
-  if (!wrap || !inner) return;
-  var DESIGN_WIDTH = 500;
-  function measureAndApply() {
-    inner.style.transform = 'scale(1)';
-    var naturalHeight = inner.scrollHeight;
-    var w = wrap.clientWidth;
-    var scale = Math.min(1, w / DESIGN_WIDTH);
-    inner.style.transform = 'scale(' + scale + ')';
-    wrap.style.height = (naturalHeight * scale) + 'px';
-    if (w > DESIGN_WIDTH) {
-      wrap.style.display = 'flex';
-      wrap.style.justifyContent = 'center';
-    } else {
-      wrap.style.display = 'block';
-    }
-  }
-  measureAndApply();
-  var queued = false;
-  function scheduleMeasure() {
-    if (queued) return;
-    queued = true;
-    requestAnimationFrame(function () { queued = false; measureAndApply(); });
-  }
-  addEventListener('resize', scheduleMeasure, { passive: true });
-  if (document.fonts && document.fonts.ready) { document.fonts.ready.then(scheduleMeasure); }
-  addEventListener('load', scheduleMeasure);
-  if (window.ResizeObserver) { new ResizeObserver(scheduleMeasure).observe(inner); }
-  setTimeout(scheduleMeasure, 400);
-  setTimeout(scheduleMeasure, 1500);
-})();
-</script>
 </body>
 </html>
