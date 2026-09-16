@@ -171,6 +171,7 @@
 
   .chevron { transition: transform 260ms ease; flex-shrink: 0; }
   .card.collapsed .chevron { transform: rotate(180deg); }
+  .card[data-id="profile"] .card-header { cursor: default; }
 
   .drag-handle {
     display: flex; align-items: center; justify-content: center;
@@ -365,7 +366,6 @@
             <div class="drag-handle" data-drag-handle>
               <svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
             </div>
-            <svg class="chevron" width="27" height="27" viewBox="0 0 24 24" fill="none" stroke="#ADA6C7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 15 12 9l-6 6"/></svg>
           </div>
         </div>
         <div class="card-body-wrap">
@@ -781,8 +781,9 @@
 (function () {
   var list = document.getElementById('cardList');
 
-  // ---- collapse / expand ----
+  // ---- collapse / expand (profile card always stays open) ----
   Array.prototype.slice.call(list.children).forEach(function (card) {
+    if (card.dataset.id === 'profile') return;
     var header = card.querySelector('[data-toggle]');
     header.addEventListener('click', function (e) {
       if (e.target.closest('[data-drag-handle]')) return;
