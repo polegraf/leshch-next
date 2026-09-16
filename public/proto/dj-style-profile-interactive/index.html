@@ -213,6 +213,25 @@
     background: rgba(192,250,53,0.1); border: 1px solid rgba(192,250,53,0.4); color: #C0FA35;
     font-size: 15px; font-weight: 500; white-space: nowrap;
   }
+  .cta-pill-ghost {
+    display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 999px;
+    background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.16); color: #C7C3D6;
+    font-size: 15px; font-weight: 500; white-space: nowrap;
+  }
+
+  /* offers */
+  .offers-tabs { display: flex; gap: 10px; margin-bottom: 30px; }
+  .offers-tab {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+    padding: 13px 10px; border-radius: 999px;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12);
+    color: #9A94B3; font-size: 15px; font-weight: 600; cursor: pointer;
+  }
+  .offers-tab svg { flex-shrink: 0; }
+  .offers-tab.active { background: #C0FA35; border-color: #C0FA35; color: #14170A; }
+  .offers-empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 20px 10px 6px; }
+  .offers-empty-icon { font-size: 38px; line-height: 1; }
+  .offers-empty-text { font-size: 15px; color: #9A94B3; }
 
   /* video / press materials */
   .vbtn-row { display: flex; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
@@ -685,7 +704,8 @@
             <div class="card-body">
               <div class="empty-hint">Технический и хозяйственный райдер — организаторы увидят его при бронировании и подготовке площадки.</div>
               <div class="cta-row">
-                <div class="cta-pill"><span>+ загрузить райдер</span></div>
+                <div class="cta-pill"><span>+ создать</span></div>
+                <div class="cta-pill-ghost"><span>Загрузить файл</span></div>
               </div>
             </div>
           </div>
@@ -708,9 +728,18 @@
         <div class="card-body-wrap">
           <div class="card-body-inner">
             <div class="card-body">
-              <div class="empty-hint">Бизнесы и площадки смогут предлагать вам сотрудничество прямо здесь.</div>
-              <div class="cta-row">
-                <div class="cta-pill"><span>+ добавить бизнес</span></div>
+              <div class="offers-tabs">
+                <div class="offers-tab active" data-offers-tab="inbox">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8l9 6 9-6"/><rect x="3" y="5" width="18" height="14" rx="2"/></svg>
+                  <span>Входящие</span>
+                </div>
+                <div class="offers-tab" data-offers-tab="sent">
+                  <span>Отправленные</span>
+                </div>
+              </div>
+              <div class="offers-empty">
+                <div class="offers-empty-icon">📥</div>
+                <div class="offers-empty-text" data-offers-empty-text>Нет входящих предложений</div>
               </div>
             </div>
           </div>
@@ -775,6 +804,21 @@
     item.addEventListener('click', function () {
       bottomNavItems.forEach(function (i) { i.classList.remove('active'); });
       item.classList.add('active');
+    });
+  });
+
+  // ---- offers inbox/sent tabs ----
+  Array.prototype.slice.call(document.querySelectorAll('.offers-tabs')).forEach(function (tabs) {
+    var card = tabs.closest('.card-body');
+    var emptyText = card.querySelector('[data-offers-empty-text]');
+    Array.prototype.slice.call(tabs.querySelectorAll('.offers-tab')).forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        tabs.querySelectorAll('.offers-tab').forEach(function (t) { t.classList.remove('active'); });
+        tab.classList.add('active');
+        if (emptyText) {
+          emptyText.textContent = tab.dataset.offersTab === 'sent' ? 'Нет отправленных предложений' : 'Нет входящих предложений';
+        }
+      });
     });
   });
 
