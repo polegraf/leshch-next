@@ -36,7 +36,7 @@ function unauthorized() {
 export function middleware(request) {
   // dj-style (and its sibling preview pages) are public prototype links - no password gate for them.
   const { pathname } = request.nextUrl;
-  const PUBLIC_PROTO_PREFIXES = ['/proto/dj-style', '/proto/dj-style-profile', '/proto/dj-style-profile-cards', '/proto/dj-style-profile-collapsed'];
+  const PUBLIC_PROTO_PREFIXES = ['/proto/dj-style', '/proto/dj-style-profile', '/proto/dj-style-profile-cards', '/proto/dj-style-profile-collapsed', '/proto/dj-style-profile-interactive'];
   const isPublicProto = PUBLIC_PROTO_PREFIXES.some(
     (prefix) => pathname === prefix || pathname.startsWith(prefix + '/')
   );
