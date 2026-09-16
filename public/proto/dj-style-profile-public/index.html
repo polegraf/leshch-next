@@ -164,6 +164,10 @@
   .tag .dot { width: 6px; height: 6px; border-radius: 50%; }
   .tag span { font-size: 16px; color: #E4E1EC; }
   .tag span.n { color: #948FA9; }
+  .tag-more { cursor: pointer; font-family: inherit; }
+  .tag-more span { color: #ADA6C7; }
+  .tag-extra { display: flex; }
+  .tag-extra[hidden] { display: none; }
 
   .friend-btn {
     display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -195,7 +199,7 @@
   .stat-row { display: flex; gap: 10px; margin-bottom: 16px; }
   .stat-tile { flex: 1; }
   .stat-label { font-weight: 500; font-size: 14px; letter-spacing: 0.1em; color: #9A94B3; margin-bottom: 10px; }
-  .stat-num { font-weight: 600; font-size: 32px; letter-spacing: -0.02em; }
+  .stat-num { font-weight: 600; font-size: 32px; letter-spacing: -0.02em; color: #F7F6FA; }
   .platforms-row span { font-size: 15px; color: #ADA6C7; }
 
   /* genres */
@@ -255,6 +259,15 @@
   .stage-diagram { position: relative; margin-top: 12px; border-radius: 16px; overflow: hidden; height: 190px; background: #0c0a12; border: 1px solid rgba(255,255,255,0.08); }
 
   .rider-title2 { font-size: 19px; font-weight: 600; color: #F7F6FA; margin: 26px 0 18px 0; }
+
+  .rider-locked { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 22px 10px 8px; }
+  .rider-locked-icon { display: flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.14); }
+  .rider-locked-text { font-size: 15px; color: #9A94B3; line-height: 1.5; max-width: 280px; }
+  .cta-pill {
+    display: inline-flex; align-items: center; gap: 7px; padding: 12px 22px; border-radius: 999px;
+    background: rgba(192,250,53,0.1); border: 1px solid rgba(192,250,53,0.4); color: #C0FA35;
+    font-size: 15px; font-weight: 500; white-space: nowrap; cursor: pointer; font-family: inherit;
+  }
 
   .subfield-label { font-size: 13px; color: #6E6890; margin: 18px 0 6px 0; }
   .rider-comment { font-size: 14.5px; color: #9A94B3; font-style: italic; line-height: 1.5; }
@@ -350,11 +363,12 @@
               </div>
               <h1 class="name">DJ Tactics</h1>
               <div class="online-row"><div class="online-dot"></div><span>Онлайн</span></div>
-              <div class="tags">
+              <div class="tags" data-tags>
                 <div class="tag"><div class="dot" style="background:#C0FA35;"></div><span>Диджей</span><span class="n">01</span></div>
                 <div class="tag"><div class="dot" style="background:#A375FF;"></div><span>Битмейкинг</span><span class="n">01</span></div>
                 <div class="tag"><div class="dot" style="background:#A375FF;"></div><span>Музыкальное продюсирование</span><span class="n">01</span></div>
-                <div class="tag"><div class="dot" style="background:#A375FF;"></div><span>Музыкант</span><span class="n">01</span></div>
+                <div class="tag tag-extra" hidden><div class="dot" style="background:#A375FF;"></div><span>Музыкант</span><span class="n">01</span></div>
+                <button type="button" class="tag tag-more" data-tags-more><span>ещё 1</span></button>
               </div>
               <div class="friend-btn">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 19c.8-3.6 3.3-5.6 6.5-5.6s5.7 2 6.5 5.6"/><path d="M18 8v5M20.5 10.5h-5"/></svg>
@@ -385,11 +399,11 @@
               <div class="stat-row">
                 <div class="stat-tile">
                   <div class="stat-label">СЛУШАТЕЛЕЙ</div>
-                  <div class="stat-num" style="color:#C0FA35;">12.2K</div>
+                  <div class="stat-num">12.2K</div>
                 </div>
                 <div class="stat-tile">
                   <div class="stat-label">ПОДПИСЧИКОВ</div>
-                  <div class="stat-num" style="color:#A375FF;">12.8K</div>
+                  <div class="stat-num">12.8K</div>
                 </div>
               </div>
               <div class="platforms-row"><span>▾ По платформам и график</span></div>
@@ -411,9 +425,9 @@
           <div class="card-body-inner">
             <div class="card-body">
               <div class="genre-list">
-                <div class="genre-row"><span>Лоу-фай хип-хоп</span><div class="genre-bars"><div style="background:#A375FF;"></div><div style="background:#A375FF;"></div><div></div><div></div><div></div></div></div>
-                <div class="genre-row"><span>Рок</span><div class="genre-bars"><div style="background:#A375FF;"></div><div style="background:#A375FF;"></div><div></div><div></div><div></div></div></div>
-                <div class="genre-row"><span>Регги</span><div class="genre-bars"><div style="background:#A375FF;"></div><div style="background:#A375FF;"></div><div style="background:#A375FF;"></div><div></div><div></div></div></div>
+                <div class="genre-row"><span>Лоу-фай хип-хоп</span><div class="genre-bars"><div style="background:#C0FA35;"></div><div style="background:#C0FA35;"></div><div></div><div></div><div></div></div></div>
+                <div class="genre-row"><span>Рок</span><div class="genre-bars"><div style="background:#C0FA35;"></div><div style="background:#C0FA35;"></div><div></div><div></div><div></div></div></div>
+                <div class="genre-row"><span>Регги</span><div class="genre-bars"><div style="background:#C0FA35;"></div><div style="background:#C0FA35;"></div><div style="background:#C0FA35;"></div><div></div><div></div></div></div>
                 <div class="genre-row"><span>Фанк</span><div class="genre-bars"><div style="background:#C0FA35;"></div><div style="background:#C0FA35;"></div><div style="background:#C0FA35;"></div><div style="background:#C0FA35;"></div><div></div></div></div>
                 <div class="genre-row"><span>Дрилл</span><div class="genre-bars"><div style="background:#C0FA35;"></div><div style="background:#C0FA35;"></div><div style="background:#C0FA35;"></div><div style="background:#C0FA35;"></div><div style="background:#C0FA35;"></div></div></div>
                 <div class="genre-row"><span>Трэп</span><div class="genre-bars"><div style="background:#C0FA35;"></div><div style="background:#C0FA35;"></div><div style="background:#C0FA35;"></div><div></div><div></div></div></div>
@@ -541,102 +555,13 @@
           <div class="card-body-inner">
             <div class="card-body">
 
-              <div class="rider-subtitle">Технический райдер</div>
-
-              <div class="field-label">Звук</div>
-              <div class="rider-section">
-                <div class="rider-row"><div><div class="rider-row-name">Иглы для винила <b>M44-7</b></div><div class="rider-row-brand">Shure</div></div><div class="rider-row-count">×1</div></div>
-                <div class="rider-row"><div><div class="rider-row-name">Виниловый проигрыватель <b>MK-1210</b></div><div class="rider-row-brand">Technics</div></div><div class="rider-row-count">×2</div></div>
-                <div class="rider-row"><div><div class="rider-row-name">Микшерный пульт <b>DJM-S11</b></div><div class="rider-row-brand">Pioneer</div></div><div class="rider-row-count">×1</div></div>
-                <div class="rider-row"><div><div class="rider-row-name">Микрофон <b>SM-58</b></div><div class="rider-row-brand">Shure</div></div><div class="rider-row-count">×1</div></div>
-                <div class="rider-row"><div class="rider-row-name">Звуковой монитор</div><div class="rider-row-count">×2</div></div>
-                <div class="rider-row"><div class="rider-row-name">Phase DJ</div><div class="rider-row-count">×1</div></div>
-                <div class="rider-row"><div class="rider-row-name">Водочка</div><div class="rider-row-count warn">×13</div></div>
+              <div class="rider-locked">
+                <div class="rider-locked-icon">
+                  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#6E6890" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="9.5" rx="2.4"/><path d="M8 10.5V7.6a4 4 0 0 1 8 0v2.9"/></svg>
+                </div>
+                <div class="rider-locked-text">Технический, бытовой и тревел-райдер открываются по запросу — DJ Tactics поделится ими после подтверждения выступления.</div>
+                <button type="button" class="cta-pill" data-rider-request>Запросить райдер</button>
               </div>
-
-              <div class="field-label">Персонал</div>
-              <div class="rider-section">
-                <div class="rider-row"><div class="rider-row-name">Звукорежиссёр</div><div class="rider-row-count">×1</div></div>
-                <div class="rider-row"><div class="rider-row-name">Техник</div><div class="rider-row-count">×1</div></div>
-              </div>
-
-              <div class="field-label">Прочее</div>
-              <div class="rider-section">
-                <div class="rider-row"><div class="rider-row-name">Аккредитация</div><div class="rider-row-count">×5</div></div>
-              </div>
-
-              <div class="field-label">Схема стола</div>
-              <div class="stage-diagram">
-                <svg width="100%" height="100%" viewBox="0 0 360 190" preserveAspectRatio="xMidYMid meet">
-                  <defs>
-                    <pattern id="dots" width="16" height="16" patternUnits="userSpaceOnUse">
-                      <circle cx="1.2" cy="1.2" r="1.2" fill="rgba(255,255,255,0.08)"/>
-                    </pattern>
-                  </defs>
-                  <rect width="360" height="190" fill="url(#dots)"/>
-                  <g transform="translate(38,70)">
-                    <rect x="0" y="0" width="44" height="44" rx="8" fill="none" stroke="#5A5570" stroke-width="1.6"/>
-                    <circle cx="22" cy="22" r="15" fill="none" stroke="#5A5570" stroke-width="1.6"/>
-                    <circle cx="22" cy="22" r="3" fill="#5A5570"/>
-                  </g>
-                  <g transform="translate(278,70)">
-                    <rect x="0" y="0" width="44" height="44" rx="8" fill="none" stroke="#5A5570" stroke-width="1.6"/>
-                    <circle cx="22" cy="22" r="15" fill="none" stroke="#5A5570" stroke-width="1.6"/>
-                    <circle cx="22" cy="22" r="3" fill="#5A5570"/>
-                  </g>
-                  <rect x="118" y="62" width="124" height="58" rx="10" fill="#171320" stroke="#A375FF" stroke-width="1.6"/>
-                  <circle cx="146" cy="91" r="16" fill="none" stroke="#C0FA35" stroke-width="1.6"/>
-                  <circle cx="146" cy="91" r="3" fill="#C0FA35"/>
-                  <rect x="172" y="76" width="30" height="30" rx="5" fill="none" stroke="#C0FA35" stroke-width="1.6"/>
-                  <circle cx="214" cy="91" r="16" fill="none" stroke="#C0FA35" stroke-width="1.6"/>
-                  <circle cx="214" cy="91" r="3" fill="#C0FA35"/>
-                  <rect x="30" y="24" width="20" height="16" rx="3" fill="none" stroke="#5A5570" stroke-width="1.4" transform="rotate(-18 40 32)"/>
-                  <rect x="310" y="24" width="20" height="16" rx="3" fill="none" stroke="#5A5570" stroke-width="1.4" transform="rotate(18 320 32)"/>
-                </svg>
-              </div>
-
-              <div class="rider-title2">Бытовой райдер</div>
-
-              <div class="field-label">Бэкстейдж</div>
-              <div class="rider-section">
-                <div class="rider-row"><div class="rider-row-name">Вода негазированная</div><div class="rider-row-count">×6</div></div>
-                <div class="rider-row"><div class="rider-row-name">Вода газированная</div><div class="rider-row-count">×6</div></div>
-                <div class="rider-row"><div class="rider-row-name">Ром</div><div class="rider-row-count">×1</div></div>
-                <div class="rider-row"><div class="rider-row-name">Кока-кола</div><div class="rider-row-count">×4</div></div>
-                <div class="rider-row"><div class="rider-row-name">Бокалы</div><div class="rider-row-count">×4</div></div>
-                <div class="rider-row"><div class="rider-row-name">Набор посуды</div><div class="rider-row-count">×3</div></div>
-                <div class="rider-row"><div class="rider-row-name">Лёд</div><div class="rider-row-count">×9</div></div>
-                <div class="rider-row"><div class="rider-row-name">Закуски</div><div class="rider-row-count">×1</div></div>
-                <div class="rider-row"><div class="rider-row-name">Maalox</div><div class="rider-row-count">×4</div></div>
-                <div class="rider-row"><div class="rider-row-name">Полотенца</div><div class="rider-row-count">×2</div></div>
-                <div class="rider-row"><div class="rider-row-name">Сигареты</div><div class="rider-row-count">×2</div></div>
-                <div class="rider-row"><div class="rider-row-name">Зеркало</div><div class="rider-row-count">×1</div></div>
-              </div>
-
-              <div class="subfield-label">Комментарии (бэкстейдж)</div>
-              <div class="rider-comment">Мясная нарезка, сыры</div>
-
-              <div class="field-label" style="margin-top:20px;">Тревел</div>
-              <div>
-                <div class="field-row"><span class="field-row-label">Билеты</span><span class="field-row-value">Economy+, Business</span></div>
-                <div class="field-row"><span class="field-row-label">Отель</span><span class="field-row-value stars">★★★★★</span></div>
-                <div class="field-row"><span class="field-row-label">Трансфер</span><span class="field-row-value">Business</span></div>
-              </div>
-
-              <div class="subfield-label">Комментарии (тревел)</div>
-              <div class="rider-comment">(СПб) Салсан — билеты бизнес у стола</div>
-              <div class="rider-comment" style="margin-top:6px;">В туре</div>
-              <ol class="comment-list">
-                <li>Трех разовое питание (завтрак должен быть включен в гостинице)</li>
-                <li>Обед или ужин рядом с гостиницей</li>
-                <li>Минибар оплачивается организатором</li>
-                <li>Стирка и глажка белья в гостинице оплачивается организатором</li>
-              </ol>
-
-              <button class="download-btn">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#06040B" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12M7 11l5 5 5-5"/><path d="M4 19h16"/></svg>
-                Скачать райдер (PDF)
-              </button>
 
             </div>
           </div>
@@ -754,6 +679,28 @@
   if (friendBtn) {
     friendBtn.addEventListener('click', function () {
       friendBtn.querySelector('span').textContent = 'Заявка отправлена';
+    });
+  }
+
+  // ---- tags: show top 3, reveal the rest on click ----
+  Array.prototype.slice.call(document.querySelectorAll('[data-tags]')).forEach(function (tagsEl) {
+    var moreBtn = tagsEl.querySelector('[data-tags-more]');
+    if (!moreBtn) return;
+    moreBtn.addEventListener('click', function () {
+      Array.prototype.slice.call(tagsEl.querySelectorAll('.tag-extra')).forEach(function (t) {
+        t.removeAttribute('hidden');
+      });
+      moreBtn.remove();
+    });
+  });
+
+  // ---- rider request (visual only in this prototype) ----
+  var riderRequestBtn = document.querySelector('[data-rider-request]');
+  if (riderRequestBtn) {
+    riderRequestBtn.addEventListener('click', function () {
+      riderRequestBtn.textContent = 'Запрос отправлен';
+      riderRequestBtn.style.pointerEvents = 'none';
+      riderRequestBtn.style.opacity = '0.7';
     });
   }
 })();
