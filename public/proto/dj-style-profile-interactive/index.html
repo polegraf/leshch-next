@@ -230,7 +230,7 @@
   .offers-tab svg { flex-shrink: 0; }
   .offers-tab.active { background: #C0FA35; border-color: #C0FA35; color: #14170A; }
   .offers-empty { display: flex; flex-direction: column; align-items: center; text-align: center; gap: 14px; padding: 20px 10px 6px; }
-  .offers-empty-icon { font-size: 38px; line-height: 1; }
+  .offers-empty-icon { display: flex; align-items: center; justify-content: center; }
   .offers-empty-text { font-size: 15px; color: #9A94B3; }
 
   /* video / press materials */
@@ -738,7 +738,9 @@
                 </div>
               </div>
               <div class="offers-empty">
-                <div class="offers-empty-icon">📥</div>
+                <div class="offers-empty-icon">
+                  <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#6E6890" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h4l1.6 2.6h4.8L16 12h4"/><path d="M6 12 7.5 6a1.5 1.5 0 0 1 1.45-1.1h6.1A1.5 1.5 0 0 1 16.5 6L18 12"/><path d="M4 12v5a1.5 1.5 0 0 0 1.5 1.5h13A1.5 1.5 0 0 0 20 17v-5"/></svg>
+                </div>
                 <div class="offers-empty-text" data-offers-empty-text>Нет входящих предложений</div>
               </div>
             </div>
