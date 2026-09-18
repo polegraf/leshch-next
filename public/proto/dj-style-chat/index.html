@@ -326,7 +326,7 @@
     border: 1px solid rgba(192,250,53,0.35);
   }
   .offer-head { display: flex; align-items: center; gap: 7px; margin-bottom: 12px; }
-  .offer-head span { font-size: 14px; font-weight: 700; letter-spacing: 0.08em; color: #C0FA35; text-transform: uppercase; }
+  .offer-head span { font-size: 13px; font-weight: 700; letter-spacing: 0.06em; color: #C0FA35; text-transform: uppercase; white-space: nowrap; }
   .offer-venue { font-size: 20px; font-weight: 600; color: #F7F6FA; margin-bottom: 6px; }
   .offer-meta { font-size: 16px; color: #C7C3D6; margin-bottom: 2px; }
   .offer-fee { font-size: 18px; font-weight: 600; color: #C0FA35; margin-top: 8px; margin-bottom: 14px; }
@@ -535,36 +535,7 @@
         </div>
       </div>
 
-      <div id="threadBody">
-        <div class="date-divider"><span>Сегодня</span></div>
-
-        <div class="bubble-row in"><div class="bubble in">Добрый день! Хотим пригласить DJ Tactics выступить у нас 12 октября.</div></div>
-        <div class="bubble-time in">14:18</div>
-
-        <div class="bubble-row in">
-          <div class="offer-card">
-            <div class="offer-head">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="#C0FA35"><path d="M13 2 3 14h7l-1 8 11-14h-7l0-6z"/></svg>
-              <span>Предложение выступления</span>
-            </div>
-            <div class="offer-venue">Powerhouse, Москва</div>
-            <div class="offer-meta">12 октября 2026 · сет 90 минут</div>
-            <div class="offer-meta">Клубный вечер, вместимость 800 чел.</div>
-            <div class="offer-fee">Гонорар: 150 000 ₽</div>
-            <div class="offer-actions">
-              <button class="cta-pill">Принять</button>
-              <button class="cta-pill-ghost">Обсудить</button>
-            </div>
-          </div>
-        </div>
-        <div class="bubble-time in">14:20</div>
-
-        <div class="bubble-row out"><div class="bubble out">Здравствуйте! Дата подходит, но по гонорару — можем на 180 000?</div></div>
-        <div class="bubble-time out">14:29</div>
-
-        <div class="bubble-row in"><div class="bubble in">Обсудим с продюсером, вернёмся с ответом сегодня.</div></div>
-        <div class="bubble-time in">14:32</div>
-      </div>
+      <div id="threadBody"></div>
     </div>
 
   </div>
@@ -702,13 +673,85 @@
   });
 
   // ---- thread data ----
+  // m: 'in' | 'out' | 'offer' | 'date'
   var threads = {
-    powerhouse: { name: 'Powerhouse Concert', bg: 'linear-gradient(155deg,#8D78BE 0%,#B8D278 100%)', status: 'Онлайн', online: true, request: false },
-    aleksandra: { name: 'Александра Ким', bg: 'linear-gradient(155deg,#B6CA73 0%,#9180B6 100%)', status: 'была в сети 40 мин назад', online: false, request: false },
-    maks: { name: 'Макс Дементьев', bg: 'linear-gradient(155deg,#6332E2 0%,#8B5CF0 100%)', status: 'была в сети вчера', online: false, request: false },
-    sunship: { name: 'Sun Ship Agency', bg: 'linear-gradient(155deg,#A192C3 0%,#B7C094 100%)', status: 'была в сети 3 сент', online: false, request: false },
-    anna: { name: 'anna_fanpage', bg: 'linear-gradient(155deg,#627DF7 0%,#8B5CF0 100%)', status: 'Онлайн', online: true, request: true },
-    mirage: { name: 'Клуб «Мираж»', bg: 'linear-gradient(155deg,#C0FA35 0%,#6FA8E8 100%)', status: 'была в сети 2 дня назад', online: false, request: true }
+    powerhouse: {
+      name: 'Powerhouse Concert', bg: 'linear-gradient(155deg,#8D78BE 0%,#B8D278 100%)',
+      status: 'Онлайн', online: true, request: false,
+      msgs: [
+        { date: 'Вчера' },
+        { in: 'Добрый вечер! Это Powerhouse, Москва. Смотрели ваш график — у нас есть окно 12 октября.', time: '19:08' },
+        { out: 'Здравствуйте! 12-е свободно. Что за формат вечера?', time: '19:41' },
+        { in: 'Две сцены, вы — хедлайнер основной. Выход около 01:30, до вас — местные резиденты.', time: '19:46' },
+        { out: 'Понял. Пришлите детали и условия — посмотрю с менеджером.', time: '20:02' },
+        { date: 'Сегодня' },
+        { in: 'Добрый день! Хотим пригласить DJ Tactics выступить у нас 12 октября.', time: '14:18' },
+        { offer: true, time: '14:20' },
+        { out: 'Здравствуйте! Дата подходит, но по гонорару — можем на 180 000?', time: '14:29' },
+        { in: 'Обсудим с продюсером, вернёмся с ответом сегодня.', time: '14:32' },
+        { in: 'Продюсер согласовал 170 000 + трансфер и гостиница на две ночи. Так подходит?', time: '16:05' },
+        { out: 'Да, так договорились. Вечером пришлю техрайдер и список гостей.', time: '16:11' },
+        { in: 'Отлично, отправлю договор на почту завтра утром.', time: '16:13' }
+      ]
+    },
+    aleksandra: {
+      name: 'Александра Ким', bg: 'linear-gradient(155deg,#B6CA73 0%,#9180B6 100%)',
+      status: 'была в сети 40 мин назад', online: false, request: false,
+      msgs: [
+        { date: 'Вчера' },
+        { in: 'Дмитрий, добрый вечер! По субботе всё в силе?', time: '18:22' },
+        { out: 'Да, всё в силе. Буду к 22:00 на саундчек.', time: '18:40' },
+        { in: 'Супер. Пульт Pioneer, как в райдере, привезли вчера.', time: '18:44' },
+        { out: 'Отлично. Монитор на сцене один или два?', time: '18:51' },
+        { in: 'Два, оба новые. Площадка просит закрыть ночь до пяти.', time: '19:03' },
+        { in: 'А можно на 40 минут дольше сет?', time: '19:04' }
+      ]
+    },
+    maks: {
+      name: 'Макс Дементьев', bg: 'linear-gradient(155deg,#6332E2 0%,#8B5CF0 100%)',
+      status: 'была в сети вчера', online: false, request: false,
+      msgs: [
+        { date: 'Понедельник' },
+        { out: 'Скинул тебе контакты Powerhouse — свяжись с ними по октябрю.', time: '11:15' },
+        { in: 'Принял. Райдер им нужен?', time: '11:31' },
+        { out: 'Да, техничку и бытовой. Тревел пока не отправляй.', time: '11:33' },
+        { in: 'Понял. По гонорару какая вилка?', time: '11:38' },
+        { out: 'От 150, ниже не идём. Если с трансфером и отелем — можно 150 ровно.', time: '11:44' },
+        { in: 'Скинул райдер организаторам, жду ответ', time: '12:02' }
+      ]
+    },
+    sunship: {
+      name: 'Sun Ship Agency', bg: 'linear-gradient(155deg,#A192C3 0%,#B7C094 100%)',
+      status: 'была в сети 3 сент', online: false, request: false,
+      msgs: [
+        { date: '3 сентября' },
+        { in: 'Подтверждаем 26 сентября, Лиссабон, фестивальная сцена.', time: '10:04' },
+        { out: 'Отлично. Гостиницу бронируете вы?', time: '10:20' },
+        { in: 'Да, всё на нас: перелёт, трансфер, отель на три ночи, питание.', time: '10:22' },
+        { out: 'Тогда пришлите бумаги, подпишу на неделе.', time: '10:35' },
+        { in: 'Договор ушёл на почту, счёт следом.', time: '11:02' },
+        { out: 'Получил, всё верно.', time: '12:48' },
+        { in: 'Спасибо, договорились 🤝', time: '12:51' }
+      ]
+    },
+    anna: {
+      name: 'anna_fanpage', bg: 'linear-gradient(155deg,#627DF7 0%,#8B5CF0 100%)',
+      status: 'Онлайн', online: true, request: true,
+      msgs: [
+        { date: 'Сегодня' },
+        { in: 'Привет! Слушаю вас с 2019-го, была на сете в Powerhouse 🔥', time: '13:40' },
+        { in: 'Привет! Ты играешь на дне рождения?..', time: '13:41' }
+      ]
+    },
+    mirage: {
+      name: 'Клуб «Мираж»', bg: 'linear-gradient(155deg,#C0FA35 0%,#6FA8E8 100%)',
+      status: 'была в сети 2 дня назад', online: false, request: true,
+      msgs: [
+        { date: '2 дня назад' },
+        { in: 'Добрый день! Ищем диджея на резидентство', time: '15:12' },
+        { in: 'Пятницы, два раза в месяц, сет три часа. Можем обсудить условия?', time: '15:13' }
+      ]
+    }
   };
 
   var viewList = document.getElementById('viewList');
@@ -724,10 +767,37 @@
       '<div class="row"><button class="cta-pill">Ответить</button><button class="cta-pill-ghost">Отклонить</button></div>' +
     '</div>';
 
-  var demoBodyHtml =
-    '<div class="date-divider"><span>Сегодня</span></div>' +
-    '<div class="bubble-row in"><div class="bubble in">Здравствуйте! Хотели уточнить пару деталей по выступлению.</div></div>' +
-    '<div class="bubble-time in">12:04</div>';
+  var offerHtml =
+    '<div class="bubble-row in">' +
+      '<div class="offer-card">' +
+        '<div class="offer-head">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="#C0FA35"><path d="M13 2 3 14h7l-1 8 11-14h-7l0-6z"/></svg>' +
+          '<span>Предложение выступления</span>' +
+        '</div>' +
+        '<div class="offer-venue">Powerhouse, Москва</div>' +
+        '<div class="offer-meta">12 октября 2026 · сет 90 минут</div>' +
+        '<div class="offer-meta">Клубный вечер, вместимость 800 чел.</div>' +
+        '<div class="offer-fee">Гонорар: 150 000 ₽</div>' +
+        '<div class="offer-actions">' +
+          '<button class="cta-pill">Принять</button>' +
+          '<button class="cta-pill-ghost">Обсудить</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+
+  function esc(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+  function renderMsgs(msgs) {
+    return msgs.map(function (m) {
+      if (m.date) return '<div class="date-divider"><span>' + esc(m.date) + '</span></div>';
+      if (m.offer) return offerHtml + '<div class="bubble-time in">' + esc(m.time) + '</div>';
+      var side = m.out ? 'out' : 'in';
+      var text = m.out || m.in;
+      return '<div class="bubble-row ' + side + '"><div class="bubble ' + side + '">' + esc(text) + '</div></div>' +
+             '<div class="bubble-time ' + side + '">' + esc(m.time) + '</div>';
+    }).join('');
+  }
 
   function openThread(id) {
     var t = threads[id];
@@ -738,15 +808,7 @@
     statusEl.textContent = t.status;
     statusEl.classList.toggle('online', t.online);
 
-    if (id === 'powerhouse') {
-      // keep the fully authored offer-card demo thread
-    } else if (t.request) {
-      threadBody.innerHTML = requestBannerHtml + demoBodyHtml;
-    } else {
-      threadBody.innerHTML = demoBodyHtml +
-        '<div class="bubble-row out"><div class="bubble out">Да, конечно — спрашивайте.</div></div>' +
-        '<div class="bubble-time out">12:07</div>';
-    }
+    threadBody.innerHTML = (t.request ? requestBannerHtml : '') + renderMsgs(t.msgs);
 
     closeServices();
     viewList.classList.add('hidden');
@@ -754,7 +816,8 @@
     bottomNav.style.display = 'none';
     inputBar.style.display = 'flex';
     screen.classList.add('thread-open');
-    window.scrollTo(0, 0);
+    // a messenger opens at the newest message, not at the top of the history
+    window.scrollTo(0, document.body.scrollHeight);
   }
 
   function closeThread() {
@@ -763,6 +826,7 @@
     bottomNav.style.display = '';
     inputBar.style.display = 'none';
     screen.classList.remove('thread-open');
+    window.scrollTo(0, 0);
   }
 
   Array.prototype.slice.call(document.querySelectorAll('.conv-row')).forEach(function (row) {
