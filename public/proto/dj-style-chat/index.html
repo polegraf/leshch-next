@@ -244,7 +244,7 @@
   }
   .avatar .online {
     position: absolute; right: -1px; bottom: -1px; width: 13px; height: 13px; border-radius: 50%;
-    background: #3ED97A; border: 2.5px solid #0b0811;
+    background: #C0FA35; border: 2.5px solid #0b0811;
   }
   .conv-main { flex: 1; min-width: 0; }
   .conv-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 3px; }
@@ -281,7 +281,7 @@
   .thread-name-wrap { min-width: 0; }
   .thread-name { font-size: 16px; font-weight: 600; color: #F7F6FA; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .thread-status { font-size: 13px; color: #9A94B3; }
-  .thread-status.online { color: #3ED97A; }
+  .thread-status.online { color: #C0FA35; }
   .thread-more-btn {
     width: 40px; height: 40px; border-radius: 13px; flex-shrink: 0;
     display: flex; align-items: center; justify-content: center;
@@ -310,18 +310,18 @@
   }
   .bubble.in {
     background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #E4E1EC;
-    border-radius: 18px 18px 18px 5px;
+    border-radius: 20px;
   }
   .bubble.out {
-    background: rgba(192,250,53,0.14); border: 1px solid rgba(192,250,53,0.32); color: #F3FBE0;
-    border-radius: 18px 18px 5px 18px;
+    background: #5824DF; border: none; color: #FFFFFF;
+    border-radius: 20px;
   }
   .bubble-time { font-size: 11px; color: #6E6890; margin: 3px 4px 12px 4px; }
   .bubble-time.out { text-align: right; }
   .bubble-time.in { text-align: left; }
 
   .offer-card {
-    max-width: 86%; border-radius: 18px 18px 5px 18px; padding: 16px;
+    max-width: 86%; border-radius: 20px; padding: 16px;
     background: linear-gradient(165deg, rgba(192,250,53,0.14) 0%, rgba(192,250,53,0.05) 100%);
     border: 1px solid rgba(192,250,53,0.35);
   }
@@ -420,7 +420,7 @@
         <div class="conv-list" id="convListAll">
 
           <div class="conv-row" data-thread="powerhouse">
-            <div class="avatar" style="background:linear-gradient(145deg,#3a2f52,#221c30);">PC
+            <div class="avatar" style="background:linear-gradient(155deg,#8D78BE 0%,#B8D278 100%);">
               <div class="online"></div>
             </div>
             <div class="conv-main">
@@ -439,7 +439,7 @@
           </div>
 
           <div class="conv-row" data-thread="aleksandra">
-            <div class="avatar" style="background:linear-gradient(145deg,#2f4a3d,#1c2e26);">АК</div>
+            <div class="avatar" style="background:linear-gradient(155deg,#B6CA73 0%,#9180B6 100%);"></div>
             <div class="conv-main">
               <div class="conv-top">
                 <div class="conv-name">Александра Ким</div>
@@ -453,7 +453,7 @@
           </div>
 
           <div class="conv-row" data-thread="maks">
-            <div class="avatar" style="background:linear-gradient(145deg,#4a3a2f,#2e2318);">МД</div>
+            <div class="avatar" style="background:linear-gradient(155deg,#6332E2 0%,#8B5CF0 100%);"></div>
             <div class="conv-main">
               <div class="conv-top">
                 <div class="conv-name">Макс Дементьев</div>
@@ -466,7 +466,7 @@
           </div>
 
           <div class="conv-row" data-thread="sunship">
-            <div class="avatar" style="background:linear-gradient(145deg,#2f3d4a,#1c242e);">SS</div>
+            <div class="avatar" style="background:linear-gradient(155deg,#A192C3 0%,#B7C094 100%);"></div>
             <div class="conv-main">
               <div class="conv-top">
                 <div class="conv-name">Sun Ship Agency</div>
@@ -486,7 +486,7 @@
         <div class="conv-list">
 
           <div class="conv-row" data-thread="anna">
-            <div class="avatar" style="background:linear-gradient(145deg,#4a2f45,#2e1c2a);">АФ</div>
+            <div class="avatar" style="background:linear-gradient(155deg,#627DF7 0%,#8B5CF0 100%);"></div>
             <div class="conv-main">
               <div class="conv-top">
                 <div class="conv-name">anna_fanpage</div>
@@ -500,7 +500,7 @@
           </div>
 
           <div class="conv-row" data-thread="mirage">
-            <div class="avatar" style="background:linear-gradient(145deg,#2f4a48,#1c2e2c);">КМ</div>
+            <div class="avatar" style="background:linear-gradient(155deg,#C0FA35 0%,#6FA8E8 100%);"></div>
             <div class="conv-main">
               <div class="conv-top">
                 <div class="conv-name">Клуб «Мираж»</div>
@@ -524,7 +524,7 @@
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
         </div>
         <div class="thread-id">
-          <div class="thread-avatar" id="threadAvatar" style="background:linear-gradient(145deg,#3a2f52,#221c30);">PC</div>
+          <div class="thread-avatar" id="threadAvatar" style="background:linear-gradient(155deg,#8D78BE 0%,#B8D278 100%);"></div>
           <div class="thread-name-wrap">
             <div class="thread-name" id="threadName">Powerhouse Concert</div>
             <div class="thread-status online" id="threadStatus">Онлайн</div>
@@ -703,12 +703,12 @@
 
   // ---- thread data ----
   var threads = {
-    powerhouse: { name: 'Powerhouse Concert', avatar: 'PC', bg: 'linear-gradient(145deg,#3a2f52,#221c30)', status: 'Онлайн', online: true, request: false },
-    aleksandra: { name: 'Александра Ким', avatar: 'АК', bg: 'linear-gradient(145deg,#2f4a3d,#1c2e26)', status: 'была в сети 40 мин назад', online: false, request: false },
-    maks: { name: 'Макс Дементьев', avatar: 'МД', bg: 'linear-gradient(145deg,#4a3a2f,#2e2318)', status: 'была в сети вчера', online: false, request: false },
-    sunship: { name: 'Sun Ship Agency', avatar: 'SS', bg: 'linear-gradient(145deg,#2f3d4a,#1c242e)', status: 'была в сети 3 сент', online: false, request: false },
-    anna: { name: 'anna_fanpage', avatar: 'АФ', bg: 'linear-gradient(145deg,#4a2f45,#2e1c2a)', status: 'Онлайн', online: true, request: true },
-    mirage: { name: 'Клуб «Мираж»', avatar: 'КМ', bg: 'linear-gradient(145deg,#2f4a48,#1c2e2c)', status: 'была в сети 2 дня назад', online: false, request: true }
+    powerhouse: { name: 'Powerhouse Concert', bg: 'linear-gradient(155deg,#8D78BE 0%,#B8D278 100%)', status: 'Онлайн', online: true, request: false },
+    aleksandra: { name: 'Александра Ким', bg: 'linear-gradient(155deg,#B6CA73 0%,#9180B6 100%)', status: 'была в сети 40 мин назад', online: false, request: false },
+    maks: { name: 'Макс Дементьев', bg: 'linear-gradient(155deg,#6332E2 0%,#8B5CF0 100%)', status: 'была в сети вчера', online: false, request: false },
+    sunship: { name: 'Sun Ship Agency', bg: 'linear-gradient(155deg,#A192C3 0%,#B7C094 100%)', status: 'была в сети 3 сент', online: false, request: false },
+    anna: { name: 'anna_fanpage', bg: 'linear-gradient(155deg,#627DF7 0%,#8B5CF0 100%)', status: 'Онлайн', online: true, request: true },
+    mirage: { name: 'Клуб «Мираж»', bg: 'linear-gradient(155deg,#C0FA35 0%,#6FA8E8 100%)', status: 'была в сети 2 дня назад', online: false, request: true }
   };
 
   var viewList = document.getElementById('viewList');
@@ -732,7 +732,6 @@
   function openThread(id) {
     var t = threads[id];
     if (!t) return;
-    document.getElementById('threadAvatar').textContent = t.avatar;
     document.getElementById('threadAvatar').style.background = t.bg;
     document.getElementById('threadName').textContent = t.name;
     var statusEl = document.getElementById('threadStatus');
