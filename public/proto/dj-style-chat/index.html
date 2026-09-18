@@ -26,11 +26,11 @@
     width: 100%;
     max-width: 480px;
     margin: 0 auto;
-    padding: max(20px, env(safe-area-inset-top)) 11px calc(96px + env(safe-area-inset-bottom)) 11px;
+    padding: max(20px, env(safe-area-inset-top)) 11px calc(110px + env(safe-area-inset-bottom)) 11px;
     min-height: 100vh;
     background: radial-gradient(60% 34% at 85% 0%, rgba(112,46,204,0.28) 0%, rgba(66,26,128,0) 60%);
   }
-  .screen.thread-open { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
+  .screen.thread-open { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
 
   /* top bar (shared shell) */
   .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; position: relative; }
@@ -101,12 +101,13 @@
   .bottom-nav-wrap {
     pointer-events: auto;
     width: 100%; max-width: 480px;
-    display: flex; align-items: center; gap: 10px;
+    display: flex; align-items: center; gap: 12px;
   }
   .nav-avatar {
     flex-shrink: 0; position: relative;
-    width: 60px; height: 60px; border-radius: 50%;
+    width: 72px; height: 72px; border-radius: 50%;
     overflow: hidden; cursor: pointer;
+    box-shadow: 0 20px 44px -16px rgba(0,0,0,0.9);
   }
   .nav-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
   .nav-avatar.active::after {
@@ -116,29 +117,43 @@
   .bottom-nav-inner {
     flex: 1; min-width: 0;
     display: flex; align-items: center; justify-content: space-around;
-    height: 60px; padding: 0 8px;
+    height: 72px; padding: 0 10px;
     border-radius: 999px;
-    overflow: visible; /* lets the services pill grow out of the plate */
+    overflow: visible; /* lets the services column grow out of the plate */
+    /* tinted glass — brand hues mixed into the material so the bar reads as
+       part of the product, not as a browser chrome */
+    background:
+      linear-gradient(168deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.04) 40%, rgba(255,255,255,0.12) 100%),
+      linear-gradient(120deg, rgba(112,46,204,0.34) 0%, rgba(24,20,32,0.5) 55%, rgba(192,250,53,0.10) 100%);
+    -webkit-backdrop-filter: blur(32px) saturate(200%);
+    backdrop-filter: blur(32px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.26);
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,0.36),
+      inset 0 -1.5px 0 rgba(255,255,255,0.10),
+      0 24px 50px -18px rgba(0,0,0,0.95);
   }
   .nav-slot { position: relative; display: flex; align-items: center; justify-content: center; }
   .nav-circle {
-    width: 46px; height: 46px; border-radius: 50%;
+    width: 52px; height: 52px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    background: transparent; border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.28);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.22);
     color: #ACA7BD; cursor: pointer;
     transition: color 180ms ease, background 180ms ease, border-color 180ms ease, opacity 160ms ease;
   }
   .nav-circle svg { display: block; }
   .nav-circle.active {
     color: #C0FA35;
-    background: linear-gradient(155deg, rgba(192,250,53,0.24) 0%, rgba(192,250,53,0.05) 100%);
-    border-color: rgba(192,250,53,0.5);
-    box-shadow: inset 0 1px 0 rgba(255,255,255,0.2);
+    background: linear-gradient(155deg, rgba(192,250,53,0.34) 0%, rgba(192,250,53,0.08) 100%);
+    border-color: rgba(192,250,53,0.65);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.34), 0 8px 22px -8px rgba(192,250,53,0.6);
   }
   .nav-circle.is-open {
     color: #C0FA35;
-    background: linear-gradient(155deg, rgba(192,250,53,0.24) 0%, rgba(192,250,53,0.05) 100%);
-    border-color: rgba(192,250,53,0.5);
+    background: linear-gradient(155deg, rgba(192,250,53,0.34) 0%, rgba(192,250,53,0.08) 100%);
+    border-color: rgba(192,250,53,0.65);
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.34), 0 8px 22px -8px rgba(192,250,53,0.6);
   }
 
   /* services: the buttons detach from the plate and float up as a column */
@@ -150,7 +165,7 @@
   .services-scrim.open { opacity: 1; pointer-events: auto; }
 
   .services-stack {
-    position: absolute; right: 1px; bottom: 60px; z-index: 2;
+    position: absolute; right: 1px; bottom: 70px; z-index: 2;
     display: flex; flex-direction: column; align-items: flex-end; gap: 9px;
     pointer-events: none;
   }
@@ -339,22 +354,32 @@
     padding: 0 11px calc(10px + env(safe-area-inset-bottom)) 11px;
   }
   .input-bar-inner {
-    width: 100%; max-width: 480px; display: flex; align-items: center; gap: 8px;
-    padding: 8px 8px 8px 8px; border-radius: 999px;
+    width: 100%; max-width: 480px; display: flex; align-items: center; gap: 9px;
+    height: 72px; padding: 0 10px; border-radius: 999px;
+    background:
+      linear-gradient(168deg, rgba(255,255,255,0.22) 0%, rgba(255,255,255,0.04) 40%, rgba(255,255,255,0.12) 100%),
+      linear-gradient(120deg, rgba(112,46,204,0.34) 0%, rgba(24,20,32,0.5) 55%, rgba(192,250,53,0.10) 100%);
+    -webkit-backdrop-filter: blur(32px) saturate(200%);
+    backdrop-filter: blur(32px) saturate(200%);
+    border: 1px solid rgba(255,255,255,0.26);
+    box-shadow:
+      inset 0 2px 0 rgba(255,255,255,0.36),
+      inset 0 -1.5px 0 rgba(255,255,255,0.10),
+      0 24px 50px -18px rgba(0,0,0,0.95);
   }
   .attach-btn {
-    flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+    flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: #C7C3D6; cursor: pointer;
   }
   .msg-input {
-    flex: 1; height: 40px; border-radius: 999px; padding: 0 16px;
+    flex: 1; height: 50px; border-radius: 999px; padding: 0 18px;
     background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);
     color: #E4E1EC; font-size: 17px; font-family: Jost, sans-serif;
   }
   .msg-input::placeholder { color: #6E6890; }
   .send-btn {
-    flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+    flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
     background: #C0FA35; border: none; color: #06040B; cursor: pointer;
   }
@@ -552,19 +577,19 @@
       <div class="bottom-nav-inner glass">
         <div class="nav-slot">
           <div class="nav-circle" data-tab="search" aria-label="Поиск">
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3-4.3"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3-4.3"/></svg>
           </div>
         </div>
 
         <div class="nav-slot">
           <div class="nav-circle active" data-tab="chat" aria-label="Чат">
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a7.5 7.5 0 0 1-10.9 6.7L4 20l1.8-5A7.5 7.5 0 1 1 21 11.5Z"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a7.5 7.5 0 0 1-10.9 6.7L4 20l1.8-5A7.5 7.5 0 1 1 21 11.5Z"/></svg>
           </div>
         </div>
 
         <div class="nav-slot" id="servicesSlot">
           <div class="nav-circle" data-tab="services" id="servicesBtn" aria-label="Сервисы" aria-haspopup="true">
-            <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>
           </div>
           <div class="services-stack" id="servicesMenu">
             <div class="services-row" data-service="события">
@@ -594,7 +619,7 @@
     </div>
   </nav>
 
-  <div class="input-bar glass" id="inputBar" style="display:none;">
+  <div class="input-bar" id="inputBar" style="display:none;">
     <div class="input-bar-inner">
       <div class="attach-btn">
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
