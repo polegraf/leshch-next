@@ -192,22 +192,22 @@
     overflow: hidden;
     position: relative;
   }
-  .empty-hint { font-size: 16px; font-style: italic; color: #8A84A0; line-height: 1.5; }
+  .empty-hint { font-size: 17px; font-style: italic; color: #8A84A0; line-height: 1.5; }
   .cta-pill {
     display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 999px;
     background: rgba(192,250,53,0.1); border: 1px solid rgba(192,250,53,0.4); color: #C0FA35;
-    font-size: 16px; font-weight: 500; white-space: nowrap; cursor: pointer; font-family: inherit;
+    font-size: 17px; font-weight: 500; white-space: nowrap; cursor: pointer; font-family: inherit;
   }
   .cta-pill-ghost {
     display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 999px;
     background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.16); color: #C7C3D6;
-    font-size: 16px; font-weight: 500; white-space: nowrap; cursor: pointer; font-family: inherit;
+    font-size: 17px; font-weight: 500; white-space: nowrap; cursor: pointer; font-family: inherit;
   }
-  .field-label { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; color: #9A94B3; text-transform: uppercase; }
+  .field-label { font-size: 15px; font-weight: 600; letter-spacing: 0.08em; color: #9A94B3; text-transform: uppercase; }
 
   /* ===================== CHAT: list screen ===================== */
   .chat-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
-  .chat-heading h1 { margin: 0; font-weight: 600; font-size: 32px; letter-spacing: -0.01em; color: #F7F6FA; }
+  .chat-heading h1 { margin: 0; font-weight: 600; font-size: 34px; letter-spacing: -0.01em; color: #F7F6FA; }
   .search-btn {
     width: 44px; height: 44px; border-radius: 15px; display: flex; align-items: center; justify-content: center;
     background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: #C7C3D6; cursor: pointer;
@@ -221,13 +221,13 @@
   .seg-item {
     flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
     padding: 10px 8px; border-radius: 999px; cursor: pointer;
-    color: #9A94B3; font-size: 16px; font-weight: 500;
+    color: #9A94B3; font-size: 17px; font-weight: 500;
   }
   .seg-item.active { background: #C0FA35; color: #14170A; font-weight: 600; }
   .seg-badge {
-    min-width: 18px; height: 18px; padding: 0 5px; border-radius: 999px;
+    min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
     background: rgba(192,250,53,0.16); color: #C0FA35;
-    font-size: 13px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center;
   }
   .seg-item.active .seg-badge { background: rgba(20,23,10,0.18); color: #14170A; }
 
@@ -248,19 +248,19 @@
   }
   .conv-main { flex: 1; min-width: 0; }
   .conv-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 3px; }
-  .conv-name { font-size: 16px; font-weight: 600; color: #E4E1EC; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .conv-time { font-size: 13px; color: #6E6890; flex-shrink: 0; }
+  .conv-name { font-size: 17px; font-weight: 600; color: #E4E1EC; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .conv-time { font-size: 14px; color: #6E6890; flex-shrink: 0; }
   .conv-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-  .conv-preview { font-size: 15px; color: #9A94B3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .conv-preview { font-size: 16px; color: #9A94B3; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .conv-preview.unread { color: #C7C3D6; }
-  .conv-preview.offer { color: #C0FA35; display: flex; align-items: center; gap: 5px; }
-  .conv-preview.offer svg { flex-shrink: 0; }
+  .conv-preview.offer { color: #C0FA35; }
+  .conv-preview.offer svg { vertical-align: -1px; margin-right: 5px; }
   .unread-badge {
-    flex-shrink: 0; min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
-    background: #C0FA35; color: #14170A; font-size: 13px; font-weight: 700;
+    flex-shrink: 0; min-width: 22px; height: 22px; padding: 0 7px; border-radius: 999px;
+    background: #C0FA35; color: #14170A; font-size: 14px; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
   }
-  .req-hint { padding: 4px 6px 14px 6px; font-size: 14px; color: #6E6890; line-height: 1.5; }
+  .req-hint { padding: 4px 6px 14px 6px; font-size: 15px; color: #6E6890; line-height: 1.5; }
 
   /* ===================== CHAT: thread screen ===================== */
   #viewThread { display: none; }
@@ -279,8 +279,8 @@
     display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; color: #F7F6FA;
   }
   .thread-name-wrap { min-width: 0; }
-  .thread-name { font-size: 17px; font-weight: 600; color: #F7F6FA; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .thread-status { font-size: 14px; color: #9A94B3; }
+  .thread-name { font-size: 19px; font-weight: 600; color: #F7F6FA; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .thread-status { font-size: 15px; color: #9A94B3; }
   .thread-status.online { color: #C0FA35; }
   .thread-more-btn {
     width: 40px; height: 40px; border-radius: 13px; flex-shrink: 0;
@@ -293,12 +293,12 @@
     padding: 18px; margin-bottom: 18px; border-radius: 18px;
     background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
   }
-  .request-banner p { margin: 0; font-size: 15px; color: #9A94B3; line-height: 1.5; }
+  .request-banner p { margin: 0; font-size: 16px; color: #9A94B3; line-height: 1.5; }
   .request-banner .row { display: flex; gap: 10px; }
 
   .date-divider { display: flex; align-items: center; justify-content: center; margin: 18px 0; }
   .date-divider span {
-    font-size: 13px; color: #8A84A0; background: rgba(255,255,255,0.05);
+    font-size: 14px; color: #8A84A0; background: rgba(255,255,255,0.05);
     border: 1px solid rgba(255,255,255,0.1); padding: 5px 14px; border-radius: 999px;
   }
 
@@ -306,7 +306,7 @@
   .bubble-row.out { justify-content: flex-end; }
   .bubble-row.in { justify-content: flex-start; }
   .bubble {
-    max-width: 78%; padding: 12px 15px; font-size: 17px; line-height: 1.45;
+    max-width: 78%; padding: 12px 15px; font-size: 19px; line-height: 1.45;
   }
   .bubble.in {
     background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); color: #E4E1EC;
@@ -316,7 +316,7 @@
     background: #5824DF; border: none; color: #FFFFFF;
     border-radius: 20px;
   }
-  .bubble-time { font-size: 12px; color: #6E6890; margin: 3px 4px 12px 4px; }
+  .bubble-time { font-size: 13px; color: #6E6890; margin: 3px 4px 12px 4px; }
   .bubble-time.out { text-align: right; }
   .bubble-time.in { text-align: left; }
 
@@ -326,12 +326,12 @@
     border: 1px solid rgba(192,250,53,0.35);
   }
   .offer-head { display: flex; align-items: center; gap: 7px; margin-bottom: 12px; }
-  .offer-head span { font-size: 13px; font-weight: 700; letter-spacing: 0.08em; color: #C0FA35; text-transform: uppercase; }
-  .offer-venue { font-size: 18px; font-weight: 600; color: #F7F6FA; margin-bottom: 6px; }
-  .offer-meta { font-size: 15px; color: #C7C3D6; margin-bottom: 2px; }
-  .offer-fee { font-size: 16px; font-weight: 600; color: #C0FA35; margin-top: 8px; margin-bottom: 14px; }
+  .offer-head span { font-size: 14px; font-weight: 700; letter-spacing: 0.08em; color: #C0FA35; text-transform: uppercase; }
+  .offer-venue { font-size: 20px; font-weight: 600; color: #F7F6FA; margin-bottom: 6px; }
+  .offer-meta { font-size: 16px; color: #C7C3D6; margin-bottom: 2px; }
+  .offer-fee { font-size: 18px; font-weight: 600; color: #C0FA35; margin-top: 8px; margin-bottom: 14px; }
   .offer-actions { display: flex; gap: 8px; }
-  .offer-actions .cta-pill, .offer-actions .cta-pill-ghost { flex: 1; justify-content: center; padding: 10px 12px; font-size: 15px; }
+  .offer-actions .cta-pill, .offer-actions .cta-pill-ghost { flex: 1; justify-content: center; padding: 10px 12px; font-size: 16px; }
 
   .input-bar {
     position: fixed; left: 0; right: 0; bottom: 0; z-index: 80;
@@ -350,7 +350,7 @@
   .msg-input {
     flex: 1; height: 40px; border-radius: 999px; padding: 0 16px;
     background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14);
-    color: #E4E1EC; font-size: 16px; font-family: Jost, sans-serif;
+    color: #E4E1EC; font-size: 17px; font-family: Jost, sans-serif;
   }
   .msg-input::placeholder { color: #6E6890; }
   .send-btn {
