@@ -1,0 +1,222 @@
+/* ==========================================================================
+   Digital Jazz — нижняя навигация
+   Аватар-шайба + плашка-пилюля с круглыми кнопками, «сервисы» раскрываются
+   колонкой всплывающих кнопок.
+
+   Разметка:
+
+   <div class="services-scrim" id="servicesScrim"></div>
+
+   <nav class="bottom-nav">
+     <div class="bottom-nav-wrap">
+       <div class="nav-avatar active"><img src="…" alt=""></div>
+       <div class="bottom-nav-inner">
+         <div class="nav-slot"><div class="nav-circle">…icon…</div></div>
+         <div class="nav-slot"><div class="nav-circle active">…icon…</div></div>
+         <div class="nav-slot" id="servicesSlot">
+           <div class="nav-circle" id="servicesBtn">…icon…</div>
+           <div class="services-stack" id="servicesMenu">
+             <div class="services-row">
+               <div class="services-label">события</div>
+               <div class="services-circle">…icon…</div>
+             </div>
+             … ещё четыре ряда …
+           </div>
+         </div>
+       </div>
+     </div>
+   </nav>
+
+   JS вешает .open на #servicesMenu и #servicesScrim, .is-open на #servicesBtn.
+   Ничего не наследует от общего класса .glass — файл самодостаточен.
+   ========================================================================== */
+
+:root {
+  /* -- палитра -- */
+  --dj-bg: #06040B;
+  --dj-lime: #C0FA35;
+  --dj-text-strong: #E4E1EC;   /* подписи сервисов */
+  --dj-text-muted: #C7C3D6;    /* иконки сервисов */
+  --dj-text-nav: #ACA7BD;      /* иконка неактивной кнопки */
+
+  /* -- RGB-триплеты для полупрозрачных слоёв: rgba(var(--x-rgb), alpha) -- */
+  --dj-white-rgb: 255, 255, 255;
+  --dj-black-rgb: 6, 4, 11;
+  --dj-shadow-rgb: 0, 0, 0;
+  --dj-lime-rgb: 192, 250, 53;
+  --dj-purple-glow-rgb: 112, 46, 204;  /* подмешивается в стекло слева */
+  --dj-glass-tint-rgb: 24, 20, 32;     /* база стекла */
+  --dj-menu-tint-rgb: 30, 25, 38;      /* плотная подложка всплывающих кнопок */
+  --dj-menu-tint-end-rgb: 13, 11, 17;
+
+  /* -- габариты -- */
+  --dj-nav-height: 72px;      /* высота плашки и аватара */
+  --dj-nav-btn: 52px;         /* круглая кнопка внутри плашки */
+  --dj-nav-gap: 12px;         /* аватар ↔ плашка */
+  --dj-nav-side: 11px;        /* боковые поля, совпадают с полями карточек */
+  --dj-svc-btn: 44px;         /* всплывающая кнопка сервиса */
+
+  /* -- стекло -- */
+  --dj-glass-blur: 32px;
+  --dj-glass-saturate: 200%;
+}
+
+/* ==========================================================================
+   Контейнер
+   ========================================================================== */
+.bottom-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 80;
+  display: flex; justify-content: center;
+  padding: 0 var(--dj-nav-side) calc(10px + env(safe-area-inset-bottom)) var(--dj-nav-side);
+  pointer-events: none;                 /* кликается только сама плашка */
+}
+.bottom-nav-wrap {
+  pointer-events: auto;
+  width: 100%; max-width: 480px;
+  display: flex; align-items: center; gap: var(--dj-nav-gap);
+}
+
+/* ==========================================================================
+   Аватар-шайба (селектор профилей) — отдельный объект слева от плашки
+   ========================================================================== */
+.nav-avatar {
+  flex-shrink: 0; position: relative;
+  width: var(--dj-nav-height); height: var(--dj-nav-height); border-radius: 50%;
+  overflow: hidden; cursor: pointer;
+  box-shadow: 0 20px 44px -16px rgba(var(--dj-shadow-rgb), 0.9);
+}
+.nav-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* активное состояние рисуется поверх фото, а не под ним */
+.nav-avatar.active::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  border: 2px solid var(--dj-lime); pointer-events: none;
+}
+
+/* ==========================================================================
+   Плашка — цветное стекло
+   Фирменные тона подмешаны в сам материал: серо-нейтральная полупрозрачная
+   пилюля читается как браузерная панель, цветная — как часть продукта.
+   ========================================================================== */
+.bottom-nav-inner {
+  flex: 1; min-width: 0;
+  display: flex; align-items: center; justify-content: space-around;
+  height: var(--dj-nav-height); padding: 0 10px;
+  border-radius: 999px;
+  overflow: visible;                    /* колонка сервисов выходит за плашку */
+  background:
+    linear-gradient(168deg,
+      rgba(var(--dj-white-rgb), 0.22) 0%,
+      rgba(var(--dj-white-rgb), 0.04) 40%,
+      rgba(var(--dj-white-rgb), 0.12) 100%),
+    linear-gradient(120deg,
+      rgba(var(--dj-purple-glow-rgb), 0.34) 0%,
+      rgba(var(--dj-glass-tint-rgb), 0.5) 55%,
+      rgba(var(--dj-lime-rgb), 0.10) 100%);
+  -webkit-backdrop-filter: blur(var(--dj-glass-blur)) saturate(var(--dj-glass-saturate));
+  backdrop-filter: blur(var(--dj-glass-blur)) saturate(var(--dj-glass-saturate));
+  border: 1px solid rgba(var(--dj-white-rgb), 0.26);
+  box-shadow:
+    inset 0 2px 0 rgba(var(--dj-white-rgb), 0.36),    /* блик по верхней кромке */
+    inset 0 -1.5px 0 rgba(var(--dj-white-rgb), 0.10),
+    0 24px 50px -18px rgba(var(--dj-shadow-rgb), 0.95);
+}
+
+/* ==========================================================================
+   Круглые кнопки внутри плашки
+   ========================================================================== */
+.nav-slot { position: relative; display: flex; align-items: center; justify-content: center; }
+
+.nav-circle {
+  width: var(--dj-nav-btn); height: var(--dj-nav-btn); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(var(--dj-white-rgb), 0.06);
+  border: 1px solid rgba(var(--dj-white-rgb), 0.28);
+  box-shadow: inset 0 1px 0 rgba(var(--dj-white-rgb), 0.22);
+  color: var(--dj-text-nav); cursor: pointer;
+  transition: color 180ms ease, background 180ms ease, border-color 180ms ease, opacity 160ms ease;
+}
+.nav-circle svg { display: block; }
+
+/* .active — текущий раздел, .is-open — раскрытые «сервисы» */
+.nav-circle.active,
+.nav-circle.is-open {
+  color: var(--dj-lime);
+  background: linear-gradient(155deg,
+    rgba(var(--dj-lime-rgb), 0.34) 0%,
+    rgba(var(--dj-lime-rgb), 0.08) 100%);
+  border-color: rgba(var(--dj-lime-rgb), 0.65);
+  box-shadow:
+    inset 0 1px 0 rgba(var(--dj-white-rgb), 0.34),
+    0 8px 22px -8px rgba(var(--dj-lime-rgb), 0.6);
+}
+
+/* ==========================================================================
+   «Сервисы» — кнопки отрываются от плашки и всплывают колонкой
+   ========================================================================== */
+
+/* затемнение снизу вверх: гасит контент под колонкой, не выключая весь экран */
+.services-scrim {
+  position: fixed; inset: 0; z-index: 79; pointer-events: none;
+  background: linear-gradient(0deg,
+    rgba(var(--dj-black-rgb), 0.93) 0%,
+    rgba(var(--dj-black-rgb), 0.88) 38%,
+    rgba(var(--dj-black-rgb), 0.5) 64%,
+    rgba(var(--dj-black-rgb), 0) 88%);
+  opacity: 0; transition: opacity 220ms ease;
+}
+.services-scrim.open { opacity: 1; pointer-events: auto; }
+
+.services-stack {
+  position: absolute; right: 1px; bottom: 70px; z-index: 2;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 9px;
+  pointer-events: none;
+}
+.services-stack.open { pointer-events: auto; }
+
+.services-row {
+  display: flex; align-items: center; gap: 9px; cursor: pointer;
+  opacity: 0; transform: translateY(16px) scale(0.9);
+  transition: opacity 200ms ease, transform 260ms cubic-bezier(.2, .8, .2, 1);
+}
+.services-stack.open .services-row { opacity: 1; transform: translateY(0) scale(1); }
+
+/* колонка разворачивается снизу вверх — ближняя к кнопке кнопка идёт первой */
+.services-stack.open .services-row:nth-child(5) { transition-delay: 0ms; }
+.services-stack.open .services-row:nth-child(4) { transition-delay: 45ms; }
+.services-stack.open .services-row:nth-child(3) { transition-delay: 90ms; }
+.services-stack.open .services-row:nth-child(2) { transition-delay: 135ms; }
+.services-stack.open .services-row:nth-child(1) { transition-delay: 180ms; }
+
+/* плотнее плашки: всплывают поверх фотографий и лаймовых кнопок */
+.services-label,
+.services-circle {
+  background: linear-gradient(165deg,
+    rgba(var(--dj-menu-tint-rgb), 0.96) 0%,
+    rgba(var(--dj-menu-tint-end-rgb), 0.96) 100%);
+  border: 1px solid rgba(var(--dj-white-rgb), 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(var(--dj-white-rgb), 0.14),
+    0 14px 28px -12px rgba(var(--dj-shadow-rgb), 0.8);
+}
+.services-label {
+  font-size: 14px; color: var(--dj-text-strong); white-space: nowrap;
+  padding: 8px 14px; border-radius: 999px;
+}
+.services-circle {
+  width: var(--dj-svc-btn); height: var(--dj-svc-btn); border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--dj-text-muted);
+}
+.services-row:active .services-circle {
+  color: var(--dj-lime);
+  border-color: rgba(var(--dj-lime-rgb), 0.5);
+}
+
+/* ==========================================================================
+   Отступ под контент
+   Экран должен заканчиваться выше плашки, иначе последняя карточка уезжает
+   под стекло: 110px = высота плашки + нижнее поле + запас.
+   ========================================================================== */
+.screen {
+  padding-bottom: calc(110px + env(safe-area-inset-bottom));
+}
