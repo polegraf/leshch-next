@@ -857,21 +857,21 @@ body {
     <div>
       <div class="dj-label dj-muted">Настройки тура</div>
       <div class="stack" style="margin-top:10px;gap:8px">
-        <div class="dj-card dj-card--flat row" style="padding:13px 16px">
+        <div class="dj-card dj-card--flat row" data-go="s-party" style="padding:13px 16px">
           <div class="grow">
             <div class="dj-strong" style="color:var(--dj-text-bright)">Тревел-пати</div>
             <div class="dj-label-s" style="margin-top:3px;text-transform:none;letter-spacing:0">Состав · багаж · условия — вы + 2 чел., 148 кг</div>
           </div>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6E6890" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
         </div>
-        <div class="dj-card dj-card--flat row" style="padding:13px 16px">
+        <div class="dj-card dj-card--flat row" data-go="s-tickets" style="padding:13px 16px">
           <div class="grow">
             <div class="dj-strong" style="color:var(--dj-text-bright)">Транспорт и билеты</div>
             <div class="dj-label-s" style="margin-top:3px;text-transform:none;letter-spacing:0">Самолёт · искать на группу · перевес 148 кг</div>
           </div>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6E6890" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
         </div>
-        <div class="dj-card dj-card--flat row" style="padding:13px 16px">
+        <div class="dj-card dj-card--flat row" data-go="s-venues" style="padding:13px 16px">
           <div class="grow">
             <div class="dj-strong" style="color:var(--dj-text-bright)">Площадки и отели</div>
             <div class="dj-label-s" style="margin-top:3px;text-transform:none;letter-spacing:0">База площадок · отели ближе к площадке</div>
@@ -914,11 +914,11 @@ body {
       <div class="dj-label dj-accent" style="margin-top:12px">3 свободные даты · 4 предложения</div>
     </a>
 
-    <div class="dj-card" draggable="true">
+    <div class="dj-card" data-go="s-party">
       <div class="row">
         <i class="dj-dot dj-dot--talks" style="width:9px;height:9px"></i>
         <div class="grow dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Тревел-пати</div>
-        <span class="dj-handle" aria-label="Перетащить">
+        <span class="dj-handle" data-drag-handle aria-label="Перетащить">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
         </span>
       </div>
@@ -932,15 +932,15 @@ body {
       </div>
       <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);gap:9px">
         <i style="width:7px;height:7px;border-radius:50%;background:var(--dj-magenta);flex-shrink:0"></i>
-        <div class="grow dj-body-s dj-warn">У Кости нет паспортных данных — билет не оформить</div>
+        <div class="grow dj-body-s dj-warn" data-party-warn>У Кости нет паспортных данных — билет не оформить</div>
       </div>
     </div>
 
-    <div class="dj-card" draggable="true">
+    <div class="dj-card" data-go="s-tickets">
       <div class="row">
         <i class="dj-dot dj-dot--talks" style="width:9px;height:9px"></i>
         <div class="grow dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Транспорт и билеты</div>
-        <span class="dj-handle" aria-label="Перетащить">
+        <span class="dj-handle" data-drag-handle aria-label="Перетащить">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
         </span>
       </div>
@@ -956,11 +956,11 @@ body {
       <button class="dj-btn dj-btn--primary" style="width:100%;margin-top:14px;height:44px">Найти на группу</button>
     </div>
 
-    <div class="dj-card" draggable="true">
+    <div class="dj-card" data-go="s-venues">
       <div class="row">
         <i class="dj-dot dj-dot--talks" style="width:9px;height:9px"></i>
         <div class="grow dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Площадки и отели</div>
-        <span class="dj-handle" aria-label="Перетащить">
+        <span class="dj-handle" data-drag-handle aria-label="Перетащить">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
         </span>
       </div>
@@ -977,11 +977,11 @@ body {
       <div class="dj-body-s" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1)">Без площадки: Новосибирск, Иркутск, Тюмень</div>
     </div>
 
-    <div class="dj-card" draggable="true">
+    <div class="dj-card" data-go="s-prod">
       <div class="row">
         <i class="dj-dot dj-dot--cancelled" style="width:9px;height:9px"></i>
         <div class="grow dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Продакшн</div>
-        <span class="dj-handle" aria-label="Перетащить">
+        <span class="dj-handle" data-drag-handle aria-label="Перетащить">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
         </span>
       </div>
@@ -993,7 +993,7 @@ body {
       </div>
     </div>
 
-    <div class="dj-card" draggable="true">
+    <div class="dj-card" data-go="s-budget">
       <div class="row">
         <i class="dj-dot dj-dot--confirmed" style="width:9px;height:9px"></i>
         <div class="grow dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Смета</div>
@@ -1242,7 +1242,7 @@ body {
     <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px" data-city="msk">
       <i class="dj-dot dj-dot--confirmed" style="width:11px;height:11px"></i>
       <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Москва</div><div class="dj-label-s" style="margin-top:2px;text-transform:none;letter-spacing:0">12 окт · Цех · подтверждено</div></div>
-      <span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+      <span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
     </div>
 
     <div class="insert"><div class="l"></div><button data-go="s-addcity" aria-label="Вставить город"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="l"></div></div>
@@ -1250,7 +1250,7 @@ body {
     <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px" data-city="nn">
       <i class="dj-dot dj-dot--confirmed" style="width:11px;height:11px"></i>
       <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Нижний Новгород</div><div class="dj-label-s" style="margin-top:2px;text-transform:none;letter-spacing:0">15 окт · Слобода · подтверждено</div></div>
-      <span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+      <span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
     </div>
 
     <div class="insert hot"><div class="l"></div><button data-go="s-addcity" aria-label="Вставить город в свободное окно"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="l"></div></div>
@@ -1258,31 +1258,31 @@ body {
     <div class="dj-card dj-card--dashed row" draggable="true" style="padding:12px 14px" data-city="free">
       <i class="dj-dot dj-dot--free" style="width:11px;height:11px"></i>
       <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Свободное окно</div><div class="dj-label-s dj-accent" style="margin-top:2px;text-transform:none;letter-spacing:0">18 окт · 4 предложения</div></div>
-      <span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+      <span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
     </div>
 
     <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px" data-city="kzn">
       <i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i>
       <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Казань</div><div class="dj-label-s" style="margin-top:2px;text-transform:none;letter-spacing:0">21 окт · Контур · переговоры</div></div>
-      <span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+      <span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
     </div>
 
     <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px" data-city="ekb">
       <i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i>
       <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Екатеринбург</div><div class="dj-label-s" style="margin-top:2px;text-transform:none;letter-spacing:0">24 окт · Гранит · переговоры</div></div>
-      <span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+      <span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
     </div>
 
     <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px;opacity:0.6" data-city="nsk">
       <i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i>
       <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Новосибирск</div><div class="dj-label-s" style="margin-top:2px;text-transform:none;letter-spacing:0">29 окт · площадка не выбрана</div></div>
-      <span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+      <span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
     </div>
 
     <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px;opacity:0.6" data-city="irk">
       <i class="dj-dot dj-dot--cancelled" style="width:11px;height:11px;border-style:dashed"></i>
       <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Иркутск</div><div class="dj-label-s" style="margin-top:2px;text-transform:none;letter-spacing:0">3 ноя · финал тура</div></div>
-      <span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+      <span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
     </div>
   </div>
 
@@ -1347,6 +1347,322 @@ body {
       <div class="grow"><div class="dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Кассета</div><div class="dj-body-s" style="margin-top:3px">Техно · тур «Урал-луп» · +310 км</div></div>
       <div class="dj-label dj-process">Переговоры</div>
     </div>
+  </div>
+</div>
+
+<!-- ================= ТРЕВЕЛ-ПАТИ ================= -->
+<div class="screen" id="s-party">
+  <div class="head">
+    <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow"><h1 style="font-size:26px">Тревел-пати</h1><div class="sub">Состав · багаж · условия</div></div>
+  </div>
+
+  <div class="dj-card dj-card--flat stat-row" style="padding:14px 18px;margin-bottom:14px">
+    <div class="s"><div class="dj-h2" style="color:var(--dj-text-bright)">3</div><div class="dj-label dj-muted" style="margin-top:5px">человека</div></div>
+    <div class="s"><div class="dj-h2" style="color:var(--dj-text-bright)">148</div><div class="dj-label dj-muted" style="margin-top:5px">кг багажа</div></div>
+    <div class="s"><div class="dj-h2 dj-warn" data-party-missing>1</div><div class="dj-label dj-muted" style="margin-top:5px">без документов</div></div>
+  </div>
+
+  <div class="rule" style="margin-top:0"><div class="t">Состав</div><div class="line"></div><div class="note">тянется на весь тур</div></div>
+
+  <div class="stack">
+    <div class="dj-card">
+      <div class="row">
+        <i class="dj-avatar" style="width:44px;height:44px;flex-shrink:0"></i>
+        <div class="grow">
+          <div class="dj-strong" style="color:var(--dj-text-bright)">Leshch</div>
+          <div class="dj-body-s" style="margin-top:3px">артист · паспорт до 2031</div>
+        </div>
+        <div class="dj-body-s">68 кг</div>
+      </div>
+    </div>
+
+    <div class="dj-card" style="border-color:rgba(255,0,229,0.35)">
+      <div class="row">
+        <i class="f2" style="width:44px;height:44px;border-radius:50%;flex-shrink:0"></i>
+        <div class="grow">
+          <div class="dj-strong" style="color:var(--dj-text-bright)">Костя</div>
+          <div class="dj-body-s" style="margin-top:3px">тех · пульт и кабели</div>
+        </div>
+        <div class="dj-body-s">62 кг</div>
+      </div>
+      <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);gap:10px">
+        <i style="width:7px;height:7px;border-radius:50%;background:var(--dj-magenta);flex-shrink:0"></i>
+        <div class="grow dj-body-s dj-warn">Нет паспортных данных — билет не оформить</div>
+        <button class="dj-btn dj-btn--ghost" data-fill="Костя" style="height:36px;padding:0 14px;font-size:14px;font-weight:400;border-color:var(--dj-lime-line);color:var(--dj-lime)">Заполнить</button>
+      </div>
+    </div>
+
+    <div class="dj-card">
+      <div class="row">
+        <i class="f3" style="width:44px;height:44px;border-radius:50%;flex-shrink:0"></i>
+        <div class="grow">
+          <div class="dj-strong" style="color:var(--dj-text-bright)">Аня</div>
+          <div class="dj-body-s" style="margin-top:3px">тур-менеджер · паспорт до 2029</div>
+        </div>
+        <div class="dj-body-s">18 кг</div>
+      </div>
+    </div>
+
+    <button class="dj-btn dj-btn--ghost" data-toast="Форма участника — в этом прототипе не собрана" style="width:100%;border-style:dashed">+ Участник</button>
+  </div>
+
+  <div class="rule"><div class="t">Условия</div><div class="line"></div></div>
+  <div class="chips">
+    <div class="dj-chip is-active">Свой состав</div>
+    <div class="dj-chip">2 номера в отеле</div>
+    <div class="dj-chip">Трансфер от аэропорта</div>
+  </div>
+</div>
+
+<!-- ================= ТРАНСПОРТ И БИЛЕТЫ ================= -->
+<div class="screen" id="s-tickets">
+  <div class="head">
+    <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow"><h1 style="font-size:26px">Транспорт</h1><div class="sub">Перелёты · перевес · билеты</div></div>
+  </div>
+
+  <div class="seg" style="margin-bottom:14px">
+    <button class="on">Самолёт</button>
+    <button>Поезд</button>
+    <button>Авто</button>
+  </div>
+
+  <div class="stack">
+    <div class="dj-card dj-card--flat row">
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Москва → Нижний</div>
+        <div class="dj-body-s" style="margin-top:3px">13 окт · авто, 400 км · 5 ч</div>
+      </div>
+      <div class="dj-body-s" style="color:var(--dj-text)">по расстоянию</div>
+    </div>
+
+    <div class="dj-card dj-card--flat row">
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Нижний → Казань</div>
+        <div class="dj-body-s" style="margin-top:3px">19 окт · SU 1284 · 07:40 → 09:05</div>
+      </div>
+      <div class="dj-strong" style="color:var(--dj-text-bright)">18 400 ₽</div>
+    </div>
+
+    <div class="dj-card dj-card--flat row">
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Казань → Екатеринбург</div>
+        <div class="dj-body-s" style="margin-top:3px">23 окт · U6 316 · 11:20 → 15:00</div>
+      </div>
+      <div class="dj-strong" style="color:var(--dj-text-bright)">24 900 ₽</div>
+    </div>
+
+    <div class="dj-card row" style="border-color:rgba(255,0,229,0.35)">
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Новосибирск → Иркутск</div>
+        <div class="dj-body-s dj-warn" style="margin-top:3px">Рейса на 2 ноя нет — сдвинуть дату или взять поезд</div>
+      </div>
+      <button class="dj-btn dj-btn--ghost" data-toast="Подбор рейсов — в этом прототипе не собран" style="height:36px;padding:0 14px;font-size:14px;font-weight:400">Найти</button>
+    </div>
+  </div>
+
+  <div class="rule"><div class="t">Перевес</div><div class="line"></div></div>
+
+  <div class="dj-card">
+    <div class="row" style="align-items:flex-end">
+      <div class="grow">
+        <div class="dj-h2" style="color:var(--dj-text-bright)">148 кг</div>
+        <div class="dj-body-s" style="margin-top:3px">норма на троих — 120 кг</div>
+      </div>
+      <div style="text-align:right">
+        <div class="dj-h2 dj-warn">+28 кг</div>
+        <div class="dj-body-s" style="margin-top:3px">≈ 14 000 ₽ за тур</div>
+      </div>
+    </div>
+    <div class="dj-meter" style="margin-top:14px"><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i></i><i></i></div>
+  </div>
+
+  <div class="row" style="margin-top:16px;gap:8px">
+    <button class="dj-btn dj-btn--primary grow" data-toast="Поиск на группу — в этом прототипе не собран">Найти на группу</button>
+    <button class="dj-btn dj-btn--ghost dj-btn--icon" data-toast="Сканер билета — в этом прототипе не собран" aria-label="Сканировать билет">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3"/><path d="M20 8V5a1 1 0 0 0-1-1h-3"/><path d="M4 16v3a1 1 0 0 0 1 1h3"/><path d="M20 16v3a1 1 0 0 1-1 1h-3"/><path d="M3 12h18"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ================= ПЛОЩАДКИ И ОТЕЛИ ================= -->
+<div class="screen" id="s-venues">
+  <div class="head">
+    <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow"><h1 style="font-size:26px">Площадки</h1><div class="sub">И отели рядом · 4 из 7 городов</div></div>
+  </div>
+
+  <div class="chips" style="margin-bottom:16px">
+    <div class="dj-chip is-active">ближе к площадке</div>
+    <div class="dj-chip">по цене</div>
+    <div class="dj-chip">ближе к аэропорту</div>
+  </div>
+
+  <div class="stack">
+    <div class="dj-card">
+      <div class="row">
+        <i class="dj-dot dj-dot--confirmed" style="width:9px;height:9px"></i>
+        <div class="grow dj-strong" style="color:var(--dj-text-bright)">Москва · Цех</div>
+        <div class="dj-body-s">12 окт</div>
+      </div>
+      <div class="dj-body-s" style="margin-top:8px">800 чел · сцена 8×6 · свет и звук площадки</div>
+      <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1)">
+        <div class="grow dj-body-s">Отель «Депо» · 1,2 км от площадки</div>
+        <div class="dj-strong" style="color:var(--dj-text-bright)">7 200 ₽</div>
+      </div>
+    </div>
+
+    <div class="dj-card">
+      <div class="row">
+        <i class="dj-dot dj-dot--confirmed" style="width:9px;height:9px"></i>
+        <div class="grow dj-strong" style="color:var(--dj-text-bright)">Нижний Новгород · Слобода</div>
+        <div class="dj-body-s">15 окт</div>
+      </div>
+      <div class="dj-body-s" style="margin-top:8px">450 чел · сцена 6×4 · свой пульт</div>
+      <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1)">
+        <div class="grow dj-body-s">Отель на Рождественской · 600 м</div>
+        <div class="dj-strong" style="color:var(--dj-text-bright)">5 400 ₽</div>
+      </div>
+    </div>
+
+    <div class="dj-card">
+      <div class="row">
+        <i class="dj-dot dj-dot--talks" style="width:9px;height:9px"></i>
+        <div class="grow dj-strong" style="color:var(--dj-text-bright)">Казань · Контур</div>
+        <div class="dj-label dj-process">переговоры</div>
+      </div>
+      <div class="dj-body-s" style="margin-top:8px">600 чел · ждут ответ по гонорару</div>
+      <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1)">
+        <div class="grow dj-body-s dj-muted">Отель не выбран — 6 вариантов рядом</div>
+        <button class="dj-btn dj-btn--ghost" data-toast="Подбор отеля — в этом прототипе не собран" style="height:34px;padding:0 13px;font-size:13px;font-weight:400">Подобрать</button>
+      </div>
+    </div>
+
+    <div class="dj-card" style="background:rgba(255,255,255,0.03);border-style:dashed;box-shadow:none">
+      <div class="row">
+        <i class="dj-dot dj-dot--cancelled" style="width:9px;height:9px"></i>
+        <div class="grow dj-strong" style="color:var(--dj-text-3)">Новосибирск</div>
+        <div class="dj-body-s dj-dim">29 окт</div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div class="grow dj-body-s">Площадка не выбрана · 9 в базе</div>
+        <button class="dj-btn dj-btn--ghost" data-toast="База площадок — в этом прототипе не собрана" style="height:34px;padding:0 13px;font-size:13px;font-weight:400;border-color:var(--dj-lime-line);color:var(--dj-lime)">Выбрать</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ПРОДАКШН ================= -->
+<div class="screen" id="s-prod">
+  <div class="head">
+    <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow"><h1 style="font-size:26px">Продакшн</h1><div class="sub">Сцена · декорации · райдеры</div></div>
+  </div>
+
+  <div class="dj-card dj-card--flat" style="margin-bottom:14px">
+    <div class="dj-body-s">Площадки просят тех-райдер за две недели до даты. Ближайшая — <b style="color:var(--dj-text-bright);font-weight:600">Казань, 21 окт</b>.</div>
+  </div>
+
+  <div class="stack">
+    <div class="dj-card row">
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Сцена</div>
+        <div class="dj-body-s" style="margin-top:3px">0 фото — площадки просят вид со сцены</div>
+      </div>
+      <button class="dj-btn dj-btn--ghost" data-toast="Загрузка фото — в этом прототипе не собрана" style="height:36px;padding:0 14px;font-size:14px;font-weight:400">+ Фото</button>
+    </div>
+
+    <div class="dj-card row">
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Декорации</div>
+        <div class="dj-body-s" style="margin-top:3px">0 позиций · вес уходит в перевес</div>
+      </div>
+      <button class="dj-btn dj-btn--ghost" data-toast="Список декораций — в этом прототипе не собран" style="height:36px;padding:0 14px;font-size:14px;font-weight:400">+ Позиция</button>
+    </div>
+
+    <div class="dj-card" style="border-color:rgba(255,0,229,0.35)">
+      <div class="row">
+        <div class="grow">
+          <div class="dj-strong" style="color:var(--dj-text-bright)">Тех-райдер</div>
+          <div class="dj-body-s dj-warn" style="margin-top:3px">Не загружен — блокирует подтверждение площадок</div>
+        </div>
+        <button class="dj-btn dj-btn--primary" data-toast="Загрузка PDF — в этом прототипе не собрана" style="height:36px;padding:0 14px;font-size:14px">Загрузить</button>
+      </div>
+    </div>
+
+    <div class="dj-card row">
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Хоспиталити-райдер</div>
+        <div class="dj-body-s" style="margin-top:3px">PDF · обновлён 2 сен</div>
+      </div>
+      <i class="dj-dot dj-dot--confirmed" style="width:9px;height:9px"></i>
+    </div>
+  </div>
+</div>
+
+<!-- ================= СМЕТА ================= -->
+<div class="screen" id="s-budget">
+  <div class="head">
+    <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow"><h1 style="font-size:26px">Смета</h1><div class="sub">Считается из билетов, отелей и груза</div></div>
+  </div>
+
+  <div class="stack">
+    <div class="dj-card">
+      <div class="row">
+        <div class="grow dj-strong" style="color:var(--dj-text-bright)">Билеты</div>
+        <div class="dj-strong" style="color:var(--dj-text-bright)">96 000 ₽</div>
+      </div>
+      <div class="dj-body-s" style="margin-top:6px">6 перелётов на троих · один рейс не найден</div>
+    </div>
+
+    <div class="dj-card">
+      <div class="row">
+        <div class="grow dj-strong" style="color:var(--dj-text-bright)">Отели</div>
+        <div class="dj-strong" style="color:var(--dj-text-bright)">54 000 ₽</div>
+      </div>
+      <div class="dj-body-s" style="margin-top:6px">6 ночей · 2 номера · ближе к площадке</div>
+    </div>
+
+    <div class="dj-card">
+      <div class="row">
+        <div class="grow dj-strong" style="color:var(--dj-text-bright)">Логистика груза</div>
+        <div class="dj-strong" style="color:var(--dj-text-bright)">14 000 ₽</div>
+      </div>
+      <div class="dj-body-s" style="margin-top:6px">Перевес 28 кг сверх нормы</div>
+    </div>
+  </div>
+
+  <div class="dj-card dj-card--accent" style="margin-top:14px">
+    <div class="row">
+      <div class="grow dj-label dj-muted">Расходы</div>
+      <div class="dj-h2" style="color:var(--dj-text-bright)">164 000 ₽</div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <div class="grow dj-label dj-muted">Гонорары</div>
+      <div class="dj-h2 dj-accent">1 190 000 ₽</div>
+    </div>
+    <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.14)">
+      <div class="grow dj-strong" style="color:var(--dj-text-bright)">Остаётся</div>
+      <div class="dj-h1 dj-accent" style="font-size:26px">1 026 000 ₽</div>
+    </div>
+  </div>
+
+  <div class="dj-card dj-card--flat row" style="margin-top:12px">
+    <i class="dj-dot dj-dot--free" style="width:9px;height:9px"></i>
+    <div class="grow dj-body-s">Три свободные даты могут добавить ещё <b class="dj-accent">до 420 000 ₽</b></div>
+    <button class="dj-strong dj-accent" data-go="s-route" style="background:none;border:none;font-family:inherit;cursor:pointer;white-space:nowrap">Открыть</button>
   </div>
 </div>
 
@@ -1480,6 +1796,17 @@ body {
     window.scrollTo(0, 0);
   }
   document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-drag-handle]')) return;
+    var toastEl = e.target.closest('[data-toast]');
+    if (toastEl) {
+      e.preventDefault(); e.stopPropagation();
+      var t = document.getElementById('toast');
+      t.firstElementChild.textContent = toastEl.getAttribute('data-toast');
+      t.classList.add('is-on');
+      clearTimeout(window.__djToastT);
+      window.__djToastT = setTimeout(function () { t.classList.remove('is-on'); }, 2600);
+      return;
+    }
     var goEl = e.target.closest('[data-go]');
     if (goEl) { e.preventDefault(); go(goEl.getAttribute('data-go')); return; }
     var sheetEl = e.target.closest('[data-sheet]');
@@ -1495,35 +1822,6 @@ body {
     }
   });
 
-  /* перетаскивание карточек — как в профиле */
-  ['sections-list', 'reorder-list'].forEach(function (id) {
-    var list = document.getElementById(id);
-    if (!list) return;
-    var dragged = null;
-    list.addEventListener('dragstart', function (e) {
-      dragged = e.target.closest('[draggable="true"]');
-      if (!dragged) return;
-      dragged.style.opacity = '0.4';
-      var h = dragged.querySelector('.dj-handle');
-      if (h) h.classList.add('is-dragging');
-    });
-    list.addEventListener('dragend', function () {
-      if (!dragged) return;
-      dragged.style.opacity = '';
-      var h = dragged.querySelector('.dj-handle');
-      if (h) h.classList.remove('is-dragging');
-      dragged = null;
-    });
-    list.addEventListener('dragover', function (e) {
-      e.preventDefault();
-      if (!dragged) return;
-      var over = e.target.closest('[draggable="true"]');
-      if (!over || over === dragged) return;
-      var r = over.getBoundingClientRect();
-      var after = (e.clientY - r.top) / r.height > 0.5;
-      list.insertBefore(dragged, after ? over.nextSibling : over);
-    });
-  });
 })();
 </script>
 
@@ -1541,6 +1839,9 @@ body {
   box-shadow: 0 0 10px rgba(255,0,229,0.6); opacity: 0; transition: opacity .2s; }
 .map.show-promo .promo { opacity: 1; }
 .leg.is-new .card, .dj-card.is-new { border-color: var(--dj-lime-line); box-shadow: 0 0 0 1px var(--dj-lime-line), var(--dj-shadow-card); }
+.dj-card.dragging { z-index: 50; box-shadow: 0 30px 60px -12px rgba(0,0,0,0.75); border-color: rgba(192,250,53,0.4); transition: none !important; }
+.dj-card.settling { transition: transform 220ms cubic-bezier(.2,.8,.2,1); }
+[data-drag-handle] { touch-action: none; }
 .dj-btn.is-done { background: transparent; border: 1px solid var(--dj-line-3); color: var(--dj-text-3); box-shadow: none; }
 </style>
 <script>
@@ -1683,7 +1984,7 @@ body {
         row.innerHTML = '<i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i>' +
           '<div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">' + picked + '</div>' +
           '<div class="dj-label-s" style="margin-top:2px;text-transform:none;letter-spacing:0">18 окт · площадка не выбрана</div></div>' +
-          '<span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">' +
+          '<span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">' +
           '<circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/>' +
           '<circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>';
         rlist.insertBefore(row, ranchor);
@@ -1698,6 +1999,99 @@ body {
     var map = $('#s-map .map');
     map.classList.toggle('show-promo');
     say(map.classList.contains('show-promo') ? 'Промоутеры рядом — 4 в радиусе 300 км' : 'Промоутеры скрыты');
+  });
+
+
+  /* перетаскивание карточек — тот же приём, что в профиле */
+  ['sections-list', 'reorder-list'].forEach(function (id) {
+    var list = document.getElementById(id);
+    if (!list) return;
+    var dragging = null, startY = 0, startTop = 0;
+
+    function items() {
+      return $$(':scope > [data-drag-handle], :scope > *', list).filter(function (el) {
+        return el.querySelector('[data-drag-handle]');
+      });
+    }
+    function rects() {
+      return items().map(function (el) {
+        var r = el.getBoundingClientRect();
+        return { el: el, top: r.top, bottom: r.bottom, mid: r.top + r.height / 2 };
+      });
+    }
+    list.addEventListener('pointerdown', function (e) {
+      var handle = e.target.closest('[data-drag-handle]');
+      if (!handle) return;
+      var card = handle.closest('[data-go], .dj-card');
+      if (!card || card.parentNode !== list) return;
+      e.preventDefault();
+      dragging = card; startY = e.clientY; startTop = card.getBoundingClientRect().top;
+      card.classList.add('dragging'); card.classList.remove('settling');
+      card.style.position = 'relative'; card.style.zIndex = 50;
+      handle.classList.add('is-dragging');
+      handle.setPointerCapture(e.pointerId);
+      document.addEventListener('pointermove', onMove);
+      document.addEventListener('pointerup', onUp);
+    });
+    function onMove(e) {
+      if (!dragging) return;
+      var dy = e.clientY - startY;
+      dragging.style.transform = 'translateY(' + dy + 'px)';
+      var rr = rects();
+      var dr = dragging.getBoundingClientRect();
+      var mid = dr.top + dr.height / 2;
+      for (var i = 0; i < rr.length; i++) {
+        var r = rr[i];
+        if (r.el === dragging) continue;
+        if (mid > r.top && mid < r.bottom) {
+          var di = Array.prototype.indexOf.call(list.children, dragging);
+          var ti = Array.prototype.indexOf.call(list.children, r.el);
+          if (di < ti) list.insertBefore(dragging, r.el.nextSibling);
+          else list.insertBefore(dragging, r.el);
+          var newTop = dragging.getBoundingClientRect().top;
+          var visualTop = startTop + dy;
+          startTop = newTop; startY = e.clientY;
+          dragging.style.transform = 'translateY(' + (visualTop - newTop) + 'px)';
+          break;
+        }
+      }
+    }
+    function onUp() {
+      if (!dragging) return;
+      var card = dragging;
+      card.classList.add('settling');
+      card.style.transform = 'translateY(0px)';
+      card.classList.remove('dragging');
+      card.style.zIndex = '';
+      var h = card.querySelector('[data-drag-handle]');
+      if (h) h.classList.remove('is-dragging');
+      dragging = null;
+      document.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerup', onUp);
+      setTimeout(function () { card.classList.remove('settling'); card.style.position = ''; }, 240);
+    }
+  });
+
+  /* заполнить данные участника */
+  $$('[data-fill]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var card = btn.closest('.dj-card');
+      if (card) card.style.borderColor = 'rgba(255,255,255,0.14)';
+      var row = btn.closest('.row');
+      if (row) row.innerHTML = '<i class="dj-dot dj-dot--confirmed" style="width:7px;height:7px;flex-shrink:0"></i>' +
+        '<div class="grow dj-body-s">Паспорт до 2030 · билет можно оформить</div>';
+      var missing = $('[data-party-missing]');
+      if (missing) { missing.textContent = '0'; missing.classList.remove('dj-warn'); missing.style.color = 'var(--dj-text-bright)'; }
+      var warn = $('[data-party-warn]');
+      if (warn) {
+        warn.textContent = 'Состав готов — документы у всех троих';
+        warn.classList.remove('dj-warn');
+        var dot = warn.previousElementSibling;
+        if (dot) { dot.style.background = 'var(--dj-lime)'; }
+      }
+      say('Данные Кости заполнены — билеты можно оформлять');
+    });
   });
 
   /* правка маршрута: «Готово» применяет порядок */
