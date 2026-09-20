@@ -1576,7 +1576,7 @@ body {
     <div class="dj-card row">
       <div class="grow">
         <div class="dj-strong" style="color:var(--dj-text-bright)">Сцена</div>
-        <div class="dj-body-s" style="margin-top:3px">0 фото — площадки просят вид со сцены</div>
+        <div class="dj-body-s" style="margin-top:3px">0 фото · площадки просят вид со сцены</div>
       </div>
       <button class="dj-btn dj-btn--ghost" data-toast="Загрузка фото — в этом прототипе не собрана" style="height:36px;padding:0 14px;font-size:16px;font-weight:400">+ Фото</button>
     </div>
@@ -1593,7 +1593,7 @@ body {
       <div class="row">
         <div class="grow">
           <div class="dj-strong" style="color:var(--dj-text-bright)">Тех-райдер</div>
-          <div class="dj-body-s dj-warn" style="margin-top:3px">Не загружен — блокирует подтверждение площадок</div>
+          <div class="dj-body-s dj-warn" style="margin-top:3px">Не загружен — площадки не подтвердят дату</div>
         </div>
         <button class="dj-btn dj-btn--primary" data-toast="Загрузка PDF — в этом прототипе не собрана" style="height:36px;padding:0 14px;font-size:16px">Загрузить</button>
       </div>
@@ -2166,6 +2166,8 @@ body {
 .row > .dj-strong { white-space: nowrap; }
 .row > .grow { min-width: 0; }
 .rule .t { white-space: nowrap; }
+.dj-btn { white-space: nowrap; flex-shrink: 0; }
+.dj-btn.grow { flex: 1 1 0; min-width: 0; }
 .rule .note { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 </style>
 </body>
