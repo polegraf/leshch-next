@@ -860,5 +860,37 @@
   document.getElementById('backBtn').addEventListener('click', closeThread);
 })();
 </script>
+<script>
+/* DJ-PROTO-LINKS — меню связывает прототипы между собой */
+(function () {
+  var HERE = location.pathname.replace(/\/$/, '');
+  var MAP = {
+    profile: '/proto/dj-style-profile-interactive',
+    chat: '/proto/dj-style-chat',
+    tours: '/proto/dj-style-tours'
+  };
+  function open(url) {
+    if (!url) return;
+    var here = HERE.replace(/\/index\.html$/, '');
+    if (here.slice(-url.split('/').pop().length) === url.split('/').pop()) return;
+    location.href = url;
+  }
+  function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+
+  all('.nav-avatar').forEach(function (el) {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', function () { open(MAP.profile); }, true);
+  });
+  all('.nav-circle').forEach(function (el) {
+    var label = (el.getAttribute('aria-label') || '').toLowerCase();
+    if (label.indexOf('чат') > -1) el.addEventListener('click', function () { open(MAP.chat); }, true);
+  });
+  all('.services-row').forEach(function (row) {
+    var t = (row.textContent || '').trim().toLowerCase();
+    row.style.cursor = 'pointer';
+    if (t.indexOf('туры') > -1) row.addEventListener('click', function () { open(MAP.tours); }, true);
+  });
+})();
+</script>
 </body>
 </html>

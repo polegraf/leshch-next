@@ -1879,8 +1879,8 @@ body {
         item.classList.add('active');
         var label = (item.getAttribute('aria-label') || '').toLowerCase();
         if (label.indexOf('поиск') > -1) { go('s-radar'); say('Радар маршрутов — вид промоутера'); }
-        else if (label.indexOf('чат') > -1) say('Чат — отдельный прототип: /proto/dj-style-chat');
-        else if (item.classList.contains('nav-avatar')) say('Профиль — /proto/dj-style-profile-interactive');
+        else if (label.indexOf('чат') > -1) say('Открываю чат…');
+        else if (item.classList.contains('nav-avatar')) say('Открываю профиль…');
       });
     });
     $$('.services-row', servicesMenu).forEach(function (row) {
@@ -1888,7 +1888,7 @@ body {
         var t = (row.textContent || '').trim().toLowerCase();
         closeServices();
         if (t.indexOf('туры') > -1) { go('s-tours'); say('Туры — вы здесь'); }
-        else { say('Раздел «' + t + '» в этом прототипе не собран'); }
+        else { say('Раздел «' + t + '» — прототипа пока нет'); }
       });
     });
     servicesScrim.addEventListener('click', closeServices);
@@ -2109,6 +2109,38 @@ body {
       if (transfer && legs.length > 1) route.insertBefore(transfer, legs[legs.length - 1]);
       say('Порядок сохранён — даты и переезды пересчитаны');
     });
+  });
+})();
+</script>
+<script>
+/* DJ-PROTO-LINKS — меню связывает прототипы между собой */
+(function () {
+  var HERE = location.pathname.replace(/\/$/, '');
+  var MAP = {
+    profile: '/proto/dj-style-profile-interactive',
+    chat: '/proto/dj-style-chat',
+    tours: '/proto/dj-style-tours'
+  };
+  function open(url) {
+    if (!url) return;
+    var here = HERE.replace(/\/index\.html$/, '');
+    if (here.slice(-url.split('/').pop().length) === url.split('/').pop()) return;
+    location.href = url;
+  }
+  function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+
+  all('.nav-avatar').forEach(function (el) {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', function () { open(MAP.profile); }, true);
+  });
+  all('.nav-circle').forEach(function (el) {
+    var label = (el.getAttribute('aria-label') || '').toLowerCase();
+    if (label.indexOf('чат') > -1) el.addEventListener('click', function () { open(MAP.chat); }, true);
+  });
+  all('.services-row').forEach(function (row) {
+    var t = (row.textContent || '').trim().toLowerCase();
+    row.style.cursor = 'pointer';
+    if (t.indexOf('туры') > -1) row.addEventListener('click', function () { open(MAP.tours); }, true);
   });
 })();
 </script>
