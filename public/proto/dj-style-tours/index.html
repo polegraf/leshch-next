@@ -1038,7 +1038,7 @@ body {
   <div class="route stack">
     <div class="spine"></div>
 
-    <div class="leg">
+    <div class="leg" data-city="msk">
       <div class="pin"><i class="dj-dot dj-dot--confirmed"></i></div>
       <div class="card dj-card">
         <div class="row"><div class="date grow">12 окт · пт</div><div class="dj-body-s">180 000 ₽</div></div>
@@ -1047,7 +1047,7 @@ body {
       </div>
     </div>
 
-    <div class="leg">
+    <div class="leg" data-city="nn">
       <div class="pin"><i class="dj-dot dj-dot--confirmed"></i></div>
       <div class="card dj-card">
         <div class="row"><div class="date grow">15 окт · пн</div><div class="dj-body-s">95 000 ₽</div></div>
@@ -1056,7 +1056,7 @@ body {
       </div>
     </div>
 
-    <a class="leg" data-sheet="open">
+    <a class="leg" data-city="free" data-sheet="open" data-city="free">
       <div class="pin"><i class="dj-dot dj-dot--free"></i></div>
       <div class="card dj-card dj-card--dashed">
         <div class="row"><div class="date grow">18 окт · чт</div><div class="dj-label dj-accent">свободная дата</div></div>
@@ -1068,7 +1068,7 @@ body {
       </div>
     </a>
 
-    <div class="leg">
+    <div class="leg" data-city="kzn">
       <div class="pin"><i class="dj-dot dj-dot--talks"></i></div>
       <div class="card dj-card" style="border-color:rgba(163,117,255,0.28)">
         <div class="row"><div class="date talks grow">21 окт · вс</div><div class="dj-label dj-process">переговоры</div></div>
@@ -1082,7 +1082,7 @@ body {
       <div class="t">23 окт · переезд Казань → Екатеринбург, 980 км</div>
     </div>
 
-    <div class="leg">
+    <div class="leg" data-city="ekb">
       <div class="pin"><i class="dj-dot dj-dot--talks"></i></div>
       <div class="card dj-card">
         <div class="row"><div class="date talks grow">24 окт · пт</div><div class="dj-body-s">от 120 000 ₽</div></div>
@@ -1131,7 +1131,7 @@ body {
       <div class="lab" style="left:112px;top:40px">ЕКАТЕРИНБУРГ</div>
       <div class="lab" style="left:222px;top:146px">НОВОСИБИРСК<small>29.10 · без площадки</small></div>
       <div class="lab dim" style="left:248px;top:240px">ИРКУТСК · финал</div>
-      <div class="callout" data-sheet="open" style="left:20px;top:186px"><b>18.10 · СВОБОДНО</b><span>4 предложения в радиусе 300 км</span></div>
+      <div class="promo" style="left:56px;top:78px"></div><div class="promo" style="left:96px;top:128px"></div><div class="promo" style="left:44px;top:132px"></div><div class="promo" style="left:104px;top:72px"></div><div class="callout" data-sheet="open" style="left:20px;top:186px"><b>18.10 · СВОБОДНО</b><span>4 предложения в радиусе 300 км</span></div>
     </div>
     <div class="scale"><b></b> 500 км · Яндекс Карты</div>
     <div class="tools">
@@ -1239,7 +1239,7 @@ body {
   <div class="dj-label-s" style="margin-bottom:14px;text-transform:none;letter-spacing:0">Тяните за ручку, чтобы поменять порядок. Даты и переезды пересчитаются.</div>
 
   <div class="stack" id="reorder-list" style="gap:6px">
-    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px">
+    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px" data-city="msk">
       <i class="dj-dot dj-dot--confirmed" style="width:11px;height:11px"></i>
       <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Москва</div><div class="dj-label-s" style="margin-top:2px;text-transform:none;letter-spacing:0">12 окт · Цех · подтверждено</div></div>
       <span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
@@ -1247,7 +1247,7 @@ body {
 
     <div class="insert"><div class="l"></div><button data-go="s-addcity" aria-label="Вставить город"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="l"></div></div>
 
-    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px">
+    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px" data-city="nn">
       <i class="dj-dot dj-dot--confirmed" style="width:11px;height:11px"></i>
       <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Нижний Новгород</div><div class="dj-label-s" style="margin-top:2px;text-transform:none;letter-spacing:0">15 окт · Слобода · подтверждено</div></div>
       <span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
@@ -1255,31 +1255,31 @@ body {
 
     <div class="insert hot"><div class="l"></div><button data-go="s-addcity" aria-label="Вставить город в свободное окно"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="l"></div></div>
 
-    <div class="dj-card dj-card--dashed row" draggable="true" style="padding:12px 14px">
+    <div class="dj-card dj-card--dashed row" draggable="true" style="padding:12px 14px" data-city="free">
       <i class="dj-dot dj-dot--free" style="width:11px;height:11px"></i>
       <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Свободное окно</div><div class="dj-label-s dj-accent" style="margin-top:2px;text-transform:none;letter-spacing:0">18 окт · 4 предложения</div></div>
       <span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
     </div>
 
-    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px">
+    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px" data-city="kzn">
       <i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i>
       <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Казань</div><div class="dj-label-s" style="margin-top:2px;text-transform:none;letter-spacing:0">21 окт · Контур · переговоры</div></div>
       <span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
     </div>
 
-    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px">
+    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px" data-city="ekb">
       <i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i>
       <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Екатеринбург</div><div class="dj-label-s" style="margin-top:2px;text-transform:none;letter-spacing:0">24 окт · Гранит · переговоры</div></div>
       <span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
     </div>
 
-    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px;opacity:0.6">
+    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px;opacity:0.6" data-city="nsk">
       <i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i>
       <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Новосибирск</div><div class="dj-label-s" style="margin-top:2px;text-transform:none;letter-spacing:0">29 окт · площадка не выбрана</div></div>
       <span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
     </div>
 
-    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px;opacity:0.6">
+    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px;opacity:0.6" data-city="irk">
       <i class="dj-dot dj-dot--cancelled" style="width:11px;height:11px;border-style:dashed"></i>
       <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Иркутск</div><div class="dj-label-s" style="margin-top:2px;text-transform:none;letter-spacing:0">3 ноя · финал тура</div></div>
       <span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
@@ -1527,5 +1527,196 @@ body {
 })();
 </script>
 
+<div class="toast" id="toast"><span></span></div>
+
+<style>
+.toast { position: fixed; left: 50%; bottom: calc(110px + env(safe-area-inset-bottom)); transform: translate(-50%, 12px);
+  max-width: 440px; width: calc(100% - 32px); padding: 13px 16px; border-radius: 16px;
+  background: rgba(24,20,32,0.92); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border: 1px solid var(--dj-line-2); box-shadow: var(--dj-shadow-nav);
+  font-size: 14px; color: var(--dj-text); opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s; z-index: 60; }
+.toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+.toast b { color: var(--dj-lime); font-weight: 600; }
+.map .promo { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--dj-magenta);
+  box-shadow: 0 0 10px rgba(255,0,229,0.6); opacity: 0; transition: opacity .2s; }
+.map.show-promo .promo { opacity: 1; }
+.leg.is-new .card, .dj-card.is-new { border-color: var(--dj-lime-line); box-shadow: 0 0 0 1px var(--dj-lime-line), var(--dj-shadow-card); }
+.dj-btn.is-done { background: transparent; border: 1px solid var(--dj-line-3); color: var(--dj-text-3); box-shadow: none; }
+</style>
+<script>
+/* DJ-TOURS-FLOWS */
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  function go(id) { $$('.screen').forEach(function (s) { s.classList.toggle('is-on', s.id === id); }); window.scrollTo(0, 0); }
+  var toast = $('#toast'), toastT;
+  function say(html) {
+    if (!toast) return;
+    toast.firstElementChild.innerHTML = html;
+    toast.classList.add('is-on');
+    clearTimeout(toastT); toastT = setTimeout(function () { toast.classList.remove('is-on'); }, 2600);
+  }
+
+  /* нижняя навигация: меню сервисов */
+  var servicesBtn = $('#servicesBtn'), servicesMenu = $('#servicesMenu'),
+      servicesScrim = $('#servicesScrim'), servicesSlot = $('#servicesSlot');
+  function closeServices() {
+    if (!servicesMenu) return;
+    servicesMenu.classList.remove('open'); servicesScrim.classList.remove('open'); servicesBtn.classList.remove('is-open');
+  }
+  if (servicesBtn) {
+    $$('.nav-circle, .nav-avatar').forEach(function (item) {
+      item.addEventListener('click', function (e) {
+        if (item === servicesBtn) {
+          e.stopPropagation();
+          if (servicesMenu.classList.contains('open')) { closeServices(); return; }
+          servicesMenu.classList.add('open'); servicesScrim.classList.add('open'); servicesBtn.classList.add('is-open');
+          return;
+        }
+        closeServices();
+        $$('.nav-circle, .nav-avatar').forEach(function (i) { i.classList.remove('active'); });
+        item.classList.add('active');
+        var label = (item.getAttribute('aria-label') || '').toLowerCase();
+        if (label.indexOf('поиск') > -1) { go('s-radar'); say('Радар маршрутов — вид промоутера'); }
+        else if (label.indexOf('чат') > -1) say('Чат — отдельный прототип: /proto/dj-style-chat');
+        else if (item.classList.contains('nav-avatar')) say('Профиль — /proto/dj-style-profile-interactive');
+      });
+    });
+    $$('.services-row', servicesMenu).forEach(function (row) {
+      row.addEventListener('click', function () {
+        var t = (row.textContent || '').trim().toLowerCase();
+        closeServices();
+        if (t.indexOf('туры') > -1) { go('s-tours'); say('Туры — вы здесь'); }
+        else { say('Раздел «' + t + '» в этом прототипе не собран'); }
+      });
+    });
+    servicesScrim.addEventListener('click', closeServices);
+    document.addEventListener('click', function (e) { if (servicesSlot && !servicesSlot.contains(e.target)) closeServices(); });
+  }
+
+  /* фильтры списка туров */
+  var tours = $('#s-tours');
+  var chips = $$('.chips .dj-chip', tours);
+  var hero = $('.tour-hero', tours);
+  var plansRule = $$('.rule', tours)[0];
+  var plansList = plansRule ? plansRule.nextElementSibling : null;
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      chips.forEach(function (c) { c.classList.remove('is-active'); });
+      chip.classList.add('is-active');
+      var t = chip.textContent.trim(), live = t === 'В пути', plans = t === 'Планы';
+      if (hero) hero.style.display = live ? '' : 'none';
+      if (plansRule) plansRule.style.display = (live || plans) ? '' : 'none';
+      if (plansList) plansList.style.display = (live || plans) ? '' : 'none';
+      if (t === 'Архив') say('В архиве пусто — сюда уедут сыгранные туры');
+    });
+  });
+
+  /* радар: отправить предложение */
+  $$('#s-radar .dj-btn').forEach(function (btn) {
+    if (btn.textContent.trim() !== 'Предложить') return;
+    btn.addEventListener('click', function () {
+      btn.textContent = 'Отправлено'; btn.classList.add('is-done');
+      say('Предложение ушло — артист увидит его в свободной дате <b>18 окт</b>');
+    });
+  });
+
+  /* свободная дата: принять предложение */
+  $$('#slot-sheet .dj-btn--primary').forEach(function (btn) {
+    if (btn.textContent.trim() !== 'Принять') return;
+    btn.addEventListener('click', function () {
+      var leg = $('#s-route .leg[data-city="free"]');
+      if (leg) {
+        leg.classList.add('is-new');
+        leg.removeAttribute('data-sheet');
+        var pin = $('.pin i', leg); if (pin) pin.className = 'dj-dot dj-dot--confirmed';
+        var card = $('.card', leg);
+        card.className = 'card dj-card';
+        card.innerHTML = '<div class="row"><div class="date grow">18 окт · чт</div><div class="dj-body-s">140 000 ₽</div></div>' +
+          '<div class="city">Чебоксары · Терминал</div><div class="meta">+140 км к маршруту · 400 чел · ночной слот</div>';
+      }
+      var nums = $$('#s-route .stat-row .dj-h2');
+      if (nums.length === 3) { nums[0].textContent = '8'; nums[2].textContent = '2'; }
+      var freeNode = $('#s-tours .strip .n.free');
+      if (freeNode) { freeNode.classList.remove('free'); $('i', freeNode).className = 'dj-dot dj-dot--confirmed'; $('em', freeNode).textContent = 'ЧБК'; }
+      var freeStat = $('#s-tours .stats .s.free b'); if (freeStat) freeStat.textContent = '2';
+      $('#slot-sheet').classList.remove('is-on');
+      go('s-route');
+      say('Дата закрыта: <b>Чебоксары · Терминал</b>, 140 000 ₽');
+    });
+  });
+
+  /* добавление города */
+  var addScreen = $('#s-addcity');
+  var addBtn = $('#s-addcity .dj-btn--primary[data-go="s-route"]');
+  var picked = 'Чебоксары';
+  if (addScreen) {
+    $$('.dj-card', addScreen).forEach(function (card) {
+      var nameEl = $('.dj-h2', card);
+      if (!nameEl) return;
+      card.addEventListener('click', function () {
+        $$('.dj-card', addScreen).forEach(function (c) { c.classList.remove('dj-card--accent'); });
+        card.classList.add('dj-card--accent');
+        picked = nameEl.textContent.trim();
+        if (addBtn) addBtn.textContent = 'Добавить · ' + picked;
+      });
+    });
+  }
+  if (addBtn) addBtn.addEventListener('click', function () {
+    var route = $('#s-route .route'), anchor = $('#s-route .leg[data-city="kzn"]');
+    if (route && anchor) {
+      var leg = document.createElement('div');
+      leg.className = 'leg is-new';
+      leg.setAttribute('data-city', 'new');
+      leg.innerHTML = '<div class="pin"><i class="dj-dot dj-dot--talks"></i></div>' +
+        '<div class="card dj-card"><div class="row"><div class="date talks grow">18 окт · чт</div>' +
+        '<div class="dj-label dj-process">новый город</div></div>' +
+        '<div class="city">' + picked + '</div><div class="meta">Площадка не выбрана · 6 в базе</div></div>';
+      route.insertBefore(leg, anchor);
+      var rlist = $('#reorder-list'), ranchor = $('#reorder-list [data-city="kzn"]');
+      if (rlist && ranchor) {
+        var row = document.createElement('div');
+        row.className = 'dj-card dj-card--flat row';
+        row.setAttribute('draggable', 'true');
+        row.setAttribute('data-city', 'new');
+        row.style.padding = '12px 14px';
+        row.innerHTML = '<i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i>' +
+          '<div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">' + picked + '</div>' +
+          '<div class="dj-label-s" style="margin-top:2px;text-transform:none;letter-spacing:0">18 окт · площадка не выбрана</div></div>' +
+          '<span class="dj-handle"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">' +
+          '<circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/>' +
+          '<circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>';
+        rlist.insertBefore(row, ranchor);
+      }
+    }
+    say('<b>' + picked + '</b> в маршруте — дата 18 окт, площадку выберем позже');
+  });
+
+  /* карта: слой промоутеров */
+  var layersBtn = $('#s-map .icon-btn.accent');
+  if (layersBtn) layersBtn.addEventListener('click', function () {
+    var map = $('#s-map .map');
+    map.classList.toggle('show-promo');
+    say(map.classList.contains('show-promo') ? 'Промоутеры рядом — 4 в радиусе 300 км' : 'Промоутеры скрыты');
+  });
+
+  /* правка маршрута: «Готово» применяет порядок */
+  $$('#s-reorder [data-go="s-route"]').forEach(function (btn) {
+    if (btn.textContent.trim() !== 'Готово') return;
+    btn.addEventListener('click', function () {
+      var route = $('#s-route .route');
+      if (!route) return;
+      var transfer = $('#s-route .transfer');
+      $$('#reorder-list [data-city]').forEach(function (r) {
+        var leg = $('#s-route .leg[data-city="' + r.getAttribute('data-city') + '"]');
+        if (leg) route.appendChild(leg);
+      });
+      var legs = $$('#s-route .leg');
+      if (transfer && legs.length > 1) route.insertBefore(transfer, legs[legs.length - 1]);
+      say('Порядок сохранён — даты и переезды пересчитаны');
+    });
+  });
+})();
+</script>
 </body>
 </html>
