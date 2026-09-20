@@ -24,9 +24,9 @@ body {
 
 /* шапка экрана */
 .head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 18px; }
-.head h1 { margin: 0; font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--dj-text-bright); }
-.head .sub { margin-top: 4px; font-size: 14px; font-weight: 400; color: var(--dj-text-3); }
-.head .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-bright); }
+.head h1 { margin: 0; font-size: 34px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--dj-text-bright); }
+.head .sub { margin-top: 4px; font-size: 16px; font-weight: 400; color: var(--dj-text-3); }
+.head .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-bright); }
 .icon-btn {
   width: 44px; height: 44px; flex-shrink: 0; padding: 0;
   border-radius: 50%; background: transparent; border: 1px solid var(--dj-line-3);
@@ -37,9 +37,9 @@ body {
 
 /* строка-разделитель с подписью */
 .rule { display: flex; align-items: center; gap: 10px; margin: 20px 0 12px; }
-.rule .t { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-3); }
+.rule .t { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-3); }
 .rule .line { flex-grow: 1; height: 1px; background: rgba(255,255,255,0.10); }
-.rule .note { font-size: 13px; font-weight: 400; color: var(--dj-text-4); }
+.rule .note { font-size: 14px; font-weight: 400; color: var(--dj-text-4); }
 
 .stack { display: flex; flex-direction: column; gap: 10px; }
 .row { display: flex; align-items: center; gap: 12px; }
@@ -61,10 +61,10 @@ body {
 .tour-hero .ring.a { top: -36px; right: -16px; width: 140px; height: 140px; border: 1.5px solid rgba(192,250,53,0.5); }
 .tour-hero .ring.b { top: -4px; right: 24px; width: 88px; height: 88px; border: 1px solid rgba(163,117,255,0.5); }
 .tour-hero .cover > * { position: relative; }
-.tour-hero .name { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--dj-text-bright); }
+.tour-hero .name { font-size: 34px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--dj-text-bright); }
 .tour-hero .body { padding: 18px 20px 20px; }
 
-.live { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-lime); }
+.live { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-lime); }
 .live i { width: 6px; height: 6px; border-radius: 50%; background: var(--dj-lime); }
 
 /* мини-лента маршрута */
@@ -72,15 +72,15 @@ body {
 .strip .wire { position: absolute; left: 5px; right: 5px; top: 5px; height: 2px; background: linear-gradient(90deg, var(--dj-lime) 0%, var(--dj-violet) 100%); opacity: 0.5; }
 .strip .nodes { position: relative; display: flex; justify-content: space-between; }
 .strip .n { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.strip .n em { font-style: normal; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--dj-text-2); }
+.strip .n em { font-style: normal; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: var(--dj-text-2); }
 .strip .n.free em { color: var(--dj-lime); }
 .strip .n.none em { color: var(--dj-text-4); }
 
 /* числа */
 .stats { display: flex; align-items: flex-end; }
 .stats .s { flex-grow: 1; }
-.stats b { display: block; font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: var(--dj-text-bright); }
-.stats span { display: block; margin-top: 6px; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-3); }
+.stats b { display: block; font-size: 34px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: var(--dj-text-bright); }
+.stats span { display: block; margin-top: 6px; font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-3); }
 .stats .s.free b, .stats .s.free span { color: var(--dj-lime); }
 
 /* маршрут: вертикальная линия и узлы */
@@ -90,13 +90,13 @@ body {
 .leg .pin { width: 32px; flex-shrink: 0; display: flex; justify-content: center; padding-top: 20px; }
 .leg .pin i { box-shadow: 0 0 0 5px var(--dj-bg); }
 .leg .card { flex-grow: 1; }
-.date { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-lime); }
+.date { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-lime); }
 .date.talks { color: var(--dj-violet); }
-.city { margin-top: 7px; font-size: 17px; font-weight: 600; color: var(--dj-text-bright); }
-.meta { margin-top: 6px; font-size: 14px; font-weight: 400; color: var(--dj-text-3); }
+.city { margin-top: 7px; font-size: 20px; font-weight: 600; color: var(--dj-text-bright); }
+.meta { margin-top: 6px; font-size: 16px; font-weight: 400; color: var(--dj-text-3); }
 .transfer { display: flex; gap: 12px; align-items: center; }
 .transfer .pin { width: 32px; flex-shrink: 0; display: flex; justify-content: center; }
-.transfer .t { font-size: 14px; color: var(--dj-text-4); }
+.transfer .t { font-size: 16px; color: var(--dj-text-4); }
 
 /* стопка аватаров */
 .faces { display: flex; }
@@ -105,25 +105,25 @@ body {
 .f1 { background: linear-gradient(140deg, var(--dj-violet), var(--dj-lime)); }
 .f2 { background: linear-gradient(140deg, #6B8BFF, var(--dj-violet)); }
 .f3 { background: linear-gradient(140deg, #FF9BD2, var(--dj-violet)); }
-.faces .more { background: rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--dj-text-2); font-style: normal; }
+.faces .more { background: rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: var(--dj-text-2); font-style: normal; }
 
 /* карта */
 .map { position: relative; height: 360px; border-radius: var(--dj-r-card); overflow: hidden; background: #0D0A14; border: 1px solid var(--dj-line); }
 .map .plate { position: absolute; left: 0; right: 0; top: 50%; height: 360px; margin-top: -180px; }
-.map .lab { position: absolute; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--dj-text-bright); }
-.map .lab small { display: block; margin-top: 4px; font-size: 11px; font-weight: 400; letter-spacing: 0; color: var(--dj-text-3); }
+.map .lab { position: absolute; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: var(--dj-text-bright); }
+.map .lab small { display: block; margin-top: 4px; font-size: 13px; font-weight: 400; letter-spacing: 0; color: var(--dj-text-3); }
 .map .lab.dim { color: var(--dj-text-4); }
 .map .callout { position: absolute; padding: 9px 12px; border-radius: 13px; background: rgba(6,4,11,0.88); border: 1px solid var(--dj-lime-line); }
-.map .callout b { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: var(--dj-lime); }
-.map .callout span { display: block; margin-top: 4px; font-size: 11px; color: var(--dj-text); }
-.map .scale { position: absolute; left: 16px; bottom: 14px; display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--dj-text-4); }
+.map .callout b { display: block; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--dj-lime); }
+.map .callout span { display: block; margin-top: 4px; font-size: 13px; color: var(--dj-text); }
+.map .scale { position: absolute; left: 16px; bottom: 14px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--dj-text-4); }
 .map .scale b { display: block; width: 46px; height: 1px; background: rgba(255,255,255,0.3); }
 .map .tools { position: absolute; right: 14px; top: 14px; display: flex; flex-direction: column; gap: 8px; }
 .map .fab { position: absolute; right: 14px; bottom: 14px; }
 
 /* сегментированный переключатель */
 .seg { padding: 4px; border-radius: var(--dj-r-field); background: rgba(255,255,255,0.05); border: 1px solid var(--dj-line); display: flex; gap: 4px; }
-.seg button { flex-grow: 1; height: 38px; border: none; border-radius: 11px; background: transparent; font-family: inherit; font-size: 14px; font-weight: 400; color: var(--dj-text-3); cursor: pointer; }
+.seg button { flex-grow: 1; height: 38px; border: none; border-radius: 11px; background: transparent; font-family: inherit; font-size: 16px; font-weight: 400; color: var(--dj-text-3); cursor: pointer; }
 .seg button.on { background: rgba(255,255,255,0.10); font-weight: 600; color: var(--dj-text-bright); }
 
 /* нижний шит */
@@ -144,8 +144,8 @@ body {
 /* предложение промоутера */
 .offer { display: flex; align-items: center; gap: 12px; }
 .offer .thumb { width: 42px; height: 42px; border-radius: 13px; flex-shrink: 0; }
-.offer .sum { text-align: right; flex-shrink: 0; font-size: 17px; font-weight: 600; color: var(--dj-text-bright); }
-.offer .sum small { display: block; margin-top: 2px; font-size: 11px; font-weight: 400; color: var(--dj-text-3); }
+.offer .sum { text-align: right; flex-shrink: 0; font-size: 20px; font-weight: 600; color: var(--dj-text-bright); }
+.offer .sum small { display: block; margin-top: 2px; font-size: 13px; font-weight: 400; color: var(--dj-text-3); }
 .offer.best .sum { color: var(--dj-lime); }
 
 /* вставка города между строками */
@@ -157,7 +157,7 @@ body {
 
 /* поле поиска */
 .search { height: 50px; border-radius: var(--dj-r-field); background: var(--dj-surface-2); border: 1px solid var(--dj-line); display: flex; align-items: center; gap: 10px; padding: 0 14px; }
-.search input { flex-grow: 1; min-width: 0; height: 48px; background: transparent; border: none; outline: none; font-family: inherit; font-size: 16px; color: var(--dj-text); }
+.search input { flex-grow: 1; min-width: 0; height: 48px; background: transparent; border: none; outline: none; font-family: inherit; font-size: 17px; color: var(--dj-text); }
 
 .fields { display: flex; gap: 10px; align-items: center; }
 .fields .dash { width: 12px; height: 1px; background: rgba(255,255,255,0.2); flex-shrink: 0; }
@@ -175,4 +175,4 @@ body {
 .stat-row { display: flex; align-items: flex-end; gap: 4px; }
 .stat-row .s { flex: 1 1 0; min-width: 0; }
 .stat-row .s .dj-label,
-.stat-row .s .dj-label-s { font-size: 11px; letter-spacing: 0.06em; }
+.stat-row .s .dj-label-s { font-size: 13px; letter-spacing: 0.06em; }

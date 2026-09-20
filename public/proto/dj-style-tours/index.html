@@ -80,7 +80,7 @@ body.dj {
   background: var(--dj-bg);
   color: var(--dj-text);
   font-family: var(--dj-font);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 400;
   -webkit-font-smoothing: antialiased;
 }
@@ -92,18 +92,18 @@ body.dj {
    -------------------------------------------------------------------------- */
 
 .dj-display  { font-size: 38px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--dj-text-bright); }
-.dj-h1       { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: var(--dj-text-bright); }
-.dj-h2       { font-size: 20px; font-weight: 600; line-height: 1.2; }
-.dj-lead     { font-size: 19px; font-weight: 400; line-height: 1.35; }
-.dj-body     { font-size: 15px; font-weight: 400; line-height: 1.45; }
-.dj-body-s   { font-size: 14px; font-weight: 400; line-height: 1.45; color: var(--dj-text-2); }
-.dj-strong   { font-size: 15px; font-weight: 600; }
+.dj-h1       { font-size: 34px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: var(--dj-text-bright); }
+.dj-h2       { font-size: 24px; font-weight: 600; line-height: 1.2; }
+.dj-lead     { font-size: 20px; font-weight: 400; line-height: 1.35; }
+.dj-body     { font-size: 16px; font-weight: 400; line-height: 1.45; }
+.dj-body-s   { font-size: 16px; font-weight: 400; line-height: 1.45; color: var(--dj-text-2); }
+.dj-strong   { font-size: 16px; font-weight: 600; }
 
 /* Заголовок секции внутри карточки — «ПРОФИЛЬ», «ПРЕСС-БИО» */
-.dj-section  { font-size: 17px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dj-text-2); }
+.dj-section  { font-size: 20px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dj-text-2); }
 /* Мелкий лейбл — статусы, даты */
-.dj-label    { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
-.dj-label-s  { font-size: 11px; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dj-text-4); }
+.dj-label    { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.dj-label-s  { font-size: 13px; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dj-text-4); }
 
 .dj-muted    { color: var(--dj-text-3); }
 .dj-dim      { color: var(--dj-text-4); }
@@ -211,14 +211,14 @@ body.dj {
   display: inline-flex; align-items: center; justify-content: center; gap: 7px;
   height: 50px; padding: 0 18px;
   border: none; border-radius: var(--dj-r-pill);
-  font-family: inherit; font-size: 15px; font-weight: 600;
+  font-family: inherit; font-size: 16px; font-weight: 600;
   cursor: pointer;
 }
 
 .dj-btn--primary { background: var(--dj-lime); color: var(--dj-lime-ink); box-shadow: var(--dj-shadow-lime); }
 .dj-btn--ghost   { background: transparent; color: var(--dj-text); border: 1px solid var(--dj-line-3); }
 .dj-btn--quiet   { background: var(--dj-surface-2); color: var(--dj-text-2); border: 1px solid var(--dj-line); }
-.dj-btn--square  { border-radius: var(--dj-r-btn); height: 44px; font-size: 14px; font-weight: 700; }
+.dj-btn--square  { border-radius: var(--dj-r-btn); height: 44px; font-size: 16px; font-weight: 700; }
 .dj-btn--icon    { width: 44px; height: 44px; padding: 0; border-radius: 50%; }
 
 /* --------------------------------------------------------------------------
@@ -231,7 +231,7 @@ body.dj {
   border: 1px solid var(--dj-line-3);
   border-radius: var(--dj-r-pill);
   background: transparent;
-  font-size: 14px; font-weight: 400; color: var(--dj-text);
+  font-size: 16px; font-weight: 400; color: var(--dj-text);
 }
 .dj-chip.is-active { border-color: var(--dj-lime-line); background: rgba(6, 4, 11, 0.6); color: var(--dj-lime); }
 .dj-chip--square   { border-radius: var(--dj-r-chip); }
@@ -247,7 +247,7 @@ body.dj {
   background: var(--dj-surface-2);
   border: 1px solid var(--dj-line);
   border-radius: var(--dj-r-field);
-  font-family: inherit; font-size: 16px; font-weight: 400; color: var(--dj-text);
+  font-family: inherit; font-size: 17px; font-weight: 400; color: var(--dj-text);
   outline: none;
 }
 .dj-field::placeholder { color: var(--dj-text-4); }
@@ -527,7 +527,7 @@ body.dj {
     0 14px 28px -12px rgba(var(--dj-shadow-rgb), 0.8);
 }
 .services-label {
-  font-size: 14px; color: var(--dj-text-strong); white-space: nowrap;
+  font-size: 16px; color: var(--dj-text-strong); white-space: nowrap;
   padding: 8px 14px; border-radius: 999px;
 }
 .services-circle {
@@ -578,9 +578,9 @@ body {
 
 /* шапка экрана */
 .head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 18px; }
-.head h1 { margin: 0; font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--dj-text-bright); }
-.head .sub { margin-top: 4px; font-size: 14px; font-weight: 400; color: var(--dj-text-3); }
-.head .eyebrow { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-bright); }
+.head h1 { margin: 0; font-size: 34px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--dj-text-bright); }
+.head .sub { margin-top: 4px; font-size: 16px; font-weight: 400; color: var(--dj-text-3); }
+.head .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-bright); }
 .icon-btn {
   width: 44px; height: 44px; flex-shrink: 0; padding: 0;
   border-radius: 50%; background: transparent; border: 1px solid var(--dj-line-3);
@@ -591,9 +591,9 @@ body {
 
 /* строка-разделитель с подписью */
 .rule { display: flex; align-items: center; gap: 10px; margin: 20px 0 12px; }
-.rule .t { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-3); }
+.rule .t { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-3); }
 .rule .line { flex-grow: 1; height: 1px; background: rgba(255,255,255,0.10); }
-.rule .note { font-size: 13px; font-weight: 400; color: var(--dj-text-4); }
+.rule .note { font-size: 14px; font-weight: 400; color: var(--dj-text-4); }
 
 .stack { display: flex; flex-direction: column; gap: 10px; }
 .row { display: flex; align-items: center; gap: 12px; }
@@ -615,10 +615,10 @@ body {
 .tour-hero .ring.a { top: -36px; right: -16px; width: 140px; height: 140px; border: 1.5px solid rgba(192,250,53,0.5); }
 .tour-hero .ring.b { top: -4px; right: 24px; width: 88px; height: 88px; border: 1px solid rgba(163,117,255,0.5); }
 .tour-hero .cover > * { position: relative; }
-.tour-hero .name { font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--dj-text-bright); }
+.tour-hero .name { font-size: 34px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--dj-text-bright); }
 .tour-hero .body { padding: 18px 20px 20px; }
 
-.live { display: flex; align-items: center; gap: 7px; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-lime); }
+.live { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-lime); }
 .live i { width: 6px; height: 6px; border-radius: 50%; background: var(--dj-lime); }
 
 /* мини-лента маршрута */
@@ -626,15 +626,15 @@ body {
 .strip .wire { position: absolute; left: 5px; right: 5px; top: 5px; height: 2px; background: linear-gradient(90deg, var(--dj-lime) 0%, var(--dj-violet) 100%); opacity: 0.5; }
 .strip .nodes { position: relative; display: flex; justify-content: space-between; }
 .strip .n { display: flex; flex-direction: column; align-items: center; gap: 8px; }
-.strip .n em { font-style: normal; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--dj-text-2); }
+.strip .n em { font-style: normal; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: var(--dj-text-2); }
 .strip .n.free em { color: var(--dj-lime); }
 .strip .n.none em { color: var(--dj-text-4); }
 
 /* числа */
 .stats { display: flex; align-items: flex-end; }
 .stats .s { flex-grow: 1; }
-.stats b { display: block; font-size: 32px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: var(--dj-text-bright); }
-.stats span { display: block; margin-top: 6px; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-3); }
+.stats b { display: block; font-size: 34px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: var(--dj-text-bright); }
+.stats span { display: block; margin-top: 6px; font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-3); }
 .stats .s.free b, .stats .s.free span { color: var(--dj-lime); }
 
 /* маршрут: вертикальная линия и узлы */
@@ -644,13 +644,13 @@ body {
 .leg .pin { width: 32px; flex-shrink: 0; display: flex; justify-content: center; padding-top: 20px; }
 .leg .pin i { box-shadow: 0 0 0 5px var(--dj-bg); }
 .leg .card { flex-grow: 1; }
-.date { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-lime); }
+.date { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-lime); }
 .date.talks { color: var(--dj-violet); }
-.city { margin-top: 7px; font-size: 17px; font-weight: 600; color: var(--dj-text-bright); }
-.meta { margin-top: 6px; font-size: 14px; font-weight: 400; color: var(--dj-text-3); }
+.city { margin-top: 7px; font-size: 20px; font-weight: 600; color: var(--dj-text-bright); }
+.meta { margin-top: 6px; font-size: 16px; font-weight: 400; color: var(--dj-text-3); }
 .transfer { display: flex; gap: 12px; align-items: center; }
 .transfer .pin { width: 32px; flex-shrink: 0; display: flex; justify-content: center; }
-.transfer .t { font-size: 14px; color: var(--dj-text-4); }
+.transfer .t { font-size: 16px; color: var(--dj-text-4); }
 
 /* стопка аватаров */
 .faces { display: flex; }
@@ -659,25 +659,25 @@ body {
 .f1 { background: linear-gradient(140deg, var(--dj-violet), var(--dj-lime)); }
 .f2 { background: linear-gradient(140deg, #6B8BFF, var(--dj-violet)); }
 .f3 { background: linear-gradient(140deg, #FF9BD2, var(--dj-violet)); }
-.faces .more { background: rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; color: var(--dj-text-2); font-style: normal; }
+.faces .more { background: rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: var(--dj-text-2); font-style: normal; }
 
 /* карта */
 .map { position: relative; height: 360px; border-radius: var(--dj-r-card); overflow: hidden; background: #0D0A14; border: 1px solid var(--dj-line); }
 .map .plate { position: absolute; left: 0; right: 0; top: 50%; height: 360px; margin-top: -180px; }
-.map .lab { position: absolute; font-size: 11px; font-weight: 600; letter-spacing: 0.08em; color: var(--dj-text-bright); }
-.map .lab small { display: block; margin-top: 4px; font-size: 11px; font-weight: 400; letter-spacing: 0; color: var(--dj-text-3); }
+.map .lab { position: absolute; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: var(--dj-text-bright); }
+.map .lab small { display: block; margin-top: 4px; font-size: 13px; font-weight: 400; letter-spacing: 0; color: var(--dj-text-3); }
 .map .lab.dim { color: var(--dj-text-4); }
 .map .callout { position: absolute; padding: 9px 12px; border-radius: 13px; background: rgba(6,4,11,0.88); border: 1px solid var(--dj-lime-line); }
-.map .callout b { display: block; font-size: 11px; font-weight: 600; letter-spacing: 0.12em; color: var(--dj-lime); }
-.map .callout span { display: block; margin-top: 4px; font-size: 11px; color: var(--dj-text); }
-.map .scale { position: absolute; left: 16px; bottom: 14px; display: flex; align-items: center; gap: 8px; font-size: 11px; color: var(--dj-text-4); }
+.map .callout b { display: block; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--dj-lime); }
+.map .callout span { display: block; margin-top: 4px; font-size: 13px; color: var(--dj-text); }
+.map .scale { position: absolute; left: 16px; bottom: 14px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--dj-text-4); }
 .map .scale b { display: block; width: 46px; height: 1px; background: rgba(255,255,255,0.3); }
 .map .tools { position: absolute; right: 14px; top: 14px; display: flex; flex-direction: column; gap: 8px; }
 .map .fab { position: absolute; right: 14px; bottom: 14px; }
 
 /* сегментированный переключатель */
 .seg { padding: 4px; border-radius: var(--dj-r-field); background: rgba(255,255,255,0.05); border: 1px solid var(--dj-line); display: flex; gap: 4px; }
-.seg button { flex-grow: 1; height: 38px; border: none; border-radius: 11px; background: transparent; font-family: inherit; font-size: 14px; font-weight: 400; color: var(--dj-text-3); cursor: pointer; }
+.seg button { flex-grow: 1; height: 38px; border: none; border-radius: 11px; background: transparent; font-family: inherit; font-size: 16px; font-weight: 400; color: var(--dj-text-3); cursor: pointer; }
 .seg button.on { background: rgba(255,255,255,0.10); font-weight: 600; color: var(--dj-text-bright); }
 
 /* нижний шит */
@@ -698,8 +698,8 @@ body {
 /* предложение промоутера */
 .offer { display: flex; align-items: center; gap: 12px; }
 .offer .thumb { width: 42px; height: 42px; border-radius: 13px; flex-shrink: 0; }
-.offer .sum { text-align: right; flex-shrink: 0; font-size: 17px; font-weight: 600; color: var(--dj-text-bright); }
-.offer .sum small { display: block; margin-top: 2px; font-size: 11px; font-weight: 400; color: var(--dj-text-3); }
+.offer .sum { text-align: right; flex-shrink: 0; font-size: 20px; font-weight: 600; color: var(--dj-text-bright); }
+.offer .sum small { display: block; margin-top: 2px; font-size: 13px; font-weight: 400; color: var(--dj-text-3); }
 .offer.best .sum { color: var(--dj-lime); }
 
 /* вставка города между строками */
@@ -711,7 +711,7 @@ body {
 
 /* поле поиска */
 .search { height: 50px; border-radius: var(--dj-r-field); background: var(--dj-surface-2); border: 1px solid var(--dj-line); display: flex; align-items: center; gap: 10px; padding: 0 14px; }
-.search input { flex-grow: 1; min-width: 0; height: 48px; background: transparent; border: none; outline: none; font-family: inherit; font-size: 16px; color: var(--dj-text); }
+.search input { flex-grow: 1; min-width: 0; height: 48px; background: transparent; border: none; outline: none; font-family: inherit; font-size: 17px; color: var(--dj-text); }
 
 .fields { display: flex; gap: 10px; align-items: center; }
 .fields .dash { width: 12px; height: 1px; background: rgba(255,255,255,0.2); flex-shrink: 0; }
@@ -729,7 +729,7 @@ body {
 .stat-row { display: flex; align-items: flex-end; gap: 4px; }
 .stat-row .s { flex: 1 1 0; min-width: 0; }
 .stat-row .s .dj-label,
-.stat-row .s .dj-label-s { font-size: 11px; letter-spacing: 0.06em; }
+.stat-row .s .dj-label-s { font-size: 13px; letter-spacing: 0.06em; }
 
 </style>
 </head>
@@ -790,7 +790,7 @@ body {
         <div class="dj-strong" style="color:var(--dj-text-bright)">Южный прогон</div>
         <div class="dj-body-s" style="margin-top:3px">27 дек — 5 янв · 6 дат</div>
       </div>
-      <div class="dj-chip" style="padding:5px 11px;font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dj-violet);border-color:rgba(163,117,255,0.4)">Черновик</div>
+      <div class="dj-chip" style="padding:5px 11px;font-size:13px;letter-spacing:0.08em;text-transform:uppercase;color:var(--dj-violet);border-color:rgba(163,117,255,0.4)">Черновик</div>
     </a>
 
     <a class="dj-card dj-card--flat row" data-go="s-new" style="padding:14px">
@@ -824,7 +824,7 @@ body {
   <div class="stack" style="gap:18px">
     <div>
       <label class="dj-label dj-muted" for="f-name">Название тура</label>
-      <input class="dj-field" id="f-name" type="text" value="Транссиб" placeholder="Осенний тур 2026" style="margin-top:8px;font-size:19px;font-weight:600">
+      <input class="dj-field" id="f-name" type="text" value="Транссиб" placeholder="Осенний тур 2026" style="margin-top:8px;font-size:20px;font-weight:600">
     </div>
 
     <div>
@@ -907,7 +907,7 @@ body {
     <a class="dj-card dj-card--accent" data-go="s-route">
       <div class="row">
         <i class="dj-dot dj-dot--confirmed" style="width:9px;height:9px"></i>
-        <div class="grow dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Маршрут</div>
+        <div class="grow dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Маршрут</div>
         <div class="dj-label-s" style="text-transform:none;letter-spacing:0">закреплён сверху</div>
       </div>
       <div class="dj-body-s" style="margin-top:12px">7 городов · 12 дат · 4 600 км</div>
@@ -917,7 +917,7 @@ body {
     <div class="dj-card" data-go="s-party">
       <div class="row">
         <i class="dj-dot dj-dot--talks" style="width:9px;height:9px"></i>
-        <div class="grow dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Тревел-пати</div>
+        <div class="grow dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Тревел-пати</div>
         <span class="dj-handle" data-drag-handle aria-label="Перетащить">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
         </span>
@@ -939,7 +939,7 @@ body {
     <div class="dj-card" data-go="s-tickets">
       <div class="row">
         <i class="dj-dot dj-dot--talks" style="width:9px;height:9px"></i>
-        <div class="grow dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Транспорт и билеты</div>
+        <div class="grow dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Транспорт и билеты</div>
         <span class="dj-handle" data-drag-handle aria-label="Перетащить">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
         </span>
@@ -959,7 +959,7 @@ body {
     <div class="dj-card" data-go="s-venues">
       <div class="row">
         <i class="dj-dot dj-dot--talks" style="width:9px;height:9px"></i>
-        <div class="grow dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Площадки и отели</div>
+        <div class="grow dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Площадки и отели</div>
         <span class="dj-handle" data-drag-handle aria-label="Перетащить">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
         </span>
@@ -980,23 +980,23 @@ body {
     <div class="dj-card" data-go="s-prod">
       <div class="row">
         <i class="dj-dot dj-dot--cancelled" style="width:9px;height:9px"></i>
-        <div class="grow dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Продакшн</div>
+        <div class="grow dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Продакшн</div>
         <span class="dj-handle" data-drag-handle aria-label="Перетащить">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
         </span>
       </div>
       <div class="dj-body-s" style="margin-top:12px">Пусто — площадки просят тех-райдер за две недели до даты</div>
       <div class="row" style="margin-top:14px;gap:8px">
-        <button class="dj-btn dj-btn--ghost grow" style="height:44px;font-size:14px;font-weight:400">Сцена</button>
-        <button class="dj-btn dj-btn--ghost grow" style="height:44px;font-size:14px;font-weight:400">Декорации</button>
-        <button class="dj-btn grow" style="height:44px;font-size:14px;font-weight:400;background:rgba(6,4,11,0.6);border:1px solid var(--dj-lime-line);color:var(--dj-lime)">Райдер</button>
+        <button class="dj-btn dj-btn--ghost grow" style="height:44px;font-size:16px;font-weight:400">Сцена</button>
+        <button class="dj-btn dj-btn--ghost grow" style="height:44px;font-size:16px;font-weight:400">Декорации</button>
+        <button class="dj-btn grow" style="height:44px;font-size:16px;font-weight:400;background:rgba(6,4,11,0.6);border:1px solid var(--dj-lime-line);color:var(--dj-lime)">Райдер</button>
       </div>
     </div>
 
     <div class="dj-card" data-go="s-budget">
       <div class="row">
         <i class="dj-dot dj-dot--confirmed" style="width:9px;height:9px"></i>
-        <div class="grow dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Смета</div>
+        <div class="grow dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Смета</div>
         <div class="dj-label-s" style="text-transform:none;letter-spacing:0">считается сама</div>
       </div>
       <div class="stack" style="margin-top:14px;gap:9px">
@@ -1018,7 +1018,7 @@ body {
     <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <div class="grow"><h1 style="font-size:26px">ТРАНССИБ</h1><div class="sub">12 окт — 9 ноя · 7 городов</div></div>
+    <div class="grow"><h1 style="font-size:32px">ТРАНССИБ</h1><div class="sub">12 окт — 9 ноя · 7 городов</div></div>
     <button class="icon-btn" data-go="s-reorder" aria-label="Править маршрут">
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16z"/><path d="M14 6l4 4"/></svg>
     </button>
@@ -1100,7 +1100,7 @@ body {
     <button class="icon-btn" data-go="s-route" aria-label="К маршруту">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <div class="grow"><h1 style="font-size:26px">ТРАНССИБ</h1><div class="sub">7 городов · 4 600 км · 12 дат</div></div>
+    <div class="grow"><h1 style="font-size:32px">ТРАНССИБ</h1><div class="sub">7 городов · 4 600 км · 12 дат</div></div>
   </div>
 
   <div class="seg" style="margin-bottom:14px">
@@ -1142,7 +1142,7 @@ body {
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 9V5a1 1 0 0 1 1-1h4"/><path d="M20 9V5a1 1 0 0 0-1-1h-4"/><path d="M4 15v4a1 1 0 0 0 1 1h4"/><path d="M20 15v4a1 1 0 0 1-1 1h-4"/></svg>
       </button>
     </div>
-    <button class="dj-btn dj-btn--primary fab" data-go="s-addcity" style="height:44px;font-size:14px">+ Город</button>
+    <button class="dj-btn dj-btn--primary fab" data-go="s-addcity" style="height:44px;font-size:16px">+ Город</button>
   </div>
 
   <a class="dj-card dj-card--dashed row" data-sheet="open" style="margin-top:12px;padding:12px 14px">
@@ -1181,7 +1181,7 @@ body {
   <div class="stack">
     <div class="dj-card dj-card--accent row">
       <div class="grow">
-        <div class="row" style="gap:8px;align-items:baseline"><div class="dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Чебоксары</div><div class="dj-body-s dj-accent">+140 км · +2 ч</div></div>
+        <div class="row" style="gap:8px;align-items:baseline"><div class="dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Чебоксары</div><div class="dj-body-s dj-accent">+140 км · +2 ч</div></div>
         <div class="dj-body-s" style="margin-top:5px">6 площадок в базе · 4 промоутера онлайн</div>
       </div>
       <span class="dj-btn dj-btn--icon dj-btn--primary" aria-hidden="true">
@@ -1191,7 +1191,7 @@ body {
 
     <div class="dj-card dj-card--flat row">
       <div class="grow">
-        <div class="row" style="gap:8px;align-items:baseline"><div class="dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Йошкар-Ола</div><div class="dj-body-s">+180 км · +2,5 ч</div></div>
+        <div class="row" style="gap:8px;align-items:baseline"><div class="dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Йошкар-Ола</div><div class="dj-body-s">+180 км · +2,5 ч</div></div>
         <div class="dj-body-s" style="margin-top:5px">3 площадки в базе · 1 промоутер</div>
       </div>
       <button class="dj-btn dj-btn--icon dj-btn--ghost" aria-label="Добавить Йошкар-Олу" style="border-color:var(--dj-lime-line);color:var(--dj-lime)">
@@ -1201,7 +1201,7 @@ body {
 
     <div class="dj-card dj-card--flat row">
       <div class="grow">
-        <div class="row" style="gap:8px;align-items:baseline"><div class="dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Ульяновск</div><div class="dj-body-s">+230 км · +3 ч</div></div>
+        <div class="row" style="gap:8px;align-items:baseline"><div class="dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Ульяновск</div><div class="dj-body-s">+230 км · +3 ч</div></div>
         <div class="dj-body-s" style="margin-top:5px">5 площадок в базе · 2 промоутера</div>
       </div>
       <button class="dj-btn dj-btn--icon dj-btn--ghost" aria-label="Добавить Ульяновск" style="border-color:var(--dj-lime-line);color:var(--dj-lime)">
@@ -1214,7 +1214,7 @@ body {
 
   <div class="dj-card row" style="background:rgba(255,255,255,0.03);border-style:dashed;box-shadow:none">
     <div class="grow">
-      <div class="row" style="gap:8px;align-items:baseline"><div class="dj-h2" style="font-size:17px;color:var(--dj-text-3)">Киров</div><div class="dj-body-s dj-warn">+380 км · +5 ч к переезду</div></div>
+      <div class="row" style="gap:8px;align-items:baseline"><div class="dj-h2" style="font-size:20px;color:var(--dj-text-3)">Киров</div><div class="dj-body-s dj-warn">+380 км · +5 ч к переезду</div></div>
       <div class="dj-label-s" style="margin-top:5px;text-transform:none;letter-spacing:0">Сдвинет заезд в Казань на день</div>
     </div>
     <button class="dj-btn dj-btn--icon dj-btn--ghost" aria-label="Добавить Киров">
@@ -1295,7 +1295,7 @@ body {
     <button class="icon-btn" data-go="s-tours" aria-label="Назад">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <div class="grow"><div class="eyebrow">Радар маршрутов</div><h1 style="font-size:26px;margin-top:8px">Казань</h1></div>
+    <div class="grow"><div class="eyebrow">Радар маршрутов</div><h1 style="font-size:32px;margin-top:8px">Казань</h1></div>
   </div>
 
   <div class="chips" style="margin-bottom:16px">
@@ -1321,8 +1321,8 @@ body {
     <div class="dj-card dj-card--accent">
       <div class="row">
         <i class="dj-avatar" style="width:50px;height:50px;flex-shrink:0"></i>
-        <div class="grow"><div class="dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Leshch</div><div class="dj-body-s" style="margin-top:3px">Хип-хоп / рэп · 12 000 слушателей</div></div>
-        <button class="dj-btn dj-btn--primary" style="height:38px;padding:0 16px;font-size:14px">Предложить</button>
+        <div class="grow"><div class="dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Leshch</div><div class="dj-body-s" style="margin-top:3px">Хип-хоп / рэп · 12 000 слушателей</div></div>
+        <button class="dj-btn dj-btn--primary" style="height:38px;padding:0 16px;font-size:16px">Предложить</button>
       </div>
       <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);gap:9px">
         <i class="dj-dot dj-dot--free" style="width:9px;height:9px"></i>
@@ -1333,8 +1333,8 @@ body {
     <div class="dj-card dj-card--flat">
       <div class="row">
         <i class="f2" style="width:50px;height:50px;border-radius:50%;flex-shrink:0"></i>
-        <div class="grow"><div class="dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Nika Volk</div><div class="dj-body-s" style="margin-top:3px">Дип-хаус · 8 000 слушателей</div></div>
-        <button class="dj-btn dj-btn--ghost" style="height:38px;padding:0 16px;font-size:14px;font-weight:400">Предложить</button>
+        <div class="grow"><div class="dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Nika Volk</div><div class="dj-body-s" style="margin-top:3px">Дип-хаус · 8 000 слушателей</div></div>
+        <button class="dj-btn dj-btn--ghost" style="height:38px;padding:0 16px;font-size:16px;font-weight:400">Предложить</button>
       </div>
       <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);gap:9px">
         <i class="dj-dot dj-dot--free" style="width:9px;height:9px"></i>
@@ -1344,7 +1344,7 @@ body {
 
     <div class="dj-card dj-card--flat row">
       <i class="f3" style="width:50px;height:50px;border-radius:50%;flex-shrink:0"></i>
-      <div class="grow"><div class="dj-h2" style="font-size:17px;color:var(--dj-text-bright)">Кассета</div><div class="dj-body-s" style="margin-top:3px">Техно · тур «Урал-луп» · +310 км</div></div>
+      <div class="grow"><div class="dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Кассета</div><div class="dj-body-s" style="margin-top:3px">Техно · тур «Урал-луп» · +310 км</div></div>
       <div class="dj-label dj-process">Переговоры</div>
     </div>
   </div>
@@ -1356,7 +1356,7 @@ body {
     <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <div class="grow"><h1 style="font-size:26px">Тревел-пати</h1><div class="sub">Состав · багаж · условия</div></div>
+    <div class="grow"><h1 style="font-size:32px">Тревел-пати</h1><div class="sub">Состав · багаж · условия</div></div>
   </div>
 
   <div class="dj-card dj-card--flat stat-row" style="padding:14px 18px;margin-bottom:14px">
@@ -1391,7 +1391,7 @@ body {
       <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);gap:10px">
         <i style="width:7px;height:7px;border-radius:50%;background:var(--dj-magenta);flex-shrink:0"></i>
         <div class="grow dj-body-s dj-warn">Нет паспортных данных — билет не оформить</div>
-        <button class="dj-btn dj-btn--ghost" data-fill="Костя" style="height:36px;padding:0 14px;font-size:14px;font-weight:400;border-color:var(--dj-lime-line);color:var(--dj-lime)">Заполнить</button>
+        <button class="dj-btn dj-btn--ghost" data-fill="Костя" style="height:36px;padding:0 14px;font-size:16px;font-weight:400;border-color:var(--dj-lime-line);color:var(--dj-lime)">Заполнить</button>
       </div>
     </div>
 
@@ -1423,7 +1423,7 @@ body {
     <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <div class="grow"><h1 style="font-size:26px">Транспорт</h1><div class="sub">Перелёты · перевес · билеты</div></div>
+    <div class="grow"><h1 style="font-size:32px">Транспорт</h1><div class="sub">Перелёты · перевес · билеты</div></div>
   </div>
 
   <div class="seg" style="margin-bottom:14px">
@@ -1462,7 +1462,7 @@ body {
         <div class="dj-strong" style="color:var(--dj-text-bright)">Новосибирск → Иркутск</div>
         <div class="dj-body-s dj-warn" style="margin-top:3px">Рейса на 2 ноя нет — сдвинуть дату или взять поезд</div>
       </div>
-      <button class="dj-btn dj-btn--ghost" data-toast="Подбор рейсов — в этом прототипе не собран" style="height:36px;padding:0 14px;font-size:14px;font-weight:400">Найти</button>
+      <button class="dj-btn dj-btn--ghost" data-toast="Подбор рейсов — в этом прототипе не собран" style="height:36px;padding:0 14px;font-size:16px;font-weight:400">Найти</button>
     </div>
   </div>
 
@@ -1496,7 +1496,7 @@ body {
     <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <div class="grow"><h1 style="font-size:26px">Площадки</h1><div class="sub">И отели рядом · 4 из 7 городов</div></div>
+    <div class="grow"><h1 style="font-size:32px">Площадки</h1><div class="sub">И отели рядом · 4 из 7 городов</div></div>
   </div>
 
   <div class="chips" style="margin-bottom:16px">
@@ -1541,7 +1541,7 @@ body {
       <div class="dj-body-s" style="margin-top:8px">600 чел · ждут ответ по гонорару</div>
       <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1)">
         <div class="grow dj-body-s dj-muted">Отель не выбран — 6 вариантов рядом</div>
-        <button class="dj-btn dj-btn--ghost" data-toast="Подбор отеля — в этом прототипе не собран" style="height:34px;padding:0 13px;font-size:13px;font-weight:400">Подобрать</button>
+        <button class="dj-btn dj-btn--ghost" data-toast="Подбор отеля — в этом прототипе не собран" style="height:34px;padding:0 13px;font-size:14px;font-weight:400">Подобрать</button>
       </div>
     </div>
 
@@ -1553,7 +1553,7 @@ body {
       </div>
       <div class="row" style="margin-top:10px">
         <div class="grow dj-body-s">Площадка не выбрана · 9 в базе</div>
-        <button class="dj-btn dj-btn--ghost" data-toast="База площадок — в этом прототипе не собрана" style="height:34px;padding:0 13px;font-size:13px;font-weight:400;border-color:var(--dj-lime-line);color:var(--dj-lime)">Выбрать</button>
+        <button class="dj-btn dj-btn--ghost" data-toast="База площадок — в этом прототипе не собрана" style="height:34px;padding:0 13px;font-size:14px;font-weight:400;border-color:var(--dj-lime-line);color:var(--dj-lime)">Выбрать</button>
       </div>
     </div>
   </div>
@@ -1565,7 +1565,7 @@ body {
     <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <div class="grow"><h1 style="font-size:26px">Продакшн</h1><div class="sub">Сцена · декорации · райдеры</div></div>
+    <div class="grow"><h1 style="font-size:32px">Продакшн</h1><div class="sub">Сцена · декорации · райдеры</div></div>
   </div>
 
   <div class="dj-card dj-card--flat" style="margin-bottom:14px">
@@ -1578,7 +1578,7 @@ body {
         <div class="dj-strong" style="color:var(--dj-text-bright)">Сцена</div>
         <div class="dj-body-s" style="margin-top:3px">0 фото — площадки просят вид со сцены</div>
       </div>
-      <button class="dj-btn dj-btn--ghost" data-toast="Загрузка фото — в этом прототипе не собрана" style="height:36px;padding:0 14px;font-size:14px;font-weight:400">+ Фото</button>
+      <button class="dj-btn dj-btn--ghost" data-toast="Загрузка фото — в этом прототипе не собрана" style="height:36px;padding:0 14px;font-size:16px;font-weight:400">+ Фото</button>
     </div>
 
     <div class="dj-card row">
@@ -1586,7 +1586,7 @@ body {
         <div class="dj-strong" style="color:var(--dj-text-bright)">Декорации</div>
         <div class="dj-body-s" style="margin-top:3px">0 позиций · вес уходит в перевес</div>
       </div>
-      <button class="dj-btn dj-btn--ghost" data-toast="Список декораций — в этом прототипе не собран" style="height:36px;padding:0 14px;font-size:14px;font-weight:400">+ Позиция</button>
+      <button class="dj-btn dj-btn--ghost" data-toast="Список декораций — в этом прототипе не собран" style="height:36px;padding:0 14px;font-size:16px;font-weight:400">+ Позиция</button>
     </div>
 
     <div class="dj-card" style="border-color:rgba(255,0,229,0.35)">
@@ -1595,7 +1595,7 @@ body {
           <div class="dj-strong" style="color:var(--dj-text-bright)">Тех-райдер</div>
           <div class="dj-body-s dj-warn" style="margin-top:3px">Не загружен — блокирует подтверждение площадок</div>
         </div>
-        <button class="dj-btn dj-btn--primary" data-toast="Загрузка PDF — в этом прототипе не собрана" style="height:36px;padding:0 14px;font-size:14px">Загрузить</button>
+        <button class="dj-btn dj-btn--primary" data-toast="Загрузка PDF — в этом прототипе не собрана" style="height:36px;padding:0 14px;font-size:16px">Загрузить</button>
       </div>
     </div>
 
@@ -1615,7 +1615,7 @@ body {
     <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
     </button>
-    <div class="grow"><h1 style="font-size:26px">Смета</h1><div class="sub">Считается из билетов, отелей и груза</div></div>
+    <div class="grow"><h1 style="font-size:32px">Смета</h1><div class="sub">Считается из билетов, отелей и груза</div></div>
   </div>
 
   <div class="stack">
@@ -1655,7 +1655,7 @@ body {
     </div>
     <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.14)">
       <div class="grow dj-strong" style="color:var(--dj-text-bright)">Остаётся</div>
-      <div class="dj-h1 dj-accent" style="font-size:26px">1 026 000 ₽</div>
+      <div class="dj-h1 dj-accent" style="font-size:32px">1 026 000 ₽</div>
     </div>
   </div>
 
@@ -1674,7 +1674,7 @@ body {
     <div class="row" style="align-items:flex-start">
       <div class="grow">
         <div class="dj-label dj-accent">18 октября · четверг</div>
-        <h1 style="margin:8px 0 0;font-size:26px;font-weight:600;letter-spacing:-0.02em;color:var(--dj-text-bright)">Свободная дата</h1>
+        <h1 style="margin:8px 0 0;font-size:32px;font-weight:600;letter-spacing:-0.02em;color:var(--dj-text-bright)">Свободная дата</h1>
         <div class="dj-body-s" style="margin-top:5px">Между Нижним и Казанью · окно 2 дня</div>
       </div>
       <button class="icon-btn" data-sheet="close" aria-label="Закрыть" style="border:none;background:rgba(255,255,255,0.05)">
@@ -1703,8 +1703,8 @@ body {
           <div class="sum">140 000 ₽<small>+ отель</small></div>
         </div>
         <div class="row" style="margin-top:12px;gap:8px">
-          <button class="dj-btn dj-btn--primary grow" style="height:42px;font-size:14px">Принять</button>
-          <button class="dj-btn dj-btn--ghost grow" style="height:42px;font-size:14px;font-weight:400">Обсудить</button>
+          <button class="dj-btn dj-btn--primary grow" style="height:42px;font-size:16px">Принять</button>
+          <button class="dj-btn dj-btn--ghost grow" style="height:42px;font-size:16px;font-weight:400">Обсудить</button>
         </div>
       </div>
 
@@ -1832,7 +1832,7 @@ body {
   max-width: 440px; width: calc(100% - 32px); padding: 13px 16px; border-radius: 16px;
   background: rgba(24,20,32,0.92); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3);
   border: 1px solid var(--dj-line-2); box-shadow: var(--dj-shadow-nav);
-  font-size: 14px; color: var(--dj-text); opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s; z-index: 60; }
+  font-size: 16px; color: var(--dj-text); opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s; z-index: 60; }
 .toast.is-on { opacity: 1; transform: translate(-50%, 0); }
 .toast b { color: var(--dj-lime); font-weight: 600; }
 .map .promo { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--dj-magenta);
