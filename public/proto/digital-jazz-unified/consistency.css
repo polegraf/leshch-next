@@ -98,3 +98,8 @@ input[type=checkbox]:focus-visible{outline:2px solid var(--dj-lime);outline-offs
 @media(prefers-reduced-motion:reduce){.tournament-fold.settling{transition:none}}
 .profession-more{margin-top:10px}.profession-more summary{list-style:none;cursor:pointer;color:var(--dj-lime);font-size:17px;padding:10px 0}.profession-more summary::-webkit-details-marker{display:none}.profession-more[open] summary{margin-bottom:6px}
 .checks input[type=radio]{appearance:none;width:20px;height:20px;flex:0 0 20px;border:1px solid var(--dj-line-3);border-radius:50%;margin:0}.checks input[type=radio]:checked{border-color:var(--dj-lime);background:var(--dj-lime);box-shadow:inset 0 0 0 4px var(--dj-bg-raised)}
+/* Search audience: intrinsic-width pills instead of three compressed columns. */
+.search-types{display:flex;gap:10px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x proximity;scroll-padding-inline:2px;padding:2px 2px 10px;margin:0 0 14px;scrollbar-width:thin;scrollbar-color:var(--dj-line-3) transparent}
+.search-types button{flex:0 0 auto;min-height:48px;padding:12px 22px;border:1px solid var(--dj-line);border-radius:var(--dj-r-pill);background:var(--dj-surface);color:var(--dj-text-muted);font:500 19px/1.25 var(--dj-font);white-space:nowrap;scroll-snap-align:center}
+.search-types button[aria-pressed=true]{background:var(--dj-lime);border-color:var(--dj-lime);color:var(--dj-lime-ink);font-weight:600}
+.search-types button[aria-pressed=true]:focus-visible{box-shadow:inset 0 0 0 2px var(--dj-lime-ink)}

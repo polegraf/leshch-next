@@ -28,7 +28,7 @@ const state={section:'search',type:'Создатели',query:'',filters:{city:'
 const expandedTournaments = new Set();
 const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const icons={filter:'<svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>',plus:'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>'};
-function tabs(items,current,action){return `<div class="seg">${items.map(x=>`<button data-action="${action}" data-value="${x}" aria-pressed="${x===current}">${x}</button>`).join('')}</div>`;}
+function tabs(items,current,action){return `<div class="${action==='type'?'search-types':'seg'}" ${action==='type'?'role="group" aria-label="Кого ищем"':''}>${items.map(x=>`<button data-action="${action}" data-value="${x}" aria-pressed="${x===current}">${x}</button>`).join('')}</div>`;}
 function notify(text){$('#toast').textContent=text;$('#toast').classList.add('visible');clearTimeout(notify.timer);notify.timer=setTimeout(()=>$('#toast').classList.remove('visible'),3200);}
 let panelOrigin=null;
 function parkPanel(){const panel=$('#sheet');if(panel&&$('#main').contains(panel)){panel.hidden=true;document.body.append(panel);}}
