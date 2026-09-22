@@ -1,0 +1,11 @@
+/* Disclosure controls copied from the interactive profile reference. */
+:root{--dj-disclosure-color:#ADA6C7;--dj-grip-color:#6E6890;--dj-disclosure-size:27px;--dj-disclosure-gap:14px}
+.tournament-fold summary{position:relative;padding:14px 125px 14px 20px;min-height:80px}
+.tournament-fold summary .fold-chevron{position:absolute;right:20px;top:calc(50% - 13.5px)}
+.tournament-fold .drag-handle{left:auto;right:61px;top:18px;width:44px;height:44px;margin:0;color:var(--dj-grip-color)}
+.tournament-fold .drag-handle:hover,.tournament-fold.is-dragging .drag-handle{color:var(--dj-grip-color)}
+.tournament-fold .drag-handle svg{width:27px;height:27px;fill:currentColor;stroke:none}
+.filter-card summary .fold-chevron,.tournament-fold summary .fold-chevron,.choice-trigger svg{width:var(--dj-disclosure-size);height:var(--dj-disclosure-size);flex:0 0 var(--dj-disclosure-size);color:var(--dj-disclosure-color);stroke:var(--dj-disclosure-color);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;transition:transform 260ms ease}
+.filter-card summary,.choice-trigger{padding-right:20px;gap:14px}
+.filter-card summary .fold-chevron{margin-left:0}
+@media(prefers-reduced-motion:reduce){.filter-card summary .fold-chevron,.tournament-fold summary .fold-chevron,.choice-trigger svg{transition:none}}
