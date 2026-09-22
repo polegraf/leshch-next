@@ -1,0 +1,28 @@
+/* Space between elements is independent of text line-height. */
+:root{--dj-copy-action-gap:16px;--dj-section-gap:24px}
+form[data-judge-form],form[data-demo-score]{display:grid;gap:var(--dj-copy-action-gap);min-width:0}
+form[data-judge-form]>.score-slider,form[data-demo-score]>.score-slider{margin:0;padding-block:8px}
+form[data-judge-form]>p,form[data-demo-score]>p{margin:0}
+form[data-judge-form]>button,form[data-demo-score]>button{margin:0}
+.role-panel>.card{display:grid;gap:var(--dj-copy-action-gap)}
+.role-panel>.card>.actions{margin-top:0}
+.empty,.offers-empty{gap:var(--dj-copy-action-gap)}
+/* Existing profile and chat layouts keep their own internal gaps. */
+.cta-row{margin-top:var(--dj-copy-action-gap)}
+.write-hint{margin-top:var(--dj-copy-action-gap)}
+.vhelp{margin-bottom:var(--dj-copy-action-gap)}
+.vbtn-row{margin-bottom:12px}
+/* Explanations need breathing room above and below divider sections. */
+.stage-task>p:first-child{margin-top:0}
+.stage-task{padding-top:var(--dj-copy-action-gap);padding-bottom:var(--dj-copy-action-gap)}
+/* Related copy uses a small gap; section boundaries and actions use larger gaps. */
+:root{--dj-copy-gap:8px}
+:is(.judge-monitor,.participant-monitor,.role-panel,.tournament-content,.demo-work,.shop-detail,.empty,.offers-empty){row-gap:var(--dj-copy-gap)}
+:is(.judge-monitor,.participant-monitor,.role-panel,.tournament-content,.demo-work,.shop-detail,.empty)>:is(p,h2,h3){margin-block:0}
+:is(.judge-monitor,.participant-monitor,.role-panel,.tournament-content,.shop-detail)>h3:not(:first-child){margin-top:16px}
+:is(.judge-monitor,.participant-monitor,.role-panel,.tournament-content,.demo-work,.shop-detail,.empty,.offers-empty)>:is(button,form,details,audio,video,.actions,.queue-participants,.judge-participant,.pyramid-bracket,.monitor-stats,.shop-detail-actions,.card):not(:first-child){margin-top:8px}
+:is(.judge-monitor,.participant-monitor,.role-panel,.tournament-content,.demo-work,.shop-detail)>:is(form,details,.pyramid-bracket,.monitor-stats,.card)+p{margin-top:8px}
+.role-panel>.card{row-gap:8px}
+.role-panel>.card>.actions{margin-top:8px}
+form[data-judge-form]>.score-slider,form[data-demo-score]>.score-slider{padding-block:0;gap:8px}
+.shop-detail .secondary{margin-top:0}

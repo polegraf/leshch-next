@@ -1,19 +1,19 @@
 /* UX v01: larger chat-like type, existing Digital Jazz palette. */
 body { user-select: text; -webkit-user-select: text; }
 .screen { padding-left: 16px; padding-right: 16px; }
-.dj-body, .dj-body-s { font-size: 19px; line-height: 1.3; }
-.dj-strong { font-size: 20px; line-height: 1.25; }
-.meta, .head .sub { font-size: 17px; line-height: 1.35; }
+.dj-body, .dj-body-s { font-size: 19px; line-height: 1.15; }
+.dj-strong { font-size: 20px; line-height: 1.15; }
+.meta, .head .sub { font-size: 17px; line-height: 1.15; }
 .city { font-size: 23px; line-height: 1.2; overflow-wrap: anywhere; }
-.date { font-size: 16px; line-height: 1.3; letter-spacing: .02em; text-transform: none; }
-.dj-label, .dj-label-s { font-size: 14px; line-height: 1.35; letter-spacing: .025em; }
+.date { font-size: 16px; line-height: 1.15; letter-spacing: .02em; text-transform: none; }
+.dj-label, .dj-label-s { font-size: 14px; line-height: 1.15; letter-spacing: .025em; }
 .dj-label-s { color: var(--dj-text-3); }
 .head .eyebrow { font-size: 24px; text-transform: none; letter-spacing: -.01em; }
 .head { align-items: center; margin-bottom: 24px; }
 .head h1 { font-size: 34px; line-height: 1.12; }
-.dj-chip { font-size: 17px; line-height: 1.25; }
+.dj-chip { font-size: 17px; line-height: 1.15; }
 #s-tours > .chips .dj-chip { min-height: 44px; display: inline-flex; align-items: center; cursor: pointer; }
-.dj-btn { min-height: 48px; height: auto; padding-top: 12px; padding-bottom: 12px; white-space: normal; line-height: 1.25; }
+.dj-btn { min-height: 48px; height: auto; padding-top: 12px; padding-bottom: 12px; white-space: normal; line-height: 1.15; }
 .seg button { font-size: 17px; min-height: 44px; }
 .stack { gap: 16px; }
 .dj-card { padding: 20px; }
@@ -24,7 +24,7 @@ body { user-select: text; -webkit-user-select: text; }
 .live { font-size: 14px; letter-spacing: .04em; }
 .rule .t { font-size: 20px; text-transform: none; letter-spacing: 0; color: var(--dj-text); }
 .rule .note { font-size: 15px; color: var(--dj-text-3); }
-.stats .s span, .stat-row .s .dj-label, .stat-row .s .dj-label-s { font-size: 14px; text-transform: none; letter-spacing: 0; line-height: 1.3; white-space: normal; overflow: visible; }
+.stats .s span, .stat-row .s .dj-label, .stat-row .s .dj-label-s { font-size: 14px; text-transform: none; letter-spacing: 0; line-height: 1.15; white-space: normal; overflow: visible; }
 .row { flex-wrap: wrap; }
 .row > .grow { flex-basis: 45%; }
 .row > .dj-strong { white-space: normal; }
@@ -42,7 +42,7 @@ body { user-select: text; -webkit-user-select: text; }
 .ux-next-copy { display: grid; gap: 6px; }
 .ux-next strong { font-size: 20px; font-weight: 600; line-height: 1.2; }
 .ux-next-copy > span { font-size: 17px; color: var(--dj-text-2); }
-.ux-legend { margin: 0 0 24px; color: var(--dj-text-3); font-size: 15px; line-height: 1.4; }
+.ux-legend { margin: 0 0 24px; color: var(--dj-text-3); font-size: 15px; line-height: 1.15; }
 .ux-legend summary { cursor: pointer; padding: 10px 0; }
 .ux-legend > div { display: flex; flex-wrap: wrap; gap: 12px 18px; padding-top: 8px; }
 .ux-legend span { display: inline-flex; align-items: center; gap: 8px; }
@@ -62,7 +62,7 @@ body { user-select: text; -webkit-user-select: text; }
 .tour-heading .name { margin-top: 4px; }
 
 /* v03: sentence descriptions use the same 19px scale as chat text. */
-.screen .ux-description { font-size: 19px; line-height: 1.3; letter-spacing: 0; text-transform: none; color: var(--dj-text-3); white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; }
+.screen .ux-description { font-size: 19px; line-height: 1.15; letter-spacing: 0; text-transform: none; color: var(--dj-text-3); white-space: normal; overflow: visible; text-overflow: clip; overflow-wrap: anywhere; }
 
 /* v04: warning color only on the dot and edit icon. */
 .ux-fill-icon { width: 44px; height: 44px; flex: 0 0 44px; padding: 0; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 12px; background: transparent; color: var(--dj-magenta); cursor: pointer; }

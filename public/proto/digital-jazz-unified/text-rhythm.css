@@ -1,0 +1,18 @@
+/* Shared body-text rhythm; heading typography remains component-specific. */
+body{line-height:1.15}
+p,li,dt,dd,label,legend,input,textarea,select,button,td,th,
+.caption,.secondary,.muted,.text-button,.chip,.seg button,
+.conv-preview,.conv-time,.bubble,.bubble-time,.req-hint,
+.card-meta,.field>span,.score-scale,.shop-product-price,
+.stage-task p,.tournament-title .caption,.tournament .caption,
+.preview-person small,.services-label,.demo-note,.progress-note,
+.role-panel p,.participant-monitor p{line-height:1.15!important}
+/* Inline copy should not reintroduce a different line height in nested spans. */
+span:not(.tournament-title):not(.stage-label),small,a{line-height:1.15}
+h1 span,h2 span,h3 span,h4 span,h5 span,h6 span{line-height:inherit}
+/* Nested rule panels keep a readable inset below their separator. */
+.stage-disclosure > .stage-task.tournament-content{padding-top:18px;padding-bottom:20px}
+.stage-disclosure > .stage-task.tournament-content > :first-child{margin-top:0}
+/* Low-specificity baseline also covers copy rendered in div/em, not only p/span. */
+:where(body *):not(:where(h1,h2,h3,h4,h5,h6,h1 *,h2 *,h3 *,h4 *,h5 *,h6 *)){line-height:1.15}
+.empty-hint,.write-hint,.quote-text,.bio-text,.rider-locked-text,.rider-comment,.comment-list li{line-height:1.15!important}

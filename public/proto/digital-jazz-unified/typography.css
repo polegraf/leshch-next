@@ -1,0 +1,29 @@
+/* Shared typography contract. Loaded last on every page. */
+:root{
+ --dj-font:Jost,system-ui,-apple-system,"Segoe UI",sans-serif;
+ --dj-type-body:19px;--dj-type-secondary:17px;--dj-type-caption:14px;
+ --dj-leading-body:1.15;--dj-weight-body:400;--dj-weight-control:500;--dj-weight-heading:600;
+}
+body{font-family:var(--dj-font);line-height:var(--dj-leading-body)}
+button,input,select,textarea{font-family:var(--dj-font)}
+/* The same actions should not shrink when moving between profile and chat. */
+.cta-pill,.cta-pill-ghost,.write-btn,.friend-btn,.download-btn,.offers-tab,
+.primary,.secondary-button,.seg-item,.seg button{
+ font-size:var(--dj-type-secondary);line-height:var(--dj-leading-body);font-weight:var(--dj-weight-control);
+}
+.primary,.seg-item.active,.seg button[aria-pressed=true]{font-weight:600}
+/* Readable long-form and explanatory copy. */
+.bio-text,.quote-text{font-size:var(--dj-type-body);line-height:var(--dj-leading-body)}
+.empty-hint,.write-hint,.rider-locked-text,.rider-comment,.offers-empty-text,.vhelp,
+.req-hint,.request-banner p,.rider-row-name,.rider-row-count,.field-row-value,
+.comment-list li{font-size:var(--dj-type-secondary);line-height:var(--dj-leading-body)}
+/* Short supporting labels, never tiny long paragraphs. */
+.quote-attr,.discog-title,.discog-year,.rider-row-brand,.subfield-label,
+.pm-group-head .pm-label,.pm-group-head .pm-count,.field-label,
+.cal-dow,.bubble-time{font-size:var(--dj-type-caption);line-height:var(--dj-leading-body)}
+.services-label{font-size:16px;line-height:var(--dj-leading-body)}
+/* All fields use body-size copy; captions remain separate. */
+.input,textarea,select,.msg-input{font-size:var(--dj-type-body);line-height:var(--dj-leading-body)}
+/* Do not let nested span baselines override heading line-height. */
+h1 :where(span,small,a),h2 :where(span,small,a),h3 :where(span,small,a),
+h4 :where(span,small,a),h5 :where(span,small,a),h6 :where(span,small,a){line-height:inherit}

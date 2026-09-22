@@ -85,9 +85,9 @@ body.dj {
 .dj-display  { font-size: 38px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--dj-text-bright); }
 .dj-h1       { font-size: 34px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: var(--dj-text-bright); }
 .dj-h2       { font-size: 24px; font-weight: 600; line-height: 1.2; }
-.dj-lead     { font-size: 20px; font-weight: 400; line-height: 1.35; }
-.dj-body     { font-size: 16px; font-weight: 400; line-height: 1.16; }
-.dj-body-s   { font-size: 16px; font-weight: 400; line-height: 1.16; color: var(--dj-text-2); }
+.dj-lead     { font-size: 20px; font-weight: 400; line-height: 1.15; }
+.dj-body     { font-size: 16px; font-weight: 400; line-height: 1.15; }
+.dj-body-s   { font-size: 16px; font-weight: 400; line-height: 1.15; color: var(--dj-text-2); }
 .dj-strong   { font-size: 16px; font-weight: 600; }
 
 /* Заголовок секции внутри карточки — «ПРОФИЛЬ», «ПРЕСС-БИО» */
