@@ -37,3 +37,6 @@
 .preview-avatar img{display:block;width:28px;height:28px;object-fit:contain;filter:brightness(0)}
 .merch-preview .merch-logo{filter:none}
 .merch-preview.white .merch-logo,.merch-preview.lime .merch-logo{filter:brightness(0)}
+
+/* Explicit black asset avoids SVG image filter differences in Chrome. */
+.preview-avatar img,.merch-preview.white .merch-logo,.merch-preview.lime .merch-logo{filter:none}
