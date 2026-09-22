@@ -134,43 +134,46 @@ document.addEventListener('keydown', e => {
   card.scrollIntoView({block:'nearest'});
 });
 document.addEventListener('pointerdown', e => {
-  const handle = e.target.closest('.drag-handle');
-  if (!handle || e.button !== 0) return;
+  const handle=e.target.closest('.drag-handle');
+  if(!handle||e.button!==0||!e.isPrimary)return;
+  const card=handle.closest('[data-tournament-id]');if(!card)return;
   e.preventDefault();
-  const card = handle.closest('[data-tournament-id]'), list = card.parentElement;
-  const original = Array.from(list.children);
-  let y = e.clientY, frame, active = true;
+  const list=card.parentElement, original=Array.from(list.children);
+  const grabOffset=e.clientY-card.getBoundingClientRect().top;
+  let y=e.clientY, frame, active=true;
+  card.classList.remove('settling');card.classList.add('is-dragging');
   handle.setPointerCapture(e.pointerId);
-  card.classList.add('is-dragging');
-  function reorder() {
-    const others = Array.from(list.children).filter(el => el !== card);
-    const before = others.find(el => {const r=el.getBoundingClientRect(); return y < r.top + r.height/2;});
-    if (before) { if (card.nextElementSibling !== before) list.insertBefore(card,before); }
-    else if (list.lastElementChild !== card) list.appendChild(card);
+  function position(){
+    const naturalTop=card.getBoundingClientRect().top-(parseFloat(card.dataset.dragOffset)||0);
+    const offset=y-grabOffset-naturalTop;
+    card.dataset.dragOffset=offset;card.style.transform=`translateY(${offset}px)`;
   }
-  function move(event) { y=event.clientY; reorder(); }
-  function tick() {
-    if (!active) return;
-    const bottom = window.innerHeight - 112;
-    if (y < 90) window.scrollBy(0,-8);
-    else if (y > bottom) window.scrollBy(0,8);
-    frame=requestAnimationFrame(tick);
+  function update(){
+    position();
+    const rect=card.getBoundingClientRect(),mid=rect.top+rect.height/2;
+    const siblings=Array.from(list.children);
+    const target=siblings.find(el=>{if(el===card)return false;const r=el.getBoundingClientRect();return mid>r.top&&mid<r.bottom;});
+    if(target){
+      const beforeTop=card.getBoundingClientRect().top;
+      if(siblings.indexOf(card)<siblings.indexOf(target))list.insertBefore(card,target.nextSibling);else list.insertBefore(card,target);
+      // Keep the visual card anchored to the finger when its layout slot changes.
+      const shift=beforeTop-card.getBoundingClientRect().top;
+      const offset=(parseFloat(card.dataset.dragOffset)||0)+shift;
+      card.dataset.dragOffset=offset;card.style.transform=`translateY(${offset}px)`;
+    }
   }
-  function finish(event) {
-    if (!active) return; active=false; cancelAnimationFrame(frame);
-    if(event.type==='pointercancel') original.forEach(el=>list.appendChild(el));
-    else saveTournamentOrder(list);
-    card.classList.remove('is-dragging');
-    handle.removeEventListener('pointermove',move);
-    handle.removeEventListener('pointerup',finish);
-    handle.removeEventListener('pointercancel',finish);
-    handle.removeEventListener('lostpointercapture',finish);
-    if(handle.hasPointerCapture(e.pointerId)) handle.releasePointerCapture(e.pointerId);
+  function move(event){if(event.pointerId!==e.pointerId)return;y=event.clientY;update();}
+  function tick(){if(!active)return;if(y<90)window.scrollBy(0,-8);else if(y>window.innerHeight-112)window.scrollBy(0,8);update();frame=requestAnimationFrame(tick);}
+  function finish(event){
+    if(!active)return;active=false;cancelAnimationFrame(frame);
+    if(event.type==='pointercancel'){original.forEach(el=>list.appendChild(el));position();}else saveTournamentOrder(list);
+    card.classList.remove('is-dragging');card.classList.add('settling');card.style.transform='translateY(0px)';delete card.dataset.dragOffset;
+    document.removeEventListener('pointermove',move);document.removeEventListener('pointerup',finish);document.removeEventListener('pointercancel',finish);handle.removeEventListener('lostpointercapture',finish);
+    if(handle.hasPointerCapture(e.pointerId))handle.releasePointerCapture(e.pointerId);
+    setTimeout(()=>{if(!card.classList.contains('is-dragging')){card.classList.remove('settling');card.style.transform='';}},240);
   }
-  handle.addEventListener('pointermove',move);
-  handle.addEventListener('pointerup',finish);
-  handle.addEventListener('pointercancel',finish);
-  handle.addEventListener('lostpointercapture',finish);
+  document.addEventListener('pointermove',move);document.addEventListener('pointerup',finish);document.addEventListener('pointercancel',finish);handle.addEventListener('lostpointercapture',finish);
   frame=requestAnimationFrame(tick);
 });
+
 render();
