@@ -26,3 +26,9 @@ form[data-judge-form]>button,form[data-demo-score]>button{margin:0}
 .role-panel>.card>.actions{margin-top:8px}
 form[data-judge-form]>.score-slider,form[data-demo-score]>.score-slider{padding-block:0;gap:8px}
 .shop-detail .secondary{margin-top:0}
+
+.judge-monitor video,.demo-work video{display:block;width:100%;max-height:480px;object-fit:contain;background:var(--dj-bg);border-radius:15px}
+
+.judge-selection{display:grid;gap:8px;min-width:0;margin-top:8px}
+.judge-selection>form,.judge-selection>audio,.judge-selection>video{margin-top:8px}
+.judge-selection>video{width:100%;height:min(480px,140vw);object-fit:contain}
