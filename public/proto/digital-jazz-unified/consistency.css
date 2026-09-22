@@ -96,3 +96,5 @@ input[type=checkbox]:focus-visible{outline:2px solid var(--dj-lime);outline-offs
 .tournament-fold.is-dragging{z-index:50;border-color:rgba(192,250,53,.4);background:var(--dj-surface);box-shadow:0 30px 60px -12px rgba(0,0,0,.75);transition:none!important;will-change:transform}
 .tournament-fold.settling{transition:transform 220ms cubic-bezier(.2,.8,.2,1)}
 @media(prefers-reduced-motion:reduce){.tournament-fold.settling{transition:none}}
+.profession-more{margin-top:10px}.profession-more summary{list-style:none;cursor:pointer;color:var(--dj-lime);font-size:17px;padding:10px 0}.profession-more summary::-webkit-details-marker{display:none}.profession-more[open] summary{margin-bottom:6px}
+.checks input[type=radio]{appearance:none;width:20px;height:20px;flex:0 0 20px;border:1px solid var(--dj-line-3);border-radius:50%;margin:0}.checks input[type=radio]:checked{border-color:var(--dj-lime);background:var(--dj-lime);box-shadow:inset 0 0 0 4px var(--dj-bg-raised)}
