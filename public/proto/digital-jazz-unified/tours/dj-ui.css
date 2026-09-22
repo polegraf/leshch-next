@@ -1,0 +1,315 @@
+/* ==========================================================================
+   Digital Jazz — общий UI-слой
+   Значения сняты computed-стилями с живых экранов:
+   leshch.com/proto/dj-style-chat и /proto/dj-style-profile-interactive
+   (20.09.2026). Ничего не придумано заново — только сведено в токены.
+   ========================================================================== */
+
+:root {
+  /* --- Подложка ---------------------------------------------------------- */
+  --dj-bg:            #06040B;   /* основной фон приложения */
+  --dj-bg-raised:     #0B0811;   /* фон под приподнятыми элементами */
+  --dj-scrim:         rgba(6, 4, 11, 0.55);  /* затемнение под шитом/поповером */
+
+  /* --- Акценты ----------------------------------------------------------- */
+  --dj-lime:          #C0FA35;   /* действие, деньги, свобода */
+  --dj-lime-ink:      #14170A;   /* текст на лайме */
+  --dj-lime-line:     rgba(192, 250, 53, 0.40);
+  --dj-lime-fill:     rgba(192, 250, 53, 0.10);
+  --dj-lime-glow:     rgba(192, 250, 53, 0.55);
+  --dj-violet:        #A375FF;   /* процесс, данные, будущее */
+  --dj-magenta:       #FF00E5;   /* отрицательная динамика и предупреждение:
+                                    «▼17.6%» в статистике профиля, крюк в маршруте,
+                                    конфликт дат. Парный лайму, который отмечает
+                                    рост и норму. Оранжевого и красного в системе нет. */
+
+  /* --- Текст ------------------------------------------------------------- */
+  --dj-text:          #E4E1EC;   /* основной */
+  --dj-text-bright:   #F7F6FA;   /* заголовки поверх тёмного */
+  --dj-text-2:        #C7C3D6;   /* вторичный, самый частый в интерфейсе */
+  --dj-text-3:        #9A94B3;   /* приглушённый */
+  --dj-text-4:        #6E6890;   /* сноски, выключенное */
+
+  /* --- Поверхности и линии ----------------------------------------------- */
+  --dj-surface:       rgba(255, 255, 255, 0.067); /* карточка */
+  --dj-surface-2:     rgba(255, 255, 255, 0.06);  /* кнопка-кругляш в стекле */
+  --dj-surface-3:     rgba(255, 255, 255, 0.16);  /* незаполненный сегмент шкалы */
+  --dj-line:          rgba(255, 255, 255, 0.14);  /* граница карточки */
+  --dj-line-2:        rgba(255, 255, 255, 0.18);  /* граница стеклянной плашки */
+  --dj-line-3:        rgba(255, 255, 255, 0.28);  /* граница чипа и круглой кнопки */
+
+  /* --- Радиусы ----------------------------------------------------------- */
+  --dj-r-card:        22px;
+  --dj-r-sheet:       22px;
+  --dj-r-field:       15px;
+  --dj-r-chip:        12px;
+  --dj-r-btn:         10px;
+  --dj-r-pill:        999px;
+  --dj-r-bar:         3px;
+
+  /* --- Тени и стекло ------------------------------------------------------ */
+  --dj-shadow-card:   0 16px 36px -20px rgba(0, 0, 0, 0.65);
+  --dj-shadow-glass:  inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 14px 28px rgba(0, 0, 0, 0.8);
+  --dj-shadow-nav:    0 20px 44px -16px rgba(0, 0, 0, 0.9);
+  --dj-shadow-sheet:  0 30px 60px -18px rgba(0, 0, 0, 0.75);
+  --dj-shadow-lime:   0 8px 18px -8px var(--dj-lime-glow), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  --dj-glass:         blur(16px) saturate(1.3);
+  --dj-glass-strong:  blur(32px) saturate(2);
+
+  /* --- Типографика (Jost) -------------------------------------------------- */
+  --dj-font: Jost, system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Ступени: 38 / 32 / 20 / 19 / 17 / 16 / 15 / 14 / 13 / 11.
+     Начертания только 400, 500, 600, 700. Капс — 600 с положительным трекингом. */
+}
+
+/* --------------------------------------------------------------------------
+   База
+   -------------------------------------------------------------------------- */
+
+body.dj {
+  margin: 0;
+  background: var(--dj-bg);
+  color: var(--dj-text);
+  font-family: var(--dj-font);
+  font-size: 16px;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dj a { color: inherit; text-decoration: none; }
+
+/* --------------------------------------------------------------------------
+   Типографика
+   -------------------------------------------------------------------------- */
+
+.dj-display  { font-size: 38px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--dj-text-bright); }
+.dj-h1       { font-size: 34px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: var(--dj-text-bright); }
+.dj-h2       { font-size: 24px; font-weight: 600; line-height: 1.2; }
+.dj-lead     { font-size: 20px; font-weight: 400; line-height: 1.35; }
+.dj-body     { font-size: 16px; font-weight: 400; line-height: 1.16; }
+.dj-body-s   { font-size: 16px; font-weight: 400; line-height: 1.16; color: var(--dj-text-2); }
+.dj-strong   { font-size: 16px; font-weight: 600; }
+
+/* Заголовок секции внутри карточки — «ПРОФИЛЬ», «ПРЕСС-БИО» */
+.dj-section  { font-size: 20px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dj-text-2); }
+/* Мелкий лейбл — статусы, даты */
+.dj-label    { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.dj-label-s  { font-size: 13px; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dj-text-4); }
+
+.dj-muted    { color: var(--dj-text-3); }
+.dj-dim      { color: var(--dj-text-4); }
+.dj-accent   { color: var(--dj-lime); }
+.dj-process  { color: var(--dj-violet); }
+.dj-warn     { color: var(--dj-magenta); }
+
+/* --------------------------------------------------------------------------
+   Карточка
+   -------------------------------------------------------------------------- */
+
+.dj-card {
+  box-sizing: border-box;
+  background: var(--dj-surface);
+  border: 1px solid var(--dj-line);
+  border-radius: var(--dj-r-card);
+  box-shadow: var(--dj-shadow-card);
+  padding: 18px 20px;
+}
+
+.dj-card--flat   { box-shadow: none; }
+.dj-card--accent { border-color: var(--dj-lime-line); background: var(--dj-lime-fill); }
+.dj-card--dashed { border-style: dashed; border-color: var(--dj-lime-line); background: var(--dj-lime-fill); box-shadow: none; }
+.dj-card--dragging { box-shadow: 0 18px 34px -10px rgba(0, 0, 0, 0.7); border-color: var(--dj-lime-line); }
+.dj-card--off    { opacity: 0.55; }
+
+/* --------------------------------------------------------------------------
+   Стекло: плашки, поповеры, панели
+   -------------------------------------------------------------------------- */
+
+.dj-glass {
+  background: rgba(24, 20, 32, 0.42);
+  backdrop-filter: var(--dj-glass);
+  -webkit-backdrop-filter: var(--dj-glass);
+  border: 1px solid var(--dj-line-2);
+  box-shadow: var(--dj-shadow-glass);
+}
+
+.dj-glass--strong {
+  background: transparent;
+  backdrop-filter: var(--dj-glass-strong);
+  -webkit-backdrop-filter: var(--dj-glass-strong);
+  border-color: rgba(255, 255, 255, 0.26);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.36),
+              inset 0 -1.5px 0 rgba(255, 255, 255, 0.10),
+              var(--dj-shadow-nav);
+}
+
+/* --------------------------------------------------------------------------
+   Главная навигация — круглая кнопка со знаком + капсула с иконками
+   -------------------------------------------------------------------------- */
+
+.dj-nav { display: flex; align-items: center; gap: 12px; padding: 0 16px 16px; }
+
+.dj-nav__brand {
+  width: 72px; height: 72px; flex-shrink: 0;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(24, 20, 32, 0.42);
+  backdrop-filter: var(--dj-glass); -webkit-backdrop-filter: var(--dj-glass);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: var(--dj-shadow-nav);
+}
+
+.dj-nav__pill {
+  flex-grow: 1; height: 72px;
+  border-radius: var(--dj-r-pill);
+  padding: 0 10px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: transparent;
+  backdrop-filter: var(--dj-glass-strong); -webkit-backdrop-filter: var(--dj-glass-strong);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.36),
+              inset 0 -1.5px 0 rgba(255, 255, 255, 0.10),
+              var(--dj-shadow-nav);
+}
+
+.dj-nav__btn {
+  width: 52px; height: 52px; flex-shrink: 0;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--dj-surface-2);
+  border: 1px solid var(--dj-line-3);
+  color: #ACA7BD;
+}
+.dj-nav__btn.is-active { background: var(--dj-lime-fill); border-color: rgba(192,250,53,0.55); color: var(--dj-lime); }
+
+/* Вертикальное меню сервисов: события · туры · турниры · афиша · магазин */
+.dj-nav__menu { width: 134px; display: flex; flex-direction: column; gap: 9px; }
+.dj-nav__menu a { height: 40px; display: flex; align-items: center; gap: 10px; color: var(--dj-text); }
+
+/* На 390 px экране всё уменьшается пропорционально */
+@media (max-width: 420px) {
+  .dj-nav__brand { width: 60px; height: 60px; }
+  .dj-nav__pill  { height: 60px; padding: 0 12px; }
+  .dj-nav__btn   { width: 44px; height: 44px; }
+}
+
+/* --------------------------------------------------------------------------
+   Кнопки
+   -------------------------------------------------------------------------- */
+
+.dj-btn {
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  height: 50px; padding: 0 18px;
+  border: none; border-radius: var(--dj-r-pill);
+  font-family: inherit; font-size: 16px; font-weight: 600;
+  cursor: pointer;
+}
+
+.dj-btn--primary { background: var(--dj-lime); color: var(--dj-lime-ink); box-shadow: var(--dj-shadow-lime); }
+.dj-btn--ghost   { background: transparent; color: var(--dj-text); border: 1px solid var(--dj-line-3); }
+.dj-btn--quiet   { background: var(--dj-surface-2); color: var(--dj-text-2); border: 1px solid var(--dj-line); }
+.dj-btn--square  { border-radius: var(--dj-r-btn); height: 44px; font-size: 16px; font-weight: 700; }
+.dj-btn--icon    { width: 44px; height: 44px; padding: 0; border-radius: 50%; }
+
+/* --------------------------------------------------------------------------
+   Чип / пилюля
+   -------------------------------------------------------------------------- */
+
+.dj-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 15px;
+  border: 1px solid var(--dj-line-3);
+  border-radius: var(--dj-r-pill);
+  background: transparent;
+  font-size: 16px; font-weight: 400; color: var(--dj-text);
+}
+.dj-chip.is-active { border-color: var(--dj-lime-line); background: rgba(6, 4, 11, 0.6); color: var(--dj-lime); }
+.dj-chip--square   { border-radius: var(--dj-r-chip); }
+
+/* --------------------------------------------------------------------------
+   Поля ввода
+   -------------------------------------------------------------------------- */
+
+.dj-field {
+  box-sizing: border-box;
+  width: 100%; min-width: 0; height: 50px;
+  padding: 0 16px;
+  background: var(--dj-surface-2);
+  border: 1px solid var(--dj-line);
+  border-radius: var(--dj-r-field);
+  font-family: inherit; font-size: 17px; font-weight: 400; color: var(--dj-text);
+  outline: none;
+}
+.dj-field::placeholder { color: var(--dj-text-4); }
+.dj-field:focus { border-color: var(--dj-lime-line); }
+
+/* --------------------------------------------------------------------------
+   Ручка перетаскивания — шесть точек, зона 44×44, курсор grab.
+   Разметка:
+   <div class="dj-handle" aria-label="Перетащить">
+     <svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor">
+       <circle cx="9"  cy="6"  r="1.6"/><circle cx="15" cy="6"  r="1.6"/>
+       <circle cx="9"  cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/>
+       <circle cx="9"  cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
+     </svg>
+   </div>
+   -------------------------------------------------------------------------- */
+
+.dj-handle {
+  width: 44px; height: 44px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--dj-text-4);
+  cursor: grab;
+  touch-action: none;
+}
+.dj-handle:active { cursor: grabbing; }
+.dj-handle.is-dragging { color: var(--dj-lime); }
+
+/* Линия, показывающая, куда встанет карточка */
+.dj-dropline { height: 2px; border-radius: 2px; background: var(--dj-lime); box-shadow: 0 0 10px var(--dj-lime-glow); }
+
+/* --------------------------------------------------------------------------
+   Шкала из пяти сегментов (сила жанра и т.п.): 17×6, радиус 3, зазор 5
+   -------------------------------------------------------------------------- */
+
+.dj-meter { display: flex; gap: 5px; }
+.dj-meter i { width: 17px; height: 6px; border-radius: var(--dj-r-bar); background: var(--dj-surface-3); }
+.dj-meter i.is-on { background: var(--dj-lime); }
+
+/* --------------------------------------------------------------------------
+   Нижний шит и затемнение под ним
+   -------------------------------------------------------------------------- */
+
+.dj-sheet {
+  border-radius: var(--dj-r-sheet) var(--dj-r-sheet) 0 0;
+  background: var(--dj-bg-raised);
+  border-top: 1px solid var(--dj-line-2);
+  box-shadow: var(--dj-shadow-sheet);
+  padding: 10px 20px 20px;
+}
+.dj-sheet__grip { width: 38px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.18); margin: 0 auto 14px; }
+
+/* Подложка под шитом: один приём, не два сразу */
+.dj-scrim { position: absolute; inset: 0; background: var(--dj-scrim); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
+
+/* --------------------------------------------------------------------------
+   Состояния даты в туре (раздел «Туры»)
+   -------------------------------------------------------------------------- */
+
+.dj-dot { width: 13px; height: 13px; border-radius: 50%; box-sizing: border-box; flex-shrink: 0; }
+.dj-dot--confirmed { background: var(--dj-lime); box-shadow: 0 0 10px var(--dj-lime-glow); }
+.dj-dot--talks     { border: 1.5px solid var(--dj-violet); }
+.dj-dot--free      { border: 1.5px dashed var(--dj-lime); }
+.dj-dot--transfer  { width: 7px; height: 7px; background: #4A4657; }
+.dj-dot--cancelled { border: 1.5px solid #4A4657; }
+
+/* Линия маршрута: сыгранное — лайм, впереди — фиолетовый */
+.dj-route-line { width: 2px; background: linear-gradient(180deg, var(--dj-lime) 0%, var(--dj-violet) 100%); opacity: 0.35; }
+
+/* --------------------------------------------------------------------------
+   Мелочи
+   -------------------------------------------------------------------------- */
+
+.dj-divider { height: 1px; background: rgba(255, 255, 255, 0.07); }
+.dj-avatar  { border-radius: 50%; background: linear-gradient(140deg, var(--dj-violet) 0%, var(--dj-lime) 100%); }

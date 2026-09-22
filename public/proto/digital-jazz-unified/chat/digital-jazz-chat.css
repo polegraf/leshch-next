@@ -1,0 +1,416 @@
+/* ==========================================================================
+   Digital Jazz — мессенджер
+   Два экрана в одном файле: список диалогов («Все» / «Запросы») и сам диалог
+   с пузырями, карточкой предложения и полем ввода.
+
+   Нижняя навигация вынесена в digital-jazz-bottom-nav.css и подключается
+   после этого файла:
+
+     <link rel="stylesheet" href="digital-jazz-chat.css">
+     <link rel="stylesheet" href="digital-jazz-bottom-nav.css">
+
+   Шрифт: Jost (300–700 + италик).
+   Базовая ширина макета — 402px, максимум 480px.
+   ========================================================================== */
+
+/* ==========================================================================
+   Токены
+   ========================================================================== */
+:root {
+  /* -- фон и акценты -- */
+  --dj-bg: #06040B;                 /* фон приложения */
+  --dj-lime: #C0FA35;               /* основной акцент: активное, оффер, статус */
+  --dj-lime-light: #D8FF6E;         /* блик в градиенте PRO-кнопки */
+  --dj-lime-ink: #14170A;           /* текст на лаймовой заливке */
+  --dj-msg-own: #5824DF;            /* пузырь своего сообщения */
+  --dj-msg-own-ink: #FFFFFF;        /* текст в своём пузыре */
+
+  /* -- текст, от светлого к тёмному -- */
+  --dj-text-headline: #F7F6FA;      /* заголовок экрана, имя в шапке диалога */
+  --dj-text-body: #E6E6F0;          /* базовый цвет body */
+  --dj-text-strong: #E4E1EC;        /* имена в списке, входящие сообщения */
+  --dj-text-muted: #C7C3D6;         /* вторичный текст, иконки */
+  --dj-text-nav: #ACA7BD;
+  --dj-text-faint: #9A94B3;         /* превью сообщений, статусы */
+  --dj-text-ghost: #8A84A0;         /* пустые состояния, разделители дат */
+  --dj-text-quiet: #6E6890;         /* таймстемпы, плейсхолдер ввода */
+
+  /* -- RGB-триплеты для полупрозрачных слоёв -- */
+  --dj-white-rgb: 255, 255, 255;
+  --dj-black-rgb: 6, 4, 11;
+  --dj-shadow-rgb: 0, 0, 0;
+  --dj-lime-rgb: 192, 250, 53;
+  --dj-purple-glow-rgb: 112, 46, 204;
+  --dj-glass-tint-rgb: 24, 20, 32;
+
+  /* -- градиенты аватарок: заглушки, пока нет фото контакта -- */
+  --dj-avatar-1: linear-gradient(155deg, #8D78BE 0%, #B8D278 100%);
+  --dj-avatar-2: linear-gradient(155deg, #B6CA73 0%, #9180B6 100%);
+  --dj-avatar-3: linear-gradient(155deg, #6332E2 0%, #8B5CF0 100%);
+  --dj-avatar-4: linear-gradient(155deg, #A192C3 0%, #B7C094 100%);
+  --dj-avatar-5: linear-gradient(155deg, #627DF7 0%, #8B5CF0 100%);
+  --dj-avatar-6: linear-gradient(155deg, #C0FA35 0%, #6FA8E8 100%);
+
+  /* -- стекло -- */
+  --dj-glass-blur: 32px;
+  --dj-glass-saturate: 200%;
+}
+
+/* ==========================================================================
+   База
+   ========================================================================== */
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--dj-bg); }
+body {
+  font-family: Jost, system-ui, -apple-system, "Segoe UI", sans-serif;
+  color: var(--dj-text-body);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: pan-y;
+}
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+img { -webkit-user-drag: none; user-drag: none; pointer-events: none; }
+
+.screen {
+  width: 100%;
+  max-width: 480px;
+  margin: 0 auto;
+  padding: max(20px, env(safe-area-inset-top)) 11px calc(110px + env(safe-area-inset-bottom)) 11px;
+  min-height: 100vh;
+  background: radial-gradient(60% 34% at 85% 0%,
+    rgba(var(--dj-purple-glow-rgb), 0.28) 0%,
+    rgba(var(--dj-purple-glow-rgb), 0) 60%);
+}
+/* в открытом диалоге нижнюю навигацию заменяет поле ввода той же высоты */
+.screen.thread-open { padding-bottom: calc(110px + env(safe-area-inset-bottom)); }
+
+/* ==========================================================================
+   Верхняя панель — общая оболочка приложения
+   ========================================================================== */
+.topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; position: relative; }
+.topbar-left { display: flex; align-items: center; gap: 2px; }
+.topbar-logo { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; }
+.topbar-logo img { height: 36px; width: auto; display: block; }
+.topbar-right { display: flex; align-items: center; gap: 10px; }
+
+.pro-btn {
+  display: flex; align-items: center; gap: 4px;
+  height: 44px; padding: 0 15px 0 12px; border-radius: 999px;
+  background: linear-gradient(135deg, var(--dj-lime-light) 0%, var(--dj-lime) 100%);
+  color: var(--dj-lime-ink); font-family: Jost, sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.02em;
+  cursor: pointer; border: none;
+  box-shadow: 0 8px 18px -8px rgba(var(--dj-lime-rgb), 0.55), inset 0 1px 0 rgba(var(--dj-white-rgb), 0.5);
+}
+.pro-btn svg { display: block; }
+
+.hamburger-btn {
+  display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 15px;
+  color: var(--dj-text-strong); cursor: pointer; padding: 0; background: none; border: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.hamburger-btn:active { background: rgba(var(--dj-white-rgb), 0.08); }
+
+.bell-btn {
+  position: relative; display: flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; border-radius: 15px;
+  background: rgba(var(--dj-white-rgb), 0.08);
+  cursor: pointer;
+}
+.bell-dot {
+  position: absolute; top: 7px; right: 8px; width: 7px; height: 7px; border-radius: 50%;
+  background: var(--dj-lime); box-shadow: 0 0 0 2px #0b0811; z-index: 1;
+}
+.bell-btn svg { position: relative; z-index: 1; }
+
+/* матовое стекло: используется верхней панелью и поповером */
+.glass {
+  position: relative;
+  background:
+    linear-gradient(165deg,
+      rgba(var(--dj-white-rgb), 0.10) 0%,
+      rgba(var(--dj-white-rgb), 0.03) 45%,
+      rgba(var(--dj-white-rgb), 0.06) 100%),
+    rgba(var(--dj-glass-tint-rgb), 0.42);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+  backdrop-filter: blur(16px) saturate(130%);
+  border: 1px solid rgba(var(--dj-white-rgb), 0.16);
+  box-shadow:
+    inset 0 1px 0 rgba(var(--dj-white-rgb), 0.16),
+    0 10px 26px -14px rgba(var(--dj-shadow-rgb), 0.6);
+  overflow: hidden;
+}
+
+/* поповер под «три точки» */
+.more-wrap { position: relative; }
+.nav-backdrop {
+  position: fixed; inset: 0; background: rgba(var(--dj-black-rgb), 0.55); z-index: 89;
+  opacity: 0; pointer-events: none; transition: opacity 200ms ease;
+}
+.nav-backdrop.open { opacity: 1; pointer-events: auto; }
+.more-menu {
+  position: absolute; left: 0; top: 52px; width: 264px; z-index: 90;
+  background: linear-gradient(165deg, #1c1724 0%, #0c0a10 100%);
+  border: 1px solid rgba(var(--dj-white-rgb), 0.14); border-radius: 20px;
+  box-shadow: 0 30px 60px -18px rgba(var(--dj-shadow-rgb), 0.75);
+  overflow: hidden;
+  opacity: 0; transform: translateY(-8px) scale(0.98); pointer-events: none;
+  transition: all 200ms cubic-bezier(.2, .8, .2, 1);
+}
+.more-menu.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.nav-item {
+  display: flex; align-items: center; gap: 13px; padding: 14px 16px;
+  border-bottom: 1px solid rgba(var(--dj-white-rgb), 0.07); cursor: pointer;
+}
+.nav-item:last-child { border-bottom: none; }
+.nav-item.active { background: rgba(var(--dj-lime-rgb), 0.09); }
+.nav-item svg { flex-shrink: 0; }
+.nav-item span { font-size: 15px; color: var(--dj-text-muted); }
+.nav-item.active span { color: var(--dj-lime); font-weight: 600; }
+
+/* ==========================================================================
+   Общие примитивы
+   ========================================================================== */
+.card {
+  border-radius: 22px;
+  background: rgba(var(--dj-white-rgb), 0.065);
+  border: 1px solid rgba(var(--dj-white-rgb), 0.14);
+  box-shadow: 0 16px 36px -20px rgba(var(--dj-shadow-rgb), 0.65);
+  overflow: hidden;
+  position: relative;
+}
+.empty-hint { font-size: 17px; font-style: italic; color: var(--dj-text-ghost); line-height: 1.5; }
+.cta-pill {
+  display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 999px;
+  background: rgba(var(--dj-lime-rgb), 0.1); border: 1px solid rgba(var(--dj-lime-rgb), 0.4);
+  color: var(--dj-lime);
+  font-size: 17px; font-weight: 500; white-space: nowrap; cursor: pointer; font-family: inherit;
+}
+.cta-pill-ghost {
+  display: inline-flex; align-items: center; gap: 7px; padding: 10px 18px; border-radius: 999px;
+  background: rgba(var(--dj-white-rgb), 0.05); border: 1px solid rgba(var(--dj-white-rgb), 0.16);
+  color: var(--dj-text-muted);
+  font-size: 17px; font-weight: 500; white-space: nowrap; cursor: pointer; font-family: inherit;
+}
+.field-label {
+  font-size: 15px; font-weight: 600; letter-spacing: 0.08em;
+  color: var(--dj-text-faint); text-transform: uppercase;
+}
+
+/* ==========================================================================
+   Экран 1 — список диалогов
+   ========================================================================== */
+.chat-heading { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.chat-heading h1 { margin: 0; font-weight: 600; font-size: 34px; letter-spacing: -0.01em; color: var(--dj-text-headline); }
+.search-btn {
+  width: 44px; height: 44px; border-radius: 15px; display: flex; align-items: center; justify-content: center;
+  background: rgba(var(--dj-white-rgb), 0.06); border: 1px solid rgba(var(--dj-white-rgb), 0.12);
+  color: var(--dj-text-muted); cursor: pointer;
+}
+
+/* переключатель «Все» / «Запросы».
+   Запросы — первые сообщения от незнакомых контактов: пока артист не ответил,
+   диалог не попадает в общий список. */
+.seg-control {
+  display: flex; gap: 6px; padding: 4px; border-radius: 999px;
+  background: rgba(var(--dj-white-rgb), 0.05); border: 1px solid rgba(var(--dj-white-rgb), 0.1);
+  margin-bottom: 18px;
+}
+.seg-item {
+  flex: 1; display: flex; align-items: center; justify-content: center; gap: 7px;
+  padding: 10px 8px; border-radius: 999px; cursor: pointer;
+  color: var(--dj-text-faint); font-size: 17px; font-weight: 500;
+}
+.seg-item.active { background: var(--dj-lime); color: var(--dj-lime-ink); font-weight: 600; }
+.seg-badge {
+  min-width: 20px; height: 20px; padding: 0 6px; border-radius: 999px;
+  background: rgba(var(--dj-lime-rgb), 0.16); color: var(--dj-lime);
+  font-size: 14px; font-weight: 700; display: flex; align-items: center; justify-content: center;
+}
+.seg-item.active .seg-badge { background: rgba(20, 23, 10, 0.18); color: var(--dj-lime-ink); }
+
+.conv-list { display: flex; flex-direction: column; }
+.conv-row {
+  display: flex; align-items: center; gap: 12px; padding: 13px 6px;
+  border-bottom: 1px solid rgba(var(--dj-white-rgb), 0.07); cursor: pointer;
+}
+.conv-row:last-child { border-bottom: none; }
+
+/* аватар: пока нет фото — градиентная заглушка, см. --dj-avatar-N */
+.avatar {
+  position: relative; flex-shrink: 0; width: 52px; height: 52px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 600; color: var(--dj-text-headline);
+}
+.avatar .online {
+  position: absolute; right: -1px; bottom: -1px; width: 13px; height: 13px; border-radius: 50%;
+  background: var(--dj-lime); border: 2.5px solid #0b0811;
+}
+
+.conv-main { flex: 1; min-width: 0; }
+.conv-top { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.conv-name {
+  font-size: 20px; font-weight: 600; color: var(--dj-text-strong);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.conv-time { font-size: 14px; color: var(--dj-text-quiet); flex-shrink: 0; }
+.conv-bottom { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.conv-preview {
+  font-size: 16px; color: var(--dj-text-faint); min-width: 0;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.conv-preview.unread { color: var(--dj-text-muted); }
+/* превью предложения о выступлении подсвечено: такие диалоги видно в списке сразу */
+.conv-preview.offer { color: var(--dj-lime); }
+.conv-preview.offer svg { vertical-align: -1px; margin-right: 5px; }
+
+.unread-badge {
+  flex-shrink: 0; min-width: 22px; height: 22px; padding: 0 7px; border-radius: 999px;
+  background: var(--dj-lime); color: var(--dj-lime-ink); font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+}
+.req-hint { padding: 4px 6px 14px 6px; font-size: 15px; color: var(--dj-text-quiet); line-height: 1.5; }
+
+/* ==========================================================================
+   Экран 2 — диалог
+   ========================================================================== */
+.thread-header { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; }
+.back-btn,
+.thread-more-btn {
+  width: 40px; height: 40px; border-radius: 13px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(var(--dj-white-rgb), 0.06); border: 1px solid rgba(var(--dj-white-rgb), 0.12);
+  color: var(--dj-text-strong); cursor: pointer;
+}
+.thread-id { display: flex; align-items: center; gap: 10px; flex: 1; min-width: 0; }
+.thread-avatar {
+  position: relative; flex-shrink: 0; width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 600; color: var(--dj-text-headline);
+}
+.thread-name-wrap { min-width: 0; }
+.thread-name {
+  font-size: 19px; font-weight: 600; color: var(--dj-text-headline);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.thread-status { font-size: 15px; color: var(--dj-text-faint); }
+.thread-status.online { color: var(--dj-lime); }
+
+/* шапка непринятого запроса */
+.request-banner {
+  display: flex; flex-direction: column; align-items: center; text-align: center; gap: 12px;
+  padding: 18px; margin-bottom: 18px; border-radius: 18px;
+  background: rgba(var(--dj-white-rgb), 0.05); border: 1px solid rgba(var(--dj-white-rgb), 0.12);
+}
+.request-banner p { margin: 0; font-size: 16px; color: var(--dj-text-faint); line-height: 1.5; }
+.request-banner .row { display: flex; gap: 10px; }
+
+.date-divider { display: flex; align-items: center; justify-content: center; margin: 18px 0; }
+.date-divider span {
+  font-size: 14px; color: var(--dj-text-ghost);
+  background: rgba(var(--dj-white-rgb), 0.05); border: 1px solid rgba(var(--dj-white-rgb), 0.1);
+  padding: 5px 14px; border-radius: 999px;
+}
+
+/* ---- пузыри ---- */
+.bubble-row { display: flex; margin-bottom: 4px; }
+.bubble-row.in { justify-content: flex-start; }
+.bubble-row.out { justify-content: flex-end; }
+.bubble {
+  max-width: 78%; padding: 12px 15px; font-size: 19px; line-height: 1.15;
+}
+.bubble.in {
+  background: rgba(var(--dj-white-rgb), 0.07); border: 1px solid rgba(var(--dj-white-rgb), 0.12);
+  color: var(--dj-text-strong);
+  border-radius: 20px;
+}
+/* свои сообщения — фиолетовые: лайм в переписке закреплён за предложением,
+   чтобы акцент читался как «деньги», а не как «я говорю» */
+.bubble.out {
+  background: var(--dj-msg-own); border: none; color: var(--dj-msg-own-ink);
+  border-radius: 20px;
+}
+.bubble-time { font-size: 13px; color: var(--dj-text-quiet); margin: 3px 4px 12px 4px; }
+.bubble-time.in { text-align: left; }
+.bubble-time.out { text-align: right; }
+
+/* ---- карточка предложения выступления ----
+   Бронирование приходит структурой, а не текстом: площадка, дата, формат,
+   гонорар и два действия прямо в переписке. */
+.offer-card {
+  max-width: 86%; border-radius: 20px; padding: 16px;
+  background: linear-gradient(165deg,
+    rgba(var(--dj-lime-rgb), 0.14) 0%,
+    rgba(var(--dj-lime-rgb), 0.05) 100%);
+  border: 1px solid rgba(var(--dj-lime-rgb), 0.35);
+}
+.offer-head { display: flex; align-items: center; gap: 7px; margin-bottom: 12px; }
+.offer-head span {
+  font-size: 13px; font-weight: 700; letter-spacing: 0.06em;
+  color: var(--dj-lime); text-transform: uppercase; white-space: nowrap;
+}
+.offer-venue { font-size: 20px; font-weight: 600; color: var(--dj-text-headline); margin-bottom: 6px; }
+.offer-meta { font-size: 16px; color: var(--dj-text-muted); margin-bottom: 2px; }
+.offer-fee { font-size: 18px; font-weight: 600; color: var(--dj-lime); margin-top: 8px; margin-bottom: 14px; }
+.offer-actions { display: flex; gap: 8px; }
+.offer-actions .cta-pill,
+.offer-actions .cta-pill-ghost { flex: 1; justify-content: center; padding: 10px 12px; font-size: 16px; }
+
+/* ==========================================================================
+   Поле ввода — в диалоге занимает место нижней навигации,
+   поэтому повторяет её материал и высоту (см. digital-jazz-bottom-nav.css)
+   ========================================================================== */
+.input-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 80;
+  display: flex; justify-content: center;
+  padding: 0 11px calc(10px + env(safe-area-inset-bottom)) 11px;
+}
+.input-bar-inner {
+  width: 100%; max-width: 480px; display: flex; align-items: center; gap: 9px;
+  height: 72px; padding: 0 10px; border-radius: 999px;
+  background:
+    linear-gradient(168deg,
+      rgba(var(--dj-white-rgb), 0.22) 0%,
+      rgba(var(--dj-white-rgb), 0.04) 40%,
+      rgba(var(--dj-white-rgb), 0.12) 100%),
+    linear-gradient(120deg,
+      rgba(var(--dj-purple-glow-rgb), 0.34) 0%,
+      rgba(var(--dj-glass-tint-rgb), 0.5) 55%,
+      rgba(var(--dj-lime-rgb), 0.10) 100%);
+  -webkit-backdrop-filter: blur(var(--dj-glass-blur)) saturate(var(--dj-glass-saturate));
+  backdrop-filter: blur(var(--dj-glass-blur)) saturate(var(--dj-glass-saturate));
+  border: 1px solid rgba(var(--dj-white-rgb), 0.26);
+  box-shadow:
+    inset 0 2px 0 rgba(var(--dj-white-rgb), 0.36),
+    inset 0 -1.5px 0 rgba(var(--dj-white-rgb), 0.10),
+    0 24px 50px -18px rgba(var(--dj-shadow-rgb), 0.95);
+}
+.attach-btn,
+.send-btn {
+  flex-shrink: 0; width: 50px; height: 50px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+}
+.attach-btn {
+  background: rgba(var(--dj-white-rgb), 0.06); border: 1px solid rgba(var(--dj-white-rgb), 0.14);
+  color: var(--dj-text-muted);
+}
+.send-btn { background: var(--dj-lime); border: none; color: var(--dj-bg); }
+.msg-input {
+  flex: 1; height: 50px; border-radius: 999px; padding: 0 18px;
+  background: rgba(var(--dj-white-rgb), 0.06); border: 1px solid rgba(var(--dj-white-rgb), 0.14);
+  color: var(--dj-text-strong); font-size: 17px; font-family: Jost, sans-serif;
+}
+.msg-input::placeholder { color: var(--dj-text-quiet); }
+
+/* ==========================================================================
+   Переключение экранов
+   ========================================================================== */
+#viewThread { display: none; }
+#viewThread.open { display: block; }
+#viewList.hidden { display: none; }

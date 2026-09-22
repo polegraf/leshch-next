@@ -1,0 +1,86 @@
+/* Canonical chat tokens, unchanged. */
+:root {
+  /* -- фон и акценты -- */
+  --dj-bg: #06040B;                 /* фон приложения */
+  --dj-lime: #C0FA35;               /* основной акцент: активное, оффер, статус */
+  --dj-lime-light: #D8FF6E;         /* блик в градиенте PRO-кнопки */
+  --dj-lime-ink: #14170A;           /* текст на лаймовой заливке */
+  --dj-msg-own: #5824DF;            /* пузырь своего сообщения */
+  --dj-msg-own-ink: #FFFFFF;        /* текст в своём пузыре */
+
+  /* -- текст, от светлого к тёмному -- */
+  --dj-text-headline: #F7F6FA;      /* заголовок экрана, имя в шапке диалога */
+  --dj-text-body: #E6E6F0;          /* базовый цвет body */
+  --dj-text-strong: #E4E1EC;        /* имена в списке, входящие сообщения */
+  --dj-text-muted: #C7C3D6;         /* вторичный текст, иконки */
+  --dj-text-nav: #ACA7BD;
+  --dj-text-faint: #9A94B3;         /* превью сообщений, статусы */
+  --dj-text-ghost: #8A84A0;         /* пустые состояния, разделители дат */
+  --dj-text-quiet: #6E6890;         /* таймстемпы, плейсхолдер ввода */
+
+  /* -- RGB-триплеты для полупрозрачных слоёв -- */
+  --dj-white-rgb: 255, 255, 255;
+  --dj-black-rgb: 6, 4, 11;
+  --dj-shadow-rgb: 0, 0, 0;
+  --dj-lime-rgb: 192, 250, 53;
+  --dj-purple-glow-rgb: 112, 46, 204;
+  --dj-glass-tint-rgb: 24, 20, 32;
+
+  /* -- градиенты аватарок: заглушки, пока нет фото контакта -- */
+  --dj-avatar-1: linear-gradient(155deg, #8D78BE 0%, #B8D278 100%);
+  --dj-avatar-2: linear-gradient(155deg, #B6CA73 0%, #9180B6 100%);
+  --dj-avatar-3: linear-gradient(155deg, #6332E2 0%, #8B5CF0 100%);
+  --dj-avatar-4: linear-gradient(155deg, #A192C3 0%, #B7C094 100%);
+  --dj-avatar-5: linear-gradient(155deg, #627DF7 0%, #8B5CF0 100%);
+  --dj-avatar-6: linear-gradient(155deg, #C0FA35 0%, #6FA8E8 100%);
+
+  /* -- стекло -- */
+  --dj-glass-blur: 32px;
+  --dj-glass-saturate: 200%;
+}
+:root {
+ --dj-violet: #A375FF;
+ --dj-magenta: #FF00E5;
+ --dj-font: Jost, system-ui, sans-serif;
+ --dj-card: rgba(255,255,255,.067);
+ --dj-line: rgba(255,255,255,.14);
+ --dj-radius: 22px;
+ --dj-sheet-bg: #100C18;
+ --dj-type-body: 19px;
+ --dj-type-secondary: 17px;
+ --dj-type-caption: 14px;
+ --dj-type-title: 34px;
+}
+
+/* Existing tour component tokens; not new palette choices. */
+:root {
+  --dj-bg-raised: #0B0811;
+  --dj-scrim: rgba(6, 4, 11, 0.55);
+  --dj-lime-line: rgba(192, 250, 53, 0.40);
+  --dj-lime-fill: rgba(192, 250, 53, 0.10);
+  --dj-lime-glow: rgba(192, 250, 53, 0.55);
+  --dj-text: #E4E1EC;
+  --dj-text-bright: #F7F6FA;
+  --dj-text-2: #C7C3D6;
+  --dj-text-3: #9A94B3;
+  --dj-text-4: #6E6890;
+  --dj-surface: rgba(255, 255, 255, 0.067);
+  --dj-surface-2: rgba(255, 255, 255, 0.06);
+  --dj-surface-3: rgba(255, 255, 255, 0.16);
+  --dj-line-2: rgba(255, 255, 255, 0.18);
+  --dj-line-3: rgba(255, 255, 255, 0.28);
+  --dj-r-card: 22px;
+  --dj-r-sheet: 22px;
+  --dj-r-field: 15px;
+  --dj-r-chip: 12px;
+  --dj-r-btn: 10px;
+  --dj-r-pill: 999px;
+  --dj-r-bar: 3px;
+  --dj-shadow-card: 0 16px 36px -20px rgba(0, 0, 0, 0.65);
+  --dj-shadow-glass: inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 14px 28px rgba(0, 0, 0, 0.8);
+  --dj-shadow-nav: 0 20px 44px -16px rgba(0, 0, 0, 0.9);
+  --dj-shadow-sheet: 0 30px 60px -18px rgba(0, 0, 0, 0.75);
+  --dj-shadow-lime: 0 8px 18px -8px var(--dj-lime-glow), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  --dj-glass: blur(16px) saturate(1.3);
+  --dj-glass-strong: blur(32px) saturate(2);
+}

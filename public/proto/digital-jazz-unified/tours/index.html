@@ -1,0 +1,2240 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<script src="../prototype-nav.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Digital Jazz — туры · UX v10</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&display=swap">
+<style>
+/* dj-ui.css */
+/* ==========================================================================
+   Digital Jazz — общий UI-слой
+   Значения сняты computed-стилями с живых экранов:
+   leshch.com../chat/index.html и ../profile/index.html
+   (20.09.2026). Ничего не придумано заново — только сведено в токены.
+   ========================================================================== */
+
+:root {
+  /* --- Подложка ---------------------------------------------------------- */
+  --dj-bg:            #06040B;   /* основной фон приложения */
+  --dj-bg-raised:     #0B0811;   /* фон под приподнятыми элементами */
+  --dj-scrim:         rgba(6, 4, 11, 0.55);  /* затемнение под шитом/поповером */
+
+  /* --- Акценты ----------------------------------------------------------- */
+  --dj-lime:          #C0FA35;   /* действие, деньги, свобода */
+  --dj-lime-ink:      #14170A;   /* текст на лайме */
+  --dj-lime-line:     rgba(192, 250, 53, 0.40);
+  --dj-lime-fill:     rgba(192, 250, 53, 0.10);
+  --dj-lime-glow:     rgba(192, 250, 53, 0.55);
+  --dj-violet:        #A375FF;   /* процесс, данные, будущее */
+  --dj-magenta:       #FF00E5;   /* отрицательная динамика и предупреждение:
+                                    «▼17.6%» в статистике профиля, крюк в маршруте,
+                                    конфликт дат. Парный лайму, который отмечает
+                                    рост и норму. Оранжевого и красного в системе нет. */
+
+  /* --- Текст ------------------------------------------------------------- */
+  --dj-text:          #E4E1EC;   /* основной */
+  --dj-text-bright:   #F7F6FA;   /* заголовки поверх тёмного */
+  --dj-text-2:        #C7C3D6;   /* вторичный, самый частый в интерфейсе */
+  --dj-text-3:        #9A94B3;   /* приглушённый */
+  --dj-text-4:        #6E6890;   /* сноски, выключенное */
+
+  /* --- Поверхности и линии ----------------------------------------------- */
+  --dj-surface:       rgba(255, 255, 255, 0.067); /* карточка */
+  --dj-surface-2:     rgba(255, 255, 255, 0.06);  /* кнопка-кругляш в стекле */
+  --dj-surface-3:     rgba(255, 255, 255, 0.16);  /* незаполненный сегмент шкалы */
+  --dj-line:          rgba(255, 255, 255, 0.14);  /* граница карточки */
+  --dj-line-2:        rgba(255, 255, 255, 0.18);  /* граница стеклянной плашки */
+  --dj-line-3:        rgba(255, 255, 255, 0.28);  /* граница чипа и круглой кнопки */
+
+  /* --- Радиусы ----------------------------------------------------------- */
+  --dj-r-card:        22px;
+  --dj-r-sheet:       22px;
+  --dj-r-field:       15px;
+  --dj-r-chip:        12px;
+  --dj-r-btn:         10px;
+  --dj-r-pill:        999px;
+  --dj-r-bar:         3px;
+
+  /* --- Тени и стекло ------------------------------------------------------ */
+  --dj-shadow-card:   0 16px 36px -20px rgba(0, 0, 0, 0.65);
+  --dj-shadow-glass:  inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 14px 28px rgba(0, 0, 0, 0.8);
+  --dj-shadow-nav:    0 20px 44px -16px rgba(0, 0, 0, 0.9);
+  --dj-shadow-sheet:  0 30px 60px -18px rgba(0, 0, 0, 0.75);
+  --dj-shadow-lime:   0 8px 18px -8px var(--dj-lime-glow), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  --dj-glass:         blur(16px) saturate(1.3);
+  --dj-glass-strong:  blur(32px) saturate(2);
+
+  /* --- Типографика (Jost) -------------------------------------------------- */
+  --dj-font: Jost, system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Ступени: 38 / 32 / 20 / 19 / 17 / 16 / 15 / 14 / 13 / 11.
+     Начертания только 400, 500, 600, 700. Капс — 600 с положительным трекингом. */
+}
+
+/* --------------------------------------------------------------------------
+   База
+   -------------------------------------------------------------------------- */
+
+body.dj {
+  margin: 0;
+  background: var(--dj-bg);
+  color: var(--dj-text);
+  font-family: var(--dj-font);
+  font-size: 16px;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dj a { color: inherit; text-decoration: none; }
+
+/* --------------------------------------------------------------------------
+   Типографика
+   -------------------------------------------------------------------------- */
+
+.dj-display  { font-size: 38px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--dj-text-bright); }
+.dj-h1       { font-size: 34px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.1; color: var(--dj-text-bright); }
+.dj-h2       { font-size: 24px; font-weight: 600; line-height: 1.2; }
+.dj-lead     { font-size: 20px; font-weight: 400; line-height: 1.35; }
+.dj-body     { font-size: 16px; font-weight: 400; line-height: 1.45; }
+.dj-body-s   { font-size: 16px; font-weight: 400; line-height: 1.45; color: var(--dj-text-2); }
+.dj-strong   { font-size: 16px; font-weight: 600; }
+
+/* Заголовок секции внутри карточки — «ПРОФИЛЬ», «ПРЕСС-БИО» */
+.dj-section  { font-size: 20px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--dj-text-2); }
+/* Мелкий лейбл — статусы, даты */
+.dj-label    { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+.dj-label-s  { font-size: 13px; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dj-text-4); }
+
+.dj-muted    { color: var(--dj-text-3); }
+.dj-dim      { color: var(--dj-text-4); }
+.dj-accent   { color: var(--dj-lime); }
+.dj-process  { color: var(--dj-violet); }
+.ux-warning     { color: var(--dj-magenta); }
+
+/* --------------------------------------------------------------------------
+   Карточка
+   -------------------------------------------------------------------------- */
+
+.dj-card {
+  box-sizing: border-box;
+  background: var(--dj-surface);
+  border: 1px solid var(--dj-line);
+  border-radius: var(--dj-r-card);
+  box-shadow: var(--dj-shadow-card);
+  padding: 18px 20px;
+}
+
+.dj-card--flat   { box-shadow: none; }
+.dj-card--accent { border-color: var(--dj-lime-line); background: var(--dj-lime-fill); }
+.dj-card--dashed { border-style: dashed; border-color: var(--dj-lime-line); background: var(--dj-lime-fill); box-shadow: none; }
+.dj-card--dragging { box-shadow: 0 18px 34px -10px rgba(0, 0, 0, 0.7); border-color: var(--dj-lime-line); }
+.dj-card--off    { opacity: 0.55; }
+
+/* --------------------------------------------------------------------------
+   Стекло: плашки, поповеры, панели
+   -------------------------------------------------------------------------- */
+
+.dj-glass {
+  background: rgba(24, 20, 32, 0.42);
+  backdrop-filter: var(--dj-glass);
+  -webkit-backdrop-filter: var(--dj-glass);
+  border: 1px solid var(--dj-line-2);
+  box-shadow: var(--dj-shadow-glass);
+}
+
+.dj-glass--strong {
+  background: transparent;
+  backdrop-filter: var(--dj-glass-strong);
+  -webkit-backdrop-filter: var(--dj-glass-strong);
+  border-color: rgba(255, 255, 255, 0.26);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.36),
+              inset 0 -1.5px 0 rgba(255, 255, 255, 0.10),
+              var(--dj-shadow-nav);
+}
+
+/* --------------------------------------------------------------------------
+   Главная навигация — круглая кнопка со знаком + капсула с иконками
+   -------------------------------------------------------------------------- */
+
+.dj-nav { display: flex; align-items: center; gap: 12px; padding: 0 16px 16px; }
+
+.dj-nav__brand {
+  width: 72px; height: 72px; flex-shrink: 0;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(24, 20, 32, 0.42);
+  backdrop-filter: var(--dj-glass); -webkit-backdrop-filter: var(--dj-glass);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  box-shadow: var(--dj-shadow-nav);
+}
+
+.dj-nav__pill {
+  flex-grow: 1; height: 72px;
+  border-radius: var(--dj-r-pill);
+  padding: 0 10px;
+  display: flex; align-items: center; justify-content: space-between;
+  background: transparent;
+  backdrop-filter: var(--dj-glass-strong); -webkit-backdrop-filter: var(--dj-glass-strong);
+  border: 1px solid rgba(255, 255, 255, 0.26);
+  box-shadow: inset 0 2px 0 rgba(255, 255, 255, 0.36),
+              inset 0 -1.5px 0 rgba(255, 255, 255, 0.10),
+              var(--dj-shadow-nav);
+}
+
+.dj-nav__btn {
+  width: 52px; height: 52px; flex-shrink: 0;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--dj-surface-2);
+  border: 1px solid var(--dj-line-3);
+  color: #ACA7BD;
+}
+.dj-nav__btn.is-active { background: var(--dj-lime-fill); border-color: rgba(192,250,53,0.55); color: var(--dj-lime); }
+
+/* Вертикальное меню сервисов: события · туры · турниры · афиша · магазин */
+.dj-nav__menu { width: 134px; display: flex; flex-direction: column; gap: 9px; }
+.dj-nav__menu a { height: 40px; display: flex; align-items: center; gap: 10px; color: var(--dj-text); }
+
+/* На 390 px экране всё уменьшается пропорционально */
+@media (max-width: 420px) {
+  .dj-nav__brand { width: 60px; height: 60px; }
+  .dj-nav__pill  { height: 60px; padding: 0 12px; }
+  .dj-nav__btn   { width: 44px; height: 44px; }
+}
+
+/* --------------------------------------------------------------------------
+   Кнопки
+   -------------------------------------------------------------------------- */
+
+.dj-btn {
+  box-sizing: border-box;
+  display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+  height: 50px; padding: 0 18px;
+  border: none; border-radius: var(--dj-r-pill);
+  font-family: inherit; font-size: 16px; font-weight: 600;
+  cursor: pointer;
+}
+
+.dj-btn--primary { background: var(--dj-lime); color: var(--dj-lime-ink); box-shadow: var(--dj-shadow-lime); }
+.dj-btn--ghost   { background: transparent; color: var(--dj-text); border: 1px solid var(--dj-line-3); }
+.dj-btn--quiet   { background: var(--dj-surface-2); color: var(--dj-text-2); border: 1px solid var(--dj-line); }
+.dj-btn--square  { border-radius: var(--dj-r-btn); height: 44px; font-size: 16px; font-weight: 700; }
+.dj-btn--icon    { width: 44px; height: 44px; padding: 0; border-radius: 50%; }
+
+/* --------------------------------------------------------------------------
+   Чип / пилюля
+   -------------------------------------------------------------------------- */
+
+.dj-chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 9px 15px;
+  border: 1px solid var(--dj-line-3);
+  border-radius: var(--dj-r-pill);
+  background: transparent;
+  font-size: 16px; font-weight: 400; color: var(--dj-text);
+}
+.dj-chip.is-active { border-color: var(--dj-lime-line); background: rgba(6, 4, 11, 0.6); color: var(--dj-lime); }
+.dj-chip--square   { border-radius: var(--dj-r-chip); }
+
+/* --------------------------------------------------------------------------
+   Поля ввода
+   -------------------------------------------------------------------------- */
+
+.dj-field {
+  box-sizing: border-box;
+  width: 100%; min-width: 0; height: 50px;
+  padding: 0 16px;
+  background: var(--dj-surface-2);
+  border: 1px solid var(--dj-line);
+  border-radius: var(--dj-r-field);
+  font-family: inherit; font-size: 17px; font-weight: 400; color: var(--dj-text);
+  outline: none;
+}
+.dj-field::placeholder { color: var(--dj-text-4); }
+.dj-field:focus { border-color: var(--dj-lime-line); }
+
+/* --------------------------------------------------------------------------
+   Ручка перетаскивания — шесть точек, зона 44×44, курсор grab.
+   Разметка:
+   <div class="dj-handle" aria-label="Перетащить">
+     <svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor">
+       <circle cx="9"  cy="6"  r="1.6"/><circle cx="15" cy="6"  r="1.6"/>
+       <circle cx="9"  cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/>
+       <circle cx="9"  cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/>
+     </svg>
+   </div>
+   -------------------------------------------------------------------------- */
+
+.dj-handle {
+  width: 44px; height: 44px; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--dj-text-4);
+  cursor: grab;
+  touch-action: none;
+}
+.dj-handle:active { cursor: grabbing; }
+.dj-handle.is-dragging { color: var(--dj-lime); }
+
+/* Линия, показывающая, куда встанет карточка */
+.dj-dropline { height: 2px; border-radius: 2px; background: var(--dj-lime); box-shadow: 0 0 10px var(--dj-lime-glow); }
+
+/* --------------------------------------------------------------------------
+   Шкала из пяти сегментов (сила жанра и т.п.): 17×6, радиус 3, зазор 5
+   -------------------------------------------------------------------------- */
+
+.dj-meter { display: flex; gap: 5px; }
+.dj-meter i { width: 17px; height: 6px; border-radius: var(--dj-r-bar); background: var(--dj-surface-3); }
+.dj-meter i.is-on { background: var(--dj-lime); }
+
+/* --------------------------------------------------------------------------
+   Нижний шит и затемнение под ним
+   -------------------------------------------------------------------------- */
+
+.dj-sheet {
+  border-radius: var(--dj-r-sheet) var(--dj-r-sheet) 0 0;
+  background: var(--dj-bg-raised);
+  border-top: 1px solid var(--dj-line-2);
+  box-shadow: var(--dj-shadow-sheet);
+  padding: 10px 20px 20px;
+}
+.dj-sheet__grip { width: 38px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.18); margin: 0 auto 14px; }
+
+/* Подложка под шитом: один приём, не два сразу */
+.dj-scrim { position: absolute; inset: 0; background: var(--dj-scrim); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
+
+/* --------------------------------------------------------------------------
+   Состояния даты в туре (раздел «Туры»)
+   -------------------------------------------------------------------------- */
+
+.dj-dot { width: 13px; height: 13px; border-radius: 50%; box-sizing: border-box; flex-shrink: 0; }
+.dj-dot--confirmed { background: var(--dj-lime); box-shadow: 0 0 10px var(--dj-lime-glow); }
+.dj-dot--talks     { border: 1.5px solid var(--dj-violet); }
+.dj-dot--free      { border: 1.5px dashed var(--dj-lime); }
+.dj-dot--transfer  { width: 7px; height: 7px; background: #4A4657; }
+.dj-dot--cancelled { border: 1.5px solid #4A4657; }
+
+/* Линия маршрута: сыгранное — лайм, впереди — фиолетовый */
+.dj-route-line { width: 2px; background: linear-gradient(180deg, var(--dj-lime) 0%, var(--dj-violet) 100%); opacity: 0.35; }
+
+/* --------------------------------------------------------------------------
+   Мелочи
+   -------------------------------------------------------------------------- */
+
+.dj-divider { height: 1px; background: rgba(255, 255, 255, 0.07); }
+.dj-avatar  { border-radius: 50%; background: linear-gradient(140deg, var(--dj-violet) 0%, var(--dj-lime) 100%); }
+
+</style>
+<style>
+/* digital-jazz-bottom-nav.css */
+/* ==========================================================================
+   Digital Jazz — нижняя навигация
+   Аватар-шайба + плашка-пилюля с круглыми кнопками, «сервисы» раскрываются
+   колонкой всплывающих кнопок.
+
+   Разметка:
+
+   <div class="services-scrim" id="servicesScrim"></div>
+
+   <nav class="bottom-nav">
+     <div class="bottom-nav-wrap">
+       <div class="nav-avatar active"><img src="…" alt=""></div>
+       <div class="bottom-nav-inner">
+         <div class="nav-slot"><div class="nav-circle">…icon…</div></div>
+         <div class="nav-slot"><div class="nav-circle active">…icon…</div></div>
+         <div class="nav-slot" id="servicesSlot">
+           <div class="nav-circle" id="servicesBtn">…icon…</div>
+           <div class="services-stack" id="servicesMenu">
+             <div class="services-row">
+               <div class="services-label">события</div>
+               <div class="services-circle">…icon…</div>
+             </div>
+             … ещё четыре ряда …
+           </div>
+         </div>
+       </div>
+     </div>
+   </nav>
+
+   JS вешает .open на #servicesMenu и #servicesScrim, .is-open на #servicesBtn.
+   Ничего не наследует от общего класса .glass — файл самодостаточен.
+   ========================================================================== */
+
+:root {
+  /* -- палитра -- */
+  --dj-bg: #06040B;
+  --dj-lime: #C0FA35;
+  --dj-text-strong: #E4E1EC;   /* подписи сервисов */
+  --dj-text-muted: #C7C3D6;    /* иконки сервисов */
+  --dj-text-nav: #ACA7BD;      /* иконка неактивной кнопки */
+
+  /* -- RGB-триплеты для полупрозрачных слоёв: rgba(var(--x-rgb), alpha) -- */
+  --dj-white-rgb: 255, 255, 255;
+  --dj-black-rgb: 6, 4, 11;
+  --dj-shadow-rgb: 0, 0, 0;
+  --dj-lime-rgb: 192, 250, 53;
+  --dj-purple-glow-rgb: 112, 46, 204;  /* подмешивается в стекло слева */
+  --dj-glass-tint-rgb: 24, 20, 32;     /* база стекла */
+  --dj-menu-tint-rgb: 30, 25, 38;      /* плотная подложка всплывающих кнопок */
+  --dj-menu-tint-end-rgb: 13, 11, 17;
+
+  /* -- габариты -- */
+  --dj-nav-height: 72px;      /* высота плашки и аватара */
+  --dj-nav-btn: 52px;         /* круглая кнопка внутри плашки */
+  --dj-nav-gap: 12px;         /* аватар ↔ плашка */
+  --dj-nav-side: 11px;        /* боковые поля, совпадают с полями карточек */
+  --dj-svc-btn: 44px;         /* всплывающая кнопка сервиса */
+
+  /* -- стекло -- */
+  --dj-glass-blur: 32px;
+  --dj-glass-saturate: 200%;
+}
+
+/* ==========================================================================
+   Контейнер
+   ========================================================================== */
+.bottom-nav {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 80;
+  display: flex; justify-content: center;
+  padding: 0 var(--dj-nav-side) calc(10px + env(safe-area-inset-bottom)) var(--dj-nav-side);
+  pointer-events: none;                 /* кликается только сама плашка */
+}
+.bottom-nav-wrap {
+  pointer-events: auto;
+  width: 100%; max-width: 480px;
+  display: flex; align-items: center; gap: var(--dj-nav-gap);
+}
+
+/* ==========================================================================
+   Аватар-шайба (селектор профилей) — отдельный объект слева от плашки
+   ========================================================================== */
+.nav-avatar {
+  flex-shrink: 0; position: relative;
+  width: var(--dj-nav-height); height: var(--dj-nav-height); border-radius: 50%;
+  overflow: hidden; cursor: pointer;
+  box-shadow: 0 20px 44px -16px rgba(var(--dj-shadow-rgb), 0.9);
+}
+.nav-avatar img { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* активное состояние рисуется поверх фото, а не под ним */
+.nav-avatar.active::after {
+  content: ''; position: absolute; inset: 0; border-radius: 50%;
+  border: 2px solid var(--dj-lime); pointer-events: none;
+}
+
+/* ==========================================================================
+   Плашка — цветное стекло
+   Фирменные тона подмешаны в сам материал: серо-нейтральная полупрозрачная
+   пилюля читается как браузерная панель, цветная — как часть продукта.
+   ========================================================================== */
+.bottom-nav-inner {
+  flex: 1; min-width: 0;
+  display: flex; align-items: center; justify-content: space-around;
+  height: var(--dj-nav-height); padding: 0 10px;
+  border-radius: 999px;
+  overflow: visible;                    /* колонка сервисов выходит за плашку */
+  background:
+    linear-gradient(168deg,
+      rgba(var(--dj-white-rgb), 0.22) 0%,
+      rgba(var(--dj-white-rgb), 0.04) 40%,
+      rgba(var(--dj-white-rgb), 0.12) 100%),
+    linear-gradient(120deg,
+      rgba(var(--dj-purple-glow-rgb), 0.34) 0%,
+      rgba(var(--dj-glass-tint-rgb), 0.5) 55%,
+      rgba(var(--dj-lime-rgb), 0.10) 100%);
+  -webkit-backdrop-filter: blur(var(--dj-glass-blur)) saturate(var(--dj-glass-saturate));
+  backdrop-filter: blur(var(--dj-glass-blur)) saturate(var(--dj-glass-saturate));
+  border: 1px solid rgba(var(--dj-white-rgb), 0.26);
+  box-shadow:
+    inset 0 2px 0 rgba(var(--dj-white-rgb), 0.36),    /* блик по верхней кромке */
+    inset 0 -1.5px 0 rgba(var(--dj-white-rgb), 0.10),
+    0 24px 50px -18px rgba(var(--dj-shadow-rgb), 0.95);
+}
+
+/* ==========================================================================
+   Круглые кнопки внутри плашки
+   ========================================================================== */
+.nav-slot { position: relative; display: flex; align-items: center; justify-content: center; }
+
+.nav-circle {
+  width: var(--dj-nav-btn); height: var(--dj-nav-btn); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(var(--dj-white-rgb), 0.06);
+  border: 1px solid rgba(var(--dj-white-rgb), 0.28);
+  box-shadow: inset 0 1px 0 rgba(var(--dj-white-rgb), 0.22);
+  color: var(--dj-text-nav); cursor: pointer;
+  transition: color 180ms ease, background 180ms ease, border-color 180ms ease, opacity 160ms ease;
+}
+.nav-circle svg { display: block; }
+
+/* .active — текущий раздел, .is-open — раскрытые «сервисы» */
+.nav-circle.active,
+.nav-circle.is-open {
+  color: var(--dj-lime);
+  background: linear-gradient(155deg,
+    rgba(var(--dj-lime-rgb), 0.34) 0%,
+    rgba(var(--dj-lime-rgb), 0.08) 100%);
+  border-color: rgba(var(--dj-lime-rgb), 0.65);
+  box-shadow:
+    inset 0 1px 0 rgba(var(--dj-white-rgb), 0.34),
+    0 8px 22px -8px rgba(var(--dj-lime-rgb), 0.6);
+}
+
+/* ==========================================================================
+   «Сервисы» — кнопки отрываются от плашки и всплывают колонкой
+   ========================================================================== */
+
+/* затемнение снизу вверх: гасит контент под колонкой, не выключая весь экран */
+.services-scrim {
+  position: fixed; inset: 0; z-index: 79; pointer-events: none;
+  background: linear-gradient(0deg,
+    rgba(var(--dj-black-rgb), 0.93) 0%,
+    rgba(var(--dj-black-rgb), 0.88) 38%,
+    rgba(var(--dj-black-rgb), 0.5) 64%,
+    rgba(var(--dj-black-rgb), 0) 88%);
+  opacity: 0; transition: opacity 220ms ease;
+}
+.services-scrim.open { opacity: 1; pointer-events: auto; }
+
+.services-stack {
+  position: absolute; right: 1px; bottom: 70px; z-index: 2;
+  display: flex; flex-direction: column; align-items: flex-end; gap: 9px;
+  pointer-events: none;
+}
+.services-stack.open { pointer-events: auto; }
+
+.services-row {
+  display: flex; align-items: center; gap: 9px; cursor: pointer;
+  opacity: 0; transform: translateY(16px) scale(0.9);
+  transition: opacity 200ms ease, transform 260ms cubic-bezier(.2, .8, .2, 1);
+}
+.services-stack.open .services-row { opacity: 1; transform: translateY(0) scale(1); }
+
+/* колонка разворачивается снизу вверх — ближняя к кнопке кнопка идёт первой */
+.services-stack.open .services-row:nth-child(5) { transition-delay: 0ms; }
+.services-stack.open .services-row:nth-child(4) { transition-delay: 45ms; }
+.services-stack.open .services-row:nth-child(3) { transition-delay: 90ms; }
+.services-stack.open .services-row:nth-child(2) { transition-delay: 135ms; }
+.services-stack.open .services-row:nth-child(1) { transition-delay: 180ms; }
+
+/* плотнее плашки: всплывают поверх фотографий и лаймовых кнопок */
+.services-label,
+.services-circle {
+  background: linear-gradient(165deg,
+    rgba(var(--dj-menu-tint-rgb), 0.96) 0%,
+    rgba(var(--dj-menu-tint-end-rgb), 0.96) 100%);
+  border: 1px solid rgba(var(--dj-white-rgb), 0.18);
+  box-shadow:
+    inset 0 1px 0 rgba(var(--dj-white-rgb), 0.14),
+    0 14px 28px -12px rgba(var(--dj-shadow-rgb), 0.8);
+}
+.services-label {
+  font-size: 16px; color: var(--dj-text-strong); white-space: nowrap;
+  padding: 8px 14px; border-radius: 999px;
+}
+.services-circle {
+  width: var(--dj-svc-btn); height: var(--dj-svc-btn); border-radius: 50%; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--dj-text-muted);
+}
+.services-row:active .services-circle {
+  color: var(--dj-lime);
+  border-color: rgba(var(--dj-lime-rgb), 0.5);
+}
+
+/* ==========================================================================
+   Отступ под контент
+   Экран должен заканчиваться выше плашки, иначе последняя карточка уезжает
+   под стекло: 110px = высота плашки + нижнее поле + запас.
+   ========================================================================== */
+.screen {
+  padding-bottom: calc(110px + env(safe-area-inset-bottom));
+}
+
+</style>
+<style>
+/* tours.css */
+/* ==========================================================================
+   Digital Jazz — прототип раздела «Туры»
+   Экранная обвязка поверх общего слоя dj-ui.css
+   ========================================================================== */
+
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--dj-bg); }
+body {
+  font-family: var(--dj-font);
+  color: var(--dj-text);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-user-select: none; user-select: none;
+}
+
+.screen {
+  width: 100%; max-width: 480px; margin: 0 auto;
+  padding: max(20px, env(safe-area-inset-top)) 11px calc(120px + env(safe-area-inset-bottom)) 11px;
+  min-height: 100vh;
+  background: radial-gradient(60% 34% at 85% 0%, rgba(112,46,204,0.28) 0%, rgba(66,26,128,0) 60%);
+  display: none;
+}
+.screen.is-on { display: block; }
+
+/* шапка экрана */
+.head { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 18px; }
+.head h1 { margin: 0; font-size: 34px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--dj-text-bright); }
+.head .sub { margin-top: 4px; font-size: 16px; font-weight: 400; color: var(--dj-text-3); }
+.head .eyebrow { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-bright); }
+.icon-btn {
+  width: 44px; height: 44px; flex-shrink: 0; padding: 0;
+  border-radius: 50%; background: transparent; border: 1px solid var(--dj-line-3);
+  color: var(--dj-text-2); display: flex; align-items: center; justify-content: center; cursor: pointer;
+}
+.icon-btn.accent { border-color: var(--dj-lime-line); background: var(--dj-lime-fill); color: var(--dj-lime); }
+.spacer { flex-grow: 1; }
+
+/* строка-разделитель с подписью */
+.rule { display: flex; align-items: center; gap: 10px; margin: 20px 0 12px; }
+.rule .t { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-3); }
+.rule .line { flex-grow: 1; height: 1px; background: rgba(255,255,255,0.10); }
+.rule .note { font-size: 14px; font-weight: 400; color: var(--dj-text-4); }
+
+.stack { display: flex; flex-direction: column; gap: 10px; }
+.row { display: flex; align-items: center; gap: 12px; }
+.grow { flex-grow: 1; min-width: 0; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+
+/* карточка тура в списке */
+.tour-hero { padding: 0; overflow: hidden; display: block; }
+.tour-hero .cover {
+  position: relative; height: 150px; overflow: hidden;
+  background: linear-gradient(180deg, #241A33 0%, rgba(255,255,255,0.02) 100%);
+  padding: 18px 20px; display: flex; flex-direction: column; justify-content: space-between;
+}
+.tour-hero .glow {
+  position: absolute; top: -80px; right: -60px; width: 230px; height: 230px; border-radius: 50%;
+  background: radial-gradient(circle at 40% 60%, rgba(192,250,53,0.5) 0%, rgba(163,117,255,0.42) 42%, rgba(163,117,255,0) 72%);
+}
+.tour-hero .ring { position: absolute; border-radius: 50%; }
+.tour-hero .ring.a { top: -36px; right: -16px; width: 140px; height: 140px; border: 1.5px solid rgba(192,250,53,0.5); }
+.tour-hero .ring.b { top: -4px; right: 24px; width: 88px; height: 88px; border: 1px solid rgba(163,117,255,0.5); }
+.tour-hero .cover > * { position: relative; }
+.tour-hero .name { font-size: 34px; font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; color: var(--dj-text-bright); }
+.tour-hero .body { padding: 18px 20px 20px; }
+
+.live { display: flex; align-items: center; gap: 7px; font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-lime); }
+.live i { width: 6px; height: 6px; border-radius: 50%; background: var(--dj-lime); }
+
+/* мини-лента маршрута */
+.strip { position: relative; height: 44px; }
+.strip .wire { position: absolute; left: 5px; right: 5px; top: 5px; height: 2px; background: linear-gradient(90deg, var(--dj-lime) 0%, var(--dj-violet) 100%); opacity: 0.5; }
+.strip .nodes { position: relative; display: flex; justify-content: space-between; }
+.strip .n { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.strip .n em { font-style: normal; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: var(--dj-text-2); }
+.strip .n.free em { color: var(--dj-lime); }
+.strip .n.none em { color: var(--dj-text-4); }
+
+/* числа */
+.stats { display: flex; align-items: flex-end; }
+.stats .s { flex-grow: 1; }
+.stats b { display: block; font-size: 34px; font-weight: 600; letter-spacing: -0.02em; line-height: 1; color: var(--dj-text-bright); }
+.stats span { display: block; margin-top: 6px; font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-text-3); }
+.stats .s.free b, .stats .s.free span { color: var(--dj-lime); }
+
+/* маршрут: вертикальная линия и узлы */
+.route { position: relative; }
+.route .spine { position: absolute; left: 21px; top: 22px; bottom: 26px; width: 2px; background: linear-gradient(180deg, var(--dj-lime) 0%, var(--dj-violet) 100%); opacity: 0.35; }
+.leg { display: flex; gap: 12px; align-items: flex-start; }
+.leg .pin { width: 32px; flex-shrink: 0; display: flex; justify-content: center; padding-top: 20px; }
+.leg .pin i { box-shadow: 0 0 0 5px var(--dj-bg); }
+.leg .card { flex-grow: 1; }
+.date { font-size: 14px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--dj-lime); }
+.date.talks { color: var(--dj-violet); }
+.city { margin-top: 7px; font-size: 20px; font-weight: 600; color: var(--dj-text-bright); }
+.meta { margin-top: 6px; font-size: 16px; font-weight: 400; color: var(--dj-text-3); }
+.transfer { display: flex; gap: 12px; align-items: center; }
+.transfer .pin { width: 32px; flex-shrink: 0; display: flex; justify-content: center; }
+.transfer .t { font-size: 16px; color: var(--dj-text-4); }
+
+/* стопка аватаров */
+.faces { display: flex; }
+.faces i { width: 26px; height: 26px; border-radius: 50%; border: 2px solid var(--dj-bg-raised); }
+.faces i + i { margin-left: -9px; }
+.f1 { background: linear-gradient(140deg, var(--dj-violet), var(--dj-lime)); }
+.f2 { background: linear-gradient(140deg, #6B8BFF, var(--dj-violet)); }
+.f3 { background: linear-gradient(140deg, #FF9BD2, var(--dj-violet)); }
+.faces .more { background: rgba(255,255,255,0.10); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; color: var(--dj-text-2); font-style: normal; }
+
+/* карта */
+.map { position: relative; height: 360px; border-radius: var(--dj-r-card); overflow: hidden; background: #0D0A14; border: 1px solid var(--dj-line); }
+.map .plate { position: absolute; left: 0; right: 0; top: 50%; height: 360px; margin-top: -180px; }
+.map .lab { position: absolute; font-size: 13px; font-weight: 600; letter-spacing: 0.08em; color: var(--dj-text-bright); }
+.map .lab small { display: block; margin-top: 4px; font-size: 13px; font-weight: 400; letter-spacing: 0; color: var(--dj-text-3); }
+.map .lab.dim { color: var(--dj-text-4); }
+.map .callout { position: absolute; padding: 9px 12px; border-radius: 13px; background: rgba(6,4,11,0.88); border: 1px solid var(--dj-lime-line); }
+.map .callout b { display: block; font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--dj-lime); }
+.map .callout span { display: block; margin-top: 4px; font-size: 13px; color: var(--dj-text); }
+.map .scale { position: absolute; left: 16px; bottom: 14px; display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--dj-text-4); }
+.map .scale b { display: block; width: 46px; height: 1px; background: rgba(255,255,255,0.3); }
+.map .tools { position: absolute; right: 14px; top: 14px; display: flex; flex-direction: column; gap: 8px; }
+.map .fab { position: absolute; right: 14px; bottom: 14px; }
+
+/* сегментированный переключатель */
+.seg { padding: 4px; border-radius: var(--dj-r-field); background: rgba(255,255,255,0.05); border: 1px solid var(--dj-line); display: flex; gap: 4px; }
+.seg button { flex-grow: 1; height: 38px; border: none; border-radius: 11px; background: transparent; font-family: inherit; font-size: 16px; font-weight: 400; color: var(--dj-text-3); cursor: pointer; }
+.seg button.on { background: rgba(255,255,255,0.10); font-weight: 600; color: var(--dj-text-bright); }
+
+/* нижний шит */
+.sheet-wrap { position: fixed; left: 0; right: 0; top: 0; bottom: 0; display: none; z-index: 40; }
+.sheet-wrap.is-on { display: block; }
+.sheet-wrap .scrim { position: absolute; inset: 0; background: rgba(6,4,11,0.55); backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
+.sheet {
+  position: absolute; left: 50%; transform: translateX(-50%); bottom: 0;
+  width: 100%; max-width: 480px;
+  border-radius: var(--dj-r-sheet) var(--dj-r-sheet) 0 0;
+  background: var(--dj-bg-raised); border-top: 1px solid var(--dj-line-2);
+  box-shadow: var(--dj-shadow-sheet);
+  padding: 10px 20px calc(24px + env(safe-area-inset-bottom));
+  max-height: 86vh; overflow-y: auto;
+}
+.grip { width: 38px; height: 4px; border-radius: 999px; background: rgba(255,255,255,0.18); margin: 0 auto 14px; }
+
+/* предложение промоутера */
+.offer { display: flex; align-items: center; gap: 12px; }
+.offer .thumb { width: 42px; height: 42px; border-radius: 13px; flex-shrink: 0; }
+.offer .sum { text-align: right; flex-shrink: 0; font-size: 20px; font-weight: 600; color: var(--dj-text-bright); }
+.offer .sum small { display: block; margin-top: 2px; font-size: 13px; font-weight: 400; color: var(--dj-text-3); }
+.offer.best .sum { color: var(--dj-lime); }
+
+/* вставка города между строками */
+.insert { display: flex; align-items: center; gap: 10px; padding: 2px 0; }
+.insert .l { flex-grow: 1; height: 1px; border-top: 1px dashed rgba(255,255,255,0.12); }
+.insert.hot .l { border-top-color: var(--dj-lime-line); }
+.insert button { width: 24px; height: 24px; flex-shrink: 0; padding: 0; border-radius: 50%; background: transparent; border: 1px dashed rgba(255,255,255,0.2); color: var(--dj-text-3); display: flex; align-items: center; justify-content: center; cursor: pointer; }
+.insert.hot button { border-style: solid; border-color: rgba(192,250,53,0.55); background: var(--dj-lime-fill); color: var(--dj-lime); }
+
+/* поле поиска */
+.search { height: 50px; border-radius: var(--dj-r-field); background: var(--dj-surface-2); border: 1px solid var(--dj-line); display: flex; align-items: center; gap: 10px; padding: 0 14px; }
+.search input { flex-grow: 1; min-width: 0; height: 48px; background: transparent; border: none; outline: none; font-family: inherit; font-size: 17px; color: var(--dj-text); }
+
+.fields { display: flex; gap: 10px; align-items: center; }
+.fields .dash { width: 12px; height: 1px; background: rgba(255,255,255,0.2); flex-shrink: 0; }
+.vh { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+
+.switch { width: 44px; height: 26px; border-radius: 999px; background: var(--dj-lime); position: relative; flex-shrink: 0; }
+.switch input { position: absolute; inset: 0; opacity: 0; margin: 0; cursor: pointer; }
+.switch i { position: absolute; top: 3px; right: 3px; width: 20px; height: 20px; border-radius: 50%; background: var(--dj-bg-raised); }
+
+.cta { position: fixed; left: 50%; transform: translateX(-50%); bottom: calc(96px + env(safe-area-inset-bottom)); width: 100%; max-width: 480px; padding: 0 11px; display: none; z-index: 20; }
+.screen.is-on ~ .cta.for-route { display: block; }
+
+/* колонки чисел не должны распирать карточку */
+.stats .s, .dj-card .row > .s { min-width: 0; }
+.stat-row { display: flex; align-items: flex-end; gap: 4px; }
+.stat-row .s { flex: 1 1 0; min-width: 0; }
+.stat-row .s .dj-label,
+.stat-row .s .dj-label-s { font-size: 13px; letter-spacing: 0.06em; }
+
+</style>
+<link rel="stylesheet" href="../spacing.css">
+</head>
+<body class="dj">
+
+<!-- ================= СПИСОК ТУРОВ ================= -->
+<div class="screen is-on" id="s-tours">
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="topbar-logo" aria-label="Digital Jazz">
+          <img src="data:image/webp;base64,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yHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIe+2TkPfbJyHvtk5D32ych77ZOQ99snIesAAP7/+oKv52Pa4AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==" alt="Digital Jazz" draggable="false">
+        </div>
+        <div class="more-wrap">
+          <button class="hamburger-btn" id="moreBtn" aria-haspopup="true" aria-expanded="false" aria-controls="moreMenu" aria-label="Меню">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="2.7"/><circle cx="12" cy="12" r="2.7"/><circle cx="19" cy="12" r="2.7"/></svg>
+          </button>
+          <div class="more-menu" id="moreMenu" hidden>
+            <div class="nav-item" role="button" tabindex="0" data-nav="share" data-toast="Поделиться профилем — прототип">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="2.6"/><circle cx="6" cy="12" r="2.6"/><circle cx="18" cy="19" r="2.6"/><path d="M8.3 10.7l7.4-4.4M8.3 13.3l7.4 4.4"/></svg>
+              <span>Поделиться профилем</span>
+            </div>
+            <div class="nav-item" role="button" tabindex="0" data-nav="team" data-toast="Команда и таланты — прототип">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="8.5" cy="8" r="3"/><path d="M2.5 19c.7-3.2 3-5 6-5s5.3 1.8 6 5"/><circle cx="17" cy="8.5" r="2.4"/><path d="M15.8 14.2c2.3.4 3.8 2 4.3 4.3"/></svg>
+              <span>Команда и таланты</span>
+            </div>
+            <div class="nav-item" role="button" tabindex="0" data-nav="settings" data-toast="Настройки — прототип">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 13.6a1.7 1.7 0 0 0 .3 1.9l.1.1a2.1 2.1 0 1 1-3 3l-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6V20a2.1 2.1 0 1 1-4.2 0v-.2a1.7 1.7 0 0 0-1.1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1a2.1 2.1 0 1 1-3-3l.1-.1a1.7 1.7 0 0 0 .3-1.9 1.7 1.7 0 0 0-1.6-1H2a2.1 2.1 0 1 1 0-4.2h.2a1.7 1.7 0 0 0 1.6-1.1 1.7 1.7 0 0 0-.3-1.9l-.1-.1a2.1 2.1 0 1 1 3-3l.1.1a1.7 1.7 0 0 0 1.9.3H8.5a1.7 1.7 0 0 0 1-1.6V2a2.1 2.1 0 1 1 4.2 0v.2a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1a2.1 2.1 0 1 1 3 3l-.1.1a1.7 1.7 0 0 0-.3 1.9V8.5a1.7 1.7 0 0 0 1.6 1H22a2.1 2.1 0 1 1 0 4.2h-.2a1.7 1.7 0 0 0-1.6 1Z"/></svg>
+              <span>Настройки</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <button class="bell-btn" aria-label="Уведомления" data-toast="Уведомления — прототип">
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#E4E1EC" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <div class="bell-dot"></div>
+        </button>
+        <button class="pro-btn" id="proBtn" data-toast="Digital Jazz PRO — прототип" aria-label="Digital Jazz PRO">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#14170A"><path d="M12 2.5l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L12 16.6l-5.6 3 1.4-6.3-4.8-4.3 6.4-.6L12 2.5z"/></svg>
+          PRO
+        </button>
+      </div>
+      <div class="nav-backdrop" id="navBackdrop"></div>
+    </div>
+
+
+  <div class="head">
+    <div class="grow"><h1>Туры</h1></div>
+    <button class="icon-btn accent" data-go="s-new" aria-label="Новый тур">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+  </div>
+
+  <div class="chips" style="margin-bottom:16px">
+    <div class="dj-chip is-active">В пути</div>
+    <div class="dj-chip">Планы</div>
+    <div class="dj-chip">Архив</div>
+  </div>
+
+  <a class="dj-card tour-hero" data-go="s-route">
+    <!-- Optional cover: add an image src and remove hidden. Height is capped at 150px. -->
+    <img class="tour-cover-image" alt="" hidden>
+    <div class="tour-heading">
+      <div class="live"><i></i> Активный тур</div>
+      <div class="name">ТРАНССИБ</div>
+      <div class="dj-body-s">12 окт — 9 ноя 2026 · Поволжье · Урал · Сибирь</div>
+    </div>
+    <div class="body">
+      <div class="strip">
+        <div class="wire"></div>
+        <div class="nodes">
+          <div class="n"><i class="dj-dot dj-dot--confirmed" style="width:11px;height:11px"></i><em>МСК</em></div>
+          <div class="n"><i class="dj-dot dj-dot--confirmed" style="width:11px;height:11px"></i><em>НН</em></div>
+          <div class="n free"><i class="dj-dot dj-dot--free" style="width:11px;height:11px"></i><em>18.10</em></div>
+          <div class="n"><i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i><em>КЗН</em></div>
+          <div class="n"><i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i><em>ЕКБ</em></div>
+          <div class="n none"><i class="dj-dot dj-dot--cancelled" style="width:11px;height:11px;border-style:dashed"></i><em>ТЮМ</em></div>
+          <div class="n"><i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i><em>НСК</em></div>
+          <div class="n none"><i class="dj-dot dj-dot--cancelled" style="width:11px;height:11px;border-style:dashed"></i><em>ИРК</em></div>
+        </div>
+      </div>
+      <div class="stats" style="margin-top:16px">
+        <div class="s"><b>12</b><span>дат</span></div>
+        <div class="s"><b>7</b><span>городов</span></div>
+        <div class="s free"><b>3</b><span>свободно</span></div>
+      </div>
+    </div>
+  </a>
+
+  <div class="rule"><div class="t">Планы</div><div class="line"></div><div class="note">1 тур</div></div>
+
+  <div class="stack">
+    <a class="dj-card dj-card--flat row" data-go="s-sections" style="padding:14px">
+      <i class="dj-avatar" style="width:46px;height:46px;border-radius:14px;flex-shrink:0"></i>
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Южный прогон</div>
+        <div class="dj-body-s" style="margin-top:3px">27 дек — 5 янв · 6 дат</div>
+      </div>
+      <button class="ux-status ux-draft" aria-label="Черновик" title="Черновик" data-toast="Фиолетовая точка — черновик тура"></button>
+    </a>
+
+    <a class="dj-card dj-card--flat row" data-go="s-new" style="padding:14px">
+      <i style="width:46px;height:46px;border-radius:14px;flex-shrink:0;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#C0FA35" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      </i>
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Собрать новый тур</div>
+        <div class="dj-body-s" style="margin-top:3px">Период и регион — маршрут соберётся сам</div>
+      </div>
+    </a>
+  </div>
+
+  <a class="dj-card dj-card--accent row" data-go="s-radar" style="margin-top:16px;padding:13px 16px">
+    <i style="width:8px;height:8px;border-radius:50%;background:var(--dj-lime);box-shadow:0 0 10px var(--dj-lime-glow)"></i>
+    <div class="grow dj-body-s" style="color:var(--dj-text)">4 промоутера смотрят вашу дату 18.10</div>
+    <div class="dj-strong dj-accent">Радар</div>
+  </a>
+</div>
+
+<!-- ================= НОВЫЙ ТУР ================= -->
+<div class="screen" id="s-new">
+  <div class="head">
+    <button class="icon-btn" data-go="s-tours" aria-label="Назад">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow" style="text-align:center;padding-top:12px"><div class="eyebrow">Новый тур</div></div>
+    <div style="width:44px"></div>
+  </div>
+
+  <div class="stack" style="gap:18px">
+    <div>
+      <label class="dj-label dj-muted" for="f-name">Название тура</label>
+      <input class="dj-field" id="f-name" type="text" value="Транссиб" placeholder="Осенний тур 2026" style="margin-top:8px;font-size:20px;font-weight:600">
+    </div>
+
+    <div>
+      <div class="dj-label dj-muted">Период</div>
+      <div class="fields" style="margin-top:8px">
+        <label class="vh" for="f-from">Начало</label>
+        <input class="dj-field" id="f-from" type="text" value="12 окт 2026">
+        <div class="dash"></div>
+        <label class="vh" for="f-to">Конец</label>
+        <input class="dj-field" id="f-to" type="text" value="9 ноя 2026">
+      </div>
+      <div class="dj-label-s ux-description" style="margin-top:8px;text-transform:none;letter-spacing:0">29 дней · календарь профиля подтянется сам</div>
+    </div>
+
+    <div>
+      <div class="row">
+        <div class="dj-label dj-muted grow">Города маршрута</div>
+        <button class="dj-strong dj-accent" data-go="s-addcity" style="background:none;border:none;font-family:inherit;cursor:pointer">+ Добавить</button>
+      </div>
+      <div class="chips" style="margin-top:10px">
+        <div class="dj-chip dj-chip--square">Москва</div>
+        <div class="dj-chip dj-chip--square">Нижний Новгород</div>
+        <div class="dj-chip dj-chip--square">Казань</div>
+        <div class="dj-chip dj-chip--square">Екатеринбург</div>
+        <div class="dj-chip dj-chip--square">Новосибирск</div>
+        <div class="dj-chip dj-chip--square">Иркутск</div>
+      </div>
+    </div>
+
+    <div>
+      <div class="dj-label dj-muted">Настройки тура</div>
+      <div class="stack" style="margin-top:10px;gap:8px">
+        <div class="dj-card dj-card--flat row" data-go="s-party" style="padding:13px 16px">
+          <div class="grow">
+            <div class="dj-strong" style="color:var(--dj-text-bright)">Команда</div>
+            <div class="dj-label-s ux-description" style="margin-top:3px;text-transform:none;letter-spacing:0">Состав · багаж · условия — вы + 2 чел., 148 кг</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6E6890" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </div>
+        <div class="dj-card dj-card--flat row" data-go="s-tickets" style="padding:13px 16px">
+          <div class="grow">
+            <div class="dj-strong" style="color:var(--dj-text-bright)">Транспорт и билеты</div>
+            <div class="dj-label-s ux-description" style="margin-top:3px;text-transform:none;letter-spacing:0">Самолёт · искать на группу · перевес 148 кг</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6E6890" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </div>
+        <div class="dj-card dj-card--flat row" data-go="s-venues" style="padding:13px 16px">
+          <div class="grow">
+            <div class="dj-strong" style="color:var(--dj-text-bright)">Площадки и отели</div>
+            <div class="dj-label-s ux-description" style="margin-top:3px;text-transform:none;letter-spacing:0">База площадок · отели ближе к площадке</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6E6890" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </div>
+        <div class="dj-card dj-card--flat row" data-go="s-prod" style="padding:13px 16px">
+          <div class="grow">
+            <div class="dj-strong" style="color:var(--dj-text-bright)">Продакшн</div>
+            <div class="dj-label-s ux-description" style="margin-top:3px;text-transform:none;letter-spacing:0">Сцена · декорации · райдеры</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#6E6890" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>
+        </div>
+        <div class="dj-card dj-card--accent row" style="padding:13px 16px">
+          <div class="grow">
+            <label class="dj-strong" for="f-open" style="color:var(--dj-text-bright)">Свободные даты открыты</label>
+            <div class="dj-label-s ux-description" style="margin-top:3px;text-transform:none;letter-spacing:0">Промоутеры на маршруте видят окна · от 90 000 ₽</div>
+          </div>
+          <span class="switch"><input id="f-open" type="checkbox" checked><i></i></span>
+        </div>
+      </div>
+    </div>
+
+    <button class="dj-btn dj-btn--primary" data-go="s-sections" style="width:100%">Создать тур</button>
+  </div>
+</div>
+
+<!-- ================= РАЗДЕЛЫ ТУРА ================= -->
+<div class="screen" id="s-sections">
+  <div class="head">
+    <button class="icon-btn" data-go="s-tours" aria-label="К списку туров">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow"><h1>ТРАНССИБ</h1><div class="sub">12 окт — 9 ноя · 7 городов</div></div>
+  </div>
+
+  <div class="rule" style="margin-top:0"><div class="t">Разделы</div><div class="line"></div><div class="note">порядок — ваш</div></div>
+
+  <div class="stack" id="sections-list">
+    <a class="dj-card dj-card--accent" data-go="s-route">
+      <div class="row">
+        <i class="dj-dot dj-dot--confirmed" style="width:9px;height:9px"></i>
+        <div class="grow dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Маршрут</div>
+        <div class="dj-label-s ux-description" style="text-transform:none;letter-spacing:0">закреплён сверху</div>
+      </div>
+      <div class="dj-body-s" style="margin-top:12px">7 городов · 12 дат · 4 600 км</div>
+      <div class="dj-label dj-accent" style="margin-top:12px">3 свободные даты · 4 предложения</div>
+    </a>
+
+    <div class="dj-card" data-go="s-party">
+      <div class="row">
+        <i class="dj-dot dj-dot--talks" style="width:9px;height:9px"></i>
+        <div class="grow dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Команда</div>
+        <span class="dj-handle" data-drag-handle aria-label="Перетащить">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
+        </span>
+      </div>
+      <div class="row" style="margin-top:12px">
+        <div class="faces"><i class="f1"></i><i class="f2"></i><i class="f3"></i></div>
+        <div class="grow dj-body-s">Вы, Костя (тех), Аня (тур-менеджер)</div>
+      </div>
+      <div class="row" style="margin-top:12px;gap:8px">
+        <div class="dj-h2" style="color:var(--dj-text-bright)">148</div>
+        <div class="dj-body-s">кг багажа · 3 места</div>
+      </div>
+      <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);gap:9px">
+        <i style="width:7px;height:7px;border-radius:50%;background:var(--dj-magenta);flex-shrink:0"></i>
+        <div class="grow dj-body-s" data-party-warn>У Кости нет паспортных данных — билет не оформить</div><button class="ux-fill-icon" data-go="s-party" aria-label="Открыть данные команды" title="Открыть данные команды"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L9 17l-4 1 1-4Z"/></svg></button>
+      </div>
+    </div>
+
+    <div class="dj-card" data-go="s-tickets">
+      <div class="row">
+        <i class="dj-dot dj-dot--talks" style="width:9px;height:9px"></i>
+        <div class="grow dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Транспорт и билеты</div>
+        <span class="dj-handle" data-drag-handle aria-label="Перетащить">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
+        </span>
+      </div>
+      <div class="chips" style="margin-top:12px">
+        <div class="dj-chip is-active">Самолёт</div>
+        <div class="dj-chip">Поезд</div>
+        <div class="dj-chip">Авто</div>
+      </div>
+      <div class="row" style="margin-top:14px;align-items:flex-end;gap:14px">
+        <div><div class="dj-h2" style="color:var(--dj-text-bright)">6 из 7</div><div class="dj-body-s" style="margin-top:3px">перелётов найдено</div></div>
+        <div class="grow"><div class="dj-h2 ux-warning" style="white-space:nowrap">+28 кг</div><div class="dj-body-s" style="margin-top:3px">перевес ≈ 14 000 ₽</div></div>
+      </div>
+      <button class="dj-btn dj-btn--primary" style="width:100%;margin-top:14px;height:44px">Найти на группу</button>
+    </div>
+
+    <div class="dj-card" data-go="s-venues">
+      <div class="row">
+        <i class="dj-dot dj-dot--talks" style="width:9px;height:9px"></i>
+        <div class="grow dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Площадки и отели</div>
+        <span class="dj-handle" data-drag-handle aria-label="Перетащить">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
+        </span>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <div class="dj-body-s" style="flex-shrink:0">Площадки</div>
+        <div class="dj-meter"><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i></i><i></i><i></i></div>
+        <div class="grow" style="text-align:right"><span class="dj-strong" style="white-space:nowrap;color:var(--dj-text-bright)">4 / 7</span></div>
+      </div>
+      <div class="row" style="margin-top:14px">
+        <div class="grow dj-body-s">Отели · 6 ночей</div>
+        <div class="dj-strong" style="white-space:nowrap;color:var(--dj-text-bright)">54 000 ₽</div>
+      </div>
+      <div class="dj-body-s dj-dim" style="margin-top:4px">ближе к площадке · 2 номера</div>
+      <div class="dj-body-s" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1)">Без площадки: Новосибирск, Иркутск, Тюмень</div>
+    </div>
+
+    <div class="dj-card" data-go="s-prod">
+      <div class="row">
+        <i class="dj-dot dj-dot--cancelled" style="width:9px;height:9px"></i>
+        <div class="grow dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Продакшн</div>
+        <span class="dj-handle" data-drag-handle aria-label="Перетащить">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg>
+        </span>
+      </div>
+      <div class="dj-body-s" style="margin-top:12px">Пусто — площадки просят тех-райдер за две недели до даты</div>
+      <div class="row" style="margin-top:14px;gap:8px">
+        <button class="dj-btn dj-btn--ghost grow" style="height:44px;font-size:16px;font-weight:400">Сцена</button>
+        <button class="dj-btn dj-btn--ghost grow" style="height:44px;font-size:16px;font-weight:400">Декорации</button>
+        <button class="dj-btn grow" style="height:44px;font-size:16px;font-weight:400;background:rgba(6,4,11,0.6);border:1px solid var(--dj-lime-line);color:var(--dj-lime)">Райдер</button>
+      </div>
+    </div>
+
+    <div class="dj-card" data-go="s-budget">
+      <div class="row">
+        <i class="dj-dot dj-dot--confirmed" style="width:9px;height:9px"></i>
+        <div class="grow dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Смета</div>
+        <div class="dj-label-s ux-description" style="text-transform:none;letter-spacing:0">считается сама</div>
+      </div>
+      <div class="stack" style="margin-top:14px;gap:9px">
+        <div class="row"><div class="grow dj-body-s">Билеты · 6 перелётов</div><div class="dj-body-s" style="white-space:nowrap;color:var(--dj-text)">96 000 ₽</div></div>
+        <div class="row"><div class="grow dj-body-s">Отели · 6 ночей</div><div class="dj-body-s" style="white-space:nowrap;color:var(--dj-text)">54 000 ₽</div></div>
+        <div class="row"><div class="grow dj-body-s">Груз · перевес 28 кг</div><div class="dj-body-s" style="white-space:nowrap;color:var(--dj-text)">14 000 ₽</div></div>
+      </div>
+      <div class="row" style="margin-top:14px;padding-top:14px;border-top:1px solid var(--dj-line);align-items:flex-end">
+        <div class="grow"><div class="dj-label dj-muted">Расходы</div><div class="dj-h2" style="white-space:nowrap;margin-top:5px;color:var(--dj-text-bright)">164 000 ₽</div></div>
+        <div style="text-align:right"><div class="dj-label dj-muted">Гонорары</div><div class="dj-h2 dj-accent" style="white-space:nowrap;margin-top:5px">1 190 000 ₽</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= МАРШРУТ ================= -->
+<div class="screen" id="s-route">
+  <div class="head">
+    <button class="icon-btn" data-go="s-tours" aria-label="К списку туров">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow"><h1 style="font-size:32px">ТРАНССИБ</h1><div class="sub">12 окт — 9 ноя · 7 городов</div></div>
+    <button class="icon-btn" data-go="s-reorder" aria-label="Править маршрут">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4l10-10-4-4L4 16z"/><path d="M14 6l4 4"/></svg>
+    </button>
+  </div>
+
+  <div class="seg" style="margin-bottom:14px">
+    <button class="on">Маршрут</button>
+    <button data-go="s-map">Карта</button><button data-go="s-sections">Детали</button>
+  </div>
+
+  <div class="dj-card dj-card--flat stat-row" style="padding:14px 18px;margin-bottom:14px">
+    <div class="s"><div class="dj-h2" style="color:var(--dj-text-bright)">7</div><div class="dj-label dj-muted" style="margin-top:5px">закрыто</div></div>
+    <div class="s"><div class="dj-h2 dj-process">2</div><div class="dj-label dj-muted" style="margin-top:5px">в работе</div></div>
+    <div class="s"><div class="dj-h2 dj-accent">3</div><div class="dj-label dj-accent" style="margin-top:5px">свободно</div></div>
+  </div>
+
+  <button class="ux-next" data-sheet="open"><span class="ux-next-copy"><strong>Закрыть свободную дату</strong><span>18 октября · 4 предложения</span></span><span aria-hidden="true">↗</span></button>
+  <details class="ux-legend"><summary>Что означают точки</summary><div><span><i class="ux-dot confirmed"></i>Подтверждено</span><span><i class="ux-dot talks"></i>В работе</span><span><i class="ux-dot free"></i>Свободно</span><span><i class="ux-dot cancelled"></i>Не подтверждено</span></div></details>
+  <div class="route stack">
+    <div class="spine"></div>
+
+    <div class="leg" data-city="msk">
+      <div class="pin"><i class="dj-dot dj-dot--confirmed"></i></div>
+      <div class="card dj-card">
+        <div class="row"><div class="date grow">12 окт · пт</div><div class="dj-body-s" style="white-space:nowrap">180 000 ₽</div></div>
+        <div class="city">Москва · Цех</div>
+        <div class="row meta" style="gap:8px"><i class="dj-avatar" style="width:20px;height:20px"></i> Артём К. · сет 120 мин · 01:00</div>
+      </div>
+    </div>
+
+    <div class="leg" data-city="nn">
+      <div class="pin"><i class="dj-dot dj-dot--confirmed"></i></div>
+      <div class="card dj-card">
+        <div class="row"><div class="date grow">15 окт · пн</div><div class="dj-body-s" style="white-space:nowrap">95 000 ₽</div></div>
+        <div class="city">Нижний Новгород · Слобода</div>
+        <div class="meta">Клуб «Слобода» · сет 90 мин · 02:00</div>
+      </div>
+    </div>
+
+    <a class="leg" data-city="free" data-sheet="open" data-city="free">
+      <div class="pin"><i class="dj-dot dj-dot--free"></i></div>
+      <div class="card dj-card dj-card--dashed">
+        <div class="row"><div class="date grow">18 окт · чт</div><div class="dj-label dj-accent">свободная дата</div></div>
+        <div class="city">Нижний → Казань · окно в пути</div>
+        <div class="row" style="margin-top:12px;gap:10px">
+          <div class="faces"><i class="f1"></i><i class="f2"></i><i class="f3"></i><i class="more">+1</i></div>
+          <div class="grow dj-body-s dj-accent">4 предложения от промоутеров</div>
+        </div>
+      </div>
+    </a>
+
+    <div class="leg" data-city="kzn">
+      <div class="pin"><i class="dj-dot dj-dot--talks"></i></div>
+      <div class="card dj-card" style="border-color:rgba(163,117,255,0.28)">
+        <div class="row"><div class="date talks grow">21 окт · вс</div><button class="ux-status ux-draft" aria-label="В работе" title="В работе" data-toast="В работе"></button></div>
+        <div class="city">Казань · Контур</div>
+        <div class="meta">Ждут ваш ответ по гонорару · 2 дня</div>
+      </div>
+    </div>
+
+    <div class="transfer">
+      <div class="pin"><i class="dj-dot dj-dot--transfer"></i></div>
+      <div class="t">23 окт · переезд Казань → Екатеринбург, 980 км</div>
+    </div>
+
+    <div class="leg" data-city="ekb">
+      <div class="pin"><i class="dj-dot dj-dot--talks"></i></div>
+      <div class="card dj-card">
+        <div class="row"><div class="date talks grow">24 окт · пт</div><div class="dj-body-s" style="white-space:nowrap">от 120 000 ₽</div></div>
+        <div class="city">Екатеринбург · Гранит</div>
+      </div>
+    </div>
+  </div>
+
+  <button class="dj-btn dj-btn--primary" data-go="s-addcity" style="width:100%;margin-top:16px">+ Добавить город</button>
+</div>
+
+<!-- ================= КАРТА ================= -->
+<div class="screen" id="s-map">
+  <div class="head">
+    <button class="icon-btn" data-go="s-route" aria-label="К маршруту">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow"><h1 style="font-size:32px">ТРАНССИБ</h1><div class="sub">7 городов · 4 600 км · 12 дат</div></div>
+  </div>
+
+  <div class="seg" style="margin-bottom:14px">
+    <button data-go="s-route">Список</button>
+    <button class="on">Карта</button>
+  </div>
+
+  <div class="map">
+    <div class="plate">
+      <svg width="100%" height="360" viewBox="0 0 390 360" fill="none" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+        <path d="M30 105 L 58 86" stroke="#C0FA35" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M58 86 L 80 103" stroke="#C0FA35" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5 5"/>
+        <path d="M80 103 L 134 68" stroke="#A375FF" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M134 68 L 156 55" stroke="#A375FF" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.45" stroke-dasharray="5 5"/>
+        <path d="M156 55 L 236 133" stroke="#A375FF" stroke-width="2.5" stroke-linecap="round" stroke-opacity="0.7"/>
+        <path d="M236 133 L 328 227" stroke="#4A4460" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="5 5"/>
+        <path d="M78 186 L 69 100" stroke="#C0FA35" stroke-width="1" stroke-opacity="0.45"/>
+        <circle cx="30" cy="105" r="7" fill="#C0FA35"/><circle cx="30" cy="105" r="14" stroke="#C0FA35" stroke-opacity="0.3"/>
+        <circle cx="58" cy="86" r="5" fill="#C0FA35"/>
+        <circle cx="80" cy="103" r="6" fill="#0B0811" stroke="#A375FF" stroke-width="2.5"/>
+        <circle cx="134" cy="68" r="6" fill="#0B0811" stroke="#A375FF" stroke-width="2.5"/>
+        <circle cx="156" cy="55" r="4" fill="#0B0811" stroke="#4A4460" stroke-width="2"/>
+        <circle cx="236" cy="133" r="6" fill="#0B0811" stroke="#A375FF" stroke-width="2.5"/>
+        <circle cx="328" cy="227" r="5" fill="#0B0811" stroke="#4A4460" stroke-width="2" stroke-dasharray="3 3"/>
+      </svg>
+      <div class="lab" style="left:14px;top:118px">МОСКВА<small>12.10 · Цех</small></div>
+      <div class="lab" style="left:92px;top:110px">КАЗАНЬ<small style="color:var(--dj-violet)">21.10 · переговоры</small></div>
+      <div class="lab" style="left:112px;top:40px">ЕКАТЕРИНБУРГ</div>
+      <div class="lab" style="left:222px;top:146px">НОВОСИБИРСК<small>29.10 · без площадки</small></div>
+      <div class="lab dim" style="left:248px;top:240px">ИРКУТСК · финал</div>
+      <div class="promo" style="left:56px;top:78px"></div><div class="promo" style="left:96px;top:128px"></div><div class="promo" style="left:44px;top:132px"></div><div class="promo" style="left:104px;top:72px"></div><div class="callout" data-sheet="open" style="left:20px;top:186px"><b>18.10 · СВОБОДНО</b><span>4 предложения в радиусе 300 км</span></div>
+    </div>
+    <div class="scale"><b></b> 500 км · Яндекс Карты</div>
+    <div class="tools">
+      <button class="icon-btn accent" style="border-radius:14px" aria-label="Промоутеры рядом">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="8"/></svg>
+      </button>
+      <button class="icon-btn" style="border-radius:14px" aria-label="Центрировать">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 9V5a1 1 0 0 1 1-1h4"/><path d="M20 9V5a1 1 0 0 0-1-1h-4"/><path d="M4 15v4a1 1 0 0 0 1 1h4"/><path d="M20 15v4a1 1 0 0 1-1 1h-4"/></svg>
+      </button>
+    </div>
+    <button class="dj-btn dj-btn--primary fab" data-go="s-addcity" style="height:44px;font-size:16px">+ Город</button>
+  </div>
+
+  <a class="dj-card dj-card--dashed row" data-sheet="open" style="margin-top:12px;padding:12px 14px">
+    <i class="dj-dot dj-dot--free" style="width:12px;height:12px"></i>
+    <div class="grow">
+      <div class="dj-strong" style="color:var(--dj-text-bright)">18 окт · Нижний → Казань</div>
+      <div class="dj-label-s dj-accent ux-description" style="margin-top:2px;text-transform:none;letter-spacing:0">Свободная дата · 4 предложения</div>
+    </div>
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C0FA35" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+  </a>
+</div>
+
+<!-- ================= ДОБАВИТЬ ГОРОД ================= -->
+<div class="screen" id="s-addcity">
+  <div class="head">
+    <button class="icon-btn" data-go="s-route" aria-label="Отмена">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="grow" style="text-align:center;padding-top:12px"><div class="eyebrow">Добавить город</div></div>
+    <div style="width:44px"></div>
+  </div>
+
+  <div class="dj-card dj-card--flat row" style="padding:11px 14px;margin-bottom:12px">
+    <i class="dj-dot dj-dot--free" style="width:9px;height:9px"></i>
+    <div class="grow dj-body-s">Вставляем между <b style="color:var(--dj-text-bright);font-weight:600">Нижним</b> и <b style="color:var(--dj-text-bright);font-weight:600">Казанью</b> · окно 16—20 окт</div>
+  </div>
+
+  <div class="search" style="margin-bottom:16px">
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#6E6890" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3-4.3"/></svg>
+    <label class="vh" for="f-city">Поиск города</label>
+    <input id="f-city" type="text" placeholder="Город или площадка">
+  </div>
+
+  <div class="rule" style="margin-top:0"><div class="t dj-accent">По пути</div><div class="line"></div><div class="note">крюк до 250 км</div></div>
+
+  <div class="stack">
+    <div class="dj-card dj-card--accent row">
+      <div class="grow">
+        <div class="row" style="gap:8px;align-items:baseline"><div class="dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Чебоксары</div><div class="dj-body-s dj-accent">+140 км · +2 ч</div></div>
+        <div class="dj-body-s" style="margin-top:5px">6 площадок в базе · 4 промоутера онлайн</div>
+      </div>
+      <span class="dj-btn dj-btn--icon dj-btn--primary" aria-hidden="true">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-9"/></svg>
+      </span>
+    </div>
+
+    <div class="dj-card dj-card--flat row">
+      <div class="grow">
+        <div class="row" style="gap:8px;align-items:baseline"><div class="dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Йошкар-Ола</div><div class="dj-body-s">+180 км · +2,5 ч</div></div>
+        <div class="dj-body-s" style="margin-top:5px">3 площадки в базе · 1 промоутер</div>
+      </div>
+      <button class="dj-btn dj-btn--icon dj-btn--ghost" aria-label="Добавить Йошкар-Олу" style="border-color:var(--dj-lime-line);color:var(--dj-lime)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </div>
+
+    <div class="dj-card dj-card--flat row">
+      <div class="grow">
+        <div class="row" style="gap:8px;align-items:baseline"><div class="dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Ульяновск</div><div class="dj-body-s">+230 км · +3 ч</div></div>
+        <div class="dj-body-s" style="margin-top:5px">5 площадок в базе · 2 промоутера</div>
+      </div>
+      <button class="dj-btn dj-btn--icon dj-btn--ghost" aria-label="Добавить Ульяновск" style="border-color:var(--dj-lime-line);color:var(--dj-lime)">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="rule"><div class="t">Большой крюк</div><div class="line"></div></div>
+
+  <div class="dj-card row" style="background:rgba(255,255,255,0.03);border-style:dashed;box-shadow:none">
+    <div class="grow">
+      <div class="row" style="gap:8px;align-items:baseline"><div class="dj-h2" style="font-size:20px;color:var(--dj-text-3)">Киров</div><div class="dj-body-s ux-warning">+380 км · +5 ч к переезду</div></div>
+      <div class="dj-label-s ux-description" style="margin-top:5px;text-transform:none;letter-spacing:0">Сдвинет заезд в Казань на день</div>
+    </div>
+    <button class="ux-fill-icon" aria-label="Добавить Киров">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
+    </button>
+  </div>
+
+  <button class="dj-btn dj-btn--primary" data-go="s-route" style="width:100%;margin-top:16px">Добавить · Чебоксары</button>
+  <div class="dj-label-s ux-description" style="margin-top:9px;text-align:center;text-transform:none;letter-spacing:0">Дата подставится автоматически — 18 окт</div>
+</div>
+
+<!-- ================= ПРАВКА МАРШРУТА ================= -->
+<div class="screen" id="s-reorder">
+  <div class="head">
+    <button class="icon-btn" data-go="s-route" aria-label="Отмена">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="grow" style="text-align:center;padding-top:12px"><div class="eyebrow">Правка маршрута</div></div>
+    <button class="dj-strong dj-accent" data-go="s-route" style="flex-shrink:0;padding:0;background:none;border:none;font-family:inherit;white-space:nowrap;cursor:pointer">Готово</button>
+  </div>
+
+  <div class="dj-label-s ux-description" style="margin-bottom:14px;text-transform:none;letter-spacing:0">Тяните за ручку, чтобы поменять порядок. Даты и переезды пересчитаются.</div>
+
+  <div class="stack" id="reorder-list" style="gap:6px">
+    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px" data-city="msk">
+      <i class="dj-dot dj-dot--confirmed" style="width:11px;height:11px"></i>
+      <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Москва</div><div class="dj-label-s ux-description" style="margin-top:2px;text-transform:none;letter-spacing:0">12 окт · Цех · подтверждено</div></div>
+      <span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+    </div>
+
+    <div class="insert"><div class="l"></div><button data-go="s-addcity" aria-label="Вставить город"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="l"></div></div>
+
+    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px" data-city="nn">
+      <i class="dj-dot dj-dot--confirmed" style="width:11px;height:11px"></i>
+      <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Нижний Новгород</div><div class="dj-label-s ux-description" style="margin-top:2px;text-transform:none;letter-spacing:0">15 окт · Слобода · подтверждено</div></div>
+      <span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+    </div>
+
+    <div class="insert hot"><div class="l"></div><button data-go="s-addcity" aria-label="Вставить город в свободное окно"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></button><div class="l"></div></div>
+
+    <div class="dj-card dj-card--dashed row" draggable="true" style="padding:12px 14px" data-city="free">
+      <i class="dj-dot dj-dot--free" style="width:11px;height:11px"></i>
+      <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Свободное окно</div><div class="dj-label-s dj-accent ux-description" style="margin-top:2px;text-transform:none;letter-spacing:0">18 окт · 4 предложения</div></div>
+      <span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+    </div>
+
+    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px" data-city="kzn">
+      <i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i>
+      <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Казань</div><div class="dj-label-s ux-description" style="margin-top:2px;text-transform:none;letter-spacing:0">21 окт · Контур · переговоры</div></div>
+      <span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+    </div>
+
+    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px" data-city="ekb">
+      <i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i>
+      <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Екатеринбург</div><div class="dj-label-s ux-description" style="margin-top:2px;text-transform:none;letter-spacing:0">24 окт · Гранит · переговоры</div></div>
+      <span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+    </div>
+
+    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px;opacity:0.6" data-city="nsk">
+      <i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i>
+      <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Новосибирск</div><div class="dj-label-s ux-description" style="margin-top:2px;text-transform:none;letter-spacing:0">29 окт · площадка не выбрана</div></div>
+      <span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+    </div>
+
+    <div class="dj-card dj-card--flat row" draggable="true" style="padding:12px 14px;opacity:0.6" data-city="irk">
+      <i class="dj-dot dj-dot--cancelled" style="width:11px;height:11px;border-style:dashed"></i>
+      <div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">Иркутск</div><div class="dj-label-s ux-description" style="margin-top:2px;text-transform:none;letter-spacing:0">3 ноя · финал тура</div></div>
+      <span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>
+    </div>
+  </div>
+
+  <button class="dj-btn dj-btn--ghost" data-go="s-addcity" style="width:100%;margin-top:16px;border-color:var(--dj-lime-line);color:var(--dj-lime)">+ Добавить город в конец</button>
+</div>
+
+<!-- ================= РАДАР ================= -->
+<div class="screen" id="s-radar">
+  <div class="head">
+    <button class="icon-btn" data-go="s-tours" aria-label="Назад">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow"><div class="eyebrow">Радар маршрутов</div><h1 style="font-size:32px;margin-top:8px">Казань</h1></div>
+  </div>
+
+  <div class="chips" style="margin-bottom:16px">
+    <div class="dj-chip">окт — ноя</div>
+    <div class="dj-chip">до 300 км</div>
+    <div class="dj-chip is-active">только свободные</div>
+  </div>
+
+  <div class="map" style="height:150px">
+    <svg width="100%" height="150" viewBox="0 0 390 150" fill="none" preserveAspectRatio="none" aria-hidden="true">
+      <path d="M-10 118 C 60 96, 100 52, 160 60 C 220 68, 250 30, 330 24" stroke="#A375FF" stroke-opacity="0.55" stroke-width="1.5"/>
+      <path d="M-10 134 C 70 132, 130 100, 190 106 C 260 113, 300 80, 400 86" stroke="#C0FA35" stroke-opacity="0.45" stroke-width="1.5" stroke-dasharray="5 5"/>
+      <path d="M8 40 C 90 34, 130 78, 200 68 C 270 59, 320 98, 390 114" stroke="#6B8BFF" stroke-opacity="0.32" stroke-width="1.5"/>
+      <circle cx="160" cy="60" r="4" fill="#C0FA35"/><circle cx="160" cy="60" r="11" stroke="#C0FA35" stroke-opacity="0.45"/>
+      <circle cx="190" cy="106" r="3.5" fill="#A375FF"/>
+    </svg>
+    <div class="lab" style="left:100px;top:124px;color:var(--dj-lime)">ВЫ ЗДЕСЬ · КАЗАНЬ</div>
+  </div>
+
+  <div class="rule"><div class="t">Проезжают рядом</div><div class="line"></div><div class="note dj-accent">6 со свободной датой</div></div>
+
+  <div class="stack">
+    <div class="dj-card dj-card--accent">
+      <div class="row">
+        <i class="dj-avatar" style="width:50px;height:50px;flex-shrink:0"></i>
+        <div class="grow"><div class="dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Leshch</div><div class="dj-body-s" style="margin-top:3px">Хип-хоп / рэп · 12 000 слушателей</div></div>
+        <button class="dj-btn dj-btn--primary" style="height:38px;padding:0 16px;font-size:16px">Предложить</button>
+      </div>
+      <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);gap:9px">
+        <i class="dj-dot dj-dot--free" style="width:9px;height:9px"></i>
+        <div class="grow dj-body-s" style="color:var(--dj-text)">Свободно <b class="dj-accent">18 окт</b> · тур «Транссиб» · +140 км</div>
+      </div>
+    </div>
+
+    <div class="dj-card dj-card--flat">
+      <div class="row">
+        <i class="f2" style="width:50px;height:50px;border-radius:50%;flex-shrink:0"></i>
+        <div class="grow"><div class="dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Nika Volk</div><div class="dj-body-s" style="margin-top:3px">Дип-хаус · 8 000 слушателей</div></div>
+        <button class="dj-btn dj-btn--ghost" style="height:38px;padding:0 16px;font-size:16px;font-weight:400">Предложить</button>
+      </div>
+      <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);gap:9px">
+        <i class="dj-dot dj-dot--free" style="width:9px;height:9px"></i>
+        <div class="grow dj-body-s" style="color:var(--dj-text)">Свободно <b class="dj-accent">2 и 3 ноя</b> · тур «Волга» · +20 км</div>
+      </div>
+    </div>
+
+    <div class="dj-card dj-card--flat row">
+      <i class="f3" style="width:50px;height:50px;border-radius:50%;flex-shrink:0"></i>
+      <div class="grow"><div class="dj-h2" style="font-size:20px;color:var(--dj-text-bright)">Кассета</div><div class="dj-body-s" style="margin-top:3px">Техно · тур «Урал-луп» · +310 км</div></div>
+      <button class="ux-status ux-draft" aria-label="Переговоры" title="Переговоры" data-toast="Переговоры"></button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ТРЕВЕЛ-ПАТИ ================= -->
+<div class="screen" id="s-party">
+  <div class="head">
+    <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow"><h1 style="font-size:32px">Команда</h1><div class="sub">Состав · багаж · условия</div></div>
+  </div>
+
+  <div class="dj-card dj-card--flat stat-row" style="padding:14px 18px;margin-bottom:14px">
+    <div class="s"><div class="dj-h2" style="color:var(--dj-text-bright)">3</div><div class="dj-label dj-muted" style="margin-top:5px">человека</div></div>
+    <div class="s"><div class="dj-h2" style="color:var(--dj-text-bright)">148</div><div class="dj-label dj-muted" style="margin-top:5px">кг багажа</div></div>
+    <div class="s"><div class="dj-h2 ux-warning" data-party-missing style="white-space:nowrap">2 / 3</div><div class="dj-label dj-muted" style="margin-top:5px">документы</div></div>
+  </div>
+
+  <div class="rule" style="margin-top:0"><div class="t">Состав</div><div class="line"></div><div class="note">тянется на весь тур</div></div>
+
+  <div class="stack">
+    <div class="dj-card">
+      <div class="row">
+        <i class="dj-avatar" style="width:44px;height:44px;flex-shrink:0"></i>
+        <div class="grow">
+          <div class="dj-strong" style="color:var(--dj-text-bright)">Leshch</div>
+          <div class="dj-body-s" style="margin-top:3px">артист</div>
+        </div>
+        <div class="dj-body-s" style="white-space:nowrap">68 кг</div>
+      </div>
+    </div>
+
+    <div class="dj-card" >
+      <div class="row">
+        <i class="f2" style="width:44px;height:44px;border-radius:50%;flex-shrink:0"></i>
+        <div class="grow">
+          <div class="dj-strong" style="color:var(--dj-text-bright)">Костя</div>
+          <div class="dj-body-s" style="margin-top:3px">тех · пульт и кабели</div>
+        </div>
+        <div class="dj-body-s" style="white-space:nowrap">62 кг</div>
+      </div>
+      <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);gap:10px">
+        <i style="width:7px;height:7px;border-radius:50%;background:var(--dj-magenta);flex-shrink:0"></i>
+        <div class="grow dj-body-s">Нет паспортных данных — билет не оформить</div>
+        <button class="ux-fill-icon" data-fill="Костя" aria-label="Заполнить паспортные данные Кости" title="Заполнить паспортные данные"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L9 17l-4 1 1-4Z"/></svg></button>
+      </div>
+    </div>
+
+    <div class="dj-card">
+      <div class="row">
+        <i class="f3" style="width:44px;height:44px;border-radius:50%;flex-shrink:0"></i>
+        <div class="grow">
+          <div class="dj-strong" style="color:var(--dj-text-bright)">Аня</div>
+          <div class="dj-body-s" style="margin-top:3px">тур-менеджер</div>
+        </div>
+        <div class="dj-body-s" style="white-space:nowrap">18 кг</div>
+      </div>
+    </div>
+
+    <button class="dj-btn dj-btn--ghost" data-toast="Форма участника — в этом прототипе не собрана" style="width:100%;border-style:dashed">+ Участник</button>
+  </div>
+
+  <div class="rule"><div class="t">Условия</div><div class="line"></div></div>
+  <div class="chips">
+    <div class="dj-chip is-active">Свой состав</div>
+    <div class="dj-chip">2 номера в отеле</div>
+    <div class="dj-chip">Трансфер от аэропорта</div>
+  </div>
+</div>
+
+<!-- ================= ТРАНСПОРТ И БИЛЕТЫ ================= -->
+<div class="screen" id="s-tickets">
+  <div class="head">
+    <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow"><h1 style="font-size:32px">Транспорт</h1><div class="sub">Перелёты · перевес · билеты</div></div>
+  </div>
+
+  <div class="seg" style="margin-bottom:14px">
+    <button class="on">Самолёт</button>
+    <button>Поезд</button>
+    <button>Авто</button>
+  </div>
+
+  <div class="stack">
+    <div class="dj-card dj-card--flat row">
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Москва → Нижний</div>
+        <div class="dj-body-s" style="margin-top:3px">13 окт · авто, 400 км · 5 ч</div>
+      </div>
+      <div class="dj-body-s" style="color:var(--dj-text)">по расстоянию</div>
+    </div>
+
+    <div class="dj-card dj-card--flat row">
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Нижний → Казань</div>
+        <div class="dj-body-s" style="margin-top:3px">19 окт · SU 1284 · 07:40 → 09:05</div>
+      </div>
+      <div class="dj-strong" style="white-space:nowrap;color:var(--dj-text-bright)">18 400 ₽</div>
+    </div>
+
+    <div class="dj-card dj-card--flat row">
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Казань → Екатеринбург</div>
+        <div class="dj-body-s" style="margin-top:3px">23 окт · U6 316 · 11:20 → 15:00</div>
+      </div>
+      <div class="dj-strong" style="white-space:nowrap;color:var(--dj-text-bright)">24 900 ₽</div>
+    </div>
+
+    <div class="dj-card row" >
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Новосибирск → Иркутск</div>
+        <div class="dj-body-s ux-warning" style="margin-top:3px">Рейса на 2 ноя нет — сдвинуть дату или взять поезд</div>
+      </div>
+      <button class="ux-fill-icon" data-toast="Подбор рейсов — в этом прототипе не собран" aria-label="Найти другой рейс" title="Найти другой рейс"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m16 16 5 5"/></svg></button>
+    </div>
+  </div>
+
+  <div class="rule"><div class="t">Перевес</div><div class="line"></div></div>
+
+  <div class="dj-card">
+    <div class="row" style="align-items:flex-end">
+      <div class="grow">
+        <div class="dj-h2" style="white-space:nowrap;color:var(--dj-text-bright)">148 кг</div>
+        <div class="dj-body-s" style="margin-top:3px">норма на троих — 120 кг</div>
+      </div>
+      <div style="text-align:right">
+        <div class="dj-h2 ux-warning" style="white-space:nowrap">+28 кг</div>
+        <div class="dj-body-s" style="margin-top:3px">≈ 14 000 ₽ за тур</div>
+      </div>
+    </div>
+    <div class="dj-meter" style="margin-top:14px"><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i class="is-on"></i><i></i><i></i></div>
+  </div>
+
+  <div class="row" style="margin-top:16px;gap:8px">
+    <button class="dj-btn dj-btn--primary grow" data-toast="Поиск на группу — в этом прототипе не собран">Найти на группу</button>
+    <button class="dj-btn dj-btn--ghost dj-btn--icon" data-toast="Сканер билета — в этом прототипе не собран" aria-label="Сканировать билет">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 8V5a1 1 0 0 1 1-1h3"/><path d="M20 8V5a1 1 0 0 0-1-1h-3"/><path d="M4 16v3a1 1 0 0 0 1 1h3"/><path d="M20 16v3a1 1 0 0 1-1 1h-3"/><path d="M3 12h18"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- ================= ПЛОЩАДКИ И ОТЕЛИ ================= -->
+<div class="screen" id="s-venues">
+  <div class="head">
+    <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow"><h1 style="font-size:32px">Площадки</h1><div class="sub">И отели рядом · 4 из 7 городов</div></div>
+  </div>
+
+  <div class="chips" style="margin-bottom:16px">
+    <div class="dj-chip is-active">ближе к площадке</div>
+    <div class="dj-chip">по цене</div>
+    <div class="dj-chip">ближе к аэропорту</div>
+  </div>
+
+  <div class="stack">
+    <div class="dj-card">
+      <div class="row">
+        <i class="dj-dot dj-dot--confirmed" style="width:9px;height:9px"></i>
+        <div class="grow dj-strong" style="color:var(--dj-text-bright)">Москва · Цех</div>
+        <div class="dj-body-s">12 окт</div>
+      </div>
+      <div class="dj-body-s" style="margin-top:8px">800 чел · сцена 8×6 · свет и звук площадки</div>
+      <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1)">
+        <div class="grow dj-body-s">Отель «Депо» · 1,2 км от площадки</div>
+        <div class="dj-strong" style="white-space:nowrap;color:var(--dj-text-bright)">7 200 ₽</div>
+      </div>
+    </div>
+
+    <div class="dj-card">
+      <div class="row">
+        <i class="dj-dot dj-dot--confirmed" style="width:9px;height:9px"></i>
+        <div class="grow dj-strong" style="color:var(--dj-text-bright)">Нижний Новгород · Слобода</div>
+        <div class="dj-body-s">15 окт</div>
+      </div>
+      <div class="dj-body-s" style="margin-top:8px">450 чел · сцена 6×4 · свой пульт</div>
+      <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1)">
+        <div class="grow dj-body-s">Отель на Рождественской · 600 м</div>
+        <div class="dj-strong" style="white-space:nowrap;color:var(--dj-text-bright)">5 400 ₽</div>
+      </div>
+    </div>
+
+    <div class="dj-card">
+      <div class="row">
+        <i class="dj-dot dj-dot--talks" style="width:9px;height:9px"></i>
+        <div class="grow dj-strong" style="color:var(--dj-text-bright)">Казань · Контур</div>
+        <button class="ux-status ux-draft" aria-label="В работе" title="В работе" data-toast="В работе"></button>
+      </div>
+      <div class="dj-body-s" style="margin-top:8px">600 чел · ждут ответ по гонорару</div>
+      <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1)">
+        <div class="grow dj-body-s dj-muted">Отель не выбран — 6 вариантов рядом</div>
+        <button class="dj-btn dj-btn--ghost" data-toast="Подбор отеля — в этом прототипе не собран" style="height:34px;padding:0 13px;font-size:14px;font-weight:400">Подобрать</button>
+      </div>
+    </div>
+
+    <div class="dj-card" style="background:rgba(255,255,255,0.03);border-style:dashed;box-shadow:none">
+      <div class="row">
+        <i class="dj-dot dj-dot--cancelled" style="width:9px;height:9px"></i>
+        <div class="grow dj-strong" style="color:var(--dj-text-3)">Новосибирск</div>
+        <div class="dj-body-s dj-dim">29 окт</div>
+      </div>
+      <div class="row" style="margin-top:10px">
+        <div class="grow dj-body-s">Площадка не выбрана · 9 в базе</div>
+        <button class="dj-btn dj-btn--ghost" data-toast="База площадок — в этом прототипе не собрана" style="height:34px;padding:0 13px;font-size:14px;font-weight:400;border-color:var(--dj-lime-line);color:var(--dj-lime)">Выбрать</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ПРОДАКШН ================= -->
+<div class="screen" id="s-prod">
+  <div class="head">
+    <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow"><h1 style="font-size:32px">Продакшн</h1><div class="sub">Сцена · декорации · райдеры</div></div>
+  </div>
+
+  <div class="dj-card dj-card--flat" style="margin-bottom:14px">
+    <div class="dj-body-s">Площадки просят тех-райдер за две недели до даты. Ближайшая — <b style="color:var(--dj-text-bright);font-weight:600">Казань, 21 окт</b>.</div>
+  </div>
+
+  <div class="stack">
+    <div class="dj-card row">
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Сцена</div>
+        <div class="dj-body-s" style="margin-top:3px">0 фото · площадки просят вид со сцены</div>
+      </div>
+      <button class="ux-fill-icon" data-toast="Загрузка фото — в этом прототипе не собрана" aria-label="Загрузить фото сцены" title="Загрузить фото сцены"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-5 5 5-5 5 5M4 16v5h16v-5"/></svg></button>
+    </div>
+
+    <div class="dj-card row">
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Декорации</div>
+        <div class="dj-body-s" style="margin-top:3px">0 позиций · вес уходит в перевес</div>
+      </div>
+      <button class="ux-fill-icon" data-toast="Список декораций — в этом прототипе не собран" aria-label="Загрузить декорации" title="Загрузить декорации"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-5 5 5-5 5 5M4 16v5h16v-5"/></svg></button>
+    </div>
+
+    <div class="dj-card" >
+      <div class="row">
+        <div class="grow">
+          <div class="dj-strong" style="color:var(--dj-text-bright)">Тех-райдер</div>
+          <div class="dj-body-s ux-warning" style="margin-top:3px">Не загружен — площадки не подтвердят дату</div>
+        </div>
+        <button class="ux-fill-icon" data-toast="Загрузка PDF — в этом прототипе не собрана" aria-label="Загрузить техрайдер" title="Загрузить техрайдер"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 16V3m-5 5 5-5 5 5M4 16v5h16v-5"/></svg></button>
+      </div>
+    </div>
+
+    <div class="dj-card row">
+      <div class="grow">
+        <div class="dj-strong" style="color:var(--dj-text-bright)">Хоспиталити-райдер</div>
+        <div class="dj-body-s" style="margin-top:3px">PDF · обновлён 2 сен</div>
+      </div>
+      <i class="dj-dot dj-dot--confirmed" style="width:9px;height:9px"></i>
+    </div>
+  </div>
+</div>
+
+<!-- ================= СМЕТА ================= -->
+<div class="screen" id="s-budget">
+  <div class="head">
+    <button class="icon-btn" data-go="s-sections" aria-label="К разделам">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+    </button>
+    <div class="grow"><h1 style="font-size:32px">Смета</h1><div class="sub">Считается из билетов, отелей и груза</div></div>
+  </div>
+
+  <div class="stack">
+    <div class="dj-card">
+      <div class="row">
+        <div class="grow dj-strong" style="color:var(--dj-text-bright)">Билеты</div>
+        <div class="dj-strong" style="white-space:nowrap;color:var(--dj-text-bright)">96 000 ₽</div>
+      </div>
+      <div class="dj-body-s" style="margin-top:6px">6 перелётов на троих · один рейс не найден</div>
+    </div>
+
+    <div class="dj-card">
+      <div class="row">
+        <div class="grow dj-strong" style="color:var(--dj-text-bright)">Отели</div>
+        <div class="dj-strong" style="white-space:nowrap;color:var(--dj-text-bright)">54 000 ₽</div>
+      </div>
+      <div class="dj-body-s" style="margin-top:6px">6 ночей · 2 номера · ближе к площадке</div>
+    </div>
+
+    <div class="dj-card">
+      <div class="row">
+        <div class="grow dj-strong" style="color:var(--dj-text-bright)">Логистика груза</div>
+        <div class="dj-strong" style="white-space:nowrap;color:var(--dj-text-bright)">14 000 ₽</div>
+      </div>
+      <div class="dj-body-s" style="margin-top:6px">Перевес 28 кг сверх нормы</div>
+    </div>
+  </div>
+
+  <div class="dj-card dj-card--accent" style="margin-top:14px">
+    <div class="row">
+      <div class="grow dj-label dj-muted">Расходы</div>
+      <div class="dj-h2" style="white-space:nowrap;color:var(--dj-text-bright)">164 000 ₽</div>
+    </div>
+    <div class="row" style="margin-top:10px">
+      <div class="grow dj-label dj-muted">Гонорары</div>
+      <div class="dj-h2 dj-accent" style="white-space:nowrap">1 190 000 ₽</div>
+    </div>
+    <div class="row" style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.14)">
+      <div class="grow dj-strong" style="color:var(--dj-text-bright)">Остаётся</div>
+      <div class="dj-h1 dj-accent" style="white-space:nowrap;font-size:32px">1 026 000 ₽</div>
+    </div>
+  </div>
+
+  <div class="dj-card dj-card--flat row" style="margin-top:12px">
+    <i class="dj-dot dj-dot--free" style="width:9px;height:9px"></i>
+    <div class="grow dj-body-s">Три свободные даты могут добавить ещё <b class="dj-accent">до 420 000 ₽</b></div>
+    <button class="dj-strong dj-accent" data-go="s-route" style="background:none;border:none;font-family:inherit;cursor:pointer;white-space:nowrap">Открыть</button>
+  </div>
+</div>
+
+<!-- ================= ШИТ: СВОБОДНАЯ ДАТА ================= -->
+<div class="sheet-wrap" id="slot-sheet">
+  <div class="scrim" data-sheet="close"></div>
+  <div class="sheet">
+    <div class="grip"></div>
+    <div class="row" style="align-items:flex-start">
+      <div class="grow">
+        <div class="dj-label dj-accent">18 октября · четверг</div>
+        <h1 style="margin:8px 0 0;font-size:32px;font-weight:600;letter-spacing:-0.02em;color:var(--dj-text-bright)">Свободная дата</h1>
+        <div class="dj-body-s" style="margin-top:5px">Между Нижним и Казанью · окно 2 дня</div>
+      </div>
+      <button class="icon-btn" data-sheet="close" aria-label="Закрыть" style="border:none;background:rgba(255,255,255,0.05)">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="dj-card dj-card--accent row" style="margin-top:18px;padding:13px 16px">
+      <div class="grow">
+        <label class="dj-strong" for="f-slot" style="color:var(--dj-text-bright)">Видна промоутерам на маршруте</label>
+        <div class="dj-label-s ux-description" style="margin-top:3px;text-transform:none;letter-spacing:0">Радар показывает дату в радиусе 300 км</div>
+      </div>
+      <span class="switch"><input id="f-slot" type="checkbox" checked><i></i></span>
+    </div>
+
+    <div class="rule"><div class="t">Предложения</div><div class="line"></div><div class="note">по гонорару</div></div>
+
+    <div class="stack">
+      <div class="dj-card dj-card--accent">
+        <div class="offer best">
+          <i class="thumb" style="background:linear-gradient(140deg,#C0FA35,#8FD97A)"></i>
+          <div class="grow">
+            <div class="dj-strong" style="color:var(--dj-text-bright)">Терминал · Чебоксары</div>
+            <div class="dj-body-s" style="margin-top:3px">+140 км · 400 чел · ночной слот</div>
+          </div>
+          <div class="sum">140 000 ₽<small>+ отель</small></div>
+        </div>
+        <div class="row" style="margin-top:12px;gap:8px">
+          <button class="dj-btn dj-btn--primary grow" style="height:42px;font-size:16px">Принять</button>
+          <button class="dj-btn dj-btn--ghost grow" style="height:42px;font-size:16px;font-weight:400">Обсудить</button>
+        </div>
+      </div>
+
+      <div class="dj-card dj-card--flat offer">
+        <i class="thumb" style="background:linear-gradient(140deg,#A375FF,#6B8BFF)"></i>
+        <div class="grow">
+          <div class="dj-strong" style="color:var(--dj-text-bright)">Крыша · Йошкар-Ола</div>
+          <div class="dj-body-s" style="margin-top:3px">+180 км · 220 чел · закат, 21:00</div>
+        </div>
+        <div class="sum">90 000 ₽<small>без отеля</small></div>
+      </div>
+
+      <div class="dj-card dj-card--flat offer">
+        <i class="thumb" style="background:linear-gradient(140deg,#FF9BD2,#A375FF)"></i>
+        <div class="grow">
+          <div class="dj-strong" style="color:var(--dj-text-bright)">Гранит · Ульяновск</div>
+          <div class="dj-body-s" style="margin-top:3px">+230 км · 180 чел · b2b с локальным</div>
+        </div>
+        <div class="sum">75 000 ₽<small>+ трансфер</small></div>
+      </div>
+    </div>
+
+    <div class="row" style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.1)">
+      <div class="grow dj-body-s">Условия по умолчанию: 90 мин · от 90 000 ₽ · тех-райдер</div>
+      <button class="dj-strong dj-process" data-sheet="close" style="background:none;border:none;font-family:inherit;cursor:pointer">Изменить</button>
+    </div>
+  </div>
+</div>
+
+<div class="services-scrim" id="servicesScrim"></div>
+
+  <nav class="bottom-nav" id="bottomNav">
+    <div class="bottom-nav-wrap">
+
+      <div class="nav-avatar" data-tab="profile" aria-label="Профиль">
+        <img src="data:image/jpeg;base64,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" alt="" draggable="false">
+      </div>
+
+      <div class="bottom-nav-inner">
+        <div class="nav-slot">
+          <div class="nav-circle" data-tab="search" aria-label="Поиск">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3-4.3"/></svg>
+          </div>
+        </div>
+
+        <div class="nav-slot">
+          <div class="nav-circle" data-tab="chat" aria-label="Чат">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a7.5 7.5 0 0 1-10.9 6.7L4 20l1.8-5A7.5 7.5 0 1 1 21 11.5Z"/></svg>
+          </div>
+        </div>
+
+        <div class="nav-slot" id="servicesSlot">
+          <div class="nav-circle" data-tab="services" id="servicesBtn" data-active="1" aria-label="Сервисы" aria-haspopup="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>
+          </div>
+          <div class="services-stack" id="servicesMenu">
+            <div class="services-row" data-service="события">
+              <div class="services-label glass">события</div>
+              <div class="services-circle glass"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg></div>
+            </div>
+            <div class="services-row" data-service="туры">
+              <div class="services-label glass">туры</div>
+              <div class="services-circle glass"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="17" r="2.2"/><circle cx="18" cy="7" r="2.2"/><path d="M7.6 15.4 16.4 8.6"/></svg></div>
+            </div>
+            <div class="services-row" data-service="турниры">
+              <div class="services-label glass">турниры</div>
+              <div class="services-circle glass"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 4h8v5a4 4 0 0 1-8 0V4Z"/><path d="M8 6H5.6A2.6 2.6 0 0 0 8 8.6M16 6h2.4A2.6 2.6 0 0 1 16 8.6"/><path d="M12 13.2V16M9 20h6"/></svg></div>
+            </div>
+            <div class="services-row" data-service="афиша">
+              <div class="services-label glass">афиша</div>
+              <div class="services-circle glass"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 9.2V7a1.5 1.5 0 0 1 1.5-1.5h14A1.5 1.5 0 0 1 20.5 7v2.2a2.5 2.5 0 0 0 0 5V16a1.5 1.5 0 0 1-1.5 1.5H5A1.5 1.5 0 0 1 3.5 16v-1.8a2.5 2.5 0 0 0 0-5Z"/></svg></div>
+            </div>
+            <div class="services-row" data-service="магазин">
+              <div class="services-label glass">магазин</div>
+              <div class="services-circle glass"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8h14l-1.2 12H6.2L5 8Z"/><path d="M9 8V6.4a3 3 0 0 1 6 0V8"/></svg></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </nav>
+
+<script>
+(function () {
+  var screens = Array.prototype.slice.call(document.querySelectorAll('.screen'));
+  function go(id) {
+    screens.forEach(function (s) { s.classList.toggle('is-on', s.id === id); });
+    window.scrollTo(0, 0);
+  }
+  document.addEventListener('click', function (e) {
+    if (e.target.closest('[data-drag-handle]')) return;
+    var toastEl = e.target.closest('[data-toast]');
+    if (toastEl) {
+      e.preventDefault(); e.stopPropagation();
+      var t = document.getElementById('toast');
+      t.firstElementChild.textContent = toastEl.getAttribute('data-toast');
+      t.classList.add('is-on');
+      clearTimeout(window.__djToastT);
+      window.__djToastT = setTimeout(function () { t.classList.remove('is-on'); }, 2600);
+      return;
+    }
+    var goEl = e.target.closest('[data-go]');
+    if (goEl) { e.preventDefault(); go(goEl.getAttribute('data-go')); return; }
+    var sheetEl = e.target.closest('[data-sheet]');
+    if (sheetEl) {
+      e.preventDefault();
+      document.getElementById('slot-sheet').classList.toggle('is-on', sheetEl.getAttribute('data-sheet') === 'open');
+      return;
+    }
+    var segBtn = e.target.closest('.seg button');
+    if (segBtn && !segBtn.hasAttribute('data-go')) {
+      segBtn.parentNode.querySelectorAll('button').forEach(function (b) { b.classList.remove('on'); });
+      segBtn.classList.add('on');
+    }
+  });
+
+})();
+</script>
+
+<div class="toast" id="toast"><span></span></div>
+
+<style>
+.toast { position: fixed; left: 50%; bottom: calc(110px + env(safe-area-inset-bottom)); transform: translate(-50%, 12px);
+  max-width: 440px; width: calc(100% - 32px); padding: 13px 16px; border-radius: 16px;
+  background: rgba(24,20,32,0.92); backdrop-filter: blur(16px) saturate(1.3); -webkit-backdrop-filter: blur(16px) saturate(1.3);
+  border: 1px solid var(--dj-line-2); box-shadow: var(--dj-shadow-nav);
+  font-size: 16px; color: var(--dj-text); opacity: 0; pointer-events: none; transition: opacity .18s, transform .18s; z-index: 60; }
+.toast.is-on { opacity: 1; transform: translate(-50%, 0); }
+.toast b { color: var(--dj-lime); font-weight: 600; }
+.map .promo { position: absolute; width: 10px; height: 10px; border-radius: 50%; background: var(--dj-magenta);
+  box-shadow: 0 0 10px rgba(255,0,229,0.6); opacity: 0; transition: opacity .2s; }
+.map.show-promo .promo { opacity: 1; }
+.leg.is-new .card, .dj-card.is-new { border-color: var(--dj-lime-line); box-shadow: 0 0 0 1px var(--dj-lime-line), var(--dj-shadow-card); }
+.dj-card.dragging { z-index: 50; box-shadow: 0 30px 60px -12px rgba(0,0,0,0.75); border-color: rgba(192,250,53,0.4); transition: none !important; }
+.dj-card.settling { transition: transform 220ms cubic-bezier(.2,.8,.2,1); }
+[data-drag-handle] { touch-action: none; }
+.dj-btn.is-done { background: transparent; border: 1px solid var(--dj-line-3); color: var(--dj-text-3); box-shadow: none; }
+</style>
+<script>
+/* DJ-TOURS-FLOWS */
+(function () {
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  function go(id) { $$('.screen').forEach(function (s) { s.classList.toggle('is-on', s.id === id); }); window.scrollTo(0, 0); }
+  var toast = $('#toast'), toastT;
+  function say(html) {
+    if (!toast) return;
+    toast.firstElementChild.innerHTML = html;
+    toast.classList.add('is-on');
+    clearTimeout(toastT); toastT = setTimeout(function () { toast.classList.remove('is-on'); }, 2600);
+  }
+
+  /* нижняя навигация: меню сервисов */
+  var servicesBtn = $('#servicesBtn'), servicesMenu = $('#servicesMenu'),
+      servicesScrim = $('#servicesScrim'), servicesSlot = $('#servicesSlot');
+  function closeServices() {
+    if (!servicesMenu) return;
+    servicesMenu.classList.remove('open'); servicesScrim.classList.remove('open'); servicesBtn.classList.remove('is-open');
+  }
+  if (servicesBtn) {
+    $$('.nav-circle, .nav-avatar').forEach(function (item) {
+      item.addEventListener('click', function (e) {
+        if (item === servicesBtn) {
+          e.stopPropagation();
+          if (servicesMenu.classList.contains('open')) { closeServices(); return; }
+          servicesMenu.classList.add('open'); servicesScrim.classList.add('open'); servicesBtn.classList.add('is-open');
+          return;
+        }
+        closeServices();
+        $$('.nav-circle, .nav-avatar').forEach(function (i) { i.classList.remove('active'); });
+        item.classList.add('active');
+        var label = (item.getAttribute('aria-label') || '').toLowerCase();
+        if (label.indexOf('поиск') > -1) { go('s-radar'); say('Радар маршрутов — вид промоутера'); }
+        else if (label.indexOf('чат') > -1) say('Открываю чат…');
+        else if (item.classList.contains('nav-avatar')) say('Открываю профиль…');
+      });
+    });
+    $$('.services-row', servicesMenu).forEach(function (row) {
+      row.addEventListener('click', function () {
+        var t = (row.textContent || '').trim().toLowerCase();
+        closeServices();
+        if (t.indexOf('туры') > -1) { go('s-tours'); say('Туры — вы здесь'); }
+        else { say('Раздел «' + t + '» — прототипа пока нет'); }
+      });
+    });
+    servicesScrim.addEventListener('click', closeServices);
+    document.addEventListener('click', function (e) { if (servicesSlot && !servicesSlot.contains(e.target)) closeServices(); });
+  }
+
+  /* фильтры списка туров */
+  var tours = $('#s-tours');
+  var chips = $$('.chips .dj-chip', tours);
+  var hero = $('.tour-hero', tours);
+  var plansRule = $$('.rule', tours)[0];
+  var plansList = plansRule ? plansRule.nextElementSibling : null;
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      chips.forEach(function (c) { c.classList.remove('is-active'); });
+      chip.classList.add('is-active');
+      var t = chip.textContent.trim(), live = t === 'В пути', plans = t === 'Планы';
+      if (hero) hero.style.display = live ? '' : 'none';
+      if (plansRule) plansRule.style.display = (live || plans) ? '' : 'none';
+      if (plansList) plansList.style.display = (live || plans) ? '' : 'none';
+      if (t === 'Архив') say('В архиве пусто — сюда уедут сыгранные туры');
+    });
+  });
+
+  /* радар: отправить предложение */
+  $$('#s-radar .dj-btn').forEach(function (btn) {
+    if (btn.textContent.trim() !== 'Предложить') return;
+    btn.addEventListener('click', function () {
+      btn.textContent = 'Отправлено'; btn.classList.add('is-done');
+      say('Предложение ушло — артист увидит его в свободной дате <b>18 окт</b>');
+    });
+  });
+
+  /* свободная дата: принять предложение */
+  $$('#slot-sheet .dj-btn--primary').forEach(function (btn) {
+    if (btn.textContent.trim() !== 'Принять') return;
+    btn.addEventListener('click', function () {
+      var leg = $('#s-route .leg[data-city="free"]');
+      if (leg) {
+        leg.classList.add('is-new');
+        leg.removeAttribute('data-sheet');
+        var pin = $('.pin i', leg); if (pin) pin.className = 'dj-dot dj-dot--confirmed';
+        var card = $('.card', leg);
+        card.className = 'card dj-card';
+        card.innerHTML = '<div class="row"><div class="date grow">18 окт · чт</div><div class="dj-body-s" style="white-space:nowrap">140 000 ₽</div></div>' +
+          '<div class="city">Чебоксары · Терминал</div><div class="meta">+140 км к маршруту · 400 чел · ночной слот</div>';
+      }
+      var nums = $$('#s-route .stat-row .dj-h2');
+      if (nums.length === 3) { nums[0].textContent = '8'; nums[2].textContent = '2'; }
+      var freeNode = $('#s-tours .strip .n.free');
+      if (freeNode) { freeNode.classList.remove('free'); $('i', freeNode).className = 'dj-dot dj-dot--confirmed'; $('em', freeNode).textContent = 'ЧБК'; }
+      var freeStat = $('#s-tours .stats .s.free b'); if (freeStat) freeStat.textContent = '2';
+      $('#slot-sheet').classList.remove('is-on');
+      go('s-route');
+      say('Дата закрыта: <b>Чебоксары · Терминал</b>, 140 000 ₽');
+    });
+  });
+
+  /* добавление города */
+  var addScreen = $('#s-addcity');
+  var addBtn = $('#s-addcity .dj-btn--primary[data-go="s-route"]');
+  var picked = 'Чебоксары';
+  if (addScreen) {
+    $$('.dj-card', addScreen).forEach(function (card) {
+      var nameEl = $('.dj-h2', card);
+      if (!nameEl) return;
+      card.addEventListener('click', function () {
+        $$('.dj-card', addScreen).forEach(function (c) { c.classList.remove('dj-card--accent'); });
+        card.classList.add('dj-card--accent');
+        picked = nameEl.textContent.trim();
+        if (addBtn) addBtn.textContent = 'Добавить · ' + picked;
+      });
+    });
+  }
+  if (addBtn) addBtn.addEventListener('click', function () {
+    var route = $('#s-route .route'), anchor = $('#s-route .leg[data-city="kzn"]');
+    if (route && anchor) {
+      var leg = document.createElement('div');
+      leg.className = 'leg is-new';
+      leg.setAttribute('data-city', 'new');
+      leg.innerHTML = '<div class="pin"><i class="dj-dot dj-dot--talks"></i></div>' +
+        '<div class="card dj-card"><div class="row"><div class="date talks grow">18 окт · чт</div>' +
+        '<button class="ux-status ux-draft" aria-label="Новый город — в работе" title="Новый город — в работе" data-toast="Новый город — в работе"></button></div>' +
+        '<div class="city">' + picked + '</div><div class="meta">Площадка не выбрана · 6 в базе</div></div>';
+      route.insertBefore(leg, anchor);
+      var rlist = $('#reorder-list'), ranchor = $('#reorder-list [data-city="kzn"]');
+      if (rlist && ranchor) {
+        var row = document.createElement('div');
+        row.className = 'dj-card dj-card--flat row';
+        row.setAttribute('draggable', 'true');
+        row.setAttribute('data-city', 'new');
+        row.style.padding = '12px 14px';
+        row.innerHTML = '<i class="dj-dot dj-dot--talks" style="width:11px;height:11px"></i>' +
+          '<div class="grow"><div class="dj-strong" style="color:var(--dj-text-bright)">' + picked + '</div>' +
+          '<div class="dj-label-s ux-description" style="margin-top:2px;text-transform:none;letter-spacing:0">18 окт · площадка не выбрана</div></div>' +
+          '<span class="dj-handle" data-drag-handle><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">' +
+          '<circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/>' +
+          '<circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>';
+        rlist.insertBefore(row, ranchor);
+      }
+    }
+    say('<b>' + picked + '</b> в маршруте — дата 18 окт, площадку выберем позже');
+  });
+
+  /* карта: слой промоутеров */
+  var layersBtn = $('#s-map .icon-btn.accent');
+  if (layersBtn) layersBtn.addEventListener('click', function () {
+    var map = $('#s-map .map');
+    map.classList.toggle('show-promo');
+    say(map.classList.contains('show-promo') ? 'Промоутеры рядом — 4 в радиусе 300 км' : 'Промоутеры скрыты');
+  });
+
+
+  /* перетаскивание карточек — тот же приём, что в профиле */
+  ['sections-list', 'reorder-list'].forEach(function (id) {
+    var list = document.getElementById(id);
+    if (!list) return;
+    var dragging = null, startY = 0, startTop = 0;
+
+    function items() {
+      return $$(':scope > [data-drag-handle], :scope > *', list).filter(function (el) {
+        return el.querySelector('[data-drag-handle]');
+      });
+    }
+    function rects() {
+      return items().map(function (el) {
+        var r = el.getBoundingClientRect();
+        return { el: el, top: r.top, bottom: r.bottom, mid: r.top + r.height / 2 };
+      });
+    }
+    list.addEventListener('pointerdown', function (e) {
+      var handle = e.target.closest('[data-drag-handle]');
+      if (!handle) return;
+      var card = handle.closest('[data-go], .dj-card');
+      if (!card || card.parentNode !== list) return;
+      e.preventDefault();
+      dragging = card; startY = e.clientY; startTop = card.getBoundingClientRect().top;
+      card.classList.add('dragging'); card.classList.remove('settling');
+      card.style.position = 'relative'; card.style.zIndex = 50;
+      handle.classList.add('is-dragging');
+      handle.setPointerCapture(e.pointerId);
+      document.addEventListener('pointermove', onMove);
+      document.addEventListener('pointerup', onUp);
+    });
+    function onMove(e) {
+      if (!dragging) return;
+      var dy = e.clientY - startY;
+      dragging.style.transform = 'translateY(' + dy + 'px)';
+      var rr = rects();
+      var dr = dragging.getBoundingClientRect();
+      var mid = dr.top + dr.height / 2;
+      for (var i = 0; i < rr.length; i++) {
+        var r = rr[i];
+        if (r.el === dragging) continue;
+        if (mid > r.top && mid < r.bottom) {
+          var di = Array.prototype.indexOf.call(list.children, dragging);
+          var ti = Array.prototype.indexOf.call(list.children, r.el);
+          if (di < ti) list.insertBefore(dragging, r.el.nextSibling);
+          else list.insertBefore(dragging, r.el);
+          var newTop = dragging.getBoundingClientRect().top;
+          var visualTop = startTop + dy;
+          startTop = newTop; startY = e.clientY;
+          dragging.style.transform = 'translateY(' + (visualTop - newTop) + 'px)';
+          break;
+        }
+      }
+    }
+    function onUp() {
+      if (!dragging) return;
+      var card = dragging;
+      card.classList.add('settling');
+      card.style.transform = 'translateY(0px)';
+      card.classList.remove('dragging');
+      card.style.zIndex = '';
+      var h = card.querySelector('[data-drag-handle]');
+      if (h) h.classList.remove('is-dragging');
+      dragging = null;
+      document.removeEventListener('pointermove', onMove);
+      document.removeEventListener('pointerup', onUp);
+      setTimeout(function () { card.classList.remove('settling'); card.style.position = ''; }, 240);
+    }
+  });
+
+  /* заполнить данные участника */
+  $$('[data-fill]').forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var card = btn.closest('.dj-card');
+      if (card) card.style.borderColor = 'rgba(255,255,255,0.14)';
+      var row = btn.closest('.row');
+      if (row) row.remove();
+      var missing = $('[data-party-missing]');
+      if (missing) { missing.textContent = '3 / 3'; missing.classList.remove('ux-warning'); missing.style.color = 'var(--dj-text-bright)'; }
+      var warn = $('[data-party-warn]');
+      if (warn) warn.closest(".row").remove();
+      say('Данные Кости заполнены — билеты можно оформлять');
+    });
+  });
+
+  /* правка маршрута: «Готово» применяет порядок */
+  $$('#s-reorder [data-go="s-route"]').forEach(function (btn) {
+    if (btn.textContent.trim() !== 'Готово') return;
+    btn.addEventListener('click', function () {
+      var route = $('#s-route .route');
+      if (!route) return;
+      var transfer = $('#s-route .transfer');
+      $$('#reorder-list [data-city]').forEach(function (r) {
+        var leg = $('#s-route .leg[data-city="' + r.getAttribute('data-city') + '"]');
+        if (leg) route.appendChild(leg);
+      });
+      var legs = $$('#s-route .leg');
+      if (transfer && legs.length > 1) route.insertBefore(transfer, legs[legs.length - 1]);
+      say('Порядок сохранён — даты и переезды пересчитаны');
+    });
+  });
+})();
+</script>
+<script>
+/* DJ-PROTO-LINKS — меню связывает прототипы между собой */
+(function () {
+  var HERE = location.pathname.replace(/\/$/, '');
+  var MAP = {
+    profile: '../profile/index.html',
+    chat: '../chat/index.html',
+    tours: '/proto/dj-style-tours'
+  };
+  function open(url) {
+    if (!url) return;
+    var here = HERE.replace(/\/index\.html$/, '');
+    if (here.slice(-url.split('/').pop().length) === url.split('/').pop()) return;
+    location.href = url;
+  }
+  function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+
+  all('.nav-avatar').forEach(function (el) {
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', function () { open(MAP.profile); }, true);
+  });
+  all('.nav-circle').forEach(function (el) {
+    var label = (el.getAttribute('aria-label') || '').toLowerCase();
+    if (label.indexOf('чат') > -1) el.addEventListener('click', function () { open(MAP.chat); }, true);
+  });
+  all('.services-row').forEach(function (row) {
+    var t = (row.textContent || '').trim().toLowerCase();
+    row.style.cursor = 'pointer';
+    if (t.indexOf('туры') > -1) row.addEventListener('click', function () { open(MAP.tours); }, true);
+  });
+})();
+</script>
+
+<style>
+/* межстрочное как в баблах чата: 19/21.85 ≈ 1.15 */
+.dj-body, .dj-body-s, .dj-strong, .dj-label, .dj-label-s,
+.meta, .head .sub, .head .eyebrow, .city, .date,
+.offer .sum small, .map .lab, .map .lab small, .map .callout span,
+.dj-chip, .seg button, .toast, .strip .n em, .stats span, .rule .t, .rule .note { line-height: 1.16; }
+.dj-h2, .dj-h1, .head h1, .tour-hero .name, .stats b { line-height: 1.08; }
+</style>
+<style>
+/* капс-подписи живут своей шкалой: они не должны расти вместе с основным текстом */
+.dj-label { font-size: 12px; letter-spacing: 0.06em; }
+.stat-row .dj-label, .stat-row .dj-label-s, .stat-row .s .dj-label, .stat-row .s .dj-label-s, .stats .s span {
+  font-size: 11px; letter-spacing: 0.03em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stat-row { gap: 8px; }
+.stat-row .s { flex: 1 1 0; min-width: 0; }
+.dj-label.dj-accent, .tour-hero .dj-label { font-size: 12px; letter-spacing: 0.05em; }
+/* числа и деньги не переносятся */
+.offer .sum, .stats b, .stat-row .dj-h2 { white-space: nowrap; }
+.row > .dj-strong { white-space: nowrap; }
+.row > .grow { min-width: 0; }
+.rule .t { white-space: nowrap; }
+.dj-btn { white-space: nowrap; flex-shrink: 0; }
+.dj-btn.grow { flex: 1 1 0; min-width: 0; }
+.rule .note { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+</style>
+<link rel="stylesheet" href="ux-v07.css">
+<script src="ux-v02.js"></script>
+<script>
+// Return from production to the screen from which it was opened.
+document.addEventListener('click', function(e) {
+  var entry = e.target.closest('[data-go="s-prod"]');
+  if (!entry) return;
+  var origin = entry.closest('.screen');
+  var back = document.querySelector('#s-prod .head button[data-go]');
+  if (origin && back) {
+    back.setAttribute('data-go', origin.id);
+    back.setAttribute('aria-label', origin.id === 's-new' ? 'К созданию тура' : 'К разделам');
+  }
+}, true);
+</script>
+<link rel="stylesheet" href="header.css">
+<script src="header.js"></script>
+<style>
+/* v10: equal centered metric columns in the tour card. */
+.tour-hero .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); width: 100%; gap: 8px; align-items: start; }
+.tour-hero .stats .s { min-width: 0; text-align: center; }
+.tour-hero .stats .s b, .tour-hero .stats .s span { text-align: center; }
+</style>
+</body>
+</html>

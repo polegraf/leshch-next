@@ -1,0 +1,52 @@
+  .topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; position: relative; }
+  .topbar-left { display: flex; align-items: center; gap: 2px; }
+  .topbar-logo { display: flex; align-items: center; justify-content: center; width: 44px; height: 44px; }
+  .topbar-logo img { height: 36px; width: auto; display: block; }
+  .topbar-right { display: flex; align-items: center; gap: 10px; }
+  .pro-btn {
+    display: flex; align-items: center; gap: 4px;
+    height: 44px; padding: 0 15px 0 12px; border-radius: 999px;
+    background: linear-gradient(135deg, #D8FF6E 0%, #C0FA35 100%);
+    color: #14170A; font-family: Jost, sans-serif; font-weight: 700; font-size: 13px; letter-spacing: 0.02em;
+    cursor: pointer; border: none;
+    box-shadow: 0 8px 18px -8px rgba(192,250,53,0.55), inset 0 1px 0 rgba(255,255,255,0.5);
+  }
+  .pro-btn svg { display: block; }
+  .hamburger-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 15px;
+    color: #E4E1EC; cursor: pointer; padding: 0; background: none; border: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .hamburger-btn:active { background: rgba(255,255,255,0.08); }
+  .bell-btn {
+    position: relative; display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; border-radius: 15px;
+    background: rgba(255,255,255,0.08);
+    cursor: pointer;
+  }
+  .bell-dot { position: absolute; top: 7px; right: 8px; width: 7px; height: 7px; border-radius: 50%; background: #C0FA35; box-shadow: 0 0 0 2px #0b0811; z-index: 1; }
+  .bell-btn svg { position: relative; z-index: 1; }
+  .more-wrap { position: relative; }
+  .nav-backdrop { position: fixed; inset: 0; background: rgba(6,4,11,0.55); z-index: 89; opacity: 0; pointer-events: none; transition: opacity 200ms ease; }
+  .nav-backdrop.open { opacity: 1; pointer-events: auto; }
+  .more-menu {
+    position: absolute; left: 0; top: 52px; width: 264px; z-index: 90;
+    background: linear-gradient(165deg, #1c1724 0%, #0c0a10 100%);
+    border: 1px solid rgba(255,255,255,0.14); border-radius: 20px;
+    box-shadow: 0 30px 60px -18px rgba(0,0,0,0.75);
+    overflow: hidden;
+    opacity: 0; transform: translateY(-8px) scale(0.98); pointer-events: none;
+    transition: all 200ms cubic-bezier(.2,.8,.2,1);
+  }
+  .more-menu.open { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+  .nav-item { display: flex; align-items: center; gap: 13px; padding: 14px 16px; border-bottom: 1px solid rgba(255,255,255,0.07); cursor: pointer; }
+  .nav-item:last-child { border-bottom: none; }
+  .nav-item.active { background: rgba(192,250,53,0.09); }
+  .nav-item svg { flex-shrink: 0; }
+  .nav-item span { font-size: 15px; color: #C7C3D6; }
+  .nav-item.active span { color: #C0FA35; font-weight: 600; }
+
+
+.topbar .bell-btn { border: 0; padding: 0; }
+.topbar .more-menu { max-width: calc(100vw - 88px); }

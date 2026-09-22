@@ -1,0 +1,21 @@
+/* Shared edge spacing across the assembled prototype. */
+:root{--dj-page-inset:16px;--dj-content-inset:20px}
+.screen,.app{padding-left:var(--dj-page-inset);padding-right:var(--dj-page-inset)}
+/* Chat rows previously had only 6px between counters and the card border. */
+.conv-row{padding:16px var(--dj-content-inset);gap:12px}
+.conv-top,.conv-bottom{gap:12px}
+.conv-time,.unread-badge{flex-shrink:0}
+.req-hint{padding-left:var(--dj-content-inset);padding-right:var(--dj-content-inset)}
+/* Keep disclosure headers and content aligned to the same inner edge. */
+.card-header{padding-left:var(--dj-content-inset);padding-right:var(--dj-content-inset)}
+.card-body{padding-left:var(--dj-content-inset);padding-right:var(--dj-content-inset)}
+.card-header-right .drag-handle{margin-right:0}
+.person{padding:18px var(--dj-content-inset)}
+.filter-card summary{padding-left:var(--dj-content-inset);padding-right:var(--dj-content-inset)}
+.filter-content,.tournament-content{padding-left:var(--dj-content-inset);padding-right:var(--dj-content-inset)}
+.tournament-fold summary{padding-left:var(--dj-content-inset);padding-right:78px}
+.tournament-fold .drag-handle{right:16px}
+.inline-panel{padding:var(--dj-content-inset)}
+.ux-next{padding-left:var(--dj-content-inset);padding-right:var(--dj-content-inset)}
+.leg .card{padding-left:var(--dj-content-inset);padding-right:var(--dj-content-inset)}
+@media(max-width:360px){:root{--dj-page-inset:12px;--dj-content-inset:16px}.conv-row{gap:10px}.tournament-fold .drag-handle{right:12px}.tournament-fold summary{padding-right:72px}}
