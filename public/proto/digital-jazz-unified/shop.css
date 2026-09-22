@@ -31,3 +31,5 @@
 .inline-panel .shop-detail .preview-cover{height:80px}
 .inline-panel .shop-detail:has(.tryon-caption) .preview-cover{height:120px}
 @media(max-width:360px){.inline-panel{padding:16px}}
+.merch-preview{width:100%;min-height:216px;background:var(--dj-bg-raised);border:1px solid var(--dj-line);border-radius:var(--dj-r-card);display:grid;place-items:center;padding:18px;color:var(--dj-text-faint)}
+.merch-preview svg{width:100%;height:155px;stroke:none}.merch-preview .garment{fill:#242129;stroke:#726b80;stroke-width:1.5}.merch-preview text{fill:var(--dj-lime);font:600 18px Jost,sans-serif}.merch-preview.white .garment{fill:#e6e6f0}.merch-preview.white text,.merch-preview.lime text{fill:#14170a}.merch-preview.lime .garment{fill:var(--dj-lime)}.merch-preview small{font-size:10px;letter-spacing:.18em}.plan-preview{min-height:166px;color:var(--dj-text-body)}.plan-preview strong{letter-spacing:0;font-size:28px}
