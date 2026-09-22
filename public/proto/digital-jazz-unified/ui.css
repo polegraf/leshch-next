@@ -3,13 +3,13 @@
 
 /* v02: compact expandable cards with an independent reorder handle. */
 .tournament-fold{position:relative;padding:0;overflow:hidden}
-.tournament-fold summary{display:flex;align-items:center;gap:10px;min-height:80px;padding:14px 14px 14px 48px;cursor:pointer;list-style:none}
-.tournament-fold summary::-webkit-details-marker{display:none}
+.tournament-fold > details > summary{display:flex;align-items:center;gap:10px;min-height:80px;padding:14px 14px 14px 48px;cursor:pointer;list-style:none}
+.tournament-fold > details > summary::-webkit-details-marker{display:none}
 .tournament-title{display:grid;gap:4px;flex:1;min-width:0}
 .tournament-title strong{font-size:20px;line-height:1.2;font-weight:600;overflow-wrap:anywhere}
 .tournament-title .caption{line-height:1.25}
 .fold-chevron{font-size:20px;color:var(--dj-text-faint);transition:transform .15s}
-.tournament-fold details[open] .fold-chevron{transform:rotate(180deg)}
+.tournament-fold > details[open] > summary > .fold-chevron{transform:rotate(180deg)}
 .tournament-content{display:grid;gap:14px;padding:16px 18px 18px;border-top:1px solid var(--dj-line)}
 .tournament-rules{display:grid;gap:8px}
 .drag-handle{position:absolute;left:3px;top:18px;width:44px;height:44px;display:grid;place-items:center;background:transparent;border:0;border-radius:12px;color:var(--dj-text-quiet);touch-action:none;cursor:grab;z-index:1}

@@ -1,11 +1,21 @@
 /* Disclosure controls copied from the interactive profile reference. */
 :root{--dj-disclosure-color:#ADA6C7;--dj-grip-color:#6E6890;--dj-disclosure-size:27px;--dj-disclosure-gap:14px}
-.tournament-fold summary{position:relative;padding:14px 125px 14px 20px;min-height:80px}
-.tournament-fold summary .fold-chevron{position:absolute;right:20px;top:calc(50% - 13.5px)}
+.tournament-fold > details > summary{position:relative;padding:14px 125px 14px 20px;min-height:80px}
+.tournament-fold > details > summary .fold-chevron{position:absolute;right:20px;top:calc(50% - 13.5px)}
 .tournament-fold .drag-handle{left:auto;right:61px;top:18px;width:44px;height:44px;margin:0;color:var(--dj-grip-color)}
 .tournament-fold .drag-handle:hover,.tournament-fold.is-dragging .drag-handle{color:var(--dj-grip-color)}
 .tournament-fold .drag-handle svg{width:27px;height:27px;fill:currentColor;stroke:none}
-.filter-card summary .fold-chevron,.tournament-fold summary .fold-chevron,.choice-trigger svg{width:var(--dj-disclosure-size);height:var(--dj-disclosure-size);flex:0 0 var(--dj-disclosure-size);color:var(--dj-disclosure-color);stroke:var(--dj-disclosure-color);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;transition:transform 260ms ease}
+.filter-card summary .fold-chevron,.tournament-fold > details > summary .fold-chevron,.choice-trigger svg{width:var(--dj-disclosure-size);height:var(--dj-disclosure-size);flex:0 0 var(--dj-disclosure-size);color:var(--dj-disclosure-color);stroke:var(--dj-disclosure-color);stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;transition:transform 260ms ease}
 .filter-card summary,.choice-trigger{padding-right:20px;gap:14px}
 .filter-card summary .fold-chevron{margin-left:0}
-@media(prefers-reduced-motion:reduce){.filter-card summary .fold-chevron,.tournament-fold summary .fold-chevron,.choice-trigger svg{transition:none}}
+@media(prefers-reduced-motion:reduce){.filter-card summary .fold-chevron,.tournament-fold > details > summary .fold-chevron,.choice-trigger svg{transition:none}}
+/* Only the immediate disclosure owns its arrow and open state. */
+.stage-disclosure > summary{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px 20px;position:static;list-style:none}
+.stage-disclosure > summary::-webkit-details-marker{display:none}
+.stage-disclosure > summary > span{min-width:0;flex:1}
+.stage-disclosure > summary > .stage-chevron{position:static;flex:0 0 27px;width:27px;height:27px;margin:0;transform:none}
+.stage-disclosure[open] > summary > .stage-chevron{transform:rotate(180deg)}
+.stage-disclosure:not([open]) > summary > .stage-chevron{transform:none}
+.example-round:not(.stage-disclosure)>summary{display:flex;align-items:center;justify-content:space-between;gap:14px;list-style:none}
+.example-round:not(.stage-disclosure)>summary>.stage-chevron{width:27px;height:27px;flex:0 0 27px;fill:none;stroke:#ADA6C7;stroke-width:2}
+.example-round[open]:not(.stage-disclosure)>summary>.stage-chevron{transform:rotate(180deg)}

@@ -13,9 +13,9 @@
 .person{padding:18px var(--dj-content-inset)}
 .filter-card summary{padding-left:var(--dj-content-inset);padding-right:var(--dj-content-inset)}
 .filter-content,.tournament-content{padding-left:var(--dj-content-inset);padding-right:var(--dj-content-inset)}
-.tournament-fold summary{padding-left:var(--dj-content-inset);padding-right:78px}
+.tournament-fold > details > summary{padding-left:var(--dj-content-inset);padding-right:78px}
 .tournament-fold .drag-handle{right:16px}
 .inline-panel{padding:var(--dj-content-inset)}
 .ux-next{padding-left:var(--dj-content-inset);padding-right:var(--dj-content-inset)}
 .leg .card{padding-left:var(--dj-content-inset);padding-right:var(--dj-content-inset)}
-@media(max-width:360px){:root{--dj-page-inset:12px;--dj-content-inset:16px}.conv-row{gap:10px}.tournament-fold .drag-handle{right:12px}.tournament-fold summary{padding-right:72px}}
+@media(max-width:360px){:root{--dj-page-inset:12px;--dj-content-inset:16px}.conv-row{gap:10px}.tournament-fold .drag-handle{right:12px}.tournament-fold > details > summary{padding-right:72px}}
