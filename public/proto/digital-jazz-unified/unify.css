@@ -74,3 +74,8 @@ tbody th{white-space:nowrap}
 .strip .nodes{justify-content:stretch}
 .strip .nodes .n{flex:1 1 0;min-width:0}
 .strip .wire{left:6.25%;right:6.25%;top:4.5px}
+
+/* Search/discovery categories retain label width and scroll on narrow screens. */
+.seg:has(> button[data-action="type"]){overflow-x:auto;max-width:100%;scrollbar-width:none}
+.seg:has(> button[data-action="type"])::-webkit-scrollbar{display:none}
+.seg > button[data-action="type"]{flex:1 0 auto;min-width:max-content;padding-inline:16px;white-space:nowrap}
