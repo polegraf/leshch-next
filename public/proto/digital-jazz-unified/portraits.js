@@ -1,0 +1,3 @@
+function djPortrait(name,linked=true){const judges={'Судья Пульс':'judge-mclis','Судья Контур':'judge-iv','Судья Искра':'judge-arina','Судья Вектор':'judge-tactics','Судья Спектр':'judge-chagin'};const match=name.match(/^Участник ([A-H])$/);const key=judges[name]||(match?'participant-'+match[1].toLowerCase():null);const img=key?`<img class="dj-person-portrait" src="assets/portraits/${key}.png" alt="Иллюстративный портрет: ${name}" loading="lazy">`:'';return linked&&key?`<a class="dj-profile-link" href="person.html?name=${encodeURIComponent(name)}#tournaments" aria-label="Профиль: ${name}">${img}</a>`:img;}
+function djPersonName(name){return `<a class="dj-profile-name" href="person.html?name=${encodeURIComponent(name)}#tournaments">${name}</a>`;}
+

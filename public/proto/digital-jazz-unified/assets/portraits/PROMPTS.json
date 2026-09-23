@@ -1,0 +1,70 @@
+{
+  "tool": "built-in image_gen",
+  "portraits": [
+    {
+      "id": "participant-a",
+      "subject": "young adult male beatmaker, close cropped hair, subtle stubble, headphones around neck",
+      "prompt": "Single square illustrated portrait avatar for music battle app. Fictional young adult male beatmaker, close cropped hair, subtle stubble, headphones around neck. One head and shoulders, centered full head, circular crop safe, face clearly readable at small size. Premium graphic novel black ink illustration, realistic human anatomy and expressive facial details, gritty ink crosshatching. Neon violet left rim light, acid lime right rim light, near-black background, subtle splatter. Bright legible face, natural skin undertones. Palette #06040B #A375FF #C0FA35. No text, logo, frame, collage or other people."
+    },
+    {
+      "id": "participant-b",
+      "subject": "young adult male musician with dark curly hair, clean shaven, headphones around neck",
+      "prompt": "Single square illustrated portrait avatar for music battle app. Fictional young adult male musician with dark curly hair, clean shaven, headphones around neck. One head and shoulders, centered full head, circular crop safe, face clearly readable at small size. Premium graphic novel black ink illustration, realistic human anatomy and expressive facial details, gritty ink crosshatching. Neon violet left rim light, acid lime right rim light, near-black background, subtle splatter. Bright legible face, natural skin undertones. Palette #06040B #A375FF #C0FA35. No text, logo, frame, collage or other people."
+    },
+    {
+      "id": "participant-c",
+      "subject": "adult woman singer with a short platinum bob, strong expressive eyes",
+      "prompt": "Single square illustrated portrait avatar for music battle app. Fictional adult woman singer with a short platinum bob, strong expressive eyes. One head and shoulders, centered full head, circular crop safe, face clearly readable at small size. Premium graphic novel black ink illustration, realistic human anatomy and expressive facial details, gritty ink crosshatching. Neon violet left rim light, acid lime right rim light, near-black background, subtle splatter. Bright legible face, natural skin undertones. Palette #06040B #A375FF #C0FA35. No text, logo, frame, collage or other people."
+    },
+    {
+      "id": "participant-d",
+      "subject": "adult male singer with dark skin, neat short textured hair",
+      "prompt": "Single square illustrated portrait avatar for music battle app. Fictional adult male singer with dark skin, neat short textured hair. One head and shoulders, centered full head, circular crop safe, face clearly readable at small size. Premium graphic novel black ink illustration, realistic human anatomy and expressive facial details, gritty ink crosshatching. Neon violet left rim light, acid lime right rim light, near-black background, subtle splatter. Bright legible face, natural skin undertones. Palette #06040B #A375FF #C0FA35. No text, logo, frame, collage or other people."
+    },
+    {
+      "id": "participant-e",
+      "subject": "adult woman vocalist with long dark braids and small hoop earrings",
+      "prompt": "One square portrait avatar for Digital Jazz. Fictional adult woman vocalist with long dark braids and small hoop earrings. Centered head and shoulders, entire head with margin for circular crop. Premium graphic novel black ink illustration, realistic expressive face clearly lit, detailed crosshatching. Violet left rim light, acid lime right rim light on near black background with subtle splatter. Palette #06040B #A375FF #C0FA35 and natural skin undertones. No words, logo, borders or collage. One person only."
+    },
+    {
+      "id": "participant-f",
+      "subject": "adult male vocalist with wavy auburn hair and freckles",
+      "prompt": "One square portrait avatar for Digital Jazz. Fictional adult male vocalist with wavy auburn hair and freckles. Centered head and shoulders, entire head with margin for circular crop. Premium graphic novel black ink illustration, realistic expressive face clearly lit, detailed crosshatching. Violet left rim light, acid lime right rim light on near black background with subtle splatter. Palette #06040B #A375FF #C0FA35 and natural skin undertones. No words, logo, borders or collage. One person only."
+    },
+    {
+      "id": "participant-g",
+      "subject": "adult woman singer with East Asian features and a dark blunt fringe",
+      "prompt": "One square portrait avatar for Digital Jazz. Fictional adult woman singer with East Asian features and a dark blunt fringe. Centered head and shoulders, entire head with margin for circular crop. Premium graphic novel black ink illustration, realistic expressive face clearly lit, detailed crosshatching. Violet left rim light, acid lime right rim light on near black background with subtle splatter. Palette #06040B #A375FF #C0FA35 and natural skin undertones. No words, logo, borders or collage. One person only."
+    },
+    {
+      "id": "participant-h",
+      "subject": "adult male singer with shoulder-length hair and a trimmed beard",
+      "prompt": "One square portrait avatar for Digital Jazz. Fictional adult male singer with shoulder-length hair and a trimmed beard. Centered head and shoulders, entire head with margin for circular crop. Premium graphic novel black ink illustration, realistic expressive face clearly lit, detailed crosshatching. Violet left rim light, acid lime right rim light on near black background with subtle splatter. Palette #06040B #A375FF #C0FA35 and natural skin undertones. No words, logo, borders or collage. One person only."
+    },
+    {
+      "id": "judge-mclis",
+      "subject": "mature male music producer, shaved head, beard, dark minimalist jacket",
+      "prompt": "One square portrait avatar for Digital Jazz. Fictional mature male music producer, shaved head, beard, dark minimalist jacket. Centered head and shoulders, entire head with margin for circular crop. Premium graphic novel black ink illustration, realistic expressive face clearly lit, detailed crosshatching. Violet left rim light, acid lime right rim light on near black background with subtle splatter. Palette #06040B #A375FF #C0FA35 and natural skin undertones. No words, logo, borders or collage. One person only."
+    },
+    {
+      "id": "judge-iv",
+      "subject": "adult male music producer, swept back hair, round eyeglasses, calm expression",
+      "prompt": "One square portrait avatar for Digital Jazz. Fictional adult male music producer, swept back hair, round eyeglasses, calm expression. Centered head and shoulders, entire head with margin for circular crop. Premium graphic novel black ink illustration, realistic expressive face clearly lit, detailed crosshatching. Violet left rim light, acid lime right rim light on near black background with subtle splatter. Palette #06040B #A375FF #C0FA35 and natural skin undertones. No words, logo, borders or collage. One person only."
+    },
+    {
+      "id": "judge-arina",
+      "subject": "adult woman vocal coach, wavy shoulder length hair, assured calm expression",
+      "prompt": "One square portrait avatar for Digital Jazz. Fictional adult woman vocal coach, wavy shoulder length hair, assured calm expression. Centered head and shoulders, entire head with margin for circular crop. Premium graphic novel black ink illustration, realistic expressive face clearly lit, detailed crosshatching. Violet left rim light, acid lime right rim light on near black background with subtle splatter. Palette #06040B #A375FF #C0FA35 and natural skin undertones. No words, logo, borders or collage. One person only."
+    },
+    {
+      "id": "judge-tactics",
+      "subject": "adult male scratch DJ, baseball cap, short beard, focused expression",
+      "prompt": "One square portrait avatar for Digital Jazz. Fictional adult male scratch DJ, baseball cap, short beard, focused expression. Centered head and shoulders, entire head with margin for circular crop. Premium graphic novel black ink illustration, realistic expressive face clearly lit, detailed crosshatching. Violet left rim light, acid lime right rim light on near black background with subtle splatter. Palette #06040B #A375FF #C0FA35 and natural skin undertones. No words, logo, borders or collage. One person only."
+    },
+    {
+      "id": "judge-chagin",
+      "subject": "adult male DJ, short silver hair, clean shaven, confident expression",
+      "prompt": "One square portrait avatar for Digital Jazz. Fictional adult male DJ, short silver hair, clean shaven, confident expression. Centered head and shoulders, entire head with margin for circular crop. Premium graphic novel black ink illustration, realistic expressive face clearly lit, detailed crosshatching. Violet left rim light, acid lime right rim light on near black background with subtle splatter. Palette #06040B #A375FF #C0FA35 and natural skin undertones. No words, logo, borders or collage. One person only."
+    }
+  ]
+}

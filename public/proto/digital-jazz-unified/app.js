@@ -2,12 +2,12 @@
 // Independent local prototype. No network writes, payments or real messages.
 const $ = s => document.querySelector(s);
 const people = [
- {name:'DJ Tactics',city:'Москва',role:'Диджей',genre:'Хип-хоп',initials:'DT'},
- {name:'Dj Chagin',city:'Москва',role:'Диджей',genre:'Электроника',initials:'DC'},
- {name:'Iv Kovalenko',city:'Санкт-Петербург',role:'Композитор',genre:'Поп',initials:'IK'},
- {name:'M Clis',city:'Москва',role:'Битмейкер',genre:'Хип-хоп',initials:'MC'},
- {name:'Арина Полонская',city:'Санкт-Петербург',role:'Вокалист',genre:'Поп',initials:'АП'},
- {name:'Sergey Sanchez',city:'Москва',role:'Диджей',genre:'Электроника',initials:'SS'}
+ {name:'Судья Вектор',city:'Москва',role:'Диджей',genre:'Хип-хоп',initials:'DT'},
+ {name:'Судья Спектр',city:'Москва',role:'Диджей',genre:'Электроника',initials:'DC'},
+ {name:'Судья Контур',city:'Санкт-Петербург',role:'Композитор',genre:'Поп',initials:'IK'},
+ {name:'Судья Пульс',city:'Москва',role:'Битмейкер',genre:'Хип-хоп',initials:'MC'},
+ {name:'Судья Искра',city:'Санкт-Петербург',role:'Вокалист',genre:'Поп',initials:'АП'},
+ {name:'Артист Ритм',city:'Москва',role:'Диджей',genre:'Электроника',initials:'SS'}
 ];
 const products=[
 {id:'theme',name:'Digital Jazz',category:'Темы',price:0,owned:true,art:'classic',label:'DJ'},
