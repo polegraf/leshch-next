@@ -21,7 +21,7 @@ const sync=()=>{const s=location.hash.slice(1)||'tournaments';wrap.hidden=!(s===
 /* заголовок списка скрываем визуально (h1 остаётся для скринридера) */
 function tidy(){const main=document.querySelector('#main');if(!main)return;const s=location.hash.slice(1)||'tournaments';if(s!=='tournaments')return;
  main.querySelectorAll(':scope>.heading,.aud-heading').forEach(h=>{const t=h.querySelector('h1');if(t)t.classList.add('visually-hidden');h.querySelectorAll(':scope>p,:scope>div>p').forEach(p=>p.remove());
-  if(![...h.children].some(c=>!c.classList.contains('visually-hidden')))h.classList.add('visually-hidden');else h.classList.add('heading-actions');});}
+  if(h.classList.contains('aud-heading')||![...h.children].some(c=>!c.classList.contains('visually-hidden')&&c.textContent.trim()))h.classList.add('visually-hidden');else h.classList.add('heading-actions');});}
 const prev=render;render=function(){prev();tidy();sync();};
 render();
 })();
