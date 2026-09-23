@@ -155,3 +155,10 @@ svg.aud-all-mark{width:28px;height:28px;fill:none;stroke:currentColor;stroke-wid
 @media(max-width:370px){.role-btn{font-size:14px;padding:0 6px 0 10px}.role-wrap{margin-left:0}}
 /* заголовок списка скрыт — остаются только действия справа */
 .heading.heading-actions{justify-content:flex-end;margin-bottom:0}
+
+/* v64: жюри и приз — одна сетка: подпись | текст с одного отступа | лица справа; строки одной высоты */
+.t-card-facts{gap:4px}
+.t-card-facts>div{grid-template-columns:52px minmax(0,1fr);min-height:40px}
+.t-card-facts dd{justify-content:space-between;gap:12px}
+.t-card-facts dt{line-height:1}
+.t-card-names{flex:1 1 auto}
