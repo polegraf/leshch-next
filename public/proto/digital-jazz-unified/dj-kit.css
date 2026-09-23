@@ -156,9 +156,9 @@ svg.aud-all-mark{width:28px;height:28px;fill:none;stroke:currentColor;stroke-wid
 /* заголовок списка скрыт — остаются только действия справа */
 .heading.heading-actions{justify-content:flex-end;margin-bottom:0}
 
-/* v64: жюри и приз — одна сетка: подпись | текст с одного отступа | лица справа; строки одной высоты */
-.t-card-facts{gap:4px}
-.t-card-facts>div{grid-template-columns:52px minmax(0,1fr);min-height:40px}
-.t-card-facts dd{justify-content:space-between;gap:12px}
-.t-card-facts dt{line-height:1}
-.t-card-names{flex:1 1 auto}
+/* v65: жюри и приз — две плотные строки на общей базовой линии; лица справа на обе строки */
+.t-card-facts{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;margin:8px 0 0;padding-top:12px;border-top:1px solid rgba(255,255,255,.07)}
+.t-card-facts>div{display:block;min-height:0}
+.t-card-facts dl{display:grid;grid-template-columns:52px minmax(0,1fr);align-items:baseline;column-gap:10px;row-gap:4px;margin:0;min-width:0}
+.t-card-facts dt{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--dj-text-faint);line-height:1.3}
+.t-card-facts dd{display:block;margin:0;font-size:17px;line-height:1.3;color:var(--dj-text);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
