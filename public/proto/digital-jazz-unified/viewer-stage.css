@@ -3,4 +3,4 @@
 .aud-heading h1{font-size:var(--dj-type-title);line-height:1.12;margin-top:0;letter-spacing:-.02em}.aud-heading{gap:8px}
 
 .battle-link{display:block;text-align:center;text-decoration:none;padding:14px 18px}.aud-event-body>.battle-link{margin-bottom:16px}
-.aud-event-link{display:block}.aud-event-link:focus-visible{outline-offset:-4px}.aud-highlight{font-size:17px;color:var(--dj-text-muted);line-height:1.15;padding-left:12px;border-left:2px solid var(--dj-lime)}.aud-forward{flex:0 0 27px;color:var(--dj-text-faint);font-size:26px}
+.aud-event-link{display:block}.aud-event-link:focus-visible{outline-offset:-4px}.aud-forward{flex:0 0 27px;color:var(--dj-text-faint);font-size:26px}

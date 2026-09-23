@@ -6,5 +6,4 @@ roleBody=function(id){
  if(pageRole==='Судья')return results+judgeMonitor(id);
  return results+`<section class="role-panel"><h3>Работы участников</h3>${[['B','magnetic-demo.mp4'],['A','beat-demo.mp4']].map(([name,file])=>`<div class="demo-work"><div class="battle-roster-person">${djPortrait('Участник '+name)}<h3>${djPersonName('Участник '+name)}</h3></div><video controls playsinline preload="metadata" src="assets/${file}" aria-label="Работа участника ${name}"></video></div>`).join('')}</section>`;
 };
-expandedTournaments.add(4);
 render();

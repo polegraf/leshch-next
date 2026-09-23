@@ -1,0 +1,125 @@
+/* v57 — общие компоненты: плеер, оценка, подтверждения, переключатель ролей. Токены — из tokens.css, как в чате и профиле. */
+.visually-hidden{position:absolute!important;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ---- тёмный аудиоплеер: круг лайм 44 + дорожка 6 + время ---- */
+.dj-player{display:grid;grid-template-columns:44px minmax(0,1fr) auto;align-items:center;gap:12px;min-height:60px;padding:8px 14px 8px 8px;border:1px solid var(--dj-line);border-radius:999px;background:rgba(255,255,255,.04)}
+.dj-player-btn{width:44px;height:44px;border:0;border-radius:50%;display:grid;place-items:center;background:var(--dj-lime);color:var(--dj-lime-ink);cursor:pointer;padding:0}
+.dj-player-btn svg{width:20px;height:20px;fill:currentColor}
+.dj-player-btn:focus-visible{outline:2px solid #F7F6FA;outline-offset:2px}
+.dj-player-track{position:relative;height:24px;cursor:pointer;display:flex;align-items:center}
+.dj-player-track::before{content:"";position:absolute;left:0;right:0;height:6px;border-radius:3px;background:rgba(255,255,255,.16)}
+.dj-player-track i{position:relative;height:6px;width:0;border-radius:3px;background:var(--dj-lime)}
+.dj-player-track:focus-visible{outline:2px solid var(--dj-lime);outline-offset:2px;border-radius:4px}
+.dj-player-time{font-size:14px;color:var(--dj-text-faint);font-variant-numeric:tabular-nums;white-space:nowrap}
+.dj-player.is-playing{border-color:var(--dj-lime-line)}
+
+/* ---- оценка: прочерк до касания ---- */
+.score-form{display:grid;gap:12px}
+.score-work{display:grid;gap:10px}
+.score-fields{margin:0;padding:0;border:0;min-width:0}
+.score-fields[disabled]{opacity:.45}
+.score-slider.is-unset input[type=range]::-webkit-slider-runnable-track{background:var(--dj-line-3)}
+.score-slider.is-unset input[type=range]::-webkit-slider-thumb{background:#0B0811;box-shadow:inset 0 0 0 2px var(--dj-text-quiet)}
+.score-slider.is-unset input[type=range]::-moz-range-thumb{background:#0B0811;box-shadow:inset 0 0 0 2px var(--dj-text-quiet)}
+.score-slider.is-unset output{color:var(--dj-text-quiet)}
+[data-score-hint]{min-height:17px;margin:0}
+.score-form [data-score-submit][disabled]{opacity:.4;cursor:not-allowed;box-shadow:none}
+.score-done{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin:0}
+.judge-participant h3[tabindex]:focus{outline:none}
+
+/* ---- подтверждение на месте ---- */
+.mon-confirm{display:grid;gap:12px;padding:16px;border:1px solid var(--dj-lime-line);border-radius:15px;background:rgba(192,250,53,.05)}
+.mon-confirm p{margin:0;font-size:17px;line-height:1.15;color:var(--dj-text)}
+.mon-confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.mon-confirm-actions button{min-height:48px;border-radius:15px}
+.stage-undo,.mon-manage-row{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.decision{margin:8px 0 0;font-size:17px}
+.decision:focus{outline:none}
+.application-card .text-button{padding:4px 0}
+
+/* ---- участник: задача первой ---- */
+.task-deadline{margin:4px 0 8px;font-size:17px}
+.task-text{margin:0 0 12px;font-size:19px;line-height:1.15;color:var(--dj-text)}
+.upload-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.upload-actions .primary{gap:10px}
+.upload-actions .primary svg{width:20px;height:20px}
+.participant-progress{margin-top:16px}
+.participant-monitor h4{margin:16px 0 8px;font-size:17px;color:#F7F6FA}
+
+/* ---- линия этапов сверху карточки турнира ---- */
+.card-rail{margin:0 0 16px}
+
+/* ---- переключатель ролей: сегмент чата, пункты — ссылки ---- */
+.role-hub{margin:0 0 16px}
+.role-hub{gap:2px}
+.role-hub a{flex:1 1 auto;min-width:0;min-height:44px;display:flex;align-items:center;justify-content:center;padding:10px 8px;border-radius:999px;color:#9A94B3;font:500 16px/1.15 Jost,sans-serif;text-decoration:none;white-space:nowrap}
+.role-hub a[aria-current=page]{background:#C0FA35;color:#14170A;font-weight:600}
+.role-hub a:focus-visible{outline:2px solid var(--dj-lime);outline-offset:-2px}
+@media(max-width:360px){.role-hub a{font-size:15px;padding-inline:6px}}
+.role-filter{margin:0 0 16px}
+.role-label{color:var(--dj-violet)}
+.aud-stage>.role-hub{margin-top:16px}
+
+/* ---- черновик ---- */
+.draft-card{display:grid;gap:8px;margin-bottom:12px;border-style:dashed}
+.draft-card h3,.draft-card p{margin:0}
+
+/* ---- мастер в режиме настроек ---- */
+.step-nav{flex-wrap:wrap;gap:8px;margin:4px 0 8px}
+
+/* v58: обложка-кроп для публичного турнира, чтобы не повторять кадр «Нового голоса» */
+.aud-cover,.battle-cover{overflow:hidden}
+img.crop-left{transform:scale(1.75);transform-origin:14% 42%}
+
+/* v58: тизер-видео вместо обложки */
+.battle-cover>video.battle-cover-video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.battle-performance video[src*="scratch/"]{height:auto;aspect-ratio:720/544;object-fit:cover}
+
+/* ===== v60: карточка турнира — одна для главной и списков ролей ===== */
+.t-card{overflow:hidden;border-radius:22px;border:1px solid var(--dj-line);background:var(--dj-card);box-shadow:var(--dj-shadow-card)}
+.t-card+.t-card,.stack>.t-card{margin-top:0}
+.t-card-link{display:block;color:inherit;text-decoration:none}
+.t-card-link:focus-visible{outline:2px solid var(--dj-lime);outline-offset:-3px;border-radius:22px}
+.t-card-cover{position:relative;aspect-ratio:16/9;background:var(--dj-bg-raised);overflow:hidden}
+.t-card-cover>img{width:100%;height:100%;object-fit:cover;display:block}
+.t-card-status{position:absolute;left:12px;bottom:12px;max-width:calc(100% - 24px)}
+.t-card.done .t-card-cover>img{filter:saturate(.55) brightness(.8)}
+.t-card-body{display:grid;gap:10px;padding:18px 20px 20px}
+.t-card-body>.caption{margin:0}
+.t-card-title{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.t-card-title h3{margin:0;font-size:28px;line-height:1.08;color:#F7F6FA}
+/* даты — крупно */
+.t-card-date{margin:0;font-size:24px;font-weight:600;line-height:1.1;color:#C0FA35;font-variant-numeric:tabular-nums}
+.t-card.announce .t-card-date{color:#A375FF}
+.t-card.done .t-card-date{color:var(--dj-text-2)}
+.t-card-facts{display:grid;gap:8px;padding-top:10px;border-top:1px solid rgba(255,255,255,.07)}
+.t-card-jury,.t-card-prize{display:flex;align-items:center;gap:10px;margin:0;font-size:16px;line-height:1.15;color:var(--dj-text-2);min-width:0}
+.t-card-jury>span:last-child,.t-card-prize span{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.t-card-faces{display:flex;flex:0 0 auto}
+.t-card-faces .dj-person-portrait{width:28px;height:28px;border-radius:50%;object-fit:cover;border:2px solid #0B0811;display:block}
+.t-card-faces .dj-person-portrait+.dj-person-portrait{margin-left:-8px}
+.t-card-prize svg{width:22px;height:22px;flex:0 0 22px;fill:none;stroke:#C0FA35;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.t-card-role{margin:2px 0 0;font-size:16px;color:var(--dj-text)}
+.stack:has(>.t-card){display:grid;gap:14px}
+#aud-events:has(.t-card){display:grid;gap:14px}
+
+/* главная: дата в герое */
+.t-hero-date{margin:0;font-size:28px;font-weight:600;line-height:1.1;color:#C0FA35}
+
+/* ===== страница турнира в разделе роли ===== */
+.t-page{display:grid;gap:22px}
+.t-page .battle-back{margin-bottom:-10px}
+.t-page-date{margin:0;font-size:28px!important;font-weight:600;line-height:1.1;color:#C0FA35}
+.t-page-cover h1{margin:0}
+.t-page-body{display:grid;gap:14px}
+.t-page-jury{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
+.t-page-judge{display:grid;justify-items:center;gap:8px;padding:16px;border:1px solid var(--dj-line);border-radius:22px;background:var(--dj-card);text-align:center}
+.t-page-judge .dj-person-portrait{width:72px;height:72px;border-radius:50%;object-fit:cover}
+.t-page-judge .dj-profile-link{display:block}
+.t-page-judge h3{margin:0;font-size:17px}
+.t-page-prizes{display:grid;gap:10px}
+.t-page-prize{display:grid;gap:4px;padding:16px;border:1px solid var(--dj-line);border-radius:15px;background:var(--dj-card)}
+.t-page-prize strong{font-size:19px;color:#F7F6FA}
+
+/* бейдж статуса на обложке — как на главной, чтобы работал и на страницах ролей */
+.t-card .aud-badge,.t-page .aud-badge{display:inline-flex;border:1px solid var(--dj-line);border-radius:999px;background:rgba(6,4,11,.88);padding:8px 12px;font-size:14px;color:var(--dj-text)}

@@ -2,12 +2,12 @@
 // Independent local prototype. No network writes, payments or real messages.
 const $ = s => document.querySelector(s);
 const people = [
- {name:'Судья Вектор',city:'Москва',role:'Диджей',genre:'Хип-хоп',initials:'DT'},
- {name:'Судья Спектр',city:'Москва',role:'Диджей',genre:'Электроника',initials:'DC'},
- {name:'Судья Контур',city:'Санкт-Петербург',role:'Композитор',genre:'Поп',initials:'IK'},
- {name:'Судья Пульс',city:'Москва',role:'Битмейкер',genre:'Хип-хоп',initials:'MC'},
- {name:'Судья Искра',city:'Санкт-Петербург',role:'Вокалист',genre:'Поп',initials:'АП'},
- {name:'Артист Ритм',city:'Москва',role:'Диджей',genre:'Электроника',initials:'SS'}
+ {name:'Судья Вектор',city:'Москва',role:'Диджей',genre:'Хип-хоп',initials:'СВ'},
+ {name:'Судья Спектр',city:'Москва',role:'Диджей',genre:'Электроника',initials:'СС'},
+ {name:'Судья Контур',city:'Санкт-Петербург',role:'Композитор',genre:'Поп',initials:'СК'},
+ {name:'Судья Пульс',city:'Москва',role:'Битмейкер',genre:'Хип-хоп',initials:'СП'},
+ {name:'Судья Искра',city:'Санкт-Петербург',role:'Вокалист',genre:'Поп',initials:'СИ'},
+ {name:'Артист Ритм',city:'Москва',role:'Диджей',genre:'Электроника',initials:'АР'}
 ];
 const products=[
 {id:'theme',name:'Digital Jazz',category:'Темы',price:0,owned:true,art:'classic',label:'DJ'},
@@ -28,7 +28,7 @@ const state={section:'search',type:'Создатели',query:'',filters:{city:'
 const expandedTournaments = new Set();
 const esc=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const icons={filter:'<svg viewBox="0 0 24 24"><path d="M4 6h16M7 12h10M10 18h4"/></svg>',plus:'<svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>'};
-function tabs(items,current,action){return `<div class="${action==='type'?'search-types':'seg'}" ${action==='type'?'role="group" aria-label="Кого ищем"':''}>${items.map(x=>`<button data-action="${action}" data-value="${x}" aria-pressed="${x===current}">${x}</button>`).join('')}</div>`;}
+function tabs(items,current,action){return `<div class="seg" ${action==='type'?'role="group" aria-label="Кого ищем"':''}>${items.map(x=>`<button data-action="${action}" data-value="${x}" aria-pressed="${x===current}">${x}</button>`).join('')}</div>`;}
 function notify(text){$('#toast').textContent=text;$('#toast').classList.add('visible');clearTimeout(notify.timer);notify.timer=setTimeout(()=>$('#toast').classList.remove('visible'),3200);}
 let panelOrigin=null;
 function parkPanel(){const panel=$('#sheet');if(panel&&$('#main').contains(panel)){panel.hidden=true;document.body.append(panel);}}
@@ -44,7 +44,10 @@ function openSheet(title,content){
  else if(!$('#main').contains(panel)) (heading||$('#main')).after(panel);
  $('#sheet-title').textContent=title;$('#sheet-content').innerHTML=content;panel.hidden=false;
  document.querySelectorAll('[data-action="product"]').forEach(button=>button.setAttribute('aria-expanded',String(button===origin)));
+ revealPanel(panel);
 }
+// v54: блок, раскрытый ниже видимой зоны (под навигацией), подтягивается в видимую часть экрана.
+function revealPanel(panel){requestAnimationFrame(()=>{const r=panel.getBoundingClientRect();const nav=document.querySelector('.bottom-nav-inner');const limit=(nav?nav.getBoundingClientRect().top:innerHeight)-96;if(r.top<=limit)return;const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;scrollBy({top:r.top-Math.round(innerHeight*.3),behavior:reduce?'auto':'smooth'});});}
 function closeSheet(){const panel=$('#sheet');panel.hidden=true;document.querySelectorAll('[data-action="product"]').forEach(button=>button.setAttribute('aria-expanded','false'));if(panelOrigin?.isConnected)panelOrigin.focus({preventScroll:true});panelOrigin=null;}
 
 function results(){return state.type==='Создатели'?people.filter(p=>(p.name+' '+p.role).toLowerCase().includes(state.query.toLowerCase())&&(!state.filters.city||p.city===state.filters.city)&&(!state.filters.roles.length||state.filters.roles.includes(p.role))&&(!state.filters.genre||p.genre===state.filters.genre)):[];}
@@ -118,7 +121,7 @@ function saveTournamentOrder(list) {
 }
 document.addEventListener('toggle', e => {
   const card = e.target.closest('[data-tournament-id]');
-  if (!card || e.target.tagName !== 'DETAILS') return;
+  if (!card || e.target.tagName !== 'DETAILS' || e.target.parentElement !== card) return; // v57: вложенные раскрытия не раскрывают карточку
   const id = Number(card.dataset.tournamentId);
   if (e.target.open) expandedTournaments.add(id); else expandedTournaments.delete(id);
 }, true);

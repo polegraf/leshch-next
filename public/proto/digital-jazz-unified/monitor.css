@@ -1,0 +1,282 @@
+/* Монитор турнира. Компоненты взяты из существующих экранов:
+   линия этапов — из «Транссиба» в турах (провод лайм→фиолетовый, точки dj-dot),
+   цифры — из tours .stats, заголовок раздела — tours .rule, карточки и статусы — общие. */
+.mon{display:grid;gap:22px;padding-bottom:24px}
+.mon .battle-back{margin-bottom:-12px}
+.mon-head h1{margin:6px 0 8px;font-size:34px;line-height:1.08;letter-spacing:-.02em;color:#F7F6FA}
+.mon-eyebrow{margin:0;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint)}
+.mon-head .secondary{margin:0}
+.mon-status{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:12px 0 0}
+
+/* ---- линия этапов: липкая, на стекле плашки (blur 16 / saturate 1.3) ---- */
+.mon-rail{position:sticky;top:0;z-index:30;margin:0 -16px;padding:8px 16px;background:linear-gradient(180deg,#06040B 0,#06040B 50%,rgba(6,4,11,0) 100%)}
+.mon-rail-in{position:relative;padding:12px 14px 10px;border:1px solid var(--dj-line);border-radius:22px;background:rgba(11,8,17,.72);-webkit-backdrop-filter:blur(16px) saturate(1.3);backdrop-filter:blur(16px) saturate(1.3);box-shadow:var(--dj-shadow-card)}
+.mon-wire{position:absolute;left:36px;right:36px;top:34px;height:2px;background:linear-gradient(90deg,var(--dj-lime) 0,var(--dj-lime) var(--done),var(--dj-violet) 100%);opacity:.5}
+.mon-nodes{position:relative;display:flex;justify-content:space-between}
+.mon-node{display:flex;flex-direction:column;align-items:center;gap:6px;min-width:44px;min-height:64px;padding:4px 2px;border:0;border-radius:15px;background:none;color:inherit;cursor:pointer;font:inherit}
+.mon-node i{width:13px;height:13px;border-radius:50%;box-sizing:border-box;margin-top:5px}
+.mon-node.done i{background:var(--dj-lime)}
+.mon-node.live i{background:var(--dj-lime);box-shadow:0 0 0 5px rgba(192,250,53,.18),0 0 12px var(--dj-lime-glow)}
+.mon-node.next i{border:1.5px solid var(--dj-violet);background:var(--dj-bg-raised)}
+.mon-node em{font-style:normal;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--dj-text-2);line-height:1.15}
+.mon-node span{font-size:14px;line-height:1.15;color:var(--dj-text-4)}
+.mon-node.live span{color:var(--dj-lime)}
+.mon-node[aria-pressed=true]{background:rgba(255,255,255,.08)}
+.mon-node[aria-pressed=true] em{color:#F7F6FA}
+.mon-node:focus-visible{outline:2px solid var(--dj-lime);outline-offset:-2px}
+@media(prefers-reduced-motion:no-preference){.mon-node.live i{animation:monPulse 2.4s ease-in-out infinite}}
+@keyframes monPulse{50%{box-shadow:0 0 0 8px rgba(192,250,53,.06),0 0 12px var(--dj-lime-glow)}}
+
+/* ---- «Сейчас» ---- */
+.mon-now{display:grid;gap:10px;padding:20px}
+.mon-now h2{margin:0;font-size:32px;line-height:1.08;letter-spacing:-.02em;color:#F7F6FA}
+.mon-now .secondary{margin:0}
+.mon-live{display:flex;align-items:center;gap:8px;margin:0;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-lime)}
+.mon-live i{width:7px;height:7px;border-radius:50%;background:var(--dj-lime);box-shadow:0 0 10px var(--dj-lime-glow)}
+.mon-phases{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:8px}
+.mon-phase{display:grid;gap:6px}
+.mon-phase b{height:6px;border-radius:3px;background:rgba(255,255,255,.12)}
+.mon-phase.done b{background:var(--dj-lime)}
+.mon-phase.live b{background:linear-gradient(90deg,var(--dj-lime) var(--judged,58%),rgba(255,255,255,.12) var(--judged,58%))}
+.mon-phase span{font-size:14px;font-weight:600;color:var(--dj-text-2);line-height:1.15}
+.mon-phase.next span{color:var(--dj-text-4)}
+.mon-phase small{font-size:14px;color:var(--dj-text-faint);line-height:1.15}
+.mon-stats{display:grid;grid-template-columns:repeat(3,1fr);margin-top:10px;padding-top:14px;border-top:1px solid rgba(255,255,255,.08);text-align:center}
+.mon-stats b{display:block;font-size:32px;font-weight:600;line-height:1;color:#F7F6FA}
+.mon-stats b small{font-size:17px;font-weight:500;color:var(--dj-text-4)}
+.mon-stats span{display:block;margin-top:6px;font-size:14px;color:var(--dj-text-faint)}
+.mon-stats .lime b,.mon-stats .lime span{color:var(--dj-lime)}
+
+/* ---- разделы ---- */
+.mon-section{display:grid;gap:12px;min-width:0;scroll-margin-top:110px}
+.mon .rule{display:flex;align-items:center;gap:12px}
+.mon .rule .t{margin:0;font-size:20px;font-weight:600;line-height:1.15;color:#F7F6FA;white-space:nowrap}
+.mon .rule .line{flex:1;height:1px;background:var(--dj-line)}
+.mon .rule .note{font-size:14px;color:var(--dj-text-faint);white-space:nowrap}
+.mon-note{margin:-4px 0 0}
+
+/* внимание */
+.mon-alerts{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.mon-alert{display:grid;grid-template-columns:10px minmax(0,1fr) auto;align-items:center;gap:12px;padding:14px 14px 14px 16px;border:1px solid rgba(255,0,229,.35);border-radius:15px;background:rgba(255,0,229,.06)}
+.mon-alert.info{border-color:var(--dj-line);background:rgba(255,255,255,.04)}
+.mon-alert-dot{width:10px;height:10px;border-radius:50%;background:var(--dj-magenta)}
+.mon-alert.info .mon-alert-dot{background:var(--dj-violet)}
+.mon-alert strong{display:block;font-size:17px;font-weight:600;color:var(--dj-text);line-height:1.15}
+.mon-alert .caption{display:block;margin-top:4px;line-height:1.15}
+.mon-alert .secondary-button{min-height:44px;padding:8px 14px;font-size:16px;border-radius:999px}
+
+/* пары */
+.mon-pairs{display:grid;gap:10px}
+.mon-pair{display:grid;gap:4px;padding:14px 16px}
+.mon-pair-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px}
+.mon-pair-head .t-status{font-size:15px;color:var(--dj-text-2)}
+.mon-row{display:grid;grid-template-columns:40px minmax(0,1fr) auto;align-items:center;gap:12px;min-height:52px;border-radius:12px}
+.mon-row+.mon-row{border-top:1px solid rgba(255,255,255,.07)}
+.mon-name{display:flex;align-items:baseline;gap:8px;min-width:0;font-size:19px;font-weight:500;color:var(--dj-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mon-name small{font-size:14px;font-weight:400;color:var(--dj-text-4)}
+.mon-row.tbd .mon-name{flex-direction:column;align-items:flex-start;gap:2px;font-size:17px;color:var(--dj-text-2);white-space:normal}
+.mon-score{font-size:24px;font-weight:600;color:var(--dj-text-2);font-variant-numeric:tabular-nums}
+.mon-score.lead{color:#F7F6FA}
+.mon-row.won .mon-name,.mon-row.won .mon-score{color:var(--dj-lime)}
+.mon-row.lost .mon-name,.mon-row.lost .mon-score{color:var(--dj-text-4)}
+.mon-row.lost .mon-ava{opacity:.45}
+/* v61: «свой» участник — как активный пункт в чате: лайм 9% фоном, без полоски */
+.mon-row.is-follow{background:rgba(192,250,53,.09);margin-inline:-10px;padding-inline:10px;border-top-color:transparent}
+.mon-row.is-follow+.mon-row{border-top-color:transparent}
+.mon-pair.has-follow{border-color:var(--dj-lime-line)}
+.mon-pair.future{background:rgba(255,255,255,.03);border-style:dashed}
+.mon-next{margin:6px 0 0}
+.mon-judges{display:flex;align-items:center;gap:6px;margin-top:8px;padding-top:10px;border-top:1px solid rgba(255,255,255,.07)}
+.mon-judges .caption{margin-left:6px}
+.mon-judge{position:relative;width:32px;height:32px;border-radius:50%;overflow:visible}
+.mon-judge .dj-person-portrait{width:32px;height:32px;border-radius:50%;object-fit:cover;opacity:.4;filter:grayscale(1)}
+.mon-judge.done .dj-person-portrait{opacity:1;filter:none}
+.mon-judge i{position:absolute;right:-2px;bottom:-2px;width:12px;height:12px;border-radius:50%;border:2px solid #0B0811;background:var(--dj-violet)}
+.mon-judge.done i{background:var(--dj-lime)}
+
+/* аватары */
+.mon-ava{width:40px;height:40px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;overflow:hidden;flex:0 0 auto;font-size:17px;font-weight:600;color:#14170A}
+.mon-ava img{width:100%;height:100%;object-fit:cover}
+.mon-ava.sm{width:32px;height:32px;font-size:15px}
+.mon-ava.ghost{border:1.5px dashed var(--dj-text-4);color:var(--dj-text-4);background:none}
+
+/* таблица отбора */
+.mon-board{list-style:none;margin:0;padding:6px 16px;border:1px solid var(--dj-line);border-radius:22px;background:var(--dj-surface)}
+.mon-lb{display:grid;grid-template-columns:28px 32px minmax(0,1fr) auto;align-items:center;gap:12px;min-height:48px}
+.mon-lb+.mon-lb{border-top:1px solid rgba(255,255,255,.07)}
+.mon-rank{font-size:15px;color:var(--dj-text-faint);font-variant-numeric:tabular-nums;text-align:right}
+.mon-lb .mon-name{font-size:17px}
+.mon-lb b{font-size:19px;font-weight:600;color:var(--dj-text);font-variant-numeric:tabular-nums}
+.mon-lb b small{font-size:14px;font-weight:400;color:var(--dj-text-4)}
+.mon-lb.out .mon-name,.mon-lb.out b{color:var(--dj-text-4)}
+.mon-lb.out .mon-ava{opacity:.45}
+.mon-lb.is-follow{background:rgba(192,250,53,.09);border-radius:12px;margin-inline:-10px;padding-inline:10px;border-top-color:transparent}
+.mon-lb.is-follow+.mon-lb{border-top-color:transparent}
+.mon-cut{display:flex;align-items:center;gap:10px;min-height:44px;color:var(--dj-lime);font-size:14px;font-weight:600}
+.mon-cut::before,.mon-cut::after{content:"";flex:1;border-top:1.5px dashed var(--dj-lime-line)}
+.mon-more .mon-board{margin-top:10px}
+
+/* путь участника */
+.mon .field select{width:100%}
+.mon-path{list-style:none;margin:0;padding:0;display:grid}
+.mon-path li{position:relative;display:grid;grid-template-columns:13px minmax(0,1fr);gap:14px;padding-bottom:18px}
+.mon-path li:last-child{padding-bottom:0}
+.mon-path li::before{content:"";position:absolute;left:5.5px;top:16px;bottom:-2px;width:2px;background:linear-gradient(180deg,var(--dj-lime),var(--dj-violet));opacity:.35}
+.mon-path li:last-child::before{display:none}
+.mon-path i{width:13px;height:13px;margin-top:3px;border-radius:50%;box-sizing:border-box}
+.mon-path .done i{background:var(--dj-lime)}
+.mon-path .live i{background:var(--dj-lime);box-shadow:0 0 0 4px rgba(192,250,53,.18)}
+.mon-path .next i{border:1.5px solid var(--dj-violet)}
+.mon-path .out i{border:1.5px solid var(--dj-magenta)}
+.mon-path strong{display:block;font-size:17px;font-weight:600;color:var(--dj-text);line-height:1.15}
+.mon-path .caption{display:block;margin-top:4px;line-height:1.15}
+.mon-path .live strong{color:var(--dj-lime)}
+
+/* вся сетка: 4 колонки без горизонтальной прокрутки */
+.mon-bracket{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;padding:14px 12px;border:1px solid var(--dj-line);border-radius:22px;background:var(--dj-surface)}
+.mb-col{display:flex;flex-direction:column;min-width:0}
+.mb-title{margin:0 0 10px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--dj-text-4);text-align:center}
+.mb-col.live .mb-title{color:var(--dj-lime)}
+.mb-cells{flex:1;display:flex;flex-direction:column}
+/* слоты делят колонку поровну: слот 1/4 вдвое выше слота 1/8 — центры пар совпадают */
+.mb-slot{flex:1;position:relative;display:flex;align-items:center;padding:4px 0}
+.mb-slot>.mb-cell{flex:1;min-width:0}
+/* соединительные линии к следующей колонке */
+.mb-col:not(:last-child) .mb-slot::after{content:"";position:absolute;right:-6px;width:6px;border-right:1px solid var(--dj-text-4)}
+.mb-col:not(:last-child) .mb-slot:nth-child(odd)::after{top:50%;bottom:0;border-top:1px solid var(--dj-text-4)}
+.mb-col:not(:last-child) .mb-slot:nth-child(even)::after{top:0;bottom:50%;border-bottom:1px solid var(--dj-text-4)}
+.mb-col:not(:first-child) .mb-slot::before{content:"";position:absolute;left:-5px;top:50%;width:5px;border-top:1px solid var(--dj-text-4)}
+.mb-cell{display:grid;border:1px solid rgba(255,255,255,.14);border-radius:10px;background:var(--dj-bg-raised);overflow:hidden}
+.mb-col.live .mb-cell{border-color:var(--dj-lime-line)}
+.mb-cell.future{border-style:dashed;background:none}
+.mb-cell.f{border-color:var(--dj-lime);box-shadow:0 0 0 1px var(--dj-lime)}
+.mb-cell span{padding:3px 6px;font-size:14px;line-height:1.15;color:var(--dj-text-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mb-cell span+span{border-top:1px solid rgba(255,255,255,.07)}
+.mb-cell .won{color:var(--dj-lime);font-weight:600}
+.mb-cell .lost{color:var(--dj-text-4)}
+.mb-cell .f{background:rgba(192,250,53,.12)}
+.mb-cell .tbd{color:var(--dj-text-4)}
+
+/* впереди */
+.mon-ahead{list-style:none;margin:0;padding:0;display:grid;gap:0}
+.mon-ahead li{display:grid;grid-template-columns:100px minmax(0,1fr);gap:14px;padding:14px 0;border-top:1px solid rgba(255,255,255,.07)}
+.mon-ahead li:first-child{border-top:0;padding-top:0}
+.mon-ahead time{font-size:15px;font-weight:600;color:var(--dj-violet);line-height:1.15}
+.mon-ahead strong{display:block;font-size:17px;font-weight:600;color:var(--dj-text);line-height:1.15}
+.mon-ahead .caption{display:block;margin-top:4px;line-height:1.15}
+.mon-demo{text-align:center}
+
+@media(max-width:360px){
+ .mon-rail{margin-inline:-12px;padding-inline:12px}
+ .mon-rail-in{padding-inline:8px}
+ .mon-wire{left:28px;right:28px}
+ .mb-cell span{padding-inline:4px}
+ .mon-bracket{gap:11px;padding-inline:8px}
+ .mon-ahead li{grid-template-columns:88px minmax(0,1fr)}
+}
+
+/* ===== v56: роли ===== */
+.mon-alert.info.ready .mon-alert-dot{background:var(--dj-lime)}
+.mon-alert .primary.mon-go{min-height:44px;padding:8px 16px;font-size:16px;border-radius:999px}
+.mon-me{margin-left:2px;padding:2px 8px;border-radius:999px;background:var(--dj-lime);color:#14170A;font-style:normal;font-size:14px;font-weight:600;line-height:1.15;align-self:center}
+.mon-stats b .mon-sep{margin:0 2px}
+
+/* зритель: самая плотная пара */
+.mon-hot{display:grid;gap:14px;padding:18px}
+.mon-hot .caption{margin:0}
+.mon-hot-score{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:8px;text-align:center}
+.mon-hot-score>span{display:grid;justify-items:center;gap:8px;min-width:0}
+.mon-hot-score .mon-ava{width:56px;height:56px}
+.mon-hot-score b{font-size:17px;font-weight:600;color:var(--dj-text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.mon-hot-score strong{font-size:38px;font-weight:600;line-height:1;color:#F7F6FA;font-variant-numeric:tabular-nums}
+.mon-hot-score strong small{margin:0 4px;font-size:28px;color:var(--dj-text-4)}
+.mon-hot .primary,.mon-watch .secondary-button{text-decoration:none}
+.mon-watch{display:flex;gap:8px;margin-top:10px}
+.mon-watch .secondary-button{flex:1;min-height:44px;border-radius:999px;padding:8px 14px;font-size:16px}
+.mon-watch .chip{min-width:56px;justify-content:center;border-radius:999px}
+
+/* судья: оценка внутри пары */
+.mon-rate{margin-top:10px}
+.mon-rate form{display:grid;gap:4px;padding-top:6px}
+.mon-rate-part{margin:0;padding:12px 0 0;border:0;border-top:1px solid rgba(255,255,255,.07)}
+.mon-rate-part legend{padding:0;font-size:17px;font-weight:600;color:var(--dj-text)}
+.mon-rate .score-slider{margin:12px 0}
+.mon-rate .score-slider>span{font-size:17px}
+
+/* карточка в списке турниров */
+.mon-promo{position:relative;padding:0;overflow:hidden;border-color:var(--dj-lime-line)}
+.mon-promo-link{position:absolute;inset:0;z-index:2;border-radius:inherit}
+.mon-promo-link:focus-visible{outline:2px solid var(--dj-lime);outline-offset:-2px}
+.mon-promo-cover{display:block;width:100%;height:156px;object-fit:cover}
+.mon-promo-body{display:grid;gap:8px;padding:16px 20px 20px}
+.mon-promo-body h2{margin:0;font-size:24px;line-height:1.1;color:#F7F6FA}
+.mon-promo-body .caption{margin:0}
+.mon-promo .mon-rail{position:static;margin:6px 0 0;padding:0;background:none}
+.mon-promo .mon-rail-in{padding:10px 8px 6px;background:rgba(255,255,255,.03);box-shadow:none;backdrop-filter:none;-webkit-backdrop-filter:none}
+.mon-promo .mon-node{min-height:0;cursor:inherit}
+.mon-promo .mon-wire{top:30px}
+.mon-promo-line{margin:4px 0 6px;font-size:16px;color:var(--dj-text-2)}
+.mon-promo .primary{pointer-events:none}
+.aud-stage>.mon-promo,.aud-hero+.mon-promo{margin:0 0 28px}
+
+/* ===== v57 ===== */
+/* что дальше / очередь — информационные строки, не похожие на кнопки */
+.mon-notes{list-style:none;margin:0;padding:4px 16px;border:1px solid var(--dj-line);border-radius:22px;background:var(--dj-surface)}
+.mon-notes li{display:grid;grid-template-columns:10px minmax(0,1fr);gap:12px;align-items:start;padding:12px 0}
+.mon-notes li+li{border-top:1px solid rgba(255,255,255,.07)}
+.mon-notes i{width:10px;height:10px;margin-top:4px;border-radius:50%;border:1.5px solid var(--dj-violet)}
+.mon-notes li.ready i{background:var(--dj-lime);border-color:var(--dj-lime)}
+.mon-notes strong{display:block;font-size:17px;font-weight:600;color:var(--dj-text);line-height:1.15}
+.mon-notes .caption{display:block;margin-top:4px;line-height:1.15}
+.mon-alert .secondary-button[aria-disabled=true]{opacity:.6;cursor:default}
+
+/* управление этапом */
+.mon-manage{display:grid;gap:12px;padding:18px}
+.mon-manage .caption{margin:-4px 0 0}
+.mon-manage .primary[disabled]{opacity:.4;cursor:not-allowed;box-shadow:none}
+.mon-manage-done{margin:0}
+
+/* имена — ссылки на профиль */
+.mon-name-link{color:inherit;text-decoration:none;min-width:0;overflow:hidden;text-overflow:ellipsis}
+.mon-name-link:hover{text-decoration:underline;text-underline-offset:3px}
+.mon-name-link:focus-visible{outline:2px solid var(--dj-lime);outline-offset:2px;border-radius:4px}
+a.mon-judge{display:block}
+
+/* работы пары */
+.mon-works,.mon-rate{margin-top:10px}
+.mon-works-list{display:grid;gap:14px;padding-top:6px}
+.mon-work{display:grid;gap:8px}
+.mon-work-head{display:grid;grid-template-columns:32px minmax(0,1fr) auto;align-items:center;gap:10px}
+.mon-work-head .mon-name{font-size:17px}
+.mon-react{min-height:44px;border-radius:999px;justify-content:center;min-width:72px}
+.mon-rate-body{display:grid;gap:14px;padding-top:6px}
+.mon-rate-body .queue-participants button{grid-template-columns:32px minmax(0,1fr) auto}
+.mon-rate-body .judge-participant .mon-ava{width:48px;height:48px}
+
+/* зритель: слушают больше всего */
+.mon-hot-score strong{font-size:24px;color:var(--dj-text-4)}
+.mon-hot-score small{font-size:15px;color:var(--dj-text-2)}
+.mon-hot .primary{width:100%}
+
+.mon-pair,.mon-rate-body .judge-participant{scroll-margin-top:112px}
+
+/* v59: линия этапов проходит через центры точек в любой ширине.
+   Узлы равной ширины, у каждого свой отрезок на высоте центра точки: 4 (padding) + 5 (отступ) + 6.5 (радиус) = 15.5 px.
+   Первый отрезок начинается от центра первой точки, последний заканчивается в центре последней. */
+.mon-wire{display:none}
+.mon-nodes{justify-content:stretch}
+.mon-node{flex:1 1 auto;min-width:0;position:relative}
+.mon-node::before{content:"";position:absolute;top:14.5px;left:0;right:0;height:2px;background:var(--dj-violet);opacity:.5;z-index:0}
+.mon-node:first-child::before{left:50%}
+.mon-node:last-child::before{right:50%}
+.mon-node.done::before{background:var(--dj-lime)}
+.mon-node.live::before{background:linear-gradient(90deg,var(--dj-lime) 50%,var(--dj-violet) 50%)}
+.mon-node:last-child.live::before{background:var(--dj-lime)}
+.mon-node i{position:relative;z-index:1}
+.mon-node em,.mon-node>span{position:relative;z-index:1;white-space:nowrap}
+.mon-node[aria-pressed=true]::before{opacity:.5}
+.card-rail .mon-node em{letter-spacing:.03em}
+.card-rail .mon-rail-in{padding-inline:6px}
+/* фокус, который приложение ставит на #main после перехода, не рисует рамку */
+#main:focus{outline:none}
+@media(max-width:360px){.card-rail .mon-node em{letter-spacing:0}.card-rail .mon-rail-in{padding-inline:2px}.card-rail .mon-node{padding-inline:0}}

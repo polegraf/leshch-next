@@ -1,11 +1,17 @@
 'use strict';
+/* v57: роль видна на экране. Под заголовком «Турниры» — переключатель «Смотрю · Участвую · Сужу · Организую».
+   В одном турнире у человека одна роль, поэтому переключателя внутри турнира нет; на карточке — метка «Ты …».
+   Переключатель ролей из меню «•••» убран. */
 (()=>{
-const roles=[['organizer.html','Организатор'],['participant.html','Участник'],['judge.html','Судья'],['viewer.html','Зритель']];
-const current=document.body.dataset.tournamentRole||'Зритель';
-const anchor=document.getElementById('moreBtn');if(!anchor)return;
-const box=document.createElement('details');box.className='role-page-select';
-box.innerHTML=`<summary aria-label="Временный выбор страницы роли">${current}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><nav aria-label="Страницы ролей турнира">${roles.map(([file,label])=>`<a href="${file}#tournaments" ${label===current?'aria-current="page"':''}>${label}</a>`).join('')}</nav>`;
-anchor.insertAdjacentElement('afterend',box);
-document.addEventListener('click',e=>{if(!box.contains(e.target))box.open=false;});
-document.addEventListener('keydown',e=>{if(e.key==='Escape')box.open=false;});
+const hubs=[['index.html','Смотрю','Зритель'],['participant.html','Участвую','Участник'],['judge.html','Сужу','Судья'],['organizer.html','Организую','Организатор']];
+const role=document.body.dataset.tournamentRole||'Зритель';
+const file=location.pathname.split('/').pop()||'index.html';
+if(!hubs.some(([f])=>f===file))return;
+const hub=()=>`<nav class="seg role-hub" aria-label="Мои турниры по роли">${hubs.map(([f,label,r])=>`<a href="${f}#tournaments"${r===role?' aria-current="page"':''}>${label}</a>`).join('')}</nav>`;
+function insert(){const main=document.querySelector('#main');if(!main||main.querySelector('.role-hub'))return;
+ const sec=location.hash.slice(1)||'tournaments';if(sec!=='tournaments')return;
+ const anchor=main.querySelector(':scope>.heading')||main.querySelector('.aud-heading');if(!anchor)return;
+ anchor.insertAdjacentHTML('afterend',hub());}
+const prev=render;render=function(){prev();insert();};
+render();
 })();

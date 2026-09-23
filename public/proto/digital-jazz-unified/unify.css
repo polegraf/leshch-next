@@ -1,0 +1,76 @@
+/* v54 — сведение шапки, вкладок и кнопок-иконок. Подключается последним на всех страницах.
+   Эталон — чат и профиль (claude/ui-css.md). */
+
+/* Заголовки страниц — белые, без внутреннего сдвига */
+h1{color:#F7F6FA}
+.aud-heading{padding-left:0;padding-right:0}
+
+/* Шапка: одна строка — логотип + «•••» слева, колокол + PRO справа.
+   Переключатель ролей живёт в меню «•••» (см. role-pages.js). */
+.topbar{flex-wrap:nowrap}
+.role-page-select{display:none}
+
+/* Меню «•••»: группы прототипа в той же метрике, что и пункты с иконками */
+.proto-menu-group{border-top:1px solid rgba(255,255,255,.14);padding:4px 0}
+.proto-menu-label{margin:0;padding:12px 16px 4px;font-size:14px;line-height:1.15;color:#6E6890}
+.more-menu a.proto-menu-link{display:flex;align-items:center;min-height:46px;padding:14px 16px;border-bottom:1px solid rgba(255,255,255,.07);color:#C7C3D6;font:400 15px/1.15 Jost,sans-serif;text-decoration:none}
+.more-menu a.proto-menu-link:last-child{border-bottom:0}
+.more-menu a.proto-menu-link[aria-current=page]{color:#C0FA35;font-weight:600;background:rgba(192,250,53,.09)}
+
+/* Вкладки — сегмент из чата: капсула 5% + граница 10%, активная — лайм */
+.seg,.chips.tour-tabs{display:flex;gap:6px;padding:4px;border-radius:999px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);margin-bottom:18px}
+.seg button,.chips.tour-tabs .dj-chip{flex:1;min-width:0;min-height:44px;display:flex;align-items:center;justify-content:center;gap:7px;padding:10px 6px;border:0;border-radius:999px;background:none;color:#9A94B3;font:500 17px/1.15 Jost,sans-serif;white-space:nowrap;cursor:pointer}
+.seg button[aria-pressed=true],.chips.tour-tabs .dj-chip.is-active{background:#C0FA35;color:#14170A;font-weight:600}
+@media(max-width:360px){.seg button,.chips.tour-tabs .dj-chip{font-size:15px;padding-inline:4px}}
+
+/* Кнопки-иконки у заголовка страницы — как поиск в чате: 44, радиус 15 */
+.heading>.icon,.heading>button.icon,.head>.icon-btn{width:44px;height:44px;min-width:44px;padding:0;display:inline-flex;align-items:center;justify-content:center;border-radius:15px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);color:#C7C3D6;box-shadow:none}
+.heading>.icon svg,.head>.icon-btn svg{width:19px;height:19px}
+
+/* Чат: поле ввода не выталкивает кнопку отправки за край */
+.msg-input{min-width:0}
+
+/* Профиль: подпись свёрнутой карточки — второй строкой, а не обрезком в строке заголовка */
+.card-header-left:has(>.card-meta){flex-direction:column;align-items:flex-start;gap:4px}
+.card-header-left>.card-meta{max-width:100%}
+
+/* ===== v55 — оставшиеся пункты аудита (claude/unified-visual-audit.md, 8–20) ===== */
+
+/* 8. Мажента только для падения и предупреждения: загрузка — действие, лайм */
+.upload-asset{color:#C0FA35}
+
+/* 9. h1: единый трекинг −0.02em */
+.chat-heading h1{letter-spacing:-.02em}
+
+/* 12. Читаемый текст не мельче 14; капс-надпись — 13 (ступень шкалы) */
+.demo-note{font-size:14px}
+.aud-eyebrow{font-size:13px}
+
+/* 13. Зоны нажатия 44 */
+.shelf-heading .icon,[data-action=shelf-prev],[data-action=shelf-next]{width:44px;height:44px;min-width:44px}
+.chip>.dj-profile-link{position:relative}
+.chip>.dj-profile-link::after{content:"";position:absolute;inset:-6px}
+a.dj-profile-name{display:inline-flex;align-items:center;min-height:44px}
+.battle-back{display:inline-flex;align-items:center;min-height:44px;padding:0}
+.card.empty a{display:inline-flex;align-items:center;justify-content:center;min-height:44px}
+
+/* 14. Подписи групп в мастере — по одной линии с подписями полей */
+legend{padding:0}
+
+/* 15. Имя участника в таблицах не рвётся */
+tbody th{white-space:nowrap}
+
+/* 16. Судья: выбор работы — список в одну колонку */
+.queue-participants{grid-template-columns:1fr}
+.queue-participants button{grid-template-columns:40px minmax(0,1fr) auto;align-items:center;min-height:56px}
+
+/* 19. Батл: разделы помещаются в строку, без обреза краем */
+.battle-sections{overflow:visible;gap:6px}
+.battle-sections .chip{flex:1 1 auto;justify-content:center;padding:9px 8px;font-size:15px}
+@media(max-width:360px){.battle-sections .chip{padding-inline:5px;font-size:14px}}
+
+/* v59: маршрут тура — провод проходит через центры точек и начинается/заканчивается в центрах крайних точек.
+   8 узлов равной ширины: центр крайней точки — 1/16 ширины = 6.25 %; точка 11 px → центр 5.5 px, провод 2 px → top 4.5 px. */
+.strip .nodes{justify-content:stretch}
+.strip .nodes .n{flex:1 1 0;min-width:0}
+.strip .wire{left:6.25%;right:6.25%;top:4.5px}

@@ -5,6 +5,12 @@ const tournamentExamples=[
  {id:2,name:'Новый голос · тест',format:'Пирамида',category:'Вокал',count:8,pairing:'Случайно',description:'Восемь вокалистов, три этапа и один победитель.',material:'Видео',orientation:'Вертикальное',criteria:['Техника','Подача','Оригинальность'],judges:['Судья Искра','Судья Контур'],prizes:[{place:1,text:'Запись песни в студии · демо'},{place:2,text:'Занятие с педагогом · демо'}],tasks:[['1/4 финала',3,'Исполни куплет и припев выбранной песни. До 90 секунд, голос без коррекции высоты тона.'],['1/2 финала',3,'Представь собственную интерпретацию другой песни. До 2 минут.'],['Финал',4,'Исполни авторскую песню или авторскую аранжировку. До 3 минут.']],roster:['Участник A','Участник B','Участник C','Участник D','Участник E','Участник F','Участник G','Участник H']}
 ];
 tournamentExamples.push({id:4,name:'Beat Video · итоги',format:'Открытый',category:'Аудиопродакшн',count:2,roundCount:1,description:'Завершённый демонстрационный видеоконкурс двух участников.',material:'Видео',orientation:'Вертикальное',criteria:['Оригинальность','Техника','Подача'],judges:['Судья Пульс','Судья Контур'],prizes:[{place:1,text:'Разбор работы · демо'}],tasks:[['Раунд 1',3,'Запиши видео исполнения или создания своего бита до 60 секунд.']],roster:['Участник A','Участник B'],demoVideo:'assets/beat-demo.mp4'});
+/* v58: видео Scratch Duel — две работы участников и тизер баттла (иллюстрированные клипы без звука) */
+Object.assign(tournamentExamples.find(x=>x.id===0),{
+ works:[{name:'Участник A',src:'assets/scratch/participant-a.mp4',poster:'assets/scratch/participant-a.jpg'},{name:'Участник B',src:'assets/scratch/participant-b.mp4',poster:'assets/scratch/participant-b.jpg'}],
+ teaser:{src:'assets/scratch/duel.mp4',poster:'assets/scratch/duel.jpg'}});
+/* v60: даты турниров для карточек и страниц */
+[[0,'14–24 окт'],[1,'10–25 окт'],[2,'12–30 окт'],[4,'1–5 окт']].forEach(([id,dates])=>{const x=tournamentExamples.find(t=>t.id===id);if(x)x.dates=dates;});
 const exampleApplications=new Set();
 function pyramidBracket(x){
  const d=typeof demoFor==='function'?demoFor(x.id):{phase:0,round:0};
@@ -20,5 +26,5 @@ function exampleContent(id){const x=tournamentExamples.find(x=>x.id===id);if(!x)
 tournamentExamples.forEach(x=>{const t=tournaments.find(t=>t.id===x.id);if(t)Object.assign(t,{name:x.name,format:x.format,category:x.category,prize:x.prizes[0].text});});
 const renderTournamentList=renderTournaments;
 renderTournaments=function(){const html=renderTournamentList();const template=document.createElement('template');template.innerHTML=html;template.content.querySelectorAll('[data-tournament-id]').forEach(card=>{card.querySelector('.tournament-content').innerHTML=exampleContent(Number(card.dataset.tournamentId));});return template.innerHTML;};
-document.addEventListener('click',e=>{const apply=e.target.closest('[data-example-apply]');if(apply){const id=Number(apply.dataset.exampleApply);exampleApplications.add(id);expandedTournaments.add(id);render();return;}const edit=e.target.closest('[data-example-edit]');if(edit){const x=tournamentExamples.find(x=>x.id===Number(edit.dataset.exampleEdit));tournamentDraft=exampleDraft(x);tournamentStep=0;location.hash='create';}});
+document.addEventListener('click',e=>{const apply=e.target.closest('[data-example-apply]');if(apply){const id=Number(apply.dataset.exampleApply);exampleApplications.add(id);expandedTournaments.add(id);render();return;}const edit=e.target.closest('[data-example-edit]');if(edit){const x=tournamentExamples.find(x=>x.id===Number(edit.dataset.exampleEdit));tournamentDraft=exampleDraft(x);tournamentStep=0;tournamentEditId=x.id;location.hash='create';}});
 render();
