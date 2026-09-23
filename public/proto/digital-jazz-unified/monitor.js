@@ -158,9 +158,12 @@ else if(s.key==='sf')body=`<div class="mon-pairs">${[0,1].map(i=>futurePair(i,'s
 else body=`<div class="mon-pairs">${futurePair(0,'f')}</div>`;
 return `<section class="mon-section" id="mon-layout" aria-labelledby="mon-lay">${rule('mon-lay','Расклад · '+s.name,s.dates)}<p class="caption mon-note">${s.note}</p>${body}</section>`;}
 
-function mini(){const cell=(a,b,w,future)=>{const n=p=>p?`<span class="${w&&w!==p?'lost':''}${w===p?' won':''}${isF(p)?' f':''}">${esc(p.name)}</span>`:'<span class="tbd">—</span>';return `<div class="mb-slot"><div class="mb-cell${future?' future':''}${(isF(a)||isF(b))?' f':''}">${n(a)}${n(b)}</div></div>`;};
-const cols=[['1/8',R16.map(m=>cell(m.a,m.b,m.winner))],['1/4',QF.map(m=>cell(m.a,m.b,m.winner))],['1/2',[0,1].map(i=>cell(QF[i*2].winner,QF[i*2+1].winner,null,true))],['Финал',[cell(null,null,null,true)]]];
-return `<section class="mon-section" aria-labelledby="mon-mb">${rule('mon-mb','Вся сетка','16 → 1')}<div class="mon-bracket">${cols.map(([t,c],ci)=>`<div class="mb-col${ci===1?' live':''}"><p class="mb-title">${t}</p><div class="mb-cells">${c.join('')}</div></div>`).join('')}</div></section>`;}
+function mini(){const r=(p,sc,w)=>p?{name:esc(p.name),tag:meTag(p),score:w?sc:null,won:w===p,lost:!!w&&w!==p,me:isF(p)||!!meTag(p)}:{name:'—'};
+const pair=(m,label)=>({label,rows:[r(m.a,m.sa,m.winner),r(m.b,m.sb,m.winner)]});
+const sfRow=i=>{const w=QF[i].winner;return w?r(w):{name:'Победитель пары '+(i+1)};};
+const cols=[{name:'1/8 финала',tone:'ready',matches:R16.map((m,i)=>pair(m,'Пара '+(i+1)))},{name:'1/4 финала',tone:'pending',matches:QF.map((m,i)=>pair(m,'Пара '+(i+1)))},
+ {name:'1/2 финала',tone:'upcoming',matches:[0,1].map(i=>({label:'Полуфинал '+(i+1),rows:[sfRow(i*2),sfRow(i*2+1)]}))},{name:'Финал',tone:'upcoming',matches:[{label:'Финал',rows:[{name:'Победитель полуфинала 1'},{name:'Победитель полуфинала 2'}]}]}];
+return `<section class="mon-section" aria-labelledby="mon-mb">${rule('mon-mb','Вся сетка','16 → 1')}<p class="caption mon-note">Листай вправо до финала</p>${djBracket({aria:'Сетка Digital Jazz Cup: 1/8, 1/4, 1/2 и финал',columns:cols})}</section>`;}
 
 function pathOf(name){const q=QUAL.find(p=>p.name===name);if(!q)return '';const steps=[];const you=ROLE==='Участник'&&name===ME_PLAYER;
 steps.push({t:'Отбор',s:q.seed<=16?'done':'out',v:`${q.seed}-е место · ${q.score} из 45`});

@@ -165,3 +165,25 @@ svg.aud-all-mark{width:28px;height:28px;fill:none;stroke:currentColor;stroke-wid
 
 /* v67: фото на главной афише Cup — лицо и руки в кадре, низ затемнён под текст */
 .aud-hero>img[src*="cup-hero"]{height:auto;aspect-ratio:3/2;top:0;left:0;object-fit:cover;object-position:50% 0;transform:scale(1.18);transform-origin:50% 0;-webkit-mask-image:linear-gradient(#000 62%,transparent 98%);mask-image:linear-gradient(#000 62%,transparent 98%)}
+
+/* ===== v68: турнирная сетка — одна для всех (как «Турнирная сетка» Vocal Arena), в полный размер, листается вправо ===== */
+.djb-scroll{margin-inline:-2px}
+.djb-cols{display:flex;gap:32px;width:max-content}
+.djb-col{width:238px;flex-shrink:0}
+.djb-col h4{font-size:19px;font-weight:600;margin:0 0 8px;color:#F7F6FA}
+.djb-col .bracket-status{margin:0 0 16px;line-height:1.15}
+.djb-slots{display:flex;flex-direction:column}
+.djb-slot{position:relative;display:flex;align-items:center;height:calc(134px * var(--k))}
+.djb-match{position:relative;width:100%;height:110px;box-sizing:border-box;padding:10px 12px;border:1px solid var(--bracket-color);border-radius:15px;background:var(--dj-bg-raised)}
+.djb-match>.caption{display:block;margin:0 0 2px}
+.djb-row{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 6px;margin:0 -6px;border-radius:8px;font-size:17px;line-height:1.15;color:var(--dj-text);white-space:nowrap}
+.djb-row+.djb-row{border-top:1px solid var(--dj-line);border-radius:0 0 8px 8px}
+.djb-name{min-width:0;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:6px}
+.djb-row b{font-weight:600;font-variant-numeric:tabular-nums;color:var(--dj-text-2)}
+.djb-row.won,.djb-row.won b{color:#C0FA35}
+.djb-row.lost,.djb-row.lost b{color:var(--dj-text-4)}
+.djb-row.me{background:rgba(192,250,53,.09)}
+/* соединители: из центра пары вправо и к середине между соседями; длина растёт с раундом */
+.djb-col:not(:last-child) .djb-slot:after{content:'';position:absolute;left:100%;top:50%;width:16px;height:calc(67px * var(--k));border-top:1px solid var(--bracket-color);border-right:1px solid var(--bracket-color)}
+.djb-col:not(:last-child) .djb-slot:nth-child(even):after{top:auto;bottom:50%;border-top:0;border-bottom:1px solid var(--bracket-color)}
+.djb-col:not(:first-child) .djb-slot:before{content:'';position:absolute;right:100%;top:50%;width:16px;border-top:1px solid var(--bracket-color)}
