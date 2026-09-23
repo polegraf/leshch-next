@@ -141,3 +141,17 @@ svg.aud-all-mark{width:28px;height:28px;fill:none;stroke:currentColor;stroke-wid
 .t-page .battle-section{gap:12px}
 .t-page-jury{grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:10px}
 .t-page-judge{padding:12px}
+
+/* v63: роль в хидере — выпадающий список рядом с «•••» */
+.role-wrap{margin-left:4px;min-width:0}
+.role-btn{display:flex;align-items:center;gap:4px;height:44px;padding:0 10px 0 14px;border:0;border-radius:15px;background:rgba(255,255,255,.08);color:#E4E1EC;font:600 15px/1 Jost,sans-serif;white-space:nowrap;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.role-btn svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s}
+.role-btn[aria-expanded=true] svg{transform:rotate(180deg)}
+.role-btn:focus-visible{outline:2px solid var(--dj-lime);outline-offset:2px}
+.role-menu{width:220px}
+.role-menu .nav-item{text-decoration:none;min-height:48px}
+.role-menu .nav-item span{font-size:17px}
+.role-menu .nav-item:focus-visible{outline:2px solid var(--dj-lime);outline-offset:-2px}
+@media(max-width:370px){.role-btn{font-size:14px;padding:0 6px 0 10px}.role-wrap{margin-left:0}}
+/* заголовок списка скрыт — остаются только действия справа */
+.heading.heading-actions{justify-content:flex-end;margin-bottom:0}
