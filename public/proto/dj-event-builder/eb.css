@@ -476,3 +476,46 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-sheet .eb-swipe{margin:0 -20px}.eb-sheet .eb-swipe>.eb-chips{padding-left:20px;padding-right:20px}
 .eb-sheet .eb-swipe::before{background:linear-gradient(90deg,#15111c 25%,rgba(21,17,28,0))}.eb-sheet .eb-swipe::after{background:linear-gradient(270deg,#15111c 25%,rgba(21,17,28,0))}
 @media(max-width:360px){.eb-swipe{margin:0 -12px}.eb-swipe>.eb-bsteps,.eb-swipe>.eb-chips{padding-left:12px;padding-right:12px}}
+
+/* iOS Safari: поля даты и времени не вылезают из колонки и одной высоты с текстовыми */
+.eb-two{grid-template-columns:minmax(0,1fr) minmax(0,1fr)!important}
+.eb-two>.field,.eb-two>label{min-width:0}
+.eb input.input,.eb-sheet input.input{box-sizing:border-box;max-width:100%;min-width:0;height:56px}
+.eb input[type=date],.eb input[type=time],.eb-sheet input[type=date],.eb-sheet input[type=time]{-webkit-appearance:none;appearance:none;display:block;width:100%;text-align:left;line-height:normal}
+.eb input[type=date]::-webkit-date-and-time-value,.eb input[type=time]::-webkit-date-and-time-value,.eb-sheet input[type=date]::-webkit-date-and-time-value,.eb-sheet input[type=time]::-webkit-date-and-time-value{text-align:left;margin:0}
+.eb input[type=date]:not(:valid)::-webkit-datetime-edit,.eb input[type=date][value=""]::-webkit-datetime-edit{color:var(--dj-text-quiet)}
+.eb-edit .input{height:40px}
+.eb input.input,.eb-sheet input.input{text-align:left}
+.eb-dtwrap{position:relative;display:block}
+.eb-dtwrap em{display:none;position:absolute;left:17px;top:50%;transform:translateY(-50%);font-style:normal;font-size:17px;color:var(--dj-text-quiet);pointer-events:none}
+.eb-dtf.is-empty .eb-dtwrap em{display:block}
+.eb-dtf.is-empty input:not(:focus){color:transparent}
+.eb-dtf.is-empty input:not(:focus)::-webkit-datetime-edit{color:transparent}
+.eb .field,.eb-sheet .field{grid-template-columns:minmax(0,1fr)}.eb-dtwrap{min-width:0}
+
+/* подбор площадок */
+.eb-vf{display:grid;gap:8px}
+.eb-vst{font-size:13px;color:var(--dj-text-faint);line-height:1.3}
+.eb-vst em{font-style:normal;font-weight:600}
+.eb-vst .ok{color:#C0FA35}.eb-vst .bad{color:#FF00E5}.eb-vst .warn{color:#A375FF;font-weight:500}
+.eb-vlist li{min-height:78px;align-items:center}
+.eb-vlist .eb-pick-t small{white-space:normal}
+/* анализ даты */
+.eb-dscore{display:grid;grid-template-columns:52px minmax(0,1fr) auto;gap:12px;align-items:center;width:100%;text-align:left;color:inherit;font:inherit;cursor:pointer;padding:14px 16px}
+.eb-dscore-n{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:20px;font-weight:700;border:3px solid currentColor}
+.eb-dscore-n.ok{color:#C0FA35}.eb-dscore-n.work{color:#A375FF}.eb-dscore-n.bad{color:#FF00E5}
+.eb-dscore-big{display:flex;gap:14px;align-items:center}
+.eb-dscore-big .eb-dscore-n{width:72px;height:72px;font-size:28px}
+.eb-dscore-big b{display:block;font-size:22px;color:#F7F6FA}.eb-dscore-big small{font-size:14px;color:var(--dj-text-faint)}
+.eb-fv{font-style:normal;font-weight:700;font-size:16px;color:var(--dj-text-muted);font-variant-numeric:tabular-nums}
+.eb-fv.ok{color:#C0FA35}.eb-fv.bad{color:#FF00E5}.eb-fv.work{color:#A375FF}
+.eb-need-t b .eb-fv{margin-left:6px;font-size:14px}
+/* вход в ИИ-визард */
+.eb-ai{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:center;width:100%;text-align:left;color:inherit;font:inherit;cursor:pointer;padding:14px 16px;border-color:rgba(163,117,255,.45);background:linear-gradient(135deg,rgba(163,117,255,.18),rgba(192,250,53,.06))}
+.eb-ai-i{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#A375FF;color:#14170A;font-size:22px}
+/* лента растворяется в фоне маской, а не плашкой — без тёмной полосы на градиентном фоне */
+.eb-swipe::before,.eb-swipe::after{display:none}
+.eb-swipe.more-r>.eb-bsteps,.eb-swipe.more-r>.eb-chips{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 88px),transparent calc(100% - 20px));mask-image:linear-gradient(90deg,#000 calc(100% - 88px),transparent calc(100% - 20px))}
+.eb-swipe.more-l>.eb-bsteps,.eb-swipe.more-l>.eb-chips{-webkit-mask-image:linear-gradient(90deg,transparent 20px,#000 88px);mask-image:linear-gradient(90deg,transparent 20px,#000 88px)}
+.eb-swipe.more-l.more-r>.eb-bsteps,.eb-swipe.more-l.more-r>.eb-chips{-webkit-mask-image:linear-gradient(90deg,transparent 20px,#000 88px,#000 calc(100% - 88px),transparent calc(100% - 20px));mask-image:linear-gradient(90deg,transparent 20px,#000 88px,#000 calc(100% - 88px),transparent calc(100% - 20px))}
+.eb-swipe .eb-tabs-more{background:rgba(16,12,24,.9);border:1px solid rgba(192,250,53,.5)}
