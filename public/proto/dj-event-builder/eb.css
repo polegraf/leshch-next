@@ -639,3 +639,29 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-vmiss{color:var(--dj-text-faint)}
 .eb-vmiss.ok{color:#C0FA35}
 .eb-mini.on{color:#C0FA35;border-color:rgba(192,250,53,.4)}
+/* расчёт и запрос подрядчикам */
+.eb-vfind{list-style:none;margin:0;padding:4px 14px}
+.eb-vfind>li{display:grid;gap:6px;padding:12px 0}
+.eb-vfind>li+li{border-top:1px solid rgba(255,255,255,.07)}
+.eb-vq-h{display:grid;grid-template-columns:28px minmax(0,1fr) auto;gap:10px;align-items:center}
+.eb-vq-c{display:grid;place-items:center;width:28px;height:44px;cursor:pointer}
+.eb-vq-c input{width:22px;height:22px;accent-color:#C0FA35;margin:0}
+.eb-vq-sum{font-size:17px;font-weight:600;color:#F7F6FA;white-space:nowrap;font-variant-numeric:tabular-nums}
+.eb-vcalc{margin-left:38px}
+.eb-vcalc>summary{list-style:none;cursor:pointer;font-size:14px;color:#A375FF;min-height:32px;display:flex;align-items:center}
+.eb-vcalc>summary::-webkit-details-marker{display:none}
+.eb-vcalc>summary::after{content:'';width:7px;height:7px;margin-left:8px;border-right:2px solid #A375FF;border-bottom:2px solid #A375FF;transform:rotate(45deg) translateY(-2px);transition:transform .15s}
+.eb-vcalc[open]>summary::after{transform:rotate(225deg)}
+.eb-vcalc table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums;margin:4px 0 8px}
+.eb-vcalc td{padding:6px 4px;border-top:1px solid rgba(255,255,255,.07);color:var(--dj-text-strong);vertical-align:top}
+.eb-vcalc td:first-child{padding-left:0;width:44%}
+.eb-vcalc td:nth-child(n+2){text-align:right;white-space:nowrap;color:var(--dj-text-muted)}
+.eb-vcalc td:last-child{color:#F7F6FA;padding-right:0}
+.eb-vcalc tr.none td{color:#FF00E5}.eb-vcalc tr.short td:nth-child(2){color:#FF00E5}
+.eb-vcalc tfoot td{font-weight:600;color:#F7F6FA;border-top:1px solid rgba(255,255,255,.2)}
+.eb-vcalc tfoot td:first-child{text-align:left}
+.eb-quotes{list-style:none;margin:0;padding:0 12px;border:1px solid rgba(255,255,255,.1);border-radius:16px;background:rgba(255,255,255,.03)}
+.eb-quotes li{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:56px;padding:6px 0}
+.eb-quotes li+li{border-top:1px solid rgba(255,255,255,.07)}
+.eb-quotes li.closed b{color:var(--dj-text-faint)}
+.eb-quotes em{font-style:normal}
