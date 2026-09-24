@@ -249,7 +249,7 @@ function pickList(group,role,q=''){const have=new Set(E.people.map(p=>p.name));c
 function header(){const d=E.date,left=d?days(TODAY,d):null;const PH=[['Подготовка','с '+(E.id==='sale'?'авг':'сен')],['Анонс',E.announce?E.announce.getDate()+' '+MON[E.announce.getMonth()].slice(0,3):'—'],['Продажи',E.announce?'с '+E.announce.getDate()+' '+MON[E.announce.getMonth()].slice(0,3):'—'],['День',d?d.getDate()+' '+MON[d.getMonth()].slice(0,3):'—'],['Итоги',d?(d.getDate()+1)+' '+MON[d.getMonth()].slice(0,3):'—']];
  return `<header class="eb-hero${E.cover?'':' nocover'}">${E.cover?`<img src="${coverSrc(E.cover)}" alt="">`:''}<a class="eb-back" href="#events">← Мои события</a><a class="eb-edit-btn" href="#build/0">Настроить</a><div class="eb-hero-copy"><p class="eb-eyebrow">${esc(E.type)} · ${esc(E.city)}</p><h1>${esc(E.name||'Без названия')}</h1>${d?`<p class="eb-date">${dm(d)}, ${WD[d.getDay()]}</p><p class="eb-sub">${E.start}–${E.end}${venue()?' · '+esc(venue().name):''}${E.scenes.length>1?' · '+E.scenes.length+' '+plural(E.scenes.length,'сцена','сцены','сцен'):''} · через ${left} ${plural(left,'день','дня','дней')}</p>`:`<button type="button" class="eb-date eb-nodate" data-cmd="goto:0">Выбрать дату</button>`}</div></header>
  <ol class="eb-rail" aria-label="Этапы события">${PH.map((p,i)=>{const ph=phase();return `<li class="${i===ph?'now':i<ph?'past':''}"${i===ph?' aria-current="step"':''}><i></i><b>${p[0]}</b><span>${i===ph?'сейчас':p[1]}</span></li>`;}).join('')}</ol>
- <nav class="seg eb-tabs" aria-label="Разделы">${[['summary','Сводка'],['place','Место'],['people','Люди'],['req','Запросы'],['promo','Промо'],['money','Деньги'],['day','День']].map(([k,l])=>`<a href="#${k}"${route().v===k?' aria-current="page"':''}>${l}${k==='people'&&crowd().filter(p=>p.stage<=0).length?`<em>${crowd().filter(p=>p.stage<=0).length}</em>`:''}${k==='place'&&(!venue()||!signed(venue()))?'<em>!</em>':''}</a>`).join('')}</nav>`;}
+ <div class="eb-tabs-wrap" data-tabs-wrap><nav class="seg eb-tabs" aria-label="Разделы">${[['summary','Сводка'],['place','Место'],['people','Люди'],['req','Запросы'],['promo','Промо'],['money','Деньги'],['day','День']].map(([k,l])=>`<a href="#${k}"${route().v===k?' aria-current="page"':''}>${l}${k==='people'&&crowd().filter(p=>p.stage<=0).length?`<em>${crowd().filter(p=>p.stage<=0).length}</em>`:''}${k==='place'&&(!venue()||!signed(venue()))?'<em>!</em>':''}</a>`).join('')}</nav><button type="button" class="eb-tabs-more l" data-tabs-go="-1" aria-label="Предыдущие разделы" tabindex="-1"><svg viewBox="0 0 24 24"><path d="m15 6-6 6 6 6"/></svg></button><button type="button" class="eb-tabs-more r" data-tabs-go="1" aria-label="Ещё разделы" tabindex="-1"><svg viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></svg></button></div>`;}
 
 /* ---- сводка ---- */
 function gate(){const v=venue(),a=list('artist'),aok=a.filter(p=>p.stage>=1).length;
@@ -453,11 +453,19 @@ function sheetHTML(){if(!sheet)return '';const s=sheet;let h='';
  return `<div class="eb-scrim" data-close></div><section class="eb-sheet" role="dialog" aria-modal="true" aria-labelledby="eb-sh-t"><span class="eb-grab" aria-hidden="true"></span>${h}</section>`;}
 
 /* ================= отрисовка и события ================= */
+/* вкладки листаются: затемнение и стрелка у края, где есть ещё; активная — в поле видимости; один раз показываем, что лента едет */
+let tabsX=0,tabsHinted=false;
+function tabsInit(){const w=document.querySelector('[data-tabs-wrap]');if(!w)return;const n=w.querySelector('.eb-tabs');
+ const sync=()=>{const max=n.scrollWidth-n.clientWidth;w.classList.toggle('more-r',n.scrollLeft<max-4);w.classList.toggle('more-l',n.scrollLeft>4);tabsX=n.scrollLeft;};
+ n.scrollLeft=tabsX;const a=n.querySelector('[aria-current]');if(a){const l=a.offsetLeft,r=l+a.offsetWidth;if(l<n.scrollLeft+8)n.scrollLeft=l-24;else if(r>n.scrollLeft+n.clientWidth-8)n.scrollLeft=r-n.clientWidth+24;}
+ n.addEventListener('scroll',sync,{passive:true});sync();
+ if(!tabsHinted&&n.scrollWidth>n.clientWidth+4&&n.scrollLeft<4&&!matchMedia('(prefers-reduced-motion: reduce)').matches){tabsHinted=true;setTimeout(()=>{n.scrollTo({left:56,behavior:'smooth'});setTimeout(()=>n.scrollTo({left:0,behavior:'smooth'}),550);},600);}}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-tabs-go]');if(!b)return;const n=b.parentElement.querySelector('.eb-tabs');n.scrollBy({left:+b.dataset.tabsGo*n.clientWidth*.6,behavior:'smooth'});});
 function render(){const r=route();let html;
  if(r.v==='events')html=events();
  else if(r.v==='build')html=build(r.step);
  else html=header()+`<div class="eb-body">${r.v==='summary'?summary():r.v==='place'?place():r.v==='people'?people():r.v==='promo'?promo():r.v==='req'?requests():r.v==='money'?money():day()}</div>`;
- document.querySelector('#main').innerHTML=`<div class="eb${r.v==='build'?' eb-builder':''}">${html}</div>${sheetHTML()}${toast?`<div class="eb-toast" role="status">${esc(toast)}</div>`:''}`;}
+ document.querySelector('#main').innerHTML=`<div class="eb${r.v==='build'?' eb-builder':''}">${html}</div>${sheetHTML()}${toast?`<div class="eb-toast" role="status">${esc(toast)}</div>`:''}`;tabsInit();}
 const say=t=>{toast=t;render();clearTimeout(say.t);say.t=setTimeout(()=>{toast='';render();},2800);};
 const open=s=>{sheet=s;render();setTimeout(()=>document.querySelector('.eb-sheet input:not([type=hidden])')?.focus?.(),0);};
 const close=()=>{sheet=null;render();};
@@ -565,3 +573,6 @@ document.addEventListener('submit',e=>{const f=e.target.closest('[data-form]');i
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sheet)close();});
 render();
 })();
+
+/* меню «Сервисы» вне прототипа турниров: ведём в соответствующие разделы, а не меняем хэш этой страницы */
+addEventListener('click',e=>{const s=e.target.closest('[data-service]');if(!s)return;const U='../digital-jazz-unified/';const to={'турниры':U+'index.html#tournaments','афиша':U+'index.html#tournaments','магазин':U+'index.html#shop','туры':U+'tours/index.html'}[s.dataset.service];if(!to)return;e.preventDefault();e.stopImmediatePropagation();location.href=to;},true);

@@ -36,7 +36,7 @@
 .eb-rail .now b,.eb-rail .now span{color:#C0FA35}
 
 /* вкладки: сегмент как в чате */
-.eb-tabs{margin:0;position:sticky;top:8px;z-index:5;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(16,12,24,.82)}
+.eb-tabs{margin:0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(16,12,24,.82)}
 .eb-tabs a{flex:1;min-height:44px;display:flex;align-items:center;justify-content:center;gap:6px;border-radius:13px;color:#9A94B3;font-weight:500;font-size:17px;text-decoration:none}
 .eb-tabs a[aria-current=page]{background:#C0FA35;color:#14170A;font-weight:600}
 .eb-tabs em{font-style:normal;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:#FF00E5;color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center}
@@ -447,3 +447,17 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-stat b{grid-column:2;font-size:16px;font-weight:500;color:var(--dj-text-strong)}
 .eb-stat .ok i{background:#C0FA35}.eb-stat .work i{background:#A375FF}.eb-stat .wait i,.eb-stat .bad i{background:#FF00E5}.eb-stat .bad b,.eb-stat .wait b{color:#FF00E5}
 .s1{background:#A375FF}
+
+/* лента вкладок: подсказка «листается» */
+.eb-tabs-wrap{position:sticky;top:8px;z-index:5;border-radius:17px;min-width:0}
+.eb-tabs-wrap::before,.eb-tabs-wrap::after{content:'';position:absolute;top:1px;bottom:1px;width:64px;pointer-events:none;opacity:0;transition:opacity .2s;z-index:1}
+.eb-tabs-wrap::before{left:1px;border-radius:16px 0 0 16px;background:linear-gradient(90deg,rgba(16,12,24,.98) 30%,rgba(16,12,24,0))}
+.eb-tabs-wrap::after{right:1px;border-radius:0 16px 16px 0;background:linear-gradient(270deg,rgba(16,12,24,.98) 30%,rgba(16,12,24,0))}
+.eb-tabs-wrap.more-l::before,.eb-tabs-wrap.more-r::after{opacity:1}
+.eb-tabs-more{position:absolute;top:50%;z-index:2;width:32px;height:32px;margin-top:-16px;padding:0;border:0;border-radius:50%;background:rgba(192,250,53,.14);display:grid;place-items:center;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .2s}
+.eb-tabs-more svg{width:18px;height:18px;fill:none;stroke:#C0FA35;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.eb-tabs-more.r{right:6px}.eb-tabs-more.l{left:6px}
+.eb-tabs-wrap.more-r .eb-tabs-more.r,.eb-tabs-wrap.more-l .eb-tabs-more.l{opacity:1;pointer-events:auto}
+.eb-tabs-wrap.more-r .eb-tabs-more.r svg{animation:eb-nudge 1.6s ease-in-out 2}
+@keyframes eb-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
+@media(prefers-reduced-motion:reduce){.eb-tabs-more svg{animation:none!important}}

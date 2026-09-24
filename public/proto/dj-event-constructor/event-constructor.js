@@ -87,3 +87,6 @@ document.addEventListener('input',e=>{const t=e.target;if(t.dataset.tier===undef
 window.ecRender=render;
 render();
 })();
+
+/* меню «Сервисы» вне прототипа турниров: ведём в соответствующие разделы, а не меняем хэш этой страницы */
+addEventListener('click',e=>{const s=e.target.closest('[data-service]');if(!s)return;const U='../digital-jazz-unified/';const to={'турниры':U+'index.html#tournaments','афиша':U+'index.html#tournaments','магазин':U+'index.html#shop','туры':U+'tours/index.html'}[s.dataset.service];if(!to)return;e.preventDefault();e.stopImmediatePropagation();location.href=to;},true);
