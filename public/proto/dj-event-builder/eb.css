@@ -592,3 +592,39 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-prod .eb-rd-s b{font-size:18px;font-weight:600;color:#F7F6FA}
 .eb-prod .eb-rd-src{max-width:55%;overflow:hidden;text-overflow:ellipsis}
 .eb-prod .eb-rd-b{padding:0 14px 16px}
+/* v21 · артист в лайн-апе — свёрнутая карточка */
+.eb-arts{list-style:none;margin:0;padding:2px 14px}
+.eb-arts>li+li{border-top:1px solid rgba(255,255,255,.07)}
+.eb-art>summary{display:grid;grid-template-columns:36px minmax(0,1fr) auto 10px 18px;gap:12px;align-items:center;min-height:62px;list-style:none;cursor:pointer}
+.eb-art>summary::-webkit-details-marker{display:none}
+.eb-art>summary .eb-ava{width:36px;height:36px}
+.eb-art-n{font-size:18px;color:#F7F6FA;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eb-art-t{font-size:18px;font-weight:600;color:#F7F6FA;font-variant-numeric:tabular-nums}
+.eb-mk{display:inline-block;width:10px;height:10px;border-radius:50%;background:#6E6890;flex:0 0 10px}
+.eb-mk.ok{background:#C0FA35}.eb-mk.work{background:#A375FF}.eb-mk.hot{background:#FF00E5}
+.eb-art[open]>summary .eb-rd-chev{transform:rotate(180deg);stroke:#C0FA35}
+.eb-art[open]>summary .eb-art-t{color:#C0FA35}
+.eb-art .eb-rd-b{padding:2px 0 16px}
+.eb-art-st{display:flex;align-items:center;gap:10px;font-size:15px;color:var(--dj-text-muted);min-height:40px}
+.eb-art-st span:nth-child(2){flex:1;min-width:0}
+.eb-art-f{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.8fr) minmax(0,1.1fr);gap:10px}
+.eb-art-f .field{min-width:0}
+.eb-art-f .input{height:48px;min-height:48px;width:100%;box-sizing:border-box}
+.eb-art-h{margin-top:8px!important}
+.eb-art-h span{letter-spacing:0;text-transform:none;font-weight:500}
+.eb-art-foot{display:flex;justify-content:space-between;gap:12px;padding-top:6px}
+/* загрузка PDF райдера */
+.eb-rd-anh{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.eb-up{position:relative;display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:6px 14px;border:1px solid rgba(163,117,255,.55);border-radius:999px;color:#F7F6FA;font-size:15px;font-weight:600;cursor:pointer;background:rgba(163,117,255,.12)}
+.eb-up svg{width:18px;height:18px;fill:none;stroke:#A375FF;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.eb-up input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.eb-files{list-style:none;margin:0;padding:0;display:grid;gap:6px}
+.eb-files li{display:grid;grid-template-columns:minmax(0,1fr) 32px;gap:8px;align-items:center}
+.eb-file-o{display:grid;grid-template-columns:34px minmax(0,1fr);gap:10px;align-items:center;padding:6px 10px;border:1px solid rgba(255,255,255,.1);border-radius:14px;background:rgba(255,255,255,.04);color:inherit;font:inherit;text-align:left;cursor:pointer;min-width:0}
+.eb-file-o svg{width:34px;height:34px;fill:none;stroke:#C0FA35;stroke-width:1.4;stroke-linejoin:round}
+.eb-file-o svg text{fill:#C0FA35;stroke:none;font:700 6px Jost,sans-serif}
+.eb-file-o span{display:grid;min-width:0}
+.eb-file-o b{font-size:15px;font-weight:500;color:#F7F6FA;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eb-file-o small{font-size:13px;color:var(--dj-text-faint)}
+.eb-art-f{grid-template-columns:minmax(0,1fr) 84px}
+.eb-art-f .field:last-child{grid-column:1/-1}
