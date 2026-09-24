@@ -1,0 +1,83 @@
+/* Задачи события — трекер в стиле DJ */
+.tk-tl{display:grid;gap:12px;padding:16px 16px 12px}
+.tk-tl-head{display:flex;justify-content:space-between;align-items:baseline}
+.tk-tl-head b{font-size:24px;font-weight:600;color:#C0FA35}
+.tk-rail{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(5,minmax(0,1fr))}
+.tk-rail li{position:relative;display:grid;justify-items:center;gap:2px;text-align:center}
+/* линия идёт через центры точек: от центра первой до центра последней */
+.tk-rail li::before{content:'';position:absolute;top:8px;left:0;right:0;height:2px;background:rgba(255,255,255,.14)}
+.tk-rail li:first-child::before{left:50%}
+.tk-rail li:last-child::before{right:50%}
+.tk-rail i{position:relative;width:14px;height:14px;margin-top:2px;border-radius:50%;border:2px solid #6E6890;background:#0B0811}
+.tk-rail em{font-style:normal;font-size:14px;font-weight:600;color:var(--dj-text-strong);margin-top:6px}
+.tk-rail small{font-size:12px;color:var(--dj-text-faint)}
+.tk-rail .today i{border-color:#C0FA35;background:#C0FA35;box-shadow:0 0 0 5px rgba(192,250,53,.18)}
+.tk-rail .today em{color:#C0FA35}
+.tk-rail .event i{border-color:#A375FF;background:#A375FF}
+.tk-rail .event em{color:#A375FF}
+.tk-rail .done i{border-color:#C0FA35}
+.tk-sum{display:flex;gap:16px;font-size:16px;color:var(--dj-text-faint)}
+.tk-sum b{font-size:19px;font-weight:600;color:#F7F6FA}
+.tk-sum .od,.tk-sum .od b{color:#FF00E5}
+.tk-chips{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;margin:0 -16px;padding:0 16px}
+.tk-chip{min-height:40px!important;padding:8px 14px!important;font-size:16px!important;white-space:nowrap;cursor:pointer}
+.tk-chip[aria-pressed=true]{border-color:#C0FA35;color:#C0FA35;background:rgba(192,250,53,.09);font-weight:600}
+.tk-add .input{width:100%;box-sizing:border-box}
+
+.tk-group{display:grid;gap:6px}
+.tk-gt{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0 0;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint)}
+.tk-gt span{letter-spacing:0;font-weight:500}
+.tk-gt.od{color:#FF00E5}
+.tk-list{list-style:none;margin:0;padding:4px 12px;border:1px solid var(--dj-line);border-radius:22px;background:var(--dj-card)}
+.tk-row{display:grid;grid-template-columns:36px minmax(0,1fr) auto;align-items:center;gap:8px;min-height:64px;padding:8px 0}
+.tk-row+.tk-row{border-top:1px solid rgba(255,255,255,.07)}
+.tk-check{width:36px;height:36px;padding:0;border:0;background:none;display:grid;place-items:center;cursor:pointer}
+.tk-check svg{width:26px;height:26px;fill:none;stroke:#6E6890;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.tk-check svg path{opacity:0}
+.tk-check.ms svg path{opacity:1;stroke:#A375FF}
+.tk-row.done .tk-check svg{fill:#C0FA35;stroke:#14170A}
+.tk-row.done .tk-check svg circle{stroke:#C0FA35}
+.tk-row.done .tk-check svg path{opacity:1}
+.tk-row.done .tk-check.ms svg path{fill:#C0FA35;stroke:#C0FA35}
+.tk-row.overdue .tk-check svg{stroke:#FF00E5}
+.tk-main{display:grid;gap:4px;min-width:0;padding:4px 0;border:0;background:none;text-align:left;color:inherit;font:inherit;cursor:pointer}
+.tk-title{font-size:17px;line-height:1.15;color:#F7F6FA}
+.tk-row.done .tk-title{color:var(--dj-text-faint);text-decoration:line-through;text-decoration-color:rgba(255,255,255,.3)}
+.tk-row.waiting .tk-title{color:var(--dj-text-muted)}
+.tk-meta{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:14px;color:var(--dj-text-faint);min-width:0}
+.tk-sec{color:#A375FF}
+.tk-sub{font-variant-numeric:tabular-nums}
+.tk-wait{color:var(--dj-text-faint);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;max-width:100%}
+.tk-block{color:#FF00E5}
+.tk-right{display:flex;align-items:center;gap:8px}
+.tk-due{font-size:14px;font-weight:600;color:var(--dj-text-muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.tk-due.od{color:#FF00E5}
+.tk-ava{width:28px;height:28px;border-radius:50%;object-fit:cover;display:block;flex:0 0 28px}
+.tk-me{display:grid;place-items:center;background:#C0FA35;color:#14170A;font-size:13px;font-weight:700}
+.tk-ava.lg{width:40px;height:40px;flex-basis:40px}
+.tk-me.lg{font-size:16px}
+.tk-donegroup summary{display:flex;justify-content:space-between;align-items:baseline;list-style:none;cursor:pointer;min-height:44px;align-items:center}
+.tk-donegroup summary::-webkit-details-marker{display:none}
+.tk-donegroup .tk-gt{margin:0}
+
+/* карточка задачи — нижний лист */
+.tk-scrim{position:fixed;inset:0;z-index:95;background:rgba(6,4,11,.6)}
+.tk-sheet{position:fixed;left:0;right:0;bottom:0;z-index:96;max-width:560px;margin:0 auto;max-height:86vh;overflow:auto;display:grid;gap:14px;padding:12px 20px calc(24px + env(safe-area-inset-bottom));border:1px solid var(--dj-line);border-bottom:0;border-radius:22px 22px 0 0;background:linear-gradient(165deg,#1c1724,#0c0a10)}
+.tk-grab{justify-self:center;width:40px;height:5px;border-radius:3px;background:rgba(255,255,255,.2)}
+.tk-sheet h2{margin:0;font-size:26px;line-height:1.1;color:#F7F6FA}
+.tk-sheet>.caption{margin:0;color:#A375FF}
+.tk-props{display:grid;gap:12px;margin:0}
+.tk-props>div{display:grid;gap:6px}
+.tk-props dt{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--dj-text-faint)}
+.tk-props dd{margin:0;display:grid;gap:6px;font-size:17px;color:var(--dj-text-strong)}
+.tk-due-big{font-size:24px!important;font-weight:600;color:#C0FA35!important;line-height:1.1}
+.tk-due-big.od{color:#FF00E5!important}
+.tk-due-big small{font-size:14px;font-weight:400;color:var(--dj-text-faint)}
+.tk-who{display:flex!important;align-items:center;gap:10px}
+.tk-link{justify-self:start;padding:0;border:0;background:none;color:#C0FA35;font:inherit;font-size:17px;text-align:left;cursor:pointer}
+.tk-subs{display:grid;gap:4px}
+.tk-subrow{display:flex;align-items:center;gap:12px;min-height:44px;font-size:17px;color:var(--dj-text-strong)}
+.tk-subrow.on span{color:var(--dj-text-faint);text-decoration:line-through}
+.tk-subrow input{width:22px;height:22px;accent-color:#C0FA35}
+@media(max-width:360px){.tk-title{font-size:16px}.tk-rail em{font-size:13px}}
+@media(max-width:360px){.tk-chips,.ec-steps{margin:0 -12px;padding-left:12px;padding-right:12px}}
