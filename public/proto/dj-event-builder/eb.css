@@ -628,3 +628,14 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-file-o small{font-size:13px;color:var(--dj-text-faint)}
 .eb-art-f{grid-template-columns:minmax(0,1fr) 84px}
 .eb-art-f .field:last-child{grid-column:1/-1}
+/* «Найти» подрядчика по райдеру */
+.eb-rd-prov{grid-template-columns:auto minmax(0,1fr) auto}
+.eb-find{display:inline-flex;align-items:center;gap:6px;min-height:40px}
+.eb-find svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round}
+.eb-vfind .eb-pick-t small{white-space:normal}
+.eb-vfind li{padding:8px 0}
+.eb-cov{font-style:normal;font-weight:600;color:#A375FF}
+.eb-cov.ok{color:#C0FA35}
+.eb-vmiss{color:var(--dj-text-faint)}
+.eb-vmiss.ok{color:#C0FA35}
+.eb-mini.on{color:#C0FA35;border-color:rgba(192,250,53,.4)}
