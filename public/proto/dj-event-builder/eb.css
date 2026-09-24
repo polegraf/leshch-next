@@ -583,3 +583,12 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-fx-n b{color:#F7F6FA;font-weight:600}
 .eb-calc small{color:var(--dj-text-faint)}
 @media(max-width:360px){.eb-tk-f{gap:8px}.eb-tk-f b{font-size:16px}.eb-edit.eb-codes li{grid-template-columns:minmax(0,1fr) 64px 72px 30px;gap:6px}}
+/* v20 · райдеры события */
+.eb-prods{display:grid;gap:10px}
+.eb-prod{padding:0}
+.eb-prod>summary{min-height:58px;padding:12px 16px;border:0;background:none;border-radius:22px}
+.eb-prod[open]>summary{border:0}
+.eb-prod[open]{border-color:rgba(192,250,53,.35)}
+.eb-prod .eb-rd-s b{font-size:18px;font-weight:600;color:#F7F6FA}
+.eb-prod .eb-rd-src{max-width:55%;overflow:hidden;text-overflow:ellipsis}
+.eb-prod .eb-rd-b{padding:0 14px 16px}
