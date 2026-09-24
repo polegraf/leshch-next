@@ -461,3 +461,18 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-tabs-wrap.more-r .eb-tabs-more.r svg{animation:eb-nudge 1.6s ease-in-out 2}
 @keyframes eb-nudge{0%,100%{transform:translateX(0)}50%{transform:translateX(3px)}}
 @media(prefers-reduced-motion:reduce){.eb-tabs-more svg{animation:none!important}}
+
+/* ленты шагов и чипов: те же подсказки свайпа, фон — страница */
+.eb-swipe{position:relative;margin:0 -16px;min-width:0}
+.eb-swipe>.eb-bsteps,.eb-swipe>.eb-chips{margin:0!important;padding-left:16px;padding-right:16px}
+.eb-swipe::before,.eb-swipe::after{content:'';position:absolute;top:0;bottom:0;width:72px;pointer-events:none;opacity:0;transition:opacity .2s;z-index:1}
+.eb-swipe::before{left:0;background:linear-gradient(90deg,#06040B 25%,rgba(6,4,11,0))}
+.eb-swipe::after{right:0;background:linear-gradient(270deg,#06040B 25%,rgba(6,4,11,0))}
+.eb-swipe.more-l::before,.eb-swipe.more-r::after{opacity:1}
+.eb-swipe .eb-tabs-more.r{right:10px}.eb-swipe .eb-tabs-more.l{left:10px}
+.eb-swipe.more-r .eb-tabs-more.r,.eb-swipe.more-l .eb-tabs-more.l{opacity:1;pointer-events:auto}
+.eb-swipe.more-r .eb-tabs-more.r svg{animation:eb-nudge 1.6s ease-in-out 2}
+.eb-swipe .eb-tabs-more{width:36px;height:36px;margin-top:-18px;background:rgba(192,250,53,.16);border:1px solid rgba(192,250,53,.35)}
+.eb-sheet .eb-swipe{margin:0 -20px}.eb-sheet .eb-swipe>.eb-chips{padding-left:20px;padding-right:20px}
+.eb-sheet .eb-swipe::before{background:linear-gradient(90deg,#15111c 25%,rgba(21,17,28,0))}.eb-sheet .eb-swipe::after{background:linear-gradient(270deg,#15111c 25%,rgba(21,17,28,0))}
+@media(max-width:360px){.eb-swipe{margin:0 -12px}.eb-swipe>.eb-bsteps,.eb-swipe>.eb-chips{padding-left:12px;padding-right:12px}}

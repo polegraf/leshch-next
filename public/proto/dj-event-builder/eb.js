@@ -194,7 +194,7 @@ const addBtn=(label,cmd)=>`<button type="button" class="eb-add" data-cmd="${cmd}
 const STEPS=['Основа','Площадка','Лайн-ап','Команда','Запросы','Деньги','Продвижение','Проверка'];
 function stepDone(i){return [!!E.name&&!!E.date,!!venue(),list('artist').length>0,E.slots.crew.concat(E.slots.vendor).every(r=>E.people.some(p=>p.role===r))&&E.people.some(p=>p.group==='crew'),reqs().length>0&&reqs().every(r=>r.st!=='draft')&&list('artist').every(p=>p.rider),E.ticketMode==='reg'||E.price>0,(E.channels||[]).length>0&&(E.posts||[]).length>0,false][i];}
 function build(step){const monitor=!E.fresh;
- const head=`<div class="eb-bhead">${monitor?`<a class="eb-back plain" href="#summary">← К монитору</a>`:`<a class="eb-back plain" href="#events">← Мои события</a>`}<span class="caption">${monitor?'Настройка события':'Новое событие'}</span></div>
+ const head=`<div class="eb-bhead">${monitor?`<a class="eb-back plain" href="#summary">← К монитору</a>`:`<a class="eb-back plain" href="#events">← Мои события</a>`}<span class="caption">${monitor?'Настройка':'Новое событие'} · шаг ${step+1} из ${STEPS.length}</span></div>
  <nav class="eb-bsteps" aria-label="Шаги">${STEPS.map((s,i)=>`<a href="#build/${i}" class="${i===step?'now':''}${stepDone(i)?' done':''}"${i===step?' aria-current="step"':''}><i aria-hidden="true">${stepDone(i)?'✓':i+1}</i>${s}</a>`).join('')}</nav>
  <h1 class="eb-h1">${STEPS[step]}</h1>`;
  const body=[bBasic,bVenue,bLineup,bTeam,bRequests,bMoney,bPromo,bReview][step]();
@@ -460,12 +460,22 @@ function tabsInit(){const w=document.querySelector('[data-tabs-wrap]');if(!w)ret
  n.scrollLeft=tabsX;const a=n.querySelector('[aria-current]');if(a){const l=a.offsetLeft,r=l+a.offsetWidth;if(l<n.scrollLeft+8)n.scrollLeft=l-24;else if(r>n.scrollLeft+n.clientWidth-8)n.scrollLeft=r-n.clientWidth+24;}
  n.addEventListener('scroll',sync,{passive:true});sync();
  if(!tabsHinted&&n.scrollWidth>n.clientWidth+4&&n.scrollLeft<4&&!matchMedia('(prefers-reduced-motion: reduce)').matches){tabsHinted=true;setTimeout(()=>{n.scrollTo({left:56,behavior:'smooth'});setTimeout(()=>n.scrollTo({left:0,behavior:'smooth'}),550);},600);}}
-document.addEventListener('click',e=>{const b=e.target.closest('[data-tabs-go]');if(!b)return;const n=b.parentElement.querySelector('.eb-tabs');n.scrollBy({left:+b.dataset.tabsGo*n.clientWidth*.6,behavior:'smooth'});});
+/* то же для шагов билдера и лент чипов: оборачиваем, стрелки у краёв, активный пункт в поле зрения, разовый «показ» */
+const ARR=d=>`<button type="button" class="eb-tabs-more ${d<0?'l':'r'}" data-tabs-go="${d}" aria-label="${d<0?'Назад':'Дальше'}" tabindex="-1"><svg viewBox="0 0 24 24"><path d="${d<0?'m15 6-6 6 6 6':'m9 6 6 6-6 6'}"/></svg></button>`;
+const swipeHinted=new Set();const swipeX={};
+function swipeInit(){document.querySelectorAll('.eb-bsteps,.eb-chips:not(.wrap)').forEach((n,i)=>{let w=n.parentElement;
+ if(!w.classList.contains('eb-swipe')){w=document.createElement('div');w.className='eb-swipe'+(n.classList.contains('eb-bsteps')?' steps':'');n.before(w);w.append(n);w.insertAdjacentHTML('beforeend',ARR(-1)+ARR(1));}
+ const key=(n.classList.contains('eb-bsteps')?'steps':'chips')+i;
+ const sync=()=>{const max=n.scrollWidth-n.clientWidth;w.classList.toggle('more-r',n.scrollLeft<max-4);w.classList.toggle('more-l',n.scrollLeft>4);swipeX[key]=n.scrollLeft;};
+ n.scrollLeft=swipeX[key]||0;const a=n.querySelector('[aria-current],[aria-pressed="true"]');if(a){const l=a.offsetLeft-n.offsetLeft,r=l+a.offsetWidth;if(l<n.scrollLeft+8)n.scrollLeft=l-24;else if(r>n.scrollLeft+n.clientWidth-8)n.scrollLeft=r-n.clientWidth+48;}
+ n.addEventListener('scroll',sync,{passive:true});sync();
+ const hk=key.replace(/\d+$/,'');if(!swipeHinted.has(hk)&&n.scrollWidth>n.clientWidth+4&&n.scrollLeft<4&&!matchMedia('(prefers-reduced-motion: reduce)').matches){swipeHinted.add(hk);setTimeout(()=>{n.scrollTo({left:64,behavior:'smooth'});setTimeout(()=>n.scrollTo({left:0,behavior:'smooth'}),550);},700);}});}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-tabs-go]');if(!b)return;const n=b.parentElement.querySelector('.eb-tabs,.eb-bsteps,.eb-chips');n.scrollBy({left:+b.dataset.tabsGo*n.clientWidth*.6,behavior:'smooth'});});
 function render(){const r=route();let html;
  if(r.v==='events')html=events();
  else if(r.v==='build')html=build(r.step);
  else html=header()+`<div class="eb-body">${r.v==='summary'?summary():r.v==='place'?place():r.v==='people'?people():r.v==='promo'?promo():r.v==='req'?requests():r.v==='money'?money():day()}</div>`;
- document.querySelector('#main').innerHTML=`<div class="eb${r.v==='build'?' eb-builder':''}">${html}</div>${sheetHTML()}${toast?`<div class="eb-toast" role="status">${esc(toast)}</div>`:''}`;tabsInit();}
+ document.querySelector('#main').innerHTML=`<div class="eb${r.v==='build'?' eb-builder':''}">${html}</div>${sheetHTML()}${toast?`<div class="eb-toast" role="status">${esc(toast)}</div>`:''}`;tabsInit();swipeInit();}
 const say=t=>{toast=t;render();clearTimeout(say.t);say.t=setTimeout(()=>{toast='';render();},2800);};
 const open=s=>{sheet=s;render();setTimeout(()=>document.querySelector('.eb-sheet input:not([type=hidden])')?.focus?.(),0);};
 const close=()=>{sheet=null;render();};
