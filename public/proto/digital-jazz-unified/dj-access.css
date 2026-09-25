@@ -89,3 +89,16 @@
 .dja-lock-alt{font-size:16px}
 .dja-lock-demo{margin:10px 0 0;font-size:13px;color:#6E6890}
 @media(prefers-reduced-motion:reduce){.dja-face.scan .c{animation:none}}
+/* удаление профиля */
+.dja-list li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+.dja-del{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);display:grid;place-items:center;cursor:pointer}
+.dja-del svg{width:20px;height:20px;fill:none;stroke:#B4AECB;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.dja-del:hover svg,.dja-del:focus-visible svg{stroke:#FF00E5}
+.dja-cap-hot{color:#FF00E5}
+.dja-warn{display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px;padding:14px 16px;border:1px solid rgba(255,0,229,.45);border-radius:18px;background:rgba(255,0,229,.07)}
+.dja-warn svg{width:24px;height:24px;fill:none;stroke:#FF00E5;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.dja-warn b{font-size:17px;color:#F7F6FA}
+.dja-warn ul{margin:6px 0 0;padding-left:18px;display:grid;gap:4px;font-size:15px;line-height:1.3;color:#E4E1EC}
+.dja-danger{border:0;border-radius:15px;background:#FF00E5;color:#fff;font:600 18px Jost,sans-serif;cursor:pointer}
+.dja-danger:disabled{background:rgba(255,0,229,.25);color:rgba(255,255,255,.6);cursor:default}
+.dja-undo{margin-left:10px;padding:4px 12px;border:0;border-radius:999px;background:#14170A;color:#C0FA35;font:600 15px Jost,sans-serif;cursor:pointer}

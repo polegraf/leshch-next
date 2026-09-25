@@ -143,3 +143,9 @@
 .af-soon li{grid-template-columns:minmax(0,1fr) auto}
 .af-soon-a{display:grid;grid-template-columns:56px minmax(0,1fr);gap:12px;align-items:center;min-height:72px;color:inherit;text-decoration:none;min-width:0}
 .af-soon-a img{width:56px;height:56px;border-radius:14px;object-fit:cover;display:block}
+/* аудит: липкая плашка покупки над нижней навигацией */
+.af-sticky{position:fixed;left:12px;right:12px;bottom:calc(96px + env(safe-area-inset-bottom));z-index:40;max-width:520px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 10px 10px 16px;border:1px solid rgba(255,255,255,.14);border-radius:20px;background:rgba(16,12,24,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 18px 40px -16px rgba(0,0,0,.9)}
+.af-sticky[hidden]{display:none}
+.af-sticky span{display:grid;min-width:0}.af-sticky b{font-size:18px;font-weight:600;color:#C0FA35}.af-sticky small{font-size:14px;color:var(--dj-text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.af-sticky .primary{display:flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;text-decoration:none;font-size:17px}
+.af-back{min-height:44px;display:inline-flex;align-items:center}

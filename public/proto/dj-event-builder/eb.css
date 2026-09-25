@@ -671,3 +671,14 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-cnt{float:right;font-style:normal;font-size:13px;color:var(--dj-text-faint);font-variant-numeric:tabular-nums}
 .eb-afisha span{font-weight:500;color:var(--dj-text-muted)}
 .eb-as{margin:-6px 0 0;font-size:15px;color:var(--dj-text-muted)}.eb-as b{color:#A375FF;font-weight:600}
+/* v29 · аудит: плашка шагов в потоке, перенос заголовков секций, этапы, стрелки лент, цели нажатия */
+.eb-bfoot{position:static;margin-top:8px;backdrop-filter:none;-webkit-backdrop-filter:none;background:none;border:0;padding:0}
+.eb-sec-head{flex-wrap:wrap;min-width:0}
+.eb-sec-head h2{min-width:0}
+.eb-rail{grid-template-columns:1.35fr 1fr 1.1fr .9fr 1fr}
+.eb-tabs,.eb-bsteps{scroll-padding-inline:48px}
+.eb-tog::after{content:'';position:absolute;inset:-9px -2px}
+.eb-posts li{grid-template-columns:150px minmax(0,1fr) 36px!important}
+.eb-posts input[type=date]::-webkit-calendar-picker-indicator{display:none}
+.eb-bhead .eb-back{min-height:44px;display:inline-flex;align-items:center}
+.eb-afisha{min-height:44px}

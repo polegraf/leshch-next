@@ -51,9 +51,11 @@ function eventPage(e){const [st,c]=status(e),soldout=e.mode!=='reg'&&!left(e),mu
  <div class="af-cta">${!e.published?(()=>{const on=load(RM).includes(e.id);return `<button type="button" class="${on?'secondary-button':'primary'} af-btn" data-af-remind="${e.id}" aria-pressed="${on}">${on?'Напомним об открытии':'Напомнить об открытии '+(e.mode==='reg'?'регистрации':'продаж')}</button>`;})():soldout?`<button type="button" class="secondary-button af-btn" disabled>Билеты распроданы</button>`:`<a class="primary af-btn" href="#t/${e.id}">${e.mode==='reg'?'Зарегистрироваться':'Билеты от '+rub(e.min)}</a>`}<p class="af-st-line ${c}">${st}</p></div>
  ${e.desc?`<p class="af-about">${esc(e.desc)}</p>`:''}
  ${e.scenes.length?`<section class="af-sec"><h2>Лайн-ап</h2>${e.scenes.map(sc=>`${multi?`<p class="af-gt">${esc(sc.n)}</p>`:''}<ul class="card af-lu">${sc.sets.map(p=>`<li><a href="${profile(p.name)}"><span class="af-time">${p.set||'—'}<small>${p.end?'до '+p.end:''}</small></span>${ava(p)}<span class="af-lu-t"><b>${esc(p.name)}</b><small>${esc((p.role||'').split(' · ')[0]||'Артист')}</small></span>${ARR}</a></li>`).join('')}</ul>`).join('')}</section>`:''}
- <section class="af-sec"><h2>${e.mode==='reg'?'Вход':'Билеты'}</h2><ul class="card af-types">${e.tickets.map(t=>{const l=tleft(t);return `<li class="${l?'':'off'}"><span class="af-type-t"><b>${esc(t.n)}</b>${t.desc?`<small>${esc(t.desc)}</small>`:''}${e.mode!=='reg'?`<small class="${!l||l<=t.qty*.15?'eb-hot':''}">${!l?'распродан':l<=t.qty*.15?'осталось '+l:'в продаже'}</small>`:''}</span><b class="af-type-p">${t.price?rub(t.price):'Бесплатно'}</b></li>`;}).join('')}</ul></section>
  <section class="af-sec"><h2>Площадка</h2><div class="card af-place"><b>${esc(e.venue?.name||'Уточняется')}</b><small>${esc(e.city)}${e.venue?.cap?` · до ${e.venue.cap} гостей`:''} · двери в ${e.start}</small></div></section>
  <section class="af-sec"><h2>Организатор</h2><div class="card af-place"><b>Digital Jazz</b><small>Вопросы по билетам — в чате организатора</small></div></section>`;}
+
+function stickyBar(e){if(e.mode!=='reg'&&!left(e)&&e.published)return '';return `<div class="af-sticky" hidden><span><b>${e.published?(e.mode==='reg'?'Бесплатно':'от '+rub(e.min)):(e.mode==='reg'?'Регистрация':'Продажа')+' с '+dm(e.announce)}</b><small>${esc(e.name)} · ${dm(e.date)}</small></span>${e.published?`<a class="primary" href="#t/${e.id}">${e.mode==='reg'?'Записаться':'Билеты'}</a>`:`<button type="button" class="primary" data-af-remind="${e.id}">Напомнить</button>`}</div>`;}
+function stickyWatch(){const bar=document.querySelector('.af-sticky'),cta=document.querySelector('.af-cta');if(!bar||!cta||!('IntersectionObserver' in window))return;new IntersectionObserver(([x])=>{bar.hidden=x.isIntersecting||x.boundingClientRect.top>0;},{threshold:0}).observe(cta);}
 
 /* ---------- выбор билетов ---------- */
 const qtyOf=(e,t)=>(cart[e.id]||{})[t.id]||0,count=e=>Object.values(cart[e.id]||{}).reduce((a,b)=>a+b,0);
@@ -89,7 +91,7 @@ function render(){const [r,id]=location.hash.slice(1).split('/'),e=ALL.find(x=>x
  if(r==='e'&&ev)h=eventPage(ev);else if(r==='t'&&e)h=ticketsPage(e);else if(r==='c'&&e)h=checkout(e);else if(r==='o')h=orderPage(load(LS).find(o=>o.id===id));else if(r==='my')h=myPage();
  else if(['e','t','c'].includes(r)&&id){const s=ALL.find(x=>x.id===id);h=`<a class="af-back" href="#">← Афиша</a><div class="card af-empty"><p class="secondary">${s&&s.announce&&!s.draft?`${s.mode==='reg'?'Регистрация':'Продажа билетов'} на «${esc(s.name)}» откроется ${dm(s.announce)}.`:'Такого события в афише нет.'}</p><a class="primary af-btn" href="${s&&!s.draft?'#e/'+s.id:'#'}">${s&&!s.draft?'К событию':'В афишу'}</a></div>`;}
  else h=listing();
- if(h==='')return;main.innerHTML=`<div class="af">${h}</div>${toast?`<div class="eb-toast af-toast" role="status">${esc(toast)}</div>`:''}`;}
+ if(h==='')return;const sticky=r==='e'&&ev?stickyBar(ev):'';main.innerHTML=`<div class="af">${h}</div>${sticky}${toast?`<div class="eb-toast af-toast" role="status">${esc(toast)}</div>`:''}`;stickyWatch();}
 const say=t=>{toast=t;render();clearTimeout(say.t);say.t=setTimeout(()=>{toast='';render();},2600);};
 addEventListener('hashchange',()=>{render();scrollTo(0,0);});
 document.addEventListener('click',ev=>{const b=ev.target.closest('button,a');if(!b)return;const d=b.dataset;

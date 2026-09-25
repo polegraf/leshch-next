@@ -50,8 +50,13 @@ function body(){const s=sheet;
  if(s.v==='email')return `<p class="dja-cap">Вход по email</p><h2 id="dja-t">Пришлём код на почту</h2><form data-dja-form="email"><label class="field"><span>Email</span><input class="input" name="email" type="email" required autocomplete="email" value="${esc(s.email||'')}"></label><button class="primary dja-btn">Получить код</button></form><button type="button" class="text-button dja-link" data-dja="back-auth">← Другие способы</button>`;
  if(s.v==='code')return `<p class="dja-cap">Вход по email</p><h2 id="dja-t">Код из письма</h2><p class="dja-sub">Отправили на ${esc(s.email)}. Демо: код <b>123456</b>.</p><form data-dja-form="code"><label class="field"><span>Код</span><input class="input dja-code" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" required></label>${s.err?`<p class="dja-err" role="alert">${esc(s.err)}</p>`:''}${S.profiles.length?'':`<label class="field"><span>Как тебя зовут</span><input class="input" name="name" required autocomplete="given-name" maxlength="40" value="${esc(s.name||'')}"></label>`}<button class="primary dja-btn">Войти</button></form><button type="button" class="text-button dja-link" data-dja="email">Изменить email</button>`;
  if(s.v==='demo')return demoBody();
+ if(s.v==='del'){const p=S.profiles.find(x=>x.id===s.id),I=impact(p),ok=(s.typed||'').trim().toLowerCase()===p.name.trim().toLowerCase();return `<p class="dja-cap dja-cap-hot">Удаление профиля</p><h2 id="dja-t">Удалить «${esc(p.name)}»?</h2>
+  <div class="dja-warn"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2.5 20h19L12 3Z"/><path d="M12 10v4.5M12 17.2v.1"/></svg><div><b>Это заметят другие.</b><ul>${I.map(x=>`<li>${x}</li>`).join('')}</ul></div></div>
+  <p class="dja-sub">Профиль можно восстановить в течение 30 дней в настройках аккаунта. Личный профиль и билеты останутся.</p>
+  <label class="field"><span>Чтобы подтвердить, введи название профиля</span><input class="input" data-dja-typed value="${esc(s.typed||'')}" placeholder="${esc(p.name)}" autocomplete="off"></label>
+  <button type="button" class="dja-danger dja-btn" data-dja="del-go"${ok?'':' disabled'}>Удалить профиль</button><button type="button" class="text-button dja-link" data-dja="profiles">Отмена</button>`;}
  if(s.v==='profiles'){const a=active();return `<p class="dja-cap">${S.via==='yandex'?'Вход через Яндекс ID':'Вход по email'} · ${esc(S.email||'')}</p><h2 id="dja-t">Твои профили</h2>
-  <ul class="dja-list">${S.profiles.map(p=>`<li><button type="button" class="dja-prof${p.id===a?.id?' on':''}" data-dja-use="${p.id}" aria-pressed="${p.id===a?.id}"><span class="dja-ava">${esc((p.name||'?')[0])}</span><span class="dja-prof-t"><b>${esc(p.name)}</b><small>${p.type==='personal'?'Личный · билеты, друзья, интересы':esc(TNAME[p.type])+(p.roles?.length?' · '+esc(p.roles.join(', ')):'')+(p.biz?' · '+esc(p.biz):'')+(p.cap?' · до '+p.cap+' гостей':'')}</small></span>${p.id===a?.id?'<svg class="dja-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>':''}</button></li>`).join('')}</ul>
+  <ul class="dja-list">${S.profiles.map(p=>`<li><button type="button" class="dja-prof${p.id===a?.id?' on':''}" data-dja-use="${p.id}" aria-pressed="${p.id===a?.id}"><span class="dja-ava">${esc((p.name||'?')[0])}</span><span class="dja-prof-t"><b>${esc(p.name)}</b><small>${p.type==='personal'?'Личный · билеты, друзья, интересы':esc(TNAME[p.type])+(p.roles?.length?' · '+esc(p.roles.join(', ')):'')+(p.biz?' · '+esc(p.biz):'')+(p.cap?' · до '+p.cap+' гостей':'')}</small></span>${p.id===a?.id?'<svg class="dja-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>':''}</button>${p.type==='personal'?'':`<button type="button" class="dja-del" data-dja-del="${p.id}" aria-label="Удалить профиль ${esc(p.name)}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M9 7V4.5h6V7M6.5 7l1 13h9l1-13M10 11v6M14 11v6"/></svg></button>`}</li>`).join('')}</ul><p class="dja-note">Личный профиль — это твой аккаунт, его не удалить отсюда. Профессиональные — корзина справа.</p>
   <a class="primary dja-btn" href="${home()}">${a?.type==='personal'?'Открыть афишу':'Открыть профиль '+esc(a?.name||'')}</a>
   <button type="button" class="secondary-button dja-btn" data-dja="create">+ Новый профиль</button>
   <button type="button" class="text-button dja-link" data-dja="logout">Выйти</button>`;}
@@ -70,6 +75,13 @@ function draw(){const r=mount();r.querySelector('.dja-scrim')?.remove();r.queryS
  r.insertAdjacentHTML('afterbegin',`<div class="dja-scrim" data-dja="close"></div><section class="dja-sheet" role="dialog" aria-modal="true" aria-labelledby="dja-t"><div class="dja-grab" aria-hidden="true"></div><button type="button" class="dja-x" data-dja="close" aria-label="Закрыть">×</button>${body()}</section>`);}
 
 /* ---------- вход ---------- */
+function impact(p){const D=window.djEvents,L=[],mine=n=>String(n||'').toLowerCase()===p.name.toLowerCase();
+ if(D){const T=D.today,EV=D.all().filter(e=>e.name);
+  if(p.type==='org'){const live=EV.filter(e=>!e.fresh&&e.date&&e.date>=T),sold=live.reduce((a,e)=>a+(e.mode==='sale'?e.sold:0),0);if(live.length)L.push(`${live.length} ${live.length===1?'событие':live.length<5?'события':'событий'} в работе — их нужно передать другому организатору или отменить`);if(sold)L.push(`${sold} проданных билетов — зрителям уйдут возвраты`);const dr=EV.filter(e=>e.fresh).length;if(dr)L.push(`черновики (${dr}) удалятся`);}
+  if(p.type==='artist'){const G=EV.flatMap(e=>e.people.filter(x=>x.group==='artist'&&mine(x.name)&&x.stage>=0&&e.date&&e.date>=T).map(x=>[e,x]));const c=G.filter(([e,x])=>x.stage>=1),i=G.filter(([e,x])=>x.stage===0);if(c.length)L.push(`подтверждённые сеты: ${c.map(([e])=>e.name).join(', ')} — организаторы получат отказ`);if(i.length)L.push(`приглашения (${i.length}) закроются без ответа`);}
+  if(p.type==='venue'||p.type==='company'){const B=EV.flatMap(e=>e.people.filter(x=>(x.group==='venue'||x.group==='vendor')&&mine(x.name)&&x.stage>=0).map(x=>e.name));if(B.length)L.push(`брони и договоры: ${B.join(', ')}`);}}
+ L.push(p.type==='artist'?'портфолио, райдер и отзывы пропадут из поиска':'страница профиля пропадёт из поиска и афиши');
+ return L;}
 function signIn(via,email,name){unlocked();S.signed=true;S.via=via;S.email=email;if(!personal()){const p={id:uid(),type:'personal',name:name||email.split('@')[0]};S.profiles.unshift(p);S.active=p.id;}save();}
 function createProfile(f){const t=f.type||'artist',p={id:uid(),type:t,name:f.name.trim(),city:(f.city||'').trim()};if(t==='artist'){p.roles=f.roles||[];p.genres=f.genres||[];}if(t==='company')p.biz=f.biz||'';if(t==='venue')p.cap=+String(f.cap||'').replace(/\D/g,'')||0;S.profiles.push(p);S.active=p.id;save();return p;}
 
@@ -84,7 +96,7 @@ function chip(){document.querySelectorAll('.dja-as').forEach(n=>n.remove());cons
 /* тап по аватарке — над ней выезжают аватарки других профилей с подписями, как меню сервисов */
 function fan(av){const old=document.querySelector('.dja-fan');if(old){closeFan();return;}const a=active(),others=S.profiles.filter(p=>p.id!==a?.id);
  const r=av.getBoundingClientRect(),w=document.createElement('div');w.className='dja-fan';w.style.left=Math.round(r.left)+'px';w.style.bottom=Math.round(innerHeight-r.top+12)+'px';
- w.innerHTML=others.map(p=>`<button type="button" class="dja-fan-row" data-dja-use="${p.id}"><span class="dja-fan-c" style="width:${Math.round(r.width*.86)}px;height:${Math.round(r.width*.86)}px">${avaHTML(p,'dja-fan-img')}</span><span class="dja-fan-l"><b>${esc(p.name)}</b><small>${TLABEL[p.type]||''}</small></span></button>`).join('')+`<button type="button" class="dja-fan-all" data-dja="profiles">Все профили</button>`;
+ w.innerHTML=`<a class="dja-fan-all dja-fan-me" href="${url('profile/index.html')}">Мой профиль · ${esc(a?.name||'')}</a>`+others.map(p=>`<button type="button" class="dja-fan-row" data-dja-use="${p.id}"><span class="dja-fan-c" style="width:${Math.round(r.width*.86)}px;height:${Math.round(r.width*.86)}px">${avaHTML(p,'dja-fan-img')}</span><span class="dja-fan-l"><b>${esc(p.name)}</b><small>${TLABEL[p.type]||''}</small></span></button>`).join('')+`<button type="button" class="dja-fan-all" data-dja="profiles">Все профили</button>`;
  const sc=document.createElement('div');sc.className='dja-fan-scrim';sc.addEventListener('click',closeFan);document.body.append(sc,w);av.classList.add('dja-open');requestAnimationFrame(()=>{sc.classList.add('open');w.classList.add('open');});}
 function closeFan(){document.querySelectorAll('.dja-fan,.dja-fan-scrim').forEach(n=>n.remove());document.querySelectorAll('.nav-avatar.dja-open').forEach(n=>n.classList.remove('dja-open'));}
 
@@ -92,6 +104,7 @@ function closeFan(){document.querySelectorAll('.dja-fan,.dja-fan-scrim').forEach
 document.addEventListener('click',e=>{const t=e.target;
  const pick=t.closest('[data-dja-pick]');if(pick){const k=pick.dataset.djaPick,v=pick.dataset.v;syncForm();if(pick.dataset.multi){const a=sheet[k]||[];sheet[k]=a.includes(v)?a.filter(x=>x!==v):[...a,v];if(k==='roles'){const g=new Set((sheet.roles||[]).flatMap(r=>ROLES[r]||[]));sheet.genres=(sheet.genres||[]).filter(x=>g.has(x));}}else sheet[k]=sheet[k]===v?'':v;draw();return;}
  const ty=t.closest('[data-dja-type]');if(ty){syncForm();sheet.type=ty.dataset.djaType;draw();return;}
+ const dl=t.closest('[data-dja-del]');if(dl){open({v:'del',id:dl.dataset.djaDel,typed:''});return;}
  const use=t.closest('[data-dja-use]');if(use){closeFan();const was=S.active;S.active=use.dataset.djaUse;save();close();chip();if(was!==S.active){location.href=home();return;}toast('Ты действуешь как '+active().name);return;}
  const b=t.closest('[data-dja]');if(!b)return;const a=b.dataset.dja;
  if(a==='close'){close();return;}
@@ -101,6 +114,10 @@ document.addEventListener('click',e=>{const t=e.target;
  if(a==='back-auth'){open({...sheet,v:'auth'});return;}
  if(a==='profiles'){closeFan();if(!S.signed){require('Войди, чтобы у тебя был профиль',()=>open({v:'profiles'}));return;}open({v:'profiles'});return;}
  if(a==='create'){open({v:'create',type:'artist'});return;}
+ if(a==='del-go'){const p=S.profiles.find(x=>x.id===sheet.id),was=S.active===p.id,idx=S.profiles.indexOf(p);S.profiles=S.profiles.filter(x=>x!==p);if(was)S.active=(personal()||S.profiles[0]).id;save();close();closeFan();chip();
+  const n=mount();let t=n.querySelector('.dja-toast');if(!t){t=document.createElement('div');t.className='dja-toast';t.setAttribute('role','status');n.append(t);}t.hidden=false;t.innerHTML=`Профиль «${esc(p.name)}» удалён <button type="button" class="dja-undo">Вернуть</button>`;clearTimeout(toast.t);
+  t.querySelector('.dja-undo').onclick=()=>{clearTimeout(toast.t);S.profiles.splice(idx,0,p);if(was)S.active=p.id;save();t.hidden=true;chip();toast(`«${p.name}» восстановлен`);document.dispatchEvent(new CustomEvent('dj-access'));};
+  toast.t=setTimeout(()=>{t.hidden=true;if(was)location.href=home();},5000);document.dispatchEvent(new CustomEvent('dj-access'));return;}
  if(a==='logout'){S={signed:false,profiles:[],active:null};save();close();chip();toast('Ты вышел из аккаунта');document.dispatchEvent(new CustomEvent('dj-access'));return;}});
 function syncForm(){const f=mount().querySelector('[data-dja-form="create"]');if(!f||!sheet)return;const d=new FormData(f);['name','city','cap'].forEach(k=>{if(d.has(k))sheet[k]=d.get(k);});}
 function next(){if(sheet&&sheet.need&&!sheet.need.includes(active()?.type)){const want=sheet.need.includes('org')?'org':sheet.need[0],match=S.profiles.find(p=>sheet.need.includes(p.type));if(match){S.active=match.id;save();done();return;}open({...sheet,v:'create',type:want,name:'',city:'Москва',err:'',title:sheet.needTitle||'Нужен профиль организатора'});return;}done();}
@@ -109,6 +126,7 @@ document.addEventListener('submit',e=>{const f=e.target.closest('[data-dja-form]
  if(k==='code'){if(d.get('code')!=='123456'){sheet.name=d.get('name')||sheet.name;sheet.err='Неверный код. В демо — 123456';draw();return;}signIn('email',sheet.email,(d.get('name')||'').trim());next();return;}
  if(k==='create'){syncForm();if(!(sheet.name||'').trim()){sheet.err='Нужно имя или название';draw();return;}if(sheet.type==='artist'&&!(sheet.roles||[]).length){sheet.err='Отметь хотя бы одну профессию';draw();return;}const p=createProfile(sheet);toast(`Профиль «${p.name}» создан — ты действуешь от его имени`);document.dispatchEvent(new CustomEvent('dj-access'));if(!after){sheet=null;draw();location.href=home();return;}done();}});
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sheet)close();});
+document.addEventListener('input',e=>{if(!e.target.matches('[data-dja-typed]')||!sheet)return;sheet.typed=e.target.value;const p=S.profiles.find(x=>x.id===sheet.id);const b=mount().querySelector('[data-dja="del-go"]');if(b&&p)b.disabled=sheet.typed.trim().toLowerCase()!==p.name.trim().toLowerCase();});
 /* аватарка в нижней навигации — меню профилей (перехватываем раньше общих переходов прототипа) */
 addEventListener('click',e=>{const lg=e.target.closest('.topbar-logo');if(!lg)return;e.preventDefault();e.stopImmediatePropagation();location.href=home();},true);
 addEventListener('click',e=>{const av=e.target.closest('.nav-avatar');if(!av)return;e.preventDefault();e.stopImmediatePropagation();if(S.signed)fan(av);else require('Войди, чтобы у тебя был профиль',()=>open({v:'profiles'}));},true);
@@ -140,12 +158,20 @@ document.addEventListener('click',e=>{const b=e.target.closest('[data-dja-demo]'
  if(k.startsWith('as:')){seed(k.slice(3));hint('Ты вошёл как '+active().name);location.href=home();return;}
  const sc=SCEN.find(x=>x[0]===k);if(sc){if(sc[3]==='multi'){seed('viewer');hint(sc[4]);location.href=home();return;}wipe();hint(sc[4]);location.href=url('../dj-start/index.html');}});
 function demoMenu(){const m=document.querySelector('#moreMenu');if(!m||m.querySelector('.dja-menu'))return;const g=document.createElement('nav');g.className='proto-menu-group dja-menu';g.setAttribute('aria-label','Демо');
- g.innerHTML=`<p class="proto-menu-label">Демо</p><a class="proto-menu-link" href="${url('../dj-start/index.html')}#stay">Старт</a><a class="proto-menu-link" href="${url('../dj-afisha/index.html')}">Афиша</a><a class="proto-menu-link" href="${url('../dj-event-builder/index.html')}#events">Конструктор</a><button type="button" class="proto-menu-link dja-menu-b" data-dja-demo="open">Вход, профили, сценарии…</button>`;m.prepend(g);m.style.maxHeight='75dvh';m.style.overflowY='auto';}
+ g.innerHTML=`<p class="proto-menu-label">Демо</p><a class="proto-menu-link" href="${url('../dj-start/index.html')}#stay">Старт</a><a class="proto-menu-link" href="${url('../dj-afisha/index.html')}">Афиша</a><a class="proto-menu-link" href="${url('../dj-event-builder/index.html')}#events">Конструктор</a><a class="proto-menu-link" href="${url('judge.html')}#tournaments">Судейство (роль судьи)</a><button type="button" class="proto-menu-link dja-menu-b" data-dja-demo="open">Вход, профили, сценарии…</button>`;m.prepend(g);m.style.maxHeight='75dvh';m.style.overflowY='auto';}
+
+/* ---------- роль в турнирах следует из профиля: зритель смотрит, артист участвует, промоутер организует ---------- */
+const HUB={personal:'index.html',artist:'participant.html',org:'organizer.html',company:'index.html',venue:'index.html'};
+const hubUrl=()=>url((S.signed&&HUB[active()?.type])||'index.html');
+(()=>{const file=location.pathname.split('/').pop()||'index.html',hubs=['index.html','participant.html','organizer.html'],inUni=new URL('.',location.href).href===BASE.href;if(!inUni||!S.signed||!hubs.includes(file))return;
+ const want=HUB[active()?.type]||'index.html',h=location.hash;if(want!==file&&(!h||h==='#tournaments'||h==='#monitor'||/^#t\/\d+$/.test(h))){location.replace(url(want)+(h||'#tournaments'));}})();
+addEventListener('click',e=>{const sv=e.target.closest('[data-service="турниры"]');if(!sv||!S.signed)return;e.preventDefault();e.stopImmediatePropagation();location.href=hubUrl()+'#tournaments';},true);
+const hideRole=()=>{if(S.signed)document.querySelectorAll('.role-wrap').forEach(n=>n.remove());};
 
 /* ---------- API ---------- */
 function require(reason,cb,opt={}){after=cb||null;if(S.signed){if(opt.need){sheet={need:opt.need,needTitle:opt.needTitle};next();return;}done();return;}open({v:'auth',reason,need:opt.need,needTitle:opt.needTitle});}
 window.djAccess={home,get signed(){return S.signed;},active,profiles:()=>S.profiles.slice(),email:()=>S.email||'',require,profilesMenu:()=>open({v:'profiles'}),create:(type,cb,title)=>{after=cb||null;open({v:'create',type,title});}};
-const st=document.createElement('link');st.rel='stylesheet';st.href=url('dj-access.css?v=6');document.head.append(st);
+const st=document.createElement('link');st.rel='stylesheet';st.href=url('dj-access.css?v=8');document.head.append(st);
 /* ---------- вход вернувшегося пользователя: Face ID, раз за сессию (имитация в демо) ---------- */
 let lockWait=false;
 const unlocked=()=>{try{sessionStorage.setItem('dj-unlocked','1');}catch{}};
@@ -157,6 +183,6 @@ function lock(){if(!S.signed||isUnlocked()||document.querySelector('.dja-lock'))
  const run=()=>{face.classList.add('scan');setTimeout(()=>{face.classList.remove('scan');face.classList.add('done');st.textContent='Готово';unlocked();setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),350);},550);},1300);};
  const ld=document.querySelector('.dja-loader');setTimeout(run,ld?1700:350);
  el.querySelector('.dja-lock-alt').addEventListener('click',()=>{el.remove();lockWait=true;S.signed=false;require('Вход в аккаунт '+(p?.name||''),()=>{lockWait=false;unlocked();});});}
-const boot=()=>{lock();chip();demoMenu();let h='';try{h=sessionStorage.getItem('dja-hint')||'';sessionStorage.removeItem('dja-hint');}catch{}if(h)setTimeout(()=>toast(h),1500);};
+const boot=()=>{lock();chip();demoMenu();hideRole();let h='';try{h=sessionStorage.getItem('dja-hint')||'';sessionStorage.removeItem('dja-hint');}catch{}if(h)setTimeout(()=>toast(h),1500);};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();

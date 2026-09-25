@@ -4,7 +4,7 @@
    компания и площадка — запросы и брони от событий. Данные — из конструктора (window.djEvents) и турниров (calendar-events.js). */
 (()=>{
 const A=window.djAccess,D=window.djEvents;if(!A||!D||!A.signed)return;
-const P=A.active();if(!P||P.type==='personal')return;
+const P=A.active();if(!P)return;
 const list=document.getElementById('cardList'),first=list&&list.querySelector('[data-id="profile"]');if(!first)return;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const MON=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'],WD=['вс','пн','вт','ср','чт','пт','сб'];
@@ -14,14 +14,20 @@ const TODAY=D.today,EV=D.all().filter(e=>e.name).sort((a,b)=>(a.date||9e15)-(b.d
 const PORTRAIT={'Нокс':'a','Вольт':'b','Лофи':'c','Грув':'d','Рифф':'e','Эхо':'f','Хэт':'g','Сэмпл':'h'};
 
 /* шапка профиля — от имени активного профиля */
-const TN={artist:'Артист · '+(P.roles||[]).join(', '),org:'Организатор событий',company:'Компания'+(P.biz?' · '+P.biz:''),venue:'Площадка'+(P.cap?' · до '+P.cap+' гостей':'')};
+const TN={personal:'Зритель · билеты, события, друзья',artist:'Артист · '+(P.roles||[]).join(', '),org:'Организатор событий',company:'Компания'+(P.biz?' · '+P.biz:''),venue:'Площадка'+(P.cap?' · до '+P.cap+' гостей':'')};
 first.querySelector('[data-meta]')&&(first.querySelector('[data-meta]').textContent=P.name);
 const nm=document.querySelector('.name');if(nm)nm.textContent=P.name;document.title=P.name+' · Digital Jazz';
 const bio=document.querySelector('.bio-text');if(bio)bio.textContent=(TN[P.type]||'')+(P.city?' · '+P.city:'');
-const tags=first.querySelector('[data-tags]');if(tags){const T=P.type==='artist'?[...(P.roles||[]),...(P.genres||[])]:[{org:'Организатор',company:P.biz||'Компания',venue:'Площадка'}[P.type],P.city].filter(Boolean);tags.innerHTML=T.map((t,i)=>`<div class="tag"><div class="dot" style="background:${i?'#A375FF':'#C0FA35'};"></div><span>${esc(t)}</span></div>`).join('');}
-const cov=first.querySelector('.cover img');if(cov&&PORTRAIT[P.name]){cov.src='../assets/portraits/participant-'+PORTRAIT[P.name]+'.png';cov.style.objectPosition='center 30%';}
+const tags=first.querySelector('[data-tags]');if(tags){const T=P.type==='personal'?['Зритель',P.city||'Москва']:P.type==='artist'?[...(P.roles||[]),...(P.genres||[])]:[{org:'Организатор',company:P.biz||'Компания',venue:'Площадка'}[P.type],P.city].filter(Boolean);tags.innerHTML=T.map((t,i)=>`<div class="tag"><div class="dot" style="background:${i?'#A375FF':'#C0FA35'};"></div><span>${esc(t)}</span></div>`).join('');}
+const COVER={personal:'../assets/nav.jpg',org:'../../dj-event-builder/covers/jazz-band.jpg',venue:'../../dj-event-builder/covers/stripes-arch.jpg',company:'../../dj-event-builder/covers/vinyl-bite.jpg'};
+const cov=first.querySelector('.cover img');if(cov){const src=PORTRAIT[P.name]?'../assets/portraits/participant-'+PORTRAIT[P.name]+'.png':COVER[P.type];if(src){cov.src=src;cov.style.objectPosition='center 30%';}}
+/* набор карточек — по типу профиля: зрителю билеты и календарь, артисту портфолио и райдер, организатору и бизнесу — кейсы, материалы, предложения */
+const SHOW={personal:['profile','tickets','calendar'],artist:['profile','monitor','pressbio','stats','genres','music','calendar','cases','pressmaterials','rider','offers','ambassador'],org:['profile','monitor','calendar','pressbio','cases','pressmaterials','offers'],company:['profile','monitor','calendar','pressbio','cases','pressmaterials','offers'],venue:['profile','monitor','calendar','pressbio','cases','pressmaterials','offers']}[P.type]||[];
+const applyCards=()=>{[...list.children].forEach(c=>{const id=c.dataset.id;if(!id)return;c.hidden=!SHOW.includes(id);});document.querySelectorAll('.profile-tournament-card').forEach(n=>n.hidden=true);
+ if(P.type==='personal'){const t=list.querySelector('[data-id="tickets"]');if(t){first.after(t);t.classList.remove('collapsed');}}};
+applyCards();setTimeout(applyCards,0);
+if(P.type==='personal')return;
 
-if(P.type!=='artist')setTimeout(()=>document.querySelectorAll('.profile-tournament-card').forEach(n=>n.hidden=true),0);
 const BC={0:'djs.png',1:'drum.png',2:'gerls.png',3:'gerls.png',4:'beat-video.png',5:'guinar.png',6:'dance.png',7:'rap.png',cup:'cup-hero.jpg'};
 const row=(href,img,t,sub,right,cls='')=>`<li><a class="pm-row ${cls}" href="${href}">${img?`<img src="${esc(img)}" alt="">`:'<span class="pm-ph"></span>'}<span class="pm-t"><b>${t}</b><small>${sub}</small></span>${right||''}</a></li>`;
 const pill=(t,c='')=>`<em class="pm-pill ${c}">${t}</em>`;

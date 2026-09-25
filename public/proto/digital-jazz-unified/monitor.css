@@ -280,3 +280,8 @@ a.mon-judge{display:block}
 /* фокус, который приложение ставит на #main после перехода, не рисует рамку */
 #main:focus{outline:none}
 @media(max-width:360px){.card-rail .mon-node em{letter-spacing:0}.card-rail .mon-rail-in{padding-inline:2px}.card-rail .mon-node{padding-inline:0}}
+/* аудит: цели нажатия в мониторе — область больше, раскладка та же */
+.mon-name-link{position:relative}
+.mon-name-link::after{content:'';position:absolute;left:-6px;right:-6px;top:-11px;bottom:-11px}
+.mon-judge{position:relative}
+.mon-judge::after{content:'';position:absolute;inset:-6px}
