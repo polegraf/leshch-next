@@ -11,7 +11,7 @@
   html, body { margin: 0; background: #06040B; }
   body {
     font-family: Jost, system-ui, -apple-system, "Segoe UI", sans-serif;
-    color: #E6E6F0;
+    color: #E4E1EC;
     -webkit-text-size-adjust: 100%;
     -webkit-tap-highlight-color: transparent;
     touch-action: pan-y;
@@ -863,6 +863,20 @@
     row.addEventListener('click', function () { openThread(row.dataset.thread); });
   });
   document.getElementById('backBtn').addEventListener('click', closeThread);
+  /* ?to=Имя&ctx=Событие — открыть диалог с человеком (из конструктора событий) */
+  var q = new URLSearchParams(location.search), to = q.get('to');
+  if (to) {
+    var key = Object.keys(threads).filter(function (k) { return threads[k].name === to; })[0];
+    if (!key) {
+      key = 'to';
+      var ctx = q.get('ctx');
+      threads.to = { name: to, bg: 'linear-gradient(155deg,#A375FF 0%,#C0FA35 100%)', status: ctx ? 'По событию «' + ctx + '»' : 'Новый диалог', online: false, request: false,
+        msgs: [{ date: 'Сегодня' }] };
+    }
+    openThread(key);
+    var inp = inputBar.querySelector('input,textarea');
+    if (inp && q.get('ctx') && !inp.value) inp.placeholder = 'Сообщение по «' + q.get('ctx') + '»';
+  }
 })();
 </script>
 <script>
@@ -898,6 +912,6 @@
 })();
 </script>
 <link rel="stylesheet" href="../unify.css">
-<script src="../dj-access.js?v=6"></script>
+<script src="../dj-access.js?v=7"></script>
 </body>
 </html>

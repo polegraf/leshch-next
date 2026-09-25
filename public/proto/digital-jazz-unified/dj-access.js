@@ -171,7 +171,7 @@ const hideRole=()=>{if(S.signed)document.querySelectorAll('.role-wrap').forEach(
 /* ---------- API ---------- */
 function require(reason,cb,opt={}){after=cb||null;if(S.signed){if(opt.need){sheet={need:opt.need,needTitle:opt.needTitle};next();return;}done();return;}open({v:'auth',reason,need:opt.need,needTitle:opt.needTitle});}
 window.djAccess={home,get signed(){return S.signed;},active,profiles:()=>S.profiles.slice(),email:()=>S.email||'',require,profilesMenu:()=>open({v:'profiles'}),create:(type,cb,title)=>{after=cb||null;open({v:'create',type,title});}};
-const st=document.createElement('link');st.rel='stylesheet';st.href=url('dj-access.css?v=8');document.head.append(st);
+const st=document.createElement('link');st.rel='stylesheet';st.href=url('dj-access.css?v=9');document.head.append(st);
 /* ---------- вход вернувшегося пользователя: Face ID, раз за сессию (имитация в демо) ---------- */
 let lockWait=false;
 const unlocked=()=>{try{sessionStorage.setItem('dj-unlocked','1');}catch{}};

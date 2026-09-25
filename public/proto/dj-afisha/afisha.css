@@ -1,6 +1,6 @@
 /* Афиша зрителя — на токенах прототипа; карточка и герой как у турниров и монитора события */
 .af{display:grid;gap:16px;min-width:0;padding-bottom:24px}
-.af h1{font-size:36px;line-height:1.02;font-weight:600;color:#F7F6FA;margin:0}
+.af h1{font-size:34px;line-height:1.02;font-weight:600;color:#F7F6FA;margin:0}
 .af h2{font-size:26px;line-height:1.1;font-weight:600;color:#F7F6FA;margin:0}
 .af .secondary{margin:4px 0 0}
 .af .caption{margin:0}
@@ -22,7 +22,7 @@
 .af-st.hot{color:#FF00E5}
 .af-card-b{display:grid;gap:6px;padding:16px 18px 18px}
 .af-date{font-size:26px;font-weight:600;line-height:1.05;color:#C0FA35}
-.af-date.lg{font-size:30px}
+.af-date.lg{font-size:32px}
 .af-name{font-size:24px;line-height:1.1;font-weight:600;color:#F7F6FA}
 .af-meta{font-size:16px;color:var(--dj-text-muted)}
 .af-faces{display:flex;align-items:center;gap:10px;margin-top:6px;min-width:0;font-size:15px;color:var(--dj-text-strong)}
@@ -51,7 +51,7 @@
 .af-mini{min-height:36px;padding:4px 14px;border-radius:999px;border:1px solid var(--dj-line);background:none;color:#C0FA35;font:600 14px Jost,sans-serif;cursor:pointer}
 .af-mini.on{border-color:rgba(192,250,53,.45);background:rgba(192,250,53,.09)}
 .af-cross{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;color:inherit;text-decoration:none;margin-top:8px}
-.af-cross span{display:grid;gap:2px}.af-cross b{font-size:18px;font-weight:600;color:#F7F6FA}.af-cross small{font-size:14px;color:var(--dj-text-faint)}
+.af-cross span{display:grid;gap:2px}.af-cross b{font-size:19px;font-weight:600;color:#F7F6FA}.af-cross small{font-size:14px;color:var(--dj-text-faint)}
 .af-empty{display:grid;gap:12px;justify-items:start;padding:18px}
 
 /* страница события */
@@ -60,32 +60,32 @@
 .af-hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .af-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(6,4,11,.05),rgba(6,4,11,.2) 35%,rgba(6,4,11,.94) 80%)}
 .af-hero-c{position:relative;z-index:1;display:grid;gap:4px;padding:18px 20px 20px;width:100%}
-.af-eyebrow{margin:0;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#A375FF}
+.af-eyebrow{margin:0;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#A375FF}
 .af-hero-c p{margin:0}
 .af-cta{display:grid;gap:8px}
-.af-btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px;box-sizing:border-box;text-decoration:none;font-size:18px}
+.af-btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:56px;box-sizing:border-box;text-decoration:none;font-size:17px}
 .af-btn.is-off{opacity:.45;pointer-events:auto}
 .af-st-line{margin:0;text-align:center;font-size:15px;color:var(--dj-text-muted)}
 .af-st-line.hot{color:#FF00E5}
-.af-gt{margin:6px 0 0;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint)}
+.af-gt{margin:6px 0 0;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint)}
 .af-lu{list-style:none;margin:0;padding:2px 14px}
 .af-lu li+li{border-top:1px solid rgba(255,255,255,.07)}
 .af-lu a{display:grid;grid-template-columns:58px 44px minmax(0,1fr) 22px;gap:12px;align-items:center;min-height:68px;color:inherit;text-decoration:none}
 .af-time{display:grid;font-size:19px;font-weight:600;color:#F7F6FA;font-variant-numeric:tabular-nums;line-height:1.05}
 .af-time small{font-size:13px;font-weight:500;color:var(--dj-text-faint)}
 .af-lu-t{display:grid;gap:2px;min-width:0}
-.af-lu-t b{font-size:18px;font-weight:500;color:#F7F6FA}
+.af-lu-t b{font-size:19px;font-weight:500;color:#F7F6FA}
 .af-lu-t small{font-size:14px;color:var(--dj-text-faint)}
 .af-types{list-style:none;margin:0;padding:2px 16px}
 .af-types li{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:64px;padding:10px 0}
 .af-types li+li{border-top:1px solid rgba(255,255,255,.07)}
 .af-types li.off b{color:var(--dj-text-faint)}
 .af-type-t{display:grid;gap:2px;min-width:0}
-.af-type-t b{font-size:18px;font-weight:600;color:#F7F6FA}
+.af-type-t b{font-size:19px;font-weight:600;color:#F7F6FA}
 .af-type-t small{font-size:14px;color:var(--dj-text-faint)}
 .af-type-p{font-size:19px;font-weight:600;color:#F7F6FA;white-space:nowrap;font-variant-numeric:tabular-nums}
 .af-place{display:grid;gap:4px;padding:16px 18px}
-.af-place b{font-size:18px;font-weight:600;color:#F7F6FA}
+.af-place b{font-size:19px;font-weight:600;color:#F7F6FA}
 .af-place small{font-size:15px;color:var(--dj-text-muted)}
 
 /* выбор билетов */
@@ -106,8 +106,8 @@
 .af-sum{display:grid;gap:8px;padding:16px 18px}
 .af-sum>div{display:flex;justify-content:space-between;gap:12px;font-size:16px;color:var(--dj-text-muted)}
 .af-sum>div b{color:#F7F6FA;font-weight:500;font-variant-numeric:tabular-nums}
-.af-sum>div.tot{padding-top:10px;border-top:1px solid rgba(255,255,255,.1);font-size:18px;color:#F7F6FA}
-.af-sum>div.tot b{font-size:22px;font-weight:600;color:#C0FA35}
+.af-sum>div.tot{padding-top:10px;border-top:1px solid rgba(255,255,255,.1);font-size:17px;color:#F7F6FA}
+.af-sum>div.tot b{font-size:24px;font-weight:600;color:#C0FA35}
 .af-sum-h{margin:0 0 6px;display:grid;gap:2px}.af-sum-h b{font-size:20px;color:#F7F6FA}.af-sum-h small{font-size:15px;color:var(--dj-text-muted)}
 .af-form{display:grid;gap:12px}
 .af .input{text-align:left}
@@ -117,12 +117,12 @@
 .af-ticket-top{display:grid;grid-template-columns:72px minmax(0,1fr);gap:14px;align-items:center;width:100%}
 .af-ticket-top img{width:72px;height:72px;border-radius:16px;object-fit:cover}
 .af-ticket-top div{display:grid;gap:2px;min-width:0}
-.af-ticket-top .af-date{font-size:22px}
+.af-ticket-top .af-date{font-size:24px}
 .af-ticket-top b{font-size:20px;color:#F7F6FA}
 .af-ticket-top small{font-size:15px;color:var(--dj-text-muted)}
 .af-ticket-cut{width:calc(100% + 36px);border-top:2px dashed rgba(255,255,255,.14);margin:4px 0}
 .af-qr{width:180px;height:180px;border-radius:14px;display:block}
-.af-ticket-code{margin:0;font-size:18px;font-weight:600;letter-spacing:.14em;color:#F7F6FA;font-variant-numeric:tabular-nums}
+.af-ticket-code{margin:0;font-size:17px;font-weight:600;letter-spacing:.14em;color:#F7F6FA;font-variant-numeric:tabular-nums}
 .af-ticket-items{list-style:none;margin:0;padding:0;width:100%;display:grid;gap:6px}
 .af-ticket-items li{display:flex;justify-content:space-between;font-size:16px;color:var(--dj-text-muted)}
 .af-ticket-items li b{color:#F7F6FA;font-weight:500}
@@ -139,13 +139,19 @@
 .af-st.soon{color:#A375FF}
 .af-st-line.soon{color:#A375FF}
 .af-sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
-.af-sec-h .text-button{font-size:16px;text-decoration:none}
+.af-sec-h .text-button{font-size:17px;text-decoration:none}
 .af-soon li{grid-template-columns:minmax(0,1fr) auto}
 .af-soon-a{display:grid;grid-template-columns:56px minmax(0,1fr);gap:12px;align-items:center;min-height:72px;color:inherit;text-decoration:none;min-width:0}
 .af-soon-a img{width:56px;height:56px;border-radius:14px;object-fit:cover;display:block}
 /* аудит: липкая плашка покупки над нижней навигацией */
 .af-sticky{position:fixed;left:12px;right:12px;bottom:calc(96px + env(safe-area-inset-bottom));z-index:40;max-width:520px;margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 10px 10px 16px;border:1px solid rgba(255,255,255,.14);border-radius:20px;background:rgba(16,12,24,.92);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 18px 40px -16px rgba(0,0,0,.9)}
 .af-sticky[hidden]{display:none}
-.af-sticky span{display:grid;min-width:0}.af-sticky b{font-size:18px;font-weight:600;color:#C0FA35}.af-sticky small{font-size:14px;color:var(--dj-text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.af-sticky span{display:grid;min-width:0}.af-sticky b{font-size:19px;font-weight:600;color:#C0FA35}.af-sticky small{font-size:14px;color:var(--dj-text-muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .af-sticky .primary{display:flex;align-items:center;justify-content:center;min-height:48px;padding:0 22px;text-decoration:none;font-size:17px}
 .af-back{min-height:44px;display:inline-flex;align-items:center}
+/* === элементы по единому стандарту (25.09.2026) === */
+.af-btn{min-height:48px}
+.af-chips .chip{min-height:44px;font-size:17px}
+.af-mini{position:relative}
+.af-mini::after{content:'';position:absolute;left:0;right:0;top:-4px;bottom:-4px}
+.af-my b{font-weight:600}

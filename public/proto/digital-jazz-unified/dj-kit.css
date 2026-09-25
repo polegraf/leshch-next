@@ -95,7 +95,7 @@ img.crop-left{transform:scale(1.75);transform-origin:14% 42%}
 /* жюри и приз: подпись капсом слева, как в фактах турнира */
 .t-card-facts{display:grid;gap:8px;margin:8px 0 0;padding-top:10px;border-top:1px solid rgba(255,255,255,.07)}
 .t-card-facts>div{display:grid;grid-template-columns:52px minmax(0,1fr);align-items:center;gap:10px;min-width:0}
-.t-card-facts dt{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--dj-text-faint)}
+.t-card-facts dt{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint)}
 .t-card-facts dd{margin:0;display:flex;align-items:center;gap:10px;min-width:0;font-size:17px;line-height:1.15;color:var(--dj-text)}
 .t-card-names{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .t-card-faces{display:flex;flex:0 0 auto}
@@ -106,12 +106,12 @@ img.crop-left{transform:scale(1.75);transform-origin:14% 42%}
 #aud-events:has(.t-card){display:grid;gap:12px}
 
 /* главная: дата в герое */
-.t-hero-date{margin:0;font-size:28px;font-weight:600;line-height:1.1;color:#C0FA35}
+.t-hero-date{margin:0;font-size:32px;font-weight:600;line-height:1.1;color:#C0FA35}
 
 /* ===== страница турнира в разделе роли ===== */
 .t-page{display:grid;gap:16px}
 .t-page .battle-back{margin-bottom:-8px}
-.t-page-date{margin:0;font-size:28px!important;font-weight:600;line-height:1.1;color:#C0FA35}
+.t-page-date{margin:0;font-size:32px!important;font-weight:600;line-height:1.1;color:#C0FA35}
 .t-page-cover h1{margin:0}
 .t-page-body{display:grid;gap:14px}
 .t-page-jury{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:12px}
@@ -160,7 +160,7 @@ svg.aud-all-mark{width:28px;height:28px;fill:none;stroke:currentColor;stroke-wid
 .t-card-facts{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:12px;margin:8px 0 0;padding-top:12px;border-top:1px solid rgba(255,255,255,.07)}
 .t-card-facts>div{display:block;min-height:0}
 .t-card-facts dl{display:grid;grid-template-columns:52px minmax(0,1fr);align-items:baseline;column-gap:10px;row-gap:4px;margin:0;min-width:0}
-.t-card-facts dt{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--dj-text-faint);line-height:1.3}
+.t-card-facts dt{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint);line-height:1.3}
 .t-card-facts dd{display:block;margin:0;font-size:17px;line-height:1.3;color:var(--dj-text);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* v67: фото на главной афише Cup — лицо и руки в кадре, низ затемнён под текст */

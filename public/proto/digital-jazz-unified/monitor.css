@@ -135,7 +135,7 @@
 /* вся сетка: 4 колонки без горизонтальной прокрутки */
 .mon-bracket{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:11px;padding:14px 12px;border:1px solid var(--dj-line);border-radius:22px;background:var(--dj-surface)}
 .mb-col{display:flex;flex-direction:column;min-width:0}
-.mb-title{margin:0 0 10px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--dj-text-4);text-align:center}
+.mb-title{margin:0 0 10px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-4);text-align:center}
 .mb-col.live .mb-title{color:var(--dj-lime)}
 .mb-cells{flex:1;display:flex;flex-direction:column}
 /* слоты делят колонку поровну: слот 1/4 вдвое выше слота 1/8 — центры пар совпадают */

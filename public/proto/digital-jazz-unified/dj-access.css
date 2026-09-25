@@ -3,41 +3,41 @@
 .dja-sheet{position:fixed;left:0;right:0;bottom:0;z-index:191;max-width:560px;margin:0 auto;max-height:88vh;overflow:auto;display:grid;gap:14px;padding:12px 20px calc(24px + env(safe-area-inset-bottom));border:1px solid var(--dj-line,rgba(255,255,255,.14));border-bottom:0;border-radius:22px 22px 0 0;background:linear-gradient(165deg,#1c1724,#0c0a10);color:#E4E1EC;font-family:Jost,sans-serif}
 .dja-grab{justify-self:center;width:40px;height:5px;border-radius:3px;background:rgba(255,255,255,.2)}
 .dja-x{position:absolute;top:12px;right:14px;width:40px;height:40px;border:0;border-radius:50%;background:rgba(255,255,255,.06);color:#E4E1EC;font-size:24px;line-height:1;cursor:pointer}
-.dja-sheet h2{margin:0;padding-right:44px;font-size:28px;line-height:1.1;font-weight:600;color:#F7F6FA}
-.dja-cap{margin:0;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#A375FF}
-.dja-sub{margin:0;font-size:17px;line-height:1.3;color:var(--dj-text-muted,#B4AECB)}
+.dja-sheet h2{margin:0;padding-right:44px;font-size:26px;line-height:1.1;font-weight:600;color:#F7F6FA}
+.dja-cap{margin:0;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#A375FF}
+.dja-sub{margin:0;font-size:17px;line-height:1.3;color:var(--dj-text-muted,#C7C3D6)}
 .dja-sub b{color:#C0FA35}
-.dja-note{margin:0;font-size:14px;line-height:1.35;color:var(--dj-text-faint,#8E88A8)}
+.dja-note{margin:0;font-size:14px;line-height:1.35;color:var(--dj-text-faint,#9A94B3)}
 .dja-err{margin:0;font-size:15px;color:#FF00E5}
 .dja-sheet form{display:grid;gap:14px}
 .dja-sheet .field{display:grid;gap:6px}
-.dja-sheet .field>span{font-size:14px;color:var(--dj-text-muted,#B4AECB)}
+.dja-sheet .field>span{font-size:14px;color:var(--dj-text-muted,#C7C3D6)}
 .dja-sheet .input{width:100%;box-sizing:border-box;min-height:52px;text-align:left}
-.dja-code{letter-spacing:.3em;font-size:22px!important;font-variant-numeric:tabular-nums}
-.dja-btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;box-sizing:border-box;text-decoration:none;font-size:18px}
+.dja-code{letter-spacing:.3em;font-size:24px!important;font-variant-numeric:tabular-nums}
+.dja-btn{display:flex;align-items:center;justify-content:center;width:100%;min-height:54px;box-sizing:border-box;text-decoration:none;font-size:17px}
 .dja-link{justify-self:center;font-size:16px}
 /* Яндекс ID: нейтральная кнопка; в рабочей версии — официальная кнопка из брендбука Яндекс ID */
-.dja-ya{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:56px;border:0;border-radius:15px;background:#F7F6FA;color:#06040B;font:600 18px Jost,sans-serif;cursor:pointer}
+.dja-ya{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:56px;border:0;border-radius:15px;background:#F7F6FA;color:#06040B;font:600 17px Jost,sans-serif;cursor:pointer}
 .dja-spin{justify-self:center;width:36px;height:36px;border-radius:50%;border:3px solid rgba(255,255,255,.14);border-top-color:#C0FA35;animation:dja-r .8s linear infinite}
 @keyframes dja-r{to{transform:rotate(360deg)}}
 @media(prefers-reduced-motion:reduce){.dja-spin{animation:none}}
 .dja-kv{list-style:none;margin:0;padding:4px 16px;border:1px solid rgba(255,255,255,.1);border-radius:18px;background:rgba(255,255,255,.04)}
 .dja-kv li{display:grid;grid-template-columns:80px minmax(0,1fr);gap:12px;align-items:center;min-height:56px}
 .dja-kv li+li{border-top:1px solid rgba(255,255,255,.07)}
-.dja-kv span{font-size:14px;color:var(--dj-text-faint,#8E88A8)}.dja-kv b{font-size:17px;font-weight:500;color:#F7F6FA;overflow:hidden;text-overflow:ellipsis}
+.dja-kv span{font-size:14px;color:var(--dj-text-faint,#9A94B3)}.dja-kv b{font-size:17px;font-weight:500;color:#F7F6FA;overflow:hidden;text-overflow:ellipsis}
 .dja-kv .input{min-height:44px!important}
 .dja-list{list-style:none;margin:0;padding:0;display:grid;gap:8px}
 .dja-prof{display:grid;grid-template-columns:44px minmax(0,1fr) 24px;gap:12px;align-items:center;width:100%;min-height:68px;padding:10px 14px;border:1px solid rgba(255,255,255,.12);border-radius:18px;background:rgba(255,255,255,.04);color:inherit;font:inherit;text-align:left;cursor:pointer}
 .dja-prof.on{border-color:#C0FA35;background:rgba(192,250,53,.09)}
-.dja-prof-t{display:grid;gap:2px;min-width:0}.dja-prof-t b{font-size:18px;font-weight:600;color:#F7F6FA}.dja-prof-t small{font-size:14px;color:var(--dj-text-faint,#8E88A8);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dja-prof-t{display:grid;gap:2px;min-width:0}.dja-prof-t b{font-size:19px;font-weight:600;color:#F7F6FA}.dja-prof-t small{font-size:14px;color:var(--dj-text-faint,#9A94B3);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .dja-ok{width:22px;height:22px;fill:none;stroke:#C0FA35;stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
 .dja-ava{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#A375FF,#5b3fa8);color:#F7F6FA;font-weight:600;font-size:19px}
 .dja-ava.sm{width:26px;height:26px;font-size:13px}
 .dja-fs{margin:0;padding:0;border:0;display:grid;gap:8px;min-width:0}
-.dja-fs legend{padding:0;margin-bottom:8px;font-size:14px;color:var(--dj-text-muted,#B4AECB)}
+.dja-fs legend{padding:0;margin-bottom:8px;font-size:14px;color:var(--dj-text-muted,#C7C3D6)}
 .dja-types{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .dja-type{display:grid;gap:2px;align-content:start;min-height:76px;padding:10px 12px;border:1px solid rgba(255,255,255,.12);border-radius:16px;background:rgba(255,255,255,.04);color:inherit;font:inherit;text-align:left;cursor:pointer}
-.dja-type b{font-size:16px;font-weight:600;color:#F7F6FA}.dja-type small{font-size:13px;line-height:1.25;color:var(--dj-text-faint,#8E88A8)}
+.dja-type b{font-size:16px;font-weight:600;color:#F7F6FA}.dja-type small{font-size:13px;line-height:1.25;color:var(--dj-text-faint,#9A94B3)}
 .dja-type[aria-pressed=true]{border-color:#C0FA35;background:rgba(192,250,53,.09)}
 .dja-type[aria-pressed=true] b{color:#C0FA35}
 .dja-chips{display:flex;flex-wrap:wrap;gap:8px}
@@ -47,13 +47,13 @@
 .dja-ini{display:grid;place-items:center;background:linear-gradient(135deg,#A375FF,#5b3fa8);color:#F7F6FA;font:600 24px Jost,sans-serif}
 .dja-toast{position:fixed;left:16px;right:16px;bottom:104px;z-index:195;max-width:520px;margin:0 auto;padding:14px 16px;border-radius:15px;background:#F7F6FA;color:#14170A;font:400 16px/1.2 Jost,sans-serif;box-shadow:0 20px 40px -10px rgba(0,0,0,.6)}
 .dja-toast[hidden]{display:none}
-@media(max-width:360px){.dja-sheet{padding-left:16px;padding-right:16px}.dja-sheet h2{font-size:25px}}
+@media(max-width:360px){.dja-sheet{padding-left:16px;padding-right:16px}.dja-sheet h2{font-size:26px}}
 /* загрузчик */
 .dja-loader{position:fixed;inset:0;z-index:300;display:grid;place-items:center;background:#06040B;transition:opacity .35s ease}
 .dja-loader.out{opacity:0;pointer-events:none}
 .dja-loader video,.dja-loader img{width:88px;height:88px;display:block;mix-blend-mode:screen}
 .topbar-logo{cursor:pointer}
-.dja-gt{margin:8px 0 -4px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint,#8E88A8)}
+.dja-gt{margin:8px 0 -4px;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint,#9A94B3)}
 .dja-prof-t small.wrap{white-space:normal;line-height:1.3}
 .dja-menu-b{width:100%;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.07);padding:14px 16px;text-align:left;font:600 15px/1.15 Jost,sans-serif;color:#C0FA35;cursor:pointer}
 
@@ -70,7 +70,7 @@
 .dja-fan-row:active .dja-fan-c,.dja-fan-row:focus-visible .dja-fan-c{border-color:#C0FA35}
 .dja-fan-l{display:grid;text-align:left;padding:7px 14px;border-radius:999px;background:linear-gradient(165deg,rgba(40,33,56,.96),rgba(22,18,31,.96));border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 1px 0 rgba(255,255,255,.14)}
 .dja-fan-l b{font-size:15px;font-weight:600;color:#F7F6FA;white-space:nowrap}
-.dja-fan-l small{font-size:13px;color:#B4AECB}
+.dja-fan-l small{font-size:13px;color:#C7C3D6}
 .dja-fan-all{padding:8px 14px;border-radius:999px;background:linear-gradient(165deg,rgba(40,33,56,.96),rgba(22,18,31,.96));border:1px solid rgba(255,255,255,.18);color:#C0FA35;font-size:14px;font-weight:600}
 @media(prefers-reduced-motion:reduce){.dja-fan-row,.dja-fan-all{transition:none}}
 /* Face ID */
@@ -85,20 +85,24 @@
 .dja-face.done .f{opacity:0}.dja-face.done .ok{opacity:1;stroke-dashoffset:0}
 @keyframes dja-pulse{from{opacity:.35}to{opacity:1}}
 .dja-lock-n{margin:8px 0 0;font-size:24px;font-weight:600;color:#F7F6FA}
-.dja-lock-s{margin:0;font-size:16px;color:#B4AECB}
-.dja-lock-alt{font-size:16px}
+.dja-lock-s{margin:0;font-size:16px;color:#C7C3D6}
+.dja-lock-alt{font-size:17px}
 .dja-lock-demo{margin:10px 0 0;font-size:13px;color:#6E6890}
 @media(prefers-reduced-motion:reduce){.dja-face.scan .c{animation:none}}
 /* удаление профиля */
 .dja-list li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
 .dja-del{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.04);display:grid;place-items:center;cursor:pointer}
-.dja-del svg{width:20px;height:20px;fill:none;stroke:#B4AECB;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.dja-del svg{width:20px;height:20px;fill:none;stroke:#C7C3D6;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .dja-del:hover svg,.dja-del:focus-visible svg{stroke:#FF00E5}
 .dja-cap-hot{color:#FF00E5}
 .dja-warn{display:grid;grid-template-columns:24px minmax(0,1fr);gap:12px;padding:14px 16px;border:1px solid rgba(255,0,229,.45);border-radius:18px;background:rgba(255,0,229,.07)}
 .dja-warn svg{width:24px;height:24px;fill:none;stroke:#FF00E5;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .dja-warn b{font-size:17px;color:#F7F6FA}
 .dja-warn ul{margin:6px 0 0;padding-left:18px;display:grid;gap:4px;font-size:15px;line-height:1.3;color:#E4E1EC}
-.dja-danger{border:0;border-radius:15px;background:#FF00E5;color:#fff;font:600 18px Jost,sans-serif;cursor:pointer}
+.dja-danger{border:0;border-radius:999px;min-height:48px;background:#FF00E5;color:#fff;font:600 17px Jost,sans-serif;cursor:pointer}
 .dja-danger:disabled{background:rgba(255,0,229,.25);color:rgba(255,255,255,.6);cursor:default}
 .dja-undo{margin-left:10px;padding:4px 12px;border:0;border-radius:999px;background:#14170A;color:#C0FA35;font:600 15px Jost,sans-serif;cursor:pointer}
+/* === элементы по единому стандарту (25.09.2026) === */
+.dja-btn{min-height:48px}
+.dja-chip{min-height:44px;font:400 17px Jost,sans-serif}
+.dja-sheet .input{min-height:56px;font-size:19px}

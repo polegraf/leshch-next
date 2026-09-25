@@ -8,3 +8,4 @@
 .calendar-event span{color:#9A94B3;font-size:14px}
 .calendar-reset{font:inherit;color:#C0FA35;background:none;border:0;padding:12px 0;cursor:pointer}
 .cal-month{text-transform:capitalize}
+.cal-arrow{font-size:20px;line-height:1;position:relative}.cal-arrow::after{content:"";position:absolute;inset:-7px}

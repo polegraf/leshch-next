@@ -18,9 +18,9 @@
 .eb-hero-copy{position:relative;z-index:1;display:grid;gap:4px;padding:18px 20px 20px;width:100%}
 .eb-back{position:absolute;top:14px;left:14px;z-index:2;font-size:16px;color:#E4E1EC;text-decoration:none;padding:8px 12px;border-radius:999px;background:rgba(6,4,11,.7)}
 .eb-back.plain{position:static;background:none;padding:0;color:var(--dj-text-muted)}
-.eb-eyebrow{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#A375FF}
-.eb-hero h1{font-size:36px;line-height:1.02;font-weight:600}
-.eb-date{font-size:30px;font-weight:600;line-height:1.05;color:#C0FA35}
+.eb-eyebrow{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#A375FF}
+.eb-hero h1{font-size:34px;line-height:1.02;font-weight:600}
+.eb-date{font-size:32px;font-weight:600;line-height:1.05;color:#C0FA35}
 .eb-date.sm{font-size:24px}
 .eb-sub{font-size:16px;color:var(--dj-text-muted)}
 
@@ -31,7 +31,7 @@
 .eb-rail li:first-child::before{left:50%}.eb-rail li:last-child::before{right:50%}
 .eb-rail i{position:relative;width:16px;height:16px;border-radius:50%;border:2px solid #6E6890;background:#0B0811}
 .eb-rail b{font-size:13px;font-weight:600;color:var(--dj-text-muted);margin-top:6px}
-.eb-rail span{font-size:12px;color:var(--dj-text-faint)}
+.eb-rail span{font-size:13px;color:var(--dj-text-faint)}
 .eb-rail .now i{border-color:#C0FA35;background:#C0FA35;box-shadow:0 0 0 5px rgba(192,250,53,.18)}
 .eb-rail .now b,.eb-rail .now span{color:#C0FA35}
 
@@ -39,7 +39,7 @@
 .eb-tabs{margin:0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);background:rgba(16,12,24,.82)}
 .eb-tabs a{flex:1;min-height:44px;display:flex;align-items:center;justify-content:center;gap:6px;border-radius:13px;color:#9A94B3;font-weight:500;font-size:17px;text-decoration:none}
 .eb-tabs a[aria-current=page]{background:#C0FA35;color:#14170A;font-weight:600}
-.eb-tabs em{font-style:normal;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:#FF00E5;color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center}
+.eb-tabs em{font-style:normal;min-width:20px;height:20px;padding:0 6px;border-radius:10px;background:#FF00E5;color:#fff;font-size:13px;font-weight:700;display:grid;place-items:center}
 .eb-body{display:grid;gap:18px;min-width:0}
 
 /* секции */
@@ -47,7 +47,7 @@
 .eb-sec-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
 .eb-sec-head h2{font-size:26px;line-height:1.1}
 .eb-sec-head .text-button{text-decoration:none;min-height:auto;padding:0}
-.eb-gt{display:flex;justify-content:space-between;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint)}
+.eb-gt{display:flex;justify-content:space-between;font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint)}
 .eb-gt.hot{color:#FF00E5}
 .eb-line{font-size:16px;color:var(--dj-text-faint)}
 .eb-line b{color:#F7F6FA;font-weight:600}
@@ -55,7 +55,7 @@
 /* ворота анонса */
 .eb-gate{display:grid;gap:12px}
 .eb-gate-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
-.eb-gate-head h2{font-size:24px}
+.eb-gate-head h2{font-size:26px}
 .eb-count{font-size:15px;color:#C0FA35;white-space:nowrap}
 .eb-checks{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .eb-checks li{display:grid;grid-template-columns:26px minmax(0,1fr);gap:10px;align-items:start}
@@ -77,13 +77,13 @@
 .eb-be{display:grid;gap:12px}
 .eb-be-top{display:flex;justify-content:space-between;align-items:baseline}
 .eb-be-top p{font-size:17px;color:var(--dj-text-muted)}
-.eb-be-top b{font-size:30px;font-weight:600;color:#F7F6FA;margin-right:4px}
+.eb-be-top b{font-size:32px;font-weight:600;color:#F7F6FA;margin-right:4px}
 .eb-be-bar{position:relative;height:12px;border-radius:6px;background:rgba(255,255,255,.1)}
 .eb-be-bar .sold{position:absolute;left:0;top:0;bottom:0;border-radius:6px;background:#C0FA35}
 .eb-be-bar .mark{position:absolute;top:-6px;bottom:-6px;width:3px;margin-left:-1.5px;border-radius:2px;background:#F7F6FA}
 .eb-be-bar .mark.risk{background:#FF00E5}
 .eb-kv{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0}
-.eb-kv dt{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--dj-text-faint)}
+.eb-kv dt{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint)}
 .eb-kv dd{margin:4px 0 0;font-size:19px;font-weight:600;color:#F7F6FA;font-variant-numeric:tabular-nums}
 
 /* договорённости по направлениям */
@@ -121,11 +121,11 @@
 .eb-steps i.wait{background:#FF00E5}
 .eb-p-r{display:grid;justify-items:end;gap:6px}
 .eb-p-m{font-size:14px;font-weight:600;color:#F7F6FA;text-align:right;font-variant-numeric:tabular-nums;line-height:1.1}
-.eb-p-m small{display:block;font-size:12px;font-weight:400;color:var(--dj-text-faint)}
+.eb-p-m small{display:block;font-size:13px;font-weight:400;color:var(--dj-text-faint)}
 .eb-mini{min-height:32px;padding:4px 12px;border-radius:999px;border:1px solid var(--dj-line);background:none;color:#C0FA35;font:600 14px Jost,sans-serif;cursor:pointer}
 .eb-mini.hot{border-color:#C0FA35;background:#C0FA35;color:#14170A}
 .eb-ava{width:44px;height:44px;border-radius:50%;object-fit:cover;display:block}
-.eb-ava-i{display:grid;place-items:center;font-size:18px;font-weight:600;color:#14170A}
+.eb-ava-i{display:grid;place-items:center;font-size:17px;font-weight:600;color:#14170A}
 .eb-ava.sm{width:32px;height:32px;font-size:14px}
 .eb-ava.lg{width:64px;height:64px;font-size:26px}
 
@@ -157,7 +157,7 @@
 /* деньги */
 .eb-sim{display:grid;gap:12px}
 .eb-sim-n{font-size:17px;color:var(--dj-text-muted)}
-.eb-sim-n b{font-size:30px;font-weight:600;color:#F7F6FA;margin-right:4px}
+.eb-sim-n b{font-size:32px;font-weight:600;color:#F7F6FA;margin-right:4px}
 .eb-sim input[type=range]{width:100%;accent-color:#C0FA35;height:32px}
 .eb-sim-res{display:flex;justify-content:space-between;align-items:baseline;padding:12px 14px;border-radius:15px}
 .eb-sim-res span{font-size:16px}
@@ -222,7 +222,7 @@
 
 /* тост */
 .eb-toast{position:fixed;left:16px;right:16px;bottom:104px;z-index:99;max-width:520px;margin:0 auto;padding:14px 16px;border-radius:15px;background:#F7F6FA;color:#14170A;font-size:16px;line-height:1.2;box-shadow:0 20px 40px -10px rgba(0,0,0,.6)}
-@media(max-width:360px){.eb-chips{margin:0 -12px;padding:0 12px}.eb-hero h1{font-size:32px}.eb-date{font-size:26px}.eb-rail b{font-size:12px}.eb-kv dd{font-size:17px}}
+@media(max-width:360px){.eb-chips{margin:0 -12px;padding:0 12px}.eb-hero h1{font-size:32px}.eb-date{font-size:26px}.eb-rail b{font-size:13px}.eb-kv dd{font-size:17px}}
 
 /* ===== билдер ===== */
 .eb-builder{gap:14px}
@@ -261,7 +261,7 @@
 .eb-slot-p{display:flex;align-items:center;gap:8px;padding:0;border:0;background:none;color:#C0FA35;font:500 16px Jost,sans-serif;cursor:pointer}
 .eb-add{display:inline-flex;align-items:center;gap:6px;justify-self:start;min-height:40px;padding:6px 14px 6px 10px;border:1px solid rgba(192,250,53,.4);border-radius:999px;background:rgba(192,250,53,.06);color:#C0FA35;font:600 15px Jost,sans-serif;cursor:pointer;white-space:nowrap}
 .eb-calc{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.eb-calc div{display:grid;gap:4px}.eb-calc b{font-size:22px;font-weight:600;color:#F7F6FA}.eb-calc small{font-size:14px}
+.eb-calc div{display:grid;gap:4px}.eb-calc b{font-size:24px;font-weight:600;color:#F7F6FA}.eb-calc small{font-size:14px}
 .eb-review{list-style:none;margin:0;padding:4px 14px}
 .eb-review li+li{border-top:1px solid rgba(255,255,255,.07)}
 .eb-review a{display:grid;grid-template-columns:26px minmax(0,1fr) 20px;gap:12px;align-items:center;min-height:62px;color:inherit;text-decoration:none}
@@ -269,7 +269,7 @@
 .eb-review .eb-ck.ok{background:#C0FA35;border-color:#C0FA35;color:#14170A}
 .eb-chev{color:var(--dj-text-quiet)}
 .eb-send{display:grid;gap:10px;border-color:rgba(192,250,53,.4);background:rgba(192,250,53,.05)}
-.eb-send h2{font-size:22px}.eb-send p{font-size:16px;line-height:1.25;color:var(--dj-text-strong)}
+.eb-send h2{font-size:26px}.eb-send p{font-size:16px;line-height:1.25;color:var(--dj-text-strong)}
 .eb-send .text-button{justify-self:center}
 /* каталог */
 .eb-pick{list-style:none;margin:0;padding:4px 12px;max-height:52vh;overflow:auto}
@@ -285,7 +285,7 @@
 .eb-hero.nocover{min-height:220px;background:linear-gradient(160deg,rgba(163,117,255,.28),rgba(255,255,255,.04) 60%)}
 .eb-nodate{padding:0;border:0;background:none;text-align:left;color:#A375FF!important;font:600 26px Jost,sans-serif;cursor:pointer;text-decoration:underline;text-underline-offset:4px}
 .eb-date.sm.eb-nodate{font-size:20px;text-decoration:none}
-.eb-empty{display:grid;gap:12px}.eb-empty h2{font-size:24px}
+.eb-empty{display:grid;gap:12px}.eb-empty h2{font-size:26px}
 .eb-choose{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .eb-choose button{display:grid;gap:4px;justify-items:start;min-height:84px;padding:14px;border:1px solid var(--dj-line);border-radius:18px;background:var(--dj-card);color:inherit;text-align:left;cursor:pointer}
 .eb-choose b{font-size:19px;font-weight:600;color:#F7F6FA}.eb-choose small{font-size:14px;color:var(--dj-text-faint)}
@@ -363,7 +363,7 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-assets input{width:22px;height:22px;accent-color:#C0FA35}
 .eb-posts li{grid-template-columns:132px minmax(0,1fr) 36px!important}
 .eb-sales{display:grid;gap:10px}
-.eb-sales-n{font-size:22px;font-weight:600;color:#F7F6FA}
+.eb-sales-n{font-size:24px;font-weight:600;color:#F7F6FA}
 .eb-sales-n b{font-size:34px}
 .eb-sales-n span{margin-left:10px;font-size:17px;color:#C0FA35}
 .eb-spark{display:flex;align-items:flex-end;gap:3px;height:56px}
@@ -443,7 +443,7 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-stat{list-style:none;margin:0;padding:10px 0;display:grid;grid-template-columns:1fr 1fr;gap:10px 14px;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07)}
 .eb-stat li{display:grid;grid-template-columns:10px minmax(0,1fr);column-gap:8px;row-gap:2px;align-items:center;align-content:start}
 .eb-stat i{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.2);align-self:center}
-.eb-stat span{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--dj-text-faint)}
+.eb-stat span{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint)}
 .eb-stat b{grid-column:2;font-size:16px;font-weight:500;color:var(--dj-text-strong)}
 .eb-stat .ok i{background:#C0FA35}.eb-stat .work i{background:#A375FF}.eb-stat .wait i,.eb-stat .bad i{background:#FF00E5}.eb-stat .bad b,.eb-stat .wait b{color:#FF00E5}
 .s1{background:#A375FF}
@@ -505,14 +505,14 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-dscore-n{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:20px;font-weight:700;border:3px solid currentColor}
 .eb-dscore-n.ok{color:#C0FA35}.eb-dscore-n.work{color:#A375FF}.eb-dscore-n.bad{color:#FF00E5}
 .eb-dscore-big{display:flex;gap:14px;align-items:center}
-.eb-dscore-big .eb-dscore-n{width:72px;height:72px;font-size:28px}
-.eb-dscore-big b{display:block;font-size:22px;color:#F7F6FA}.eb-dscore-big small{font-size:14px;color:var(--dj-text-faint)}
+.eb-dscore-big .eb-dscore-n{width:72px;height:72px;font-size:24px}
+.eb-dscore-big b{display:block;font-size:24px;color:#F7F6FA}.eb-dscore-big small{font-size:14px;color:var(--dj-text-faint)}
 .eb-fv{font-style:normal;font-weight:700;font-size:16px;color:var(--dj-text-muted);font-variant-numeric:tabular-nums}
 .eb-fv.ok{color:#C0FA35}.eb-fv.bad{color:#FF00E5}.eb-fv.work{color:#A375FF}
 .eb-need-t b .eb-fv{margin-left:6px;font-size:14px}
 /* вход в ИИ-визард */
 .eb-ai{display:grid;grid-template-columns:44px minmax(0,1fr);gap:12px;align-items:center;width:100%;text-align:left;color:inherit;font:inherit;cursor:pointer;padding:14px 16px;border-color:rgba(163,117,255,.45);background:linear-gradient(135deg,rgba(163,117,255,.18),rgba(192,250,53,.06))}
-.eb-ai-i{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#A375FF;color:#14170A;font-size:22px}
+.eb-ai-i{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;background:#A375FF;color:#14170A;font-size:20px}
 /* лента растворяется в фоне маской, а не плашкой — без тёмной полосы на градиентном фоне */
 .eb-swipe::before,.eb-swipe::after{display:none}
 .eb-swipe.more-r>.eb-bsteps,.eb-swipe.more-r>.eb-chips{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 88px),transparent calc(100% - 20px));mask-image:linear-gradient(90deg,#000 calc(100% - 88px),transparent calc(100% - 20px))}
@@ -524,7 +524,7 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-edit.eb-lu li.eb-rd-li{display:block;min-height:0;padding:0 0 10px;border-top:0}
 .eb-rd>summary{display:flex;align-items:center;gap:8px;min-height:40px;padding:6px 12px;border-radius:14px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);list-style:none;cursor:pointer;font-size:15px}
 .eb-rd>summary::-webkit-details-marker{display:none}
-.eb-rd-l{font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint)}
+.eb-rd-l{font-size:13px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint)}
 .eb-rd-s{flex:1;min-width:0;color:var(--dj-text-strong);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .eb-rd-src{font-size:13px;color:var(--dj-text-faint);white-space:nowrap}
 .eb-rd-chev{width:18px;height:18px;flex:0 0 18px;fill:none;stroke:#9A94B3;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .15s}
@@ -559,11 +559,11 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-tix{list-style:none;margin:0;padding:0;display:grid;gap:10px}
 .eb-tk{display:grid;gap:10px;padding:12px 14px}
 .eb-tk-h{display:grid;grid-template-columns:minmax(0,1fr) 36px;gap:8px;align-items:center}
-.eb .eb-tk-n{height:44px;font-size:18px;font-weight:600;color:#F7F6FA;width:100%;box-sizing:border-box}
+.eb .eb-tk-n{height:44px;font-size:19px;font-weight:600;color:#F7F6FA;width:100%;box-sizing:border-box}
 .eb-tk-f{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;align-items:end}
 .eb-tk-f label,.eb-tk-f div{display:grid;gap:4px;min-width:0}
 .eb-tk-f .input{height:40px;min-height:40px;padding:6px 10px;width:100%;box-sizing:border-box;font-size:16px}
-.eb-tk-f b{display:block;line-height:40px;font-size:18px;font-weight:600;color:#F7F6FA;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eb-tk-f b{display:block;line-height:40px;font-size:19px;font-weight:600;color:#F7F6FA;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .eb-tk-f b.eb-fx-p{color:#C0FA35}
 .eb .eb-tk-d{height:40px;min-height:40px;font-size:15px;width:100%;box-sizing:border-box;color:var(--dj-text-muted)}
 .eb-tk-s{height:4px;border-radius:2px;background:rgba(255,255,255,.1);overflow:hidden}
@@ -589,7 +589,7 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-prod>summary{min-height:58px;padding:12px 16px;border:0;background:none;border-radius:22px}
 .eb-prod[open]>summary{border:0}
 .eb-prod[open]{border-color:rgba(192,250,53,.35)}
-.eb-prod .eb-rd-s b{font-size:18px;font-weight:600;color:#F7F6FA}
+.eb-prod .eb-rd-s b{font-size:19px;font-weight:600;color:#F7F6FA}
 .eb-prod .eb-rd-src{max-width:55%;overflow:hidden;text-overflow:ellipsis}
 .eb-prod .eb-rd-b{padding:0 14px 16px}
 /* v21 · артист в лайн-апе — свёрнутая карточка */
@@ -598,8 +598,8 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-art>summary{display:grid;grid-template-columns:36px minmax(0,1fr) auto 10px 18px;gap:12px;align-items:center;min-height:62px;list-style:none;cursor:pointer}
 .eb-art>summary::-webkit-details-marker{display:none}
 .eb-art>summary .eb-ava{width:36px;height:36px}
-.eb-art-n{font-size:18px;color:#F7F6FA;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.eb-art-t{font-size:18px;font-weight:600;color:#F7F6FA;font-variant-numeric:tabular-nums}
+.eb-art-n{font-size:19px;color:#F7F6FA;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.eb-art-t{font-size:17px;font-weight:600;color:#F7F6FA;font-variant-numeric:tabular-nums}
 .eb-mk{display:inline-block;width:10px;height:10px;border-radius:50%;background:#6E6890;flex:0 0 10px}
 .eb-mk.ok{background:#C0FA35}.eb-mk.work{background:#A375FF}.eb-mk.hot{background:#FF00E5}
 .eb-art[open]>summary .eb-rd-chev{transform:rotate(180deg);stroke:#C0FA35}
@@ -682,3 +682,51 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-posts input[type=date]::-webkit-calendar-picker-indicator{display:none}
 .eb-bhead .eb-back{min-height:44px;display:inline-flex;align-items:center}
 .eb-afisha{min-height:44px}
+/* === элементы по единому стандарту (25.09.2026) ===
+   главная 48/999/17/600 · вторичная 48/999/17/500, граница 28% · чип 44/17 · мини 36 + зона 44
+   поле 56/19 · плотное поле в строке таблицы 44/17 · текстовое поле 17 */
+.eb-btn{border-radius:999px}
+.secondary-button.eb-btn{border:1px solid rgba(255,255,255,.28);font-weight:500;min-height:48px}
+.eb-chips .chip{min-height:44px;font-size:17px}
+.eb-rd-cats .chip{min-height:44px;font-size:17px}
+.eb-mini{min-height:36px;position:relative}
+.eb-mini::after{content:'';position:absolute;left:0;right:0;top:-4px;bottom:-4px}
+.eb .input,.eb-sheet .input{font-size:19px}
+.eb .eb-rd-rows .input,.eb .eb-tk-f .input,.eb .eb-edit .input,.eb .eb-tickets .input,.eb .eb-chan .input,.eb .eb-rd-prov select.input,
+.eb-sheet .eb-rd-rows .input,.eb-sheet .eb-tk-f .input,.eb-sheet .eb-edit .input,.eb-sheet .eb-tickets .input,.eb-sheet .eb-chan .input,.eb-sheet .eb-rd-prov select.input{height:44px;min-height:44px;font-size:17px}
+.eb .eb-ta,.eb-sheet .eb-ta{font-size:17px}
+.eb .eb-tk-n{font-size:19px}
+.eb-sec-head .text-button{position:relative}
+.eb-sec-head .text-button::after{content:'';position:absolute;left:-8px;right:-8px;top:-12px;bottom:-12px}
+.eb-tabs em{font-weight:600}
+.eb-sheet [id=eb-sh-t]:focus{outline:none}
+.eb-paid{display:grid;gap:4px;align-content:start;min-width:0}
+.eb-paid span{font-size:16px;color:var(--dj-text-muted)}
+.eb-paid b{font-size:19px;font-weight:600;color:#F7F6FA;line-height:1.2;margin-top:6px}
+.eb-paid small{font-size:14px;color:var(--dj-text-faint)}
+.eb-paid .eb-mini{justify-self:start;margin-top:4px}
+.eb-danger{border:0;background:#FF00E5;color:#fff}
+.eb-toast{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.eb-undo{flex:0 0 auto;min-height:36px;padding:4px 14px;border:0;border-radius:999px;background:#14170A;color:#C0FA35;font:600 15px Jost,sans-serif;cursor:pointer;position:relative}
+.eb-undo::after{content:'';position:absolute;inset:-4px}
+.eb-move-note{margin:-2px 0 10px}
+/* расчёт по позициям на телефоне — строками: позиция, ниже «есть × цена = сумма» */
+.eb-vcalc>summary{min-height:44px}
+.eb-vcalc table,.eb-vcalc tbody,.eb-vcalc tfoot{display:block}
+.eb-vcalc tr{display:grid;grid-template-columns:auto auto minmax(0,1fr) auto;column-gap:8px;align-items:baseline;padding:8px 0;border-top:1px solid rgba(255,255,255,.07)}
+.eb-vcalc td{display:block;padding:0;border:0;width:auto!important;text-align:left!important}
+.eb-vcalc tbody td:first-child{grid-column:1/-1;margin-bottom:4px;font-size:15px}
+.eb-vcalc tbody td:nth-child(2){grid-column:1}
+.eb-vcalc tbody td:nth-child(3){grid-column:2}
+.eb-vcalc tbody td:nth-child(3):not(:empty)::before{content:'× '}
+.eb-vcalc tbody td:last-child{grid-column:4;text-align:right!important}
+.eb-vcalc tfoot tr{border-top:1px solid rgba(255,255,255,.2)}
+.eb-vcalc tfoot td:first-child{grid-column:1/4}
+.eb-vcalc tfoot td:last-child{grid-column:4;text-align:right!important}
+/* договорённости: три независимых счётчика вместо общей полосы */
+.eb-tri{display:flex;flex-wrap:wrap;gap:4px 12px;margin-top:4px;font-size:14px;color:var(--dj-text-faint)}
+.eb-tri>span{display:inline-flex;align-items:center;gap:6px;white-space:nowrap}
+.eb-tri i{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,.2)}
+.eb-tri .ok i{background:#C0FA35}.eb-tri .work i{background:#A375FF}
+.eb-tri .ok{color:var(--dj-text-muted)}
+.eb-sheet~.eb-toast{top:calc(12px + env(safe-area-inset-top));bottom:auto}
