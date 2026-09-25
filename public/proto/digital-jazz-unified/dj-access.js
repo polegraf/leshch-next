@@ -19,9 +19,13 @@ const ROLES={'Диджей':['Хип-хоп','Электроника','Поп'],
 const BIZ=['Студии','Репбазы','Лейблы','Агентства','Продакшн','Магазины','Школы','Прокат','Охрана','Клининг','Блог-агентства'];
 const TYPES=[['artist','Артист / специалист','Портфолио, райдер, предложения'],['org','Организатор','События, лайн-ап, команда'],['company','Компания','Услуги, прокат, подрядчик событий'],['venue','Площадка','Вместимость, даты, техника']];
 const TNAME=Object.fromEntries(TYPES.map(t=>[t[0],t[1]]));
+const TRIO=()=>({signed:true,via:'yandex',email:'dmitry@yandex.ru',active:'me',profiles:[{id:'me',type:'personal',name:'Дмитрий'},{id:'nox',type:'artist',name:'Нокс',roles:['Диджей'],genres:['Электроника'],city:'Москва'},{id:'org',type:'org',name:'Jazz Promo',city:'Москва'}]});
+const DEMO_ORDER={id:'demo0yeti0000',ev:'yeti',name:'Yeti Disco',cover:'../dj-event-builder/covers/yeti-djs.jpg',dateText:'26 сентября, сб',iso:new Date(2026,8,26).toISOString(),time:'23:00',venue:'16 Тонн',reg:false,items:[{n:'Стандарт',q:2,price:1800}],count:2,disc:0,code:'',total:3600};
 let S=load(),sheet=null,after=null;
-function load(){try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&Array.isArray(v.profiles))return v;}catch{}return {signed:false,profiles:[],active:null};}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch{toast('Не удалось сохранить в браузере — вход действует до перезагрузки');}}
+/* по умолчанию прототип открывается вошедшим пользователем с тремя профилями: зритель, артист, промоутер.
+   «Начать с нуля» в демо-меню переключает в гостя (флаг dj-guest). */
+function load(){try{const v=JSON.parse(localStorage.getItem(KEY)||'null');if(v&&Array.isArray(v.profiles))return v;if(localStorage.getItem('dj-guest')!=='1'){const t=TRIO();localStorage.setItem(KEY,JSON.stringify(t));if(!localStorage.getItem('dj-afisha-orders'))localStorage.setItem('dj-afisha-orders',JSON.stringify([DEMO_ORDER]));return t;}}catch{}return {signed:false,profiles:[],active:null};}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));if(S.signed)localStorage.removeItem('dj-guest');}catch{toast('Не удалось сохранить в браузере — вход действует до перезагрузки');}}
 const active=()=>S.profiles.find(p=>p.id===S.active)||S.profiles[0]||null;
 const personal=()=>S.profiles.find(p=>p.type==='personal');
 /* дом: зритель — афиша; артист, организатор, компания, площадка — профиль с монитором */
@@ -32,7 +36,7 @@ if(new URL('index.html',BASE).pathname===location.pathname.replace(/\/$/,'/index
 /* ---------- лист ---------- */
 function mount(){let r=document.querySelector('#dja-root');if(!r){r=document.createElement('div');r.id='dja-root';document.body.append(r);}return r;}
 function open(s){sheet=s;draw();setTimeout(()=>mount().querySelector('.dja-sheet input:not([type=hidden]),.dja-sheet .dja-first')?.focus?.(),30);}
-function close(){sheet=null;after=null;draw();}
+function close(){const relock=lockWait;sheet=null;after=null;draw();if(relock){lockWait=false;S.signed=true;lock();}}
 function toast(t){const r=mount();let n=r.querySelector('.dja-toast');if(!n){n=document.createElement('div');n.className='dja-toast';n.setAttribute('role','status');r.append(n);}n.textContent=t;n.hidden=false;clearTimeout(toast.t);toast.t=setTimeout(()=>{n.hidden=true;},2600);}
 function done(){const cb=after;sheet=null;after=null;draw();chip();if(cb)cb(active());}
 const chipsHTML=(name,opts,sel,multi)=>`<div class="dja-chips">${opts.map(o=>`<button type="button" class="dja-chip" data-dja-pick="${name}" data-v="${esc(o)}" data-multi="${multi?1:''}" aria-pressed="${multi?(sel||[]).includes(o):sel===o}">${esc(o)}</button>`).join('')}</div>`;
@@ -66,26 +70,36 @@ function draw(){const r=mount();r.querySelector('.dja-scrim')?.remove();r.queryS
  r.insertAdjacentHTML('afterbegin',`<div class="dja-scrim" data-dja="close"></div><section class="dja-sheet" role="dialog" aria-modal="true" aria-labelledby="dja-t"><div class="dja-grab" aria-hidden="true"></div><button type="button" class="dja-x" data-dja="close" aria-label="Закрыть">×</button>${body()}</section>`);}
 
 /* ---------- вход ---------- */
-function signIn(via,email,name){S.signed=true;S.via=via;S.email=email;if(!personal()){const p={id:uid(),type:'personal',name:name||email.split('@')[0]};S.profiles.unshift(p);S.active=p.id;}save();}
+function signIn(via,email,name){unlocked();S.signed=true;S.via=via;S.email=email;if(!personal()){const p={id:uid(),type:'personal',name:name||email.split('@')[0]};S.profiles.unshift(p);S.active=p.id;}save();}
 function createProfile(f){const t=f.type||'artist',p={id:uid(),type:t,name:f.name.trim(),city:(f.city||'').trim()};if(t==='artist'){p.roles=f.roles||[];p.genres=f.genres||[];}if(t==='company')p.biz=f.biz||'';if(t==='venue')p.cap=+String(f.cap||'').replace(/\D/g,'')||0;S.profiles.push(p);S.active=p.id;save();return p;}
 
 /* ---------- отметка «действуешь от имени» в хидере ---------- */
+const PORTRAIT={'Нокс':'a','Вольт':'b','Лофи':'c','Грув':'d','Рифф':'e','Эхо':'f','Хэт':'g','Сэмпл':'h'};
+const TLABEL={personal:'зритель',artist:'артист',org:'промоутер',company:'компания',venue:'площадка'};
+const avaSrc=p=>p.type==='personal'?url('assets/nav.jpg'):PORTRAIT[p.name]?url('assets/portraits/participant-'+PORTRAIT[p.name]+'.png'):null;
+const avaHTML=(p,cls)=>{const s=avaSrc(p);return s?`<img class="${cls}" src="${s}" alt="">`:`<span class="${cls} dja-ini">${esc((p.name||'?')[0])}</span>`;};
 function chip(){document.querySelectorAll('.dja-as').forEach(n=>n.remove());const a=active();if(!S.signed||!a||a.type==='personal')return;
- /* от чьего имени — видно на аватарке в нижней навигации: вместо фото — буква профиля */
- document.querySelectorAll('.nav-avatar').forEach(av=>{av.insertAdjacentHTML('beforeend',`<span class="dja-as" aria-hidden="true">${esc(a.name[0])}</span>`);av.setAttribute('aria-label','Профиль: '+a.name+' · сменить');});}
+ /* от чьего имени — видно на аватарке в нижней навигации: портрет или буква активного профиля */
+ document.querySelectorAll('.nav-avatar').forEach(av=>{av.insertAdjacentHTML('beforeend',avaHTML(a,'dja-as'));av.setAttribute('aria-label','Профиль: '+a.name+' · сменить');});}
+/* тап по аватарке — над ней выезжают аватарки других профилей с подписями, как меню сервисов */
+function fan(av){const old=document.querySelector('.dja-fan');if(old){closeFan();return;}const a=active(),others=S.profiles.filter(p=>p.id!==a?.id);
+ const r=av.getBoundingClientRect(),w=document.createElement('div');w.className='dja-fan';w.style.left=Math.round(r.left)+'px';w.style.bottom=Math.round(innerHeight-r.top+12)+'px';
+ w.innerHTML=others.map(p=>`<button type="button" class="dja-fan-row" data-dja-use="${p.id}"><span class="dja-fan-c" style="width:${Math.round(r.width*.86)}px;height:${Math.round(r.width*.86)}px">${avaHTML(p,'dja-fan-img')}</span><span class="dja-fan-l"><b>${esc(p.name)}</b><small>${TLABEL[p.type]||''}</small></span></button>`).join('')+`<button type="button" class="dja-fan-all" data-dja="profiles">Все профили</button>`;
+ const sc=document.createElement('div');sc.className='dja-fan-scrim';sc.addEventListener('click',closeFan);document.body.append(sc,w);av.classList.add('dja-open');requestAnimationFrame(()=>{sc.classList.add('open');w.classList.add('open');});}
+function closeFan(){document.querySelectorAll('.dja-fan,.dja-fan-scrim').forEach(n=>n.remove());document.querySelectorAll('.nav-avatar.dja-open').forEach(n=>n.classList.remove('dja-open'));}
 
 /* ---------- события ---------- */
 document.addEventListener('click',e=>{const t=e.target;
  const pick=t.closest('[data-dja-pick]');if(pick){const k=pick.dataset.djaPick,v=pick.dataset.v;syncForm();if(pick.dataset.multi){const a=sheet[k]||[];sheet[k]=a.includes(v)?a.filter(x=>x!==v):[...a,v];if(k==='roles'){const g=new Set((sheet.roles||[]).flatMap(r=>ROLES[r]||[]));sheet.genres=(sheet.genres||[]).filter(x=>g.has(x));}}else sheet[k]=sheet[k]===v?'':v;draw();return;}
  const ty=t.closest('[data-dja-type]');if(ty){syncForm();sheet.type=ty.dataset.djaType;draw();return;}
- const use=t.closest('[data-dja-use]');if(use){const was=S.active;S.active=use.dataset.djaUse;save();close();chip();if(was!==S.active){location.href=home();return;}toast('Ты действуешь как '+active().name);return;}
+ const use=t.closest('[data-dja-use]');if(use){closeFan();const was=S.active;S.active=use.dataset.djaUse;save();close();chip();if(was!==S.active){location.href=home();return;}toast('Ты действуешь как '+active().name);return;}
  const b=t.closest('[data-dja]');if(!b)return;const a=b.dataset.dja;
  if(a==='close'){close();return;}
  if(a==='yandex'){open({...sheet,v:'yandex-wait'});setTimeout(()=>{if(sheet&&sheet.v==='yandex-wait')open({...sheet,v:'yandex-ok',name:'Дмитрий',email:'dmitry@yandex.ru'});},900);return;}
  if(a==='yandex-go'){const n=(mount().querySelector('[data-dja-name]')?.value||'').trim()||'Друг';signIn('yandex',sheet.email,n);next();return;}
  if(a==='email'){open({...sheet,v:'email',err:''});return;}
  if(a==='back-auth'){open({...sheet,v:'auth'});return;}
- if(a==='profiles'){if(!S.signed){require('Войди, чтобы у тебя был профиль',()=>open({v:'profiles'}));return;}open({v:'profiles'});return;}
+ if(a==='profiles'){closeFan();if(!S.signed){require('Войди, чтобы у тебя был профиль',()=>open({v:'profiles'}));return;}open({v:'profiles'});return;}
  if(a==='create'){open({v:'create',type:'artist'});return;}
  if(a==='logout'){S={signed:false,profiles:[],active:null};save();close();chip();toast('Ты вышел из аккаунта');document.dispatchEvent(new CustomEvent('dj-access'));return;}});
 function syncForm(){const f=mount().querySelector('[data-dja-form="create"]');if(!f||!sheet)return;const d=new FormData(f);['name','city','cap'].forEach(k=>{if(d.has(k))sheet[k]=d.get(k);});}
@@ -97,11 +111,12 @@ document.addEventListener('submit',e=>{const f=e.target.closest('[data-dja-form]
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sheet)close();});
 /* аватарка в нижней навигации — меню профилей (перехватываем раньше общих переходов прототипа) */
 addEventListener('click',e=>{const lg=e.target.closest('.topbar-logo');if(!lg)return;e.preventDefault();e.stopImmediatePropagation();location.href=home();},true);
-addEventListener('click',e=>{const av=e.target.closest('.nav-avatar');if(!av)return;e.preventDefault();e.stopImmediatePropagation();if(S.signed)open({v:'profiles'});else require('Войди, чтобы у тебя был профиль',()=>open({v:'profiles'}));},true);
+addEventListener('click',e=>{const av=e.target.closest('.nav-avatar');if(!av)return;e.preventDefault();e.stopImmediatePropagation();if(S.signed)fan(av);else require('Войди, чтобы у тебя был профиль',()=>open({v:'profiles'}));},true);
 
 /* ---------- демо: сброс, готовые аккаунты, сценарии показа ---------- */
 const P0={id:'me',type:'personal',name:'Дмитрий'};
-const PERSONAS=[['viewer','Зритель · Дмитрий','Личный профиль, один купленный билет',[P0],'me'],
+const PERSONAS=[['trio','Дмитрий · три профиля','Зритель, артист Нокс и промоутер Jazz Promo — как по умолчанию',TRIO().profiles,'me'],
+ ['viewer','Зритель · Дмитрий','Личный профиль, один купленный билет',[P0],'me'],
  ['org','Организатор · Jazz Promo','5 событий в мониторе, дела, продажи',[P0,{id:'org',type:'org',name:'Jazz Promo',city:'Москва'}],'org'],
  ['artist','Артист · Нокс','Сеты, оплата, турнир Digital Jazz Cup',[P0,{id:'nox',type:'artist',name:'Нокс',roles:['Диджей'],genres:['Электроника'],city:'Москва'}],'nox'],
  ['riff','Артист · Рифф','Приглашение с гонораром — принять или отказаться',[P0,{id:'riff',type:'artist',name:'Рифф',roles:['Вокалист'],genres:['Рок'],city:'Москва'}],'riff'],
@@ -111,9 +126,9 @@ const SCEN=[['s-view','Зритель покупает билет','Старт �
  ['s-org','Организатор собирает событие','Старт → «Собрать событие» → вход по email (код 123456) → профиль организатора → монитор → «Все события и новое»','start','Нажми «Собрать событие». Код из письма в демо — 123456'],
  ['s-art','Артист заводит профиль','Старт → «Показать себя» → Яндекс ID → профиль артиста «Нокс» (Диджей) → монитор с сетами и турниром','start','Нажми «Показать себя…». Назови профиль «Нокс» — в мониторе появятся его сеты'],
  ['s-multi','Несколько профилей','Зритель → аватарка → «+ Новый профиль» → площадка «Цех 01» → дом меняется на профиль с бронями → обратно на личный','multi','Нажми аватарку внизу → «+ Новый профиль» → Площадка, имя «Цех 01»']];
-function wipe(){['dj-account','dj-afisha-orders','dj-afisha-reminders'].forEach(k=>{try{localStorage.removeItem(k);}catch{}});try{sessionStorage.removeItem('dj-loader');}catch{}S={signed:false,profiles:[],active:null};}
+function wipe(){['dj-account','dj-afisha-orders','dj-afisha-reminders'].forEach(k=>{try{localStorage.removeItem(k);}catch{}});try{localStorage.setItem('dj-guest','1');}catch{}try{sessionStorage.removeItem('dj-loader');}catch{}S={signed:false,profiles:[],active:null};}
 function seed(k){const p=PERSONAS.find(x=>x[0]===k);wipe();S={signed:true,via:'yandex',email:'dmitry@yandex.ru',profiles:JSON.parse(JSON.stringify(p[3])),active:p[4]};save();
- if(k==='viewer'){try{localStorage.setItem('dj-afisha-orders',JSON.stringify([{id:'demo0yeti0000',ev:'yeti',name:'Yeti Disco',cover:'../dj-event-builder/covers/yeti-djs.jpg',dateText:'26 сентября, сб',iso:new Date(2026,8,26).toISOString(),time:'23:00',venue:'16 Тонн',reg:false,items:[{n:'Стандарт',q:2,price:1800}],count:2,disc:0,code:'',total:3600}]));}catch{}}}
+ if(k==='viewer'||k==='trio'){try{localStorage.setItem('dj-afisha-orders',JSON.stringify([{id:'demo0yeti0000',ev:'yeti',name:'Yeti Disco',cover:'../dj-event-builder/covers/yeti-djs.jpg',dateText:'26 сентября, сб',iso:new Date(2026,8,26).toISOString(),time:'23:00',venue:'16 Тонн',reg:false,items:[{n:'Стандарт',q:2,price:1800}],count:2,disc:0,code:'',total:3600}]));}catch{}}}
 const hint=t=>{try{sessionStorage.setItem('dja-hint',t);}catch{}};
 function demoBody(){return `<p class="dja-cap">Демо · вход и профили</p><h2 id="dja-t">Показать прототип</h2>
  <button type="button" class="primary dja-btn" data-dja-demo="fresh">Начать с нуля</button><p class="dja-note">Сотрёт вход, билеты и напоминания в этом браузере и снова покажет загрузчик.</p>
@@ -130,7 +145,18 @@ function demoMenu(){const m=document.querySelector('#moreMenu');if(!m||m.querySe
 /* ---------- API ---------- */
 function require(reason,cb,opt={}){after=cb||null;if(S.signed){if(opt.need){sheet={need:opt.need,needTitle:opt.needTitle};next();return;}done();return;}open({v:'auth',reason,need:opt.need,needTitle:opt.needTitle});}
 window.djAccess={home,get signed(){return S.signed;},active,profiles:()=>S.profiles.slice(),email:()=>S.email||'',require,profilesMenu:()=>open({v:'profiles'}),create:(type,cb,title)=>{after=cb||null;open({v:'create',type,title});}};
-const st=document.createElement('link');st.rel='stylesheet';st.href=url('dj-access.css?v=4');document.head.append(st);
-const boot=()=>{chip();demoMenu();let h='';try{h=sessionStorage.getItem('dja-hint')||'';sessionStorage.removeItem('dja-hint');}catch{}if(h)setTimeout(()=>toast(h),1500);};
+const st=document.createElement('link');st.rel='stylesheet';st.href=url('dj-access.css?v=6');document.head.append(st);
+/* ---------- вход вернувшегося пользователя: Face ID, раз за сессию (имитация в демо) ---------- */
+let lockWait=false;
+const unlocked=()=>{try{sessionStorage.setItem('dj-unlocked','1');}catch{}};
+const isUnlocked=()=>{try{return sessionStorage.getItem('dj-unlocked')==='1';}catch{return true;}};
+const FACE='<svg viewBox="0 0 64 64" aria-hidden="true"><path class="c" d="M6 20V12a6 6 0 0 1 6-6h8M44 6h8a6 6 0 0 1 6 6v8M58 44v8a6 6 0 0 1-6 6h-8M20 58h-8a6 6 0 0 1-6-6v-8"/><g class="f"><circle cx="32" cy="30" r="13"/><path d="M26 38c3 3 9 3 12 0"/></g><path class="ok" d="m22 33 7 7 14-15"/></svg>';
+function lock(){if(!S.signed||isUnlocked()||document.querySelector('.dja-lock'))return;const p=personal()||active(),el=document.createElement('div');el.className='dja-lock';el.setAttribute('role','dialog');el.setAttribute('aria-label','Вход через Face ID');
+ el.innerHTML=`<div class="dja-lock-c"><div class="dja-face">${FACE}</div><p class="dja-lock-n">${esc(p?.name||'')}</p><p class="dja-lock-s" aria-live="polite">Вход через Face ID</p></div><button type="button" class="text-button dja-lock-alt">Войти другим способом</button><p class="dja-lock-demo">Демо: Face ID имитируется</p>`;
+ document.body.append(el);const st=el.querySelector('.dja-lock-s'),face=el.querySelector('.dja-face');
+ const run=()=>{face.classList.add('scan');setTimeout(()=>{face.classList.remove('scan');face.classList.add('done');st.textContent='Готово';unlocked();setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),350);},550);},1300);};
+ const ld=document.querySelector('.dja-loader');setTimeout(run,ld?1700:350);
+ el.querySelector('.dja-lock-alt').addEventListener('click',()=>{el.remove();lockWait=true;S.signed=false;require('Вход в аккаунт '+(p?.name||''),()=>{lockWait=false;unlocked();});});}
+const boot=()=>{lock();chip();demoMenu();let h='';try{h=sessionStorage.getItem('dja-hint')||'';sessionStorage.removeItem('dja-hint');}catch{}if(h)setTimeout(()=>toast(h),1500);};
 if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
