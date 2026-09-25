@@ -2,15 +2,14 @@
 <html lang="ru">
 <head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Digital Jazz — событие</title>
+<title>Афиша · Digital Jazz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="../digital-jazz-unified/tokens.css"><link rel="stylesheet" href="../digital-jazz-unified/ui.css">
 <link rel="stylesheet" href="../digital-jazz-unified/shared-shell.css"><link rel="stylesheet" href="../digital-jazz-unified/consistency.css">
 <link rel="stylesheet" href="../digital-jazz-unified/typography.css"><link rel="stylesheet" href="../digital-jazz-unified/unify.css">
-<link rel="stylesheet" href="eb.css?v=24">
+<link rel="stylesheet" href="afisha.css?v=1">
 </head>
-<body>
 <body>
 <div class="app">
     <div class="topbar">
@@ -52,7 +51,7 @@
     </div>
 
 <main id="main" tabindex="-1"></main>
-<p class="demo-note">Предложение · подготовка события · демоданные</p>
+<p class="demo-note">Афиша · события из конструктора · демоданные</p>
 </div>
 <div class="services-scrim" id="servicesScrim"></div>  <nav class="bottom-nav" id="bottomNav">
     <div class="bottom-nav-wrap">
@@ -65,7 +64,7 @@
         <div class="nav-slot">
           <div class="nav-circle" role="button" tabindex="0" data-shell="search" data-tab="search" aria-label="Поиск">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3-4.3"/></svg>
-          </div><div class="services-stack" id="searchMenu" hidden><a class="services-row" href="#discovery"><span class="services-label">дискавери</span><span class="services-circle"><svg viewBox="0 0 24 24"><path d="m12 3 3 6 6 3-6 3-3 6-3-6-6-3 6-3Z"/></svg></span></a><a class="services-row" href="#search"><span class="services-label">поиск</span><span class="services-circle"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></span></a></div>
+          </div><div class="services-stack" id="searchMenu" hidden><a class="services-row" href="../digital-jazz-unified/index.html#discovery"><span class="services-label">дискавери</span><span class="services-circle"><svg viewBox="0 0 24 24"><path d="m12 3 3 6 6 3-6 3-3 6-3-6-6-3 6-3Z"/></svg></span></a><a class="services-row" href="../digital-jazz-unified/index.html#search"><span class="services-label">поиск</span><span class="services-circle"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></span></a></div>
         </div>
         <div class="nav-slot">
           <div class="nav-circle" role="button" tabindex="0" data-action="chat" data-tab="chat" aria-label="Чат">
@@ -74,11 +73,11 @@
         </div>
 
         <div class="nav-slot" id="servicesSlot">
-          <div class="nav-circle" data-tab="services" id="services" role="button" tabindex="0" data-shell="services" data-active="1" aria-label="Сервисы" aria-haspopup="true">
+          <div class="nav-circle" data-tab="services" id="services" role="button" tabindex="0" data-shell="services" aria-label="Сервисы" aria-haspopup="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>
           </div>
           <div class="services-stack" id="servicesMenu" hidden>
-            <a class="services-row" href="index.html#events" data-builder>
+            <a class="services-row" href="../dj-event-builder/index.html#events" data-builder>
               <div class="services-label glass">конструктор</div>
               <div class="services-circle glass"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M8 3v4M16 3v4M3.5 10h17"/></svg></div>
             </a>
@@ -104,7 +103,10 @@
 
     </div>
   </nav>
+<script src="../digital-jazz-unified/prototype-nav.js"></script>
 <script src="../digital-jazz-unified/shell.js"></script>
-<script src="eb.js?v=24"></script>
+<script>window.EB_HEADLESS=true;</script>
+<script src="../dj-event-builder/eb.js?v=24"></script>
+<script src="afisha.js?v=1"></script>
 </body>
 </html>
