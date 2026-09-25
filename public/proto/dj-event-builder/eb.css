@@ -668,3 +668,5 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 /* ссылка «В афише» в шапке монитора */
 .eb-afisha{display:inline-flex;align-items:center;gap:6px;margin-top:10px;font-size:15px;font-weight:600;color:#C0FA35;text-decoration:none}
 .eb-afisha.off{color:var(--dj-text-faint);font-weight:500}
+.eb-cnt{float:right;font-style:normal;font-size:13px;color:var(--dj-text-faint);font-variant-numeric:tabular-nums}
+.eb-afisha span{font-weight:500;color:var(--dj-text-muted)}

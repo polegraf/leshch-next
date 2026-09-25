@@ -132,3 +132,14 @@
 .af-toast{position:fixed;left:16px;right:16px;bottom:104px;z-index:99;max-width:520px;margin:0 auto;padding:14px 16px;border-radius:15px;background:#F7F6FA;color:#14170A;font-size:16px;line-height:1.2;box-shadow:0 20px 40px -10px rgba(0,0,0,.6)}
 @media(max-width:360px){.af h1{font-size:32px}.af-date{font-size:24px}.af-date.lg{font-size:26px}.af-lu a{grid-template-columns:54px 40px minmax(0,1fr) 18px;gap:10px}.af-chips{margin:0 -12px;padding:0 12px}}
 .af-qr .bg{fill:#F7F6FA!important;stroke:none!important}.af-qr .q{fill:#06040B!important;stroke:none!important}
+/* короткое описание */
+.af-desc{font-size:16px;line-height:1.3;color:var(--dj-text-strong);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin-top:2px}
+.af-about{margin:0;font-size:19px;line-height:1.35;color:#E4E1EC}
+/* v3: всё в ленте; «Скоро баттлы» */
+.af-st.soon{color:#A375FF}
+.af-st-line.soon{color:#A375FF}
+.af-sec-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.af-sec-h .text-button{font-size:16px;text-decoration:none}
+.af-soon li{grid-template-columns:minmax(0,1fr) auto}
+.af-soon-a{display:grid;grid-template-columns:56px minmax(0,1fr);gap:12px;align-items:center;min-height:72px;color:inherit;text-decoration:none;min-width:0}
+.af-soon-a img{width:56px;height:56px;border-radius:14px;object-fit:cover;display:block}

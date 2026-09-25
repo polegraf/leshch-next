@@ -3,7 +3,7 @@
    (dj-event-builder/eb.js → window.djEvents). В афише — только анонсированные события; до анонса — «Скоро».
    Покупка демонстрационная: заказ хранится в этом браузере и виден в профиле → «Мои билеты». */
 (()=>{
-const D=window.djEvents,TODAY=D.today,ALL=D.all(),EV=ALL.filter(e=>e.published&&e.date>=TODAY).sort((a,b)=>a.date-b.date),SOON=ALL.filter(e=>!e.published&&!e.draft&&e.announce&&e.date>=TODAY&&e.name).sort((a,b)=>a.announce-b.announce);
+const D=window.djEvents,TODAY=D.today,ALL=D.all(),EV=ALL.filter(e=>!e.draft&&e.name&&e.date&&e.date>=TODAY).sort((a,b)=>a.date-b.date);
 const MON=['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'],MONN=['Январь','Февраль','Март','Апрель','Май','Июнь','Июль','Август','Сентябрь','Октябрь','Ноябрь','Декабрь'],WD=['вс','пн','вт','ср','чт','пт','сб'];
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const rub=n=>Math.round(n||0).toLocaleString('ru-RU')+' ₽',dm=d=>d.getDate()+' '+MON[d.getMonth()],plural=(n,a,b,c)=>{const m=n%10,h=n%100;return m===1&&h!==11?a:m>=2&&m<=4&&(h<10||h>=20)?b:c;};
@@ -22,10 +22,10 @@ const TYPES=[['Все','Все'],['Вечеринка','Вечеринки'],['�
 function whenOpts(){const o=[['all','Все даты'],['week','Ближайшие 7 дней']];[...new Set(EV.map(e=>e.date.getFullYear()*12+e.date.getMonth()))].forEach(k=>o.push(['m'+k,MONN[k%12]]));return o;}
 const inWhen=e=>when==='all'||(when==='week'?(e.date-TODAY)/864e5<=7:when==='m'+(e.date.getFullYear()*12+e.date.getMonth()));
 const inType=e=>type==='Все'||(type==='free'?e.mode==='reg':e.type===type);
-function status(e){if(e.mode==='reg')return ['Вход по регистрации',''];const l=left(e),q=e.tickets.reduce((a,t)=>a+t.qty,0);if(!l)return ['Билеты распроданы','hot'];if(l<=q*.15)return [`Осталось ${l} ${plural(l,'билет','билета','билетов')}`,'hot'];return ['Билеты в продаже',''];}
+function status(e){if(!e.published)return [(e.mode==='reg'?'Регистрация с ':'Продажа с ')+dm(e.announce),'soon'];if(e.mode==='reg')return ['Вход по регистрации',''];const l=left(e),q=e.tickets.reduce((a,t)=>a+t.qty,0);if(!l)return ['Билеты распроданы','hot'];if(l<=q*.15)return [`Осталось ${l} ${plural(l,'билет','билета','билетов')}`,'hot'];return ['Билеты в продаже',''];}
 function card(e){const [st,c]=status(e),A=artists(e);
  return `<a class="card af-card" href="#e/${e.id}">${e.cover?`<span class="af-cover"><img src="${esc(e.cover)}" alt="" loading="lazy"><em class="af-st ${c}">${st}</em></span>`:''}<span class="af-card-b">
- <span class="af-date">${dm(e.date)}, ${WD[e.date.getDay()]}</span><b class="af-name">${esc(e.name)}</b><span class="af-meta">${e.start} · ${esc(e.venue?.name||e.city)}</span>
+ <span class="af-date">${dm(e.date)}, ${WD[e.date.getDay()]}</span><b class="af-name">${esc(e.name)}</b><span class="af-meta">${e.start} · ${esc(e.venue?.name||e.city)}</span>${e.desc?`<span class="af-desc">${esc(e.desc)}</span>`:''}
  ${A.length?`<span class="af-faces">${A.slice(0,4).map(p=>ava(p,'sm')).join('')}<span>${A.slice(0,3).map(p=>esc(p.name)).join(', ')}${A.length>3?` и ещё ${A.length-3}`:''}</span></span>`:''}
  <span class="af-foot"><b class="af-price">${e.mode==='reg'?'Бесплатно':e.min?'от '+rub(e.min):'Цена скоро'}</b>${ARR}</span></span></a>`;}
 function listing(){const R=load(RM),rows=EV.filter(e=>inType(e)&&inWhen(e)),O=load(LS);
@@ -33,14 +33,23 @@ function listing(){const R=load(RM),rows=EV.filter(e=>inType(e)&&inWhen(e)),O=lo
  <div class="af-chips" role="group" aria-label="Тип события">${TYPES.map(([k,l])=>`<button type="button" class="chip" data-af-type="${k}" aria-pressed="${type===k}">${l}</button>`).join('')}</div>
  <div class="af-chips" role="group" aria-label="Когда">${whenOpts().map(([k,l])=>`<button type="button" class="chip" data-af-when="${k}" aria-pressed="${when===k}">${l}</button>`).join('')}</div>
  ${rows.length?`<div class="af-list">${rows.map(card).join('')}</div>`:`<div class="card af-empty"><p class="secondary">По этим фильтрам событий нет.</p><button type="button" class="secondary-button" data-af-reset>Показать все</button></div>`}
- ${SOON.length?`<section class="af-sec"><h2>Скоро в афише</h2><ul class="card af-soon">${SOON.map(e=>`<li>${e.cover?`<img src="${esc(e.cover)}" alt="">`:'<span></span>'}<span class="af-soon-t"><b>${esc(e.name)}</b><small>${dm(e.date)} · анонс ${dm(e.announce)}</small></span><button type="button" class="eb-mini af-mini${R.includes(e.id)?' on':''}" data-af-remind="${e.id}" aria-pressed="${R.includes(e.id)}">${R.includes(e.id)?'Напомним':'Напомнить'}</button></li>`).join('')}</ul></section>`:''}
- <a class="card af-cross" href="../digital-jazz-unified/index.html#tournaments"><span><b>Турниры и баттлы</b><small>Смотреть выступления и болеть</small></span>${ARR}</a>`;}
+ ${battles()}
+ `;}
+
+/* ---------- скоро баттлы: турниры прототипа (calendar-events.js), ближайшие по старту ---------- */
+const U='../digital-jazz-unified/',BCOVER={0:'djs.png',1:'drum.png',2:'gerls.png',3:'gerls.png',4:'beat-video.png',5:'guinar.png',6:'dance.png',7:'rap.png',cup:'cup-hero.jpg'},BCAT={0:'Диджеинг',1:'Аудиопродакшн',2:'Вокал',3:'Вокал',4:'Аудиопродакшн',5:'Гитара',6:'Танцы',7:'Рэп',cup:'Диджеинг'};
+const MSH={янв:0,фев:1,мар:2,апр:3,мая:4,май:4,июн:5,июл:6,авг:7,сен:8,окт:9,ноя:10,дек:11};
+const bStart=d=>{const n=+(d.match(/\d+/)||[0])[0],m=(d.match(/[а-я]{3}/)||['окт'])[0];return new Date(2026,MSH[m]??9,n);};
+const bHref=x=>U+(x.id==='cup'?'index.html#monitor':x.id===4?'battle.html#tournaments':x.id===2?'voice.html#tournaments':'event.html?id='+x.id+'#tournaments');
+function battles(){const B=(window.djCalendarEvents||[]).map(x=>({...x,start:bStart(x.dates)})).filter(x=>x.start>TODAY).sort((a,b)=>a.start-b.start),R=load(RM);if(!B.length)return '';
+ return `<section class="af-sec"><div class="af-sec-h"><h2>Скоро баттлы</h2><a class="text-button" href="${U}index.html#tournaments">Все →</a></div><ul class="card af-soon">${B.slice(0,5).map(x=>{const k='b-'+x.id,on=R.includes(k);return `<li><a class="af-soon-a" href="${bHref(x)}"><img src="${U}assets/battle/${BCOVER[x.id]||'djs.png'}" alt=""><span class="af-soon-t"><b>${esc(x.name)}</b><small>${BCAT[x.id]||'Баттл'} · с ${x.start.getDate()} ${MON[x.start.getMonth()].slice(0,3)}</small></span></a><button type="button" class="af-mini${on?' on':''}" data-af-remind="${k}" aria-pressed="${on}">${on?'Напомним':'Напомнить'}</button></li>`;}).join('')}</ul></section>`;}
 
 /* ---------- событие ---------- */
 function eventPage(e){const [st,c]=status(e),soldout=e.mode!=='reg'&&!left(e),multi=e.scenes.length>1;
  return `<a class="af-back" href="#">← Афиша</a>
  <header class="af-hero">${e.cover?`<img src="${esc(e.cover)}" alt="">`:''}<div class="af-hero-c"><p class="af-eyebrow">${esc(e.type)} · ${esc(e.city)}</p><h1>${esc(e.name)}</h1><p class="af-date lg">${dm(e.date)}, ${WD[e.date.getDay()]}</p><p class="af-meta">${e.start}–${e.end} · ${esc(e.venue?.name||'')}</p></div></header>
- <div class="af-cta">${soldout?`<button type="button" class="secondary-button af-btn" disabled>Билеты распроданы</button>`:`<a class="primary af-btn" href="#t/${e.id}">${e.mode==='reg'?'Зарегистрироваться':'Билеты от '+rub(e.min)}</a>`}<p class="af-st-line ${c}">${st}</p></div>
+ <div class="af-cta">${!e.published?(()=>{const on=load(RM).includes(e.id);return `<button type="button" class="${on?'secondary-button':'primary'} af-btn" data-af-remind="${e.id}" aria-pressed="${on}">${on?'Напомним об открытии':'Напомнить об открытии '+(e.mode==='reg'?'регистрации':'продаж')}</button>`;})():soldout?`<button type="button" class="secondary-button af-btn" disabled>Билеты распроданы</button>`:`<a class="primary af-btn" href="#t/${e.id}">${e.mode==='reg'?'Зарегистрироваться':'Билеты от '+rub(e.min)}</a>`}<p class="af-st-line ${c}">${st}</p></div>
+ ${e.desc?`<p class="af-about">${esc(e.desc)}</p>`:''}
  ${e.scenes.length?`<section class="af-sec"><h2>Лайн-ап</h2>${e.scenes.map(sc=>`${multi?`<p class="af-gt">${esc(sc.n)}</p>`:''}<ul class="card af-lu">${sc.sets.map(p=>`<li><a href="${profile(p.name)}"><span class="af-time">${p.set||'—'}<small>${p.end?'до '+p.end:''}</small></span>${ava(p)}<span class="af-lu-t"><b>${esc(p.name)}</b><small>${esc((p.role||'').split(' · ')[0]||'Артист')}</small></span>${ARR}</a></li>`).join('')}</ul>`).join('')}</section>`:''}
  <section class="af-sec"><h2>${e.mode==='reg'?'Вход':'Билеты'}</h2><ul class="card af-types">${e.tickets.map(t=>{const l=tleft(t);return `<li class="${l?'':'off'}"><span class="af-type-t"><b>${esc(t.n)}</b>${t.desc?`<small>${esc(t.desc)}</small>`:''}${e.mode!=='reg'?`<small class="${!l||l<=t.qty*.15?'eb-hot':''}">${!l?'распродан':l<=t.qty*.15?'осталось '+l:'в продаже'}</small>`:''}</span><b class="af-type-p">${t.price?rub(t.price):'Бесплатно'}</b></li>`;}).join('')}</ul></section>
  <section class="af-sec"><h2>Площадка</h2><div class="card af-place"><b>${esc(e.venue?.name||'Уточняется')}</b><small>${esc(e.city)}${e.venue?.cap?` · до ${e.venue.cap} гостей`:''} · двери в ${e.start}</small></div></section>
@@ -76,9 +85,9 @@ function myPage(){const O=load(LS);
  return `<a class="af-back" href="#">← Афиша</a><h1 class="af-h1">Мои билеты</h1>${O.length?`<ul class="card af-soon af-mine">${O.map(o=>`<li><a href="#o/${o.id}">${o.cover?`<img src="${esc(o.cover)}" alt="">`:'<span></span>'}<span class="af-soon-t"><b>${esc(o.name)}</b><small>${esc(o.dateText)} · ${o.count} ${plural(o.count,o.reg?'место':'билет',o.reg?'места':'билета',o.reg?'мест':'билетов')}</small></span>${ARR}</a></li>`).join('')}</ul><p class="caption">Эти же билеты — в профиле, в карточке «Мои билеты».</p>`:`<div class="card af-empty"><p class="secondary">Билетов пока нет.</p><a class="primary af-btn" href="#">В афишу</a></div>`}`;}
 
 /* ---------- маршруты ---------- */
-function render(){const [r,id]=location.hash.slice(1).split('/'),e=(ALL.find(x=>x.id===id&&x.published));let h;
- if(r==='e'&&e)h=eventPage(e);else if(r==='t'&&e)h=ticketsPage(e);else if(r==='c'&&e)h=checkout(e);else if(r==='o')h=orderPage(load(LS).find(o=>o.id===id));else if(r==='my')h=myPage();
- else if(['e','t','c'].includes(r)&&id){const s=ALL.find(x=>x.id===id);h=`<a class="af-back" href="#">← Афиша</a><div class="card af-empty"><p class="secondary">${s&&s.announce?`«${esc(s.name)}» появится в афише ${dm(s.announce)}.`:'Такого события в афише нет.'}</p><a class="primary af-btn" href="#">В афишу</a></div>`;}
+function render(){const [r,id]=location.hash.slice(1).split('/'),e=ALL.find(x=>x.id===id&&x.published),ev=EV.find(x=>x.id===id);let h;
+ if(r==='e'&&ev)h=eventPage(ev);else if(r==='t'&&e)h=ticketsPage(e);else if(r==='c'&&e)h=checkout(e);else if(r==='o')h=orderPage(load(LS).find(o=>o.id===id));else if(r==='my')h=myPage();
+ else if(['e','t','c'].includes(r)&&id){const s=ALL.find(x=>x.id===id);h=`<a class="af-back" href="#">← Афиша</a><div class="card af-empty"><p class="secondary">${s&&s.announce&&!s.draft?`${s.mode==='reg'?'Регистрация':'Продажа билетов'} на «${esc(s.name)}» откроется ${dm(s.announce)}.`:'Такого события в афише нет.'}</p><a class="primary af-btn" href="${s&&!s.draft?'#e/'+s.id:'#'}">${s&&!s.draft?'К событию':'В афишу'}</a></div>`;}
  else h=listing();
  if(h==='')return;main.innerHTML=`<div class="af">${h}</div>${toast?`<div class="eb-toast af-toast" role="status">${esc(toast)}</div>`:''}`;}
 const say=t=>{toast=t;render();clearTimeout(say.t);say.t=setTimeout(()=>{toast='';render();},2600);};
@@ -87,7 +96,7 @@ document.addEventListener('click',ev=>{const b=ev.target.closest('button,a');if(
  if(d.afType){type=d.afType;render();return;}
  if(d.afWhen){when=d.afWhen;render();return;}
  if('afReset' in d){type='Все';when='all';render();return;}
- if(d.afRemind){let R=load(RM);const on=R.includes(d.afRemind);R=on?R.filter(x=>x!==d.afRemind):[...R,d.afRemind];save(RM,R);const s=ALL.find(x=>x.id===d.afRemind);say(on?'Напоминание снято':`Напомним ${dm(s.announce)}, когда откроется продажа`);return;}
+ if(d.afRemind){let R=load(RM);const on=R.includes(d.afRemind);R=on?R.filter(x=>x!==d.afRemind):[...R,d.afRemind];save(RM,R);const s=ALL.find(x=>x.id===d.afRemind),bt=(window.djCalendarEvents||[]).find(x=>'b-'+x.id===d.afRemind);say(on?'Напоминание снято':s?`Напомним ${dm(s.announce)}, когда откроется ${s.mode==='reg'?'регистрация':'продажа'}`:`Напомним о старте «${bt?.name||'баттла'}» ${bt?dm(bStart(bt.dates)):''}`);return;}
  if(d.afQ){const [tid,dl]=d.afQ.split(':'),e=ALL.find(x=>x.id===location.hash.split('/')[1]);cart[e.id]=cart[e.id]||{};cart[e.id][tid]=Math.max(0,(cart[e.id][tid]||0)+ +dl);const y=scrollY;render();scrollTo(0,y);return;}
  if(b.getAttribute('aria-disabled')==='true'){ev.preventDefault();return;}});
 document.addEventListener('submit',ev=>{const f=ev.target;
