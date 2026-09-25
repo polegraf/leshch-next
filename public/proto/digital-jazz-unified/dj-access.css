@@ -52,3 +52,6 @@
 .dja-loader.out{opacity:0;pointer-events:none}
 .dja-loader video,.dja-loader img{width:88px;height:88px;display:block;mix-blend-mode:screen}
 .topbar-logo{cursor:pointer}
+.dja-gt{margin:8px 0 -4px;font-size:12px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--dj-text-faint,#8E88A8)}
+.dja-prof-t small.wrap{white-space:normal;line-height:1.3}
+.dja-menu-b{width:100%;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.07);padding:14px 16px;text-align:left;font:600 15px/1.15 Jost,sans-serif;color:#C0FA35;cursor:pointer}

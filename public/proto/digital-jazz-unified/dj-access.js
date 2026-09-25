@@ -26,6 +26,8 @@ const active=()=>S.profiles.find(p=>p.id===S.active)||S.profiles[0]||null;
 const personal=()=>S.profiles.find(p=>p.type==='personal');
 /* дом: зритель — афиша; артист, организатор, компания, площадка — профиль с монитором */
 const home=()=>{const a=S.signed&&active();return a&&a.type!=='personal'?url('profile/index.html'):url('../dj-afisha/index.html');};
+/* index.html без хэша — не лента турниров, а дом: гость → старт, зритель → афиша, профессионал → профиль. Турниры — index.html#tournaments */
+if(new URL('index.html',BASE).pathname===location.pathname.replace(/\/$/,'/index.html')&&!location.hash){location.replace(S.signed?home():url('../dj-start/index.html'));return;}
 
 /* ---------- лист ---------- */
 function mount(){let r=document.querySelector('#dja-root');if(!r){r=document.createElement('div');r.id='dja-root';document.body.append(r);}return r;}
@@ -43,6 +45,7 @@ function body(){const s=sheet;
  if(s.v==='yandex-ok')return `<p class="dja-cap">Яндекс ID</p><h2 id="dja-t">Яндекс ID передаст нам</h2><ul class="dja-kv"><li><span>Имя</span><input class="input" data-dja-name value="${esc(s.name)}" aria-label="Имя"></li><li><span>Email</span><b>${esc(s.email)}</b></li><li><span>Аватар</span><b>из Яндекс ID</b></li></ul><p class="dja-note">Имя можно поправить. Телефон и остальные данные не запрашиваем.</p><button type="button" class="primary dja-btn" data-dja="yandex-go">Продолжить</button>`;
  if(s.v==='email')return `<p class="dja-cap">Вход по email</p><h2 id="dja-t">Пришлём код на почту</h2><form data-dja-form="email"><label class="field"><span>Email</span><input class="input" name="email" type="email" required autocomplete="email" value="${esc(s.email||'')}"></label><button class="primary dja-btn">Получить код</button></form><button type="button" class="text-button dja-link" data-dja="back-auth">← Другие способы</button>`;
  if(s.v==='code')return `<p class="dja-cap">Вход по email</p><h2 id="dja-t">Код из письма</h2><p class="dja-sub">Отправили на ${esc(s.email)}. Демо: код <b>123456</b>.</p><form data-dja-form="code"><label class="field"><span>Код</span><input class="input dja-code" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" pattern="[0-9]{6}" required></label>${s.err?`<p class="dja-err" role="alert">${esc(s.err)}</p>`:''}${S.profiles.length?'':`<label class="field"><span>Как тебя зовут</span><input class="input" name="name" required autocomplete="given-name" maxlength="40" value="${esc(s.name||'')}"></label>`}<button class="primary dja-btn">Войти</button></form><button type="button" class="text-button dja-link" data-dja="email">Изменить email</button>`;
+ if(s.v==='demo')return demoBody();
  if(s.v==='profiles'){const a=active();return `<p class="dja-cap">${S.via==='yandex'?'Вход через Яндекс ID':'Вход по email'} · ${esc(S.email||'')}</p><h2 id="dja-t">Твои профили</h2>
   <ul class="dja-list">${S.profiles.map(p=>`<li><button type="button" class="dja-prof${p.id===a?.id?' on':''}" data-dja-use="${p.id}" aria-pressed="${p.id===a?.id}"><span class="dja-ava">${esc((p.name||'?')[0])}</span><span class="dja-prof-t"><b>${esc(p.name)}</b><small>${p.type==='personal'?'Личный · билеты, друзья, интересы':esc(TNAME[p.type])+(p.roles?.length?' · '+esc(p.roles.join(', ')):'')+(p.biz?' · '+esc(p.biz):'')+(p.cap?' · до '+p.cap+' гостей':'')}</small></span>${p.id===a?.id?'<svg class="dja-ok" viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 5 5 9-10"/></svg>':''}</button></li>`).join('')}</ul>
   <a class="primary dja-btn" href="${home()}">${a?.type==='personal'?'Открыть афишу':'Открыть профиль '+esc(a?.name||'')}</a>
@@ -96,9 +99,38 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sheet)close();});
 addEventListener('click',e=>{const lg=e.target.closest('.topbar-logo');if(!lg)return;e.preventDefault();e.stopImmediatePropagation();location.href=home();},true);
 addEventListener('click',e=>{const av=e.target.closest('.nav-avatar');if(!av)return;e.preventDefault();e.stopImmediatePropagation();if(S.signed)open({v:'profiles'});else require('Войди, чтобы у тебя был профиль',()=>open({v:'profiles'}));},true);
 
+/* ---------- демо: сброс, готовые аккаунты, сценарии показа ---------- */
+const P0={id:'me',type:'personal',name:'Дмитрий'};
+const PERSONAS=[['viewer','Зритель · Дмитрий','Личный профиль, один купленный билет',[P0],'me'],
+ ['org','Организатор · Jazz Promo','5 событий в мониторе, дела, продажи',[P0,{id:'org',type:'org',name:'Jazz Promo',city:'Москва'}],'org'],
+ ['artist','Артист · Нокс','Сеты, оплата, турнир Digital Jazz Cup',[P0,{id:'nox',type:'artist',name:'Нокс',roles:['Диджей'],genres:['Электроника'],city:'Москва'}],'nox'],
+ ['riff','Артист · Рифф','Приглашение с гонораром — принять или отказаться',[P0,{id:'riff',type:'artist',name:'Рифф',roles:['Вокалист'],genres:['Рок'],city:'Москва'}],'riff'],
+ ['venue','Площадка · Цех 01','Бронь на 24 октября, договор на подписи',[P0,{id:'ceh',type:'venue',name:'Цех 01',cap:350,city:'Москва'}],'ceh'],
+ ['vendor','Подрядчик · Звуковой склад','Запросы от событий и договоры',[P0,{id:'snd',type:'company',name:'Звуковой склад',biz:'Прокат',city:'Москва'}],'snd']];
+const SCEN=[['s-view','Зритель покупает билет','Старт → афиша → событие → «Билеты» → вход с Яндекс ID → оплата → билет → «Мои билеты» в профиле','start','Нажми «Смотреть афишу», выбери событие и купи билет — вход спросим на оплате'],
+ ['s-org','Организатор собирает событие','Старт → «Собрать событие» → вход по email (код 123456) → профиль организатора → монитор → «Все события и новое»','start','Нажми «Собрать событие». Код из письма в демо — 123456'],
+ ['s-art','Артист заводит профиль','Старт → «Показать себя» → Яндекс ID → профиль артиста «Нокс» (Диджей) → монитор с сетами и турниром','start','Нажми «Показать себя…». Назови профиль «Нокс» — в мониторе появятся его сеты'],
+ ['s-multi','Несколько профилей','Зритель → аватарка → «+ Новый профиль» → площадка «Цех 01» → дом меняется на профиль с бронями → обратно на личный','multi','Нажми аватарку внизу → «+ Новый профиль» → Площадка, имя «Цех 01»']];
+function wipe(){['dj-account','dj-afisha-orders','dj-afisha-reminders'].forEach(k=>{try{localStorage.removeItem(k);}catch{}});try{sessionStorage.removeItem('dj-loader');}catch{}S={signed:false,profiles:[],active:null};}
+function seed(k){const p=PERSONAS.find(x=>x[0]===k);wipe();S={signed:true,via:'yandex',email:'dmitry@yandex.ru',profiles:JSON.parse(JSON.stringify(p[3])),active:p[4]};save();
+ if(k==='viewer'){try{localStorage.setItem('dj-afisha-orders',JSON.stringify([{id:'demo0yeti0000',ev:'yeti',name:'Yeti Disco',cover:'../dj-event-builder/covers/yeti-djs.jpg',dateText:'26 сентября, сб',iso:new Date(2026,8,26).toISOString(),time:'23:00',venue:'16 Тонн',reg:false,items:[{n:'Стандарт',q:2,price:1800}],count:2,disc:0,code:'',total:3600}]));}catch{}}}
+const hint=t=>{try{sessionStorage.setItem('dja-hint',t);}catch{}};
+function demoBody(){return `<p class="dja-cap">Демо · вход и профили</p><h2 id="dja-t">Показать прототип</h2>
+ <button type="button" class="primary dja-btn" data-dja-demo="fresh">Начать с нуля</button><p class="dja-note">Сотрёт вход, билеты и напоминания в этом браузере и снова покажет загрузчик.</p>
+ <p class="dja-gt">Сценарии показа</p><ul class="dja-list">${SCEN.map(([k,t,d])=>`<li><button type="button" class="dja-prof" data-dja-demo="${k}"><span class="dja-ava">${SCEN.findIndex(x=>x[0]===k)+1}</span><span class="dja-prof-t"><b>${t}</b><small class="wrap">${d}</small></span></button></li>`).join('')}</ul>
+ <p class="dja-gt">Войти как</p><ul class="dja-list">${PERSONAS.map(([k,t,d])=>`<li><button type="button" class="dja-prof" data-dja-demo="as:${k}"><span class="dja-ava">${esc(t.split('· ')[1][0])}</span><span class="dja-prof-t"><b>${t}</b><small>${d}</small></span></button></li>`).join('')}</ul>`;}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-dja-demo]');if(!b)return;const k=b.dataset.djaDemo;
+ if(k==='open'){if(typeof closeShell==='function')closeShell();document.querySelector('#moreMenu')?.classList.remove('open');document.querySelector('#navBackdrop')?.classList.remove('open');open({v:'demo'});return;}
+ if(k==='fresh'){wipe();location.href=url('../dj-start/index.html');return;}
+ if(k.startsWith('as:')){seed(k.slice(3));hint('Ты вошёл как '+active().name);location.href=home();return;}
+ const sc=SCEN.find(x=>x[0]===k);if(sc){if(sc[3]==='multi'){seed('viewer');hint(sc[4]);location.href=home();return;}wipe();hint(sc[4]);location.href=url('../dj-start/index.html');}});
+function demoMenu(){const m=document.querySelector('#moreMenu');if(!m||m.querySelector('.dja-menu'))return;const g=document.createElement('nav');g.className='proto-menu-group dja-menu';g.setAttribute('aria-label','Демо');
+ g.innerHTML=`<p class="proto-menu-label">Демо</p><a class="proto-menu-link" href="${url('../dj-start/index.html')}#stay">Старт</a><a class="proto-menu-link" href="${url('../dj-afisha/index.html')}">Афиша</a><a class="proto-menu-link" href="${url('../dj-event-builder/index.html')}#events">Конструктор</a><button type="button" class="proto-menu-link dja-menu-b" data-dja-demo="open">Вход, профили, сценарии…</button>`;m.prepend(g);m.style.maxHeight='75dvh';m.style.overflowY='auto';}
+
 /* ---------- API ---------- */
 function require(reason,cb,opt={}){after=cb||null;if(S.signed){if(opt.need){sheet={need:opt.need,needTitle:opt.needTitle};next();return;}done();return;}open({v:'auth',reason,need:opt.need,needTitle:opt.needTitle});}
 window.djAccess={home,get signed(){return S.signed;},active,profiles:()=>S.profiles.slice(),email:()=>S.email||'',require,profilesMenu:()=>open({v:'profiles'}),create:(type,cb,title)=>{after=cb||null;open({v:'create',type,title});}};
-const st=document.createElement('link');st.rel='stylesheet';st.href=url('dj-access.css?v=2');document.head.append(st);
-if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',chip);else chip();
+const st=document.createElement('link');st.rel='stylesheet';st.href=url('dj-access.css?v=4');document.head.append(st);
+const boot=()=>{chip();demoMenu();let h='';try{h=sessionStorage.getItem('dja-hint')||'';sessionStorage.removeItem('dja-hint');}catch{}if(h)setTimeout(()=>toast(h),1500);};
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',boot);else boot();
 })();
