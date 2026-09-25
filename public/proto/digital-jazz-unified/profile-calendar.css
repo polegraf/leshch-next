@@ -1,0 +1,10 @@
+.cal-arrow,.cal-grid button{font-family:inherit;border:0;cursor:pointer}
+.cal-grid button{background:transparent;position:relative}
+.cal-grid button.today{background:#C0FA35}
+.cal-day.has-events i{display:block;width:4px;height:4px;border-radius:50%;background:#C0FA35;position:absolute;bottom:2px;left:calc(50% - 2px)}
+.cal-day.today i{background:#06040B}
+.cal-day[aria-pressed=true]{box-shadow:inset 0 0 0 1px #C0FA35}
+.calendar-event{display:grid;gap:6px;padding:12px 0;color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,.1);line-height:1.15}
+.calendar-event span{color:#9A94B3;font-size:14px}
+.calendar-reset{font:inherit;color:#C0FA35;background:none;border:0;padding:12px 0;cursor:pointer}
+.cal-month{text-transform:capitalize}
