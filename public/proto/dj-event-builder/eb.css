@@ -670,3 +670,4 @@ button.eb-ecard{width:100%;border:1px solid var(--dj-line);text-align:left;font:
 .eb-afisha.off{color:var(--dj-text-faint);font-weight:500}
 .eb-cnt{float:right;font-style:normal;font-size:13px;color:var(--dj-text-faint);font-variant-numeric:tabular-nums}
 .eb-afisha span{font-weight:500;color:var(--dj-text-muted)}
+.eb-as{margin:-6px 0 0;font-size:15px;color:var(--dj-text-muted)}.eb-as b{color:#A375FF;font-weight:600}

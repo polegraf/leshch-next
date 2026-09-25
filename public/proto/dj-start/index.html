@@ -1,31 +1,21 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<script src="prototype-nav.js"></script>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Digital Jazz — поиск, дискавери, турниры, магазин</title>
+<title>Digital Jazz</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="tokens.css"><link rel="stylesheet" href="ui.css">
-<link rel="stylesheet" href="shared-shell.css"><link rel="stylesheet" href="consistency.css">
-<script src="tournament-status.js" defer></script>
-<script src="portraits.js" defer></script>
-<script src="dj-kit.js" defer></script><script src="app.js" defer></script><script src="shell.js" defer></script>
-<link rel="stylesheet" href="shop.css">
-<link rel="stylesheet" href="spacing.css">
-<link rel="stylesheet" href="disclosure.css">
-<link rel="stylesheet" href="text-rhythm.css">
-<link rel="stylesheet" href="typography.css">
-<link rel="stylesheet" href="flow-spacing.css">
-<link rel="stylesheet" href="viewer-stage.css">
-<link rel="stylesheet" href="portraits.css">
+<link rel="stylesheet" href="../digital-jazz-unified/tokens.css"><link rel="stylesheet" href="../digital-jazz-unified/ui.css">
+<link rel="stylesheet" href="../digital-jazz-unified/shared-shell.css"><link rel="stylesheet" href="../digital-jazz-unified/consistency.css">
+<link rel="stylesheet" href="../digital-jazz-unified/typography.css"><link rel="stylesheet" href="../digital-jazz-unified/unify.css">
+<link rel="stylesheet" href="start.css?v=1">
 </head>
 <body>
 <div class="app">
     <div class="topbar">
       <div class="topbar-left">
         <div class="topbar-logo" aria-label="Digital Jazz">
-          <img src="assets/header.webp" alt="Digital Jazz" draggable="false">
+          <img src="../digital-jazz-unified/assets/header.webp" alt="Digital Jazz" draggable="false">
         </div>
         <div class="more-wrap">
           <button class="hamburger-btn" id="moreBtn" data-shell="more" aria-haspopup="true" aria-expanded="false" aria-controls="moreMenu" aria-label="Меню">
@@ -60,23 +50,21 @@
       <div class="nav-backdrop" id="navBackdrop"></div>
     </div>
 
-
-
 <main id="main" tabindex="-1"></main>
-<p class="demo-note">Интерактивный прототип · демоданные</p>
+<p class="demo-note">Старт · вход и профили · демоданные</p>
 </div>
 <div class="services-scrim" id="servicesScrim"></div>  <nav class="bottom-nav" id="bottomNav">
     <div class="bottom-nav-wrap">
 
       <div class="nav-avatar" role="button" tabindex="0" data-action="profile" data-tab="profile" aria-label="Профиль">
-        <img src="assets/nav.jpg" alt="" draggable="false">
+        <img src="../digital-jazz-unified/assets/nav.jpg" alt="" draggable="false">
       </div>
 
       <div class="bottom-nav-inner">
         <div class="nav-slot">
           <div class="nav-circle" role="button" tabindex="0" data-shell="search" data-tab="search" aria-label="Поиск">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.3-4.3"/></svg>
-          </div><div class="services-stack" id="searchMenu" hidden><a class="services-row" href="#discovery"><span class="services-label">дискавери</span><span class="services-circle"><svg viewBox="0 0 24 24"><path d="m12 3 3 6 6 3-6 3-3 6-3-6-6-3 6-3Z"/></svg></span></a><a class="services-row" href="#search"><span class="services-label">поиск</span><span class="services-circle"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></span></a></div>
+          </div><div class="services-stack" id="searchMenu" hidden><a class="services-row" href="../digital-jazz-unified/index.html#discovery"><span class="services-label">дискавери</span><span class="services-circle"><svg viewBox="0 0 24 24"><path d="m12 3 3 6 6 3-6 3-3 6-3-6-6-3 6-3Z"/></svg></span></a><a class="services-row" href="../digital-jazz-unified/index.html#search"><span class="services-label">поиск</span><span class="services-circle"><svg viewBox="0 0 24 24"><circle cx="10" cy="10" r="6"/><path d="m15 15 6 6"/></svg></span></a></div>
         </div>
         <div class="nav-slot">
           <div class="nav-circle" role="button" tabindex="0" data-action="chat" data-tab="chat" aria-label="Чат">
@@ -85,7 +73,7 @@
         </div>
 
         <div class="nav-slot" id="servicesSlot">
-          <div class="nav-circle" data-tab="services" id="services" role="button" tabindex="0" data-shell="services" data-active="1" aria-label="Сервисы" aria-haspopup="true">
+          <div class="nav-circle" data-tab="services" id="services" role="button" tabindex="0" data-shell="services" aria-label="Сервисы" aria-haspopup="true">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.6"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.6"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.6"/></svg>
           </div>
           <div class="services-stack" id="servicesMenu" hidden>
@@ -115,29 +103,9 @@
 
     </div>
   </nav>
-<section id="sheet" class="inline-panel card" aria-labelledby="sheet-title" hidden><div class="sheet-head"><h2 id="sheet-title"></h2><button class="icon" data-action="close" aria-label="Закрыть">×</button></div><div id="sheet-content"></div></section>
-<div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="search.js" defer></script>
-<script src="heroes.js" defer></script>
-<script src="tournament-assets.js" defer></script>
-<script src="tournament-form.js" defer></script>
-<script src="tournament-examples.js" defer></script>
-<script src="tournament-roles.js" defer></script>
-<script src="pyramid-builder.js" defer></script>
-<script src="prize-images.js" defer></script>
-<script src="role-dashboards.js" defer></script>
-<script src="public-tournaments.js" defer></script>
-<script src="judge-monitor.js" defer></script>
-<script src="selects.js" defer></script>
-<script src="search-types.js" defer></script>
-<script src="number-fields.js" defer></script>
-<script src="role-pages.js" defer></script>
-<script src="completed-video.js" defer></script>
-<script src="viewer-stage.js" defer></script>
-<link rel="stylesheet" href="monitor.css">
-<script src="monitor.js" defer></script>
-<link rel="stylesheet" href="dj-kit.css">
-<link rel="stylesheet" href="unify.css">
-<script src="tournament-search.js" defer></script>
-<script src="dj-access.js?v=2"></script>
-</body></html>
+<script src="../digital-jazz-unified/prototype-nav.js"></script>
+<script src="../digital-jazz-unified/shell.js"></script>
+<script src="../digital-jazz-unified/dj-access.js?v=2"></script>
+<script src="start.js?v=2"></script>
+</body>
+</html>

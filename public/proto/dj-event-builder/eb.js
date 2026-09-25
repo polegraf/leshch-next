@@ -396,7 +396,7 @@ function gate(){const v=venue(),a=list('artist'),aok=a.filter(p=>p.stage>=1).len
  <ul class="eb-checks">${items.map(([k,t,s,cmd,b])=>`<li class="${k?'ok':'no'}"><span class="eb-ck" aria-hidden="true">${k?'✓':''}</span><span><b>${t}</b><small>${esc(s)}</small></span>${k?'':`<button type="button" class="eb-mini" data-cmd="${cmd}">${b}</button>`}</li>`).join('')}</ul>
  <button type="button" class="${miss?'secondary-button':'primary'} eb-btn" data-cmd="announce">${miss?'Анонсировать всё равно':'Анонсировать'}</button></section>`;}
 
-function actions(){const L=[],v=venue(),sl=shortlist(),w=waiting().filter(p=>p.group!=='venue');
+function actionList(){const L=[],v=venue(),sl=shortlist(),w=waiting().filter(p=>p.group!=='venue');
  if(sl.length)L.push({t:`${sl.length} в шорт-листе`,s:`Офферы не отправлены: ${sl.map(p=>p.name).join(', ')}`,b:'Отправить офферы',cmd:'sendall'});
  if(!v)L.push({t:'Нет площадки',s:'Без площадки нет вместимости, а значит — плана продаж.',b:'Выбрать площадку',cmd:'goto:1'});
  else if(!signed(v)&&v.stage>=0)L.push({t:'Площадка не подписала договор',s:`Без договора анонс — риск переноса. Оплачено ${rub(v.paid)} из ${rub(v.fee)}.`,b:'Напомнить площадке',cmd:'nudge:'+v.id,g:'Открыть',go:'open:'+v.id});
@@ -408,7 +408,8 @@ function actions(){const L=[],v=venue(),sl=shortlist(),w=waiting().filter(p=>p.g
  const od=(E.posts||[]).filter(overdue);if(od.length)L.push({t:od.length===1?'Публикация не вышла':'Публикации не вышли',s:od.map(p=>`${p.d.getDate()} ${MON[p.d.getMonth()].slice(0,3)} · ${p.t}`).join('; '),b:'Открыть план',cmd:'tab:promo'});
  if(!(E.channels||[]).length)L.push({t:'Нет каналов продвижения',s:'Выбери, где рассказываем о событии, — у каждого канала будет свой промокод.',b:'Выбрать каналы',cmd:'goto:7'});
  if(!list('artist').length)L.push({t:'Нет лайн-апа',s:'Добавь артистов — сеты сами встанут в тайминг.',b:'Добавить артистов',cmd:'goto:2'});
- return `<section class="eb-sec"><div class="eb-sec-head"><h2>Сделать сейчас</h2><span class="caption">${Math.min(3,L.length)}</span></div>${L.slice(0,3).map(a=>`<article class="card eb-act"><h3>${a.t}</h3><p>${esc(a.s)}</p><div class="eb-act-btns"><button type="button" class="primary eb-btn" data-cmd="${a.cmd}">${a.b}</button>${a.g?`<button type="button" class="secondary-button eb-btn" data-cmd="${a.go}">${a.g}</button>`:''}</div></article>`).join('')||'<div class="card"><p class="secondary">Всё под контролем.</p></div>'}</section>`;}
+ return L;}
+function actions(){const L=actionList();return `<section class="eb-sec"><div class="eb-sec-head"><h2>Сделать сейчас</h2><span class="caption">${Math.min(3,L.length)}</span></div>${L.slice(0,3).map(a=>`<article class="card eb-act"><h3>${a.t}</h3><p>${esc(a.s)}</p><div class="eb-act-btns"><button type="button" class="primary eb-btn" data-cmd="${a.cmd}">${a.b}</button>${a.g?`<button type="button" class="secondary-button eb-btn" data-cmd="${a.go}">${a.g}</button>`:''}</div></article>`).join('')||'<div class="card"><p class="secondary">Всё под контролем.</p></div>'}</section>`;}
 
 function beBar(){const c=cap(),be=breakEven(true),be0=breakEven(false),unconf=E.incomes.filter(i=>!i.ok);
  if(!c||!E.price||E.ticketMode==='reg')return `<p class="secondary">Окупаемость посчитаем, когда будут площадка и цена билета.</p><button type="button" class="eb-mini" data-cmd="goto:${c?5:1}">${c?'Задать цену':'Выбрать площадку'}</button>`;
@@ -550,7 +551,7 @@ function day(){const rows=[...E.stages.map(s=>({...s,kind:'stage'})),...sets().m
  ${rows.length?`<ol class="eb-run">${rows.map(r=>{const w=byName(r.who);return `<li class="${r.n.startsWith('Двери')?'key':''}${r.kind==='set'?' set':''}"><span class="eb-run-t"><b>${r.t}</b><small>${r.e}${r.e<r.t?' · ночь':''}</small></span><span class="eb-run-dot" aria-hidden="true"></span><button type="button" class="eb-run-c" data-cmd="${r.kind==='set'?'open:'+r.artist.id:'editstage:'+r.id}">${r.kind==='set'?`<span class="eb-run-a">${ava(r.artist,'sm')}<b>${esc(r.n)}</b>${r.artist.stage<1?'<em class="eb-hot">не подтверждён</em>':''}</span>`:`<b>${esc(r.n)}</b>`}<small>${r.z}${r.who?' · '+esc(r.who):''}${w&&w.stage<1?' <em class="eb-hot">не подтверждён</em>':''}${!r.who&&r.kind==='stage'?' · <em class="eb-hot">нет ответственного</em>':''}</small>${r.soundcheck&&sets((E.scenes.find(x=>x.n===r.z)||{}).id).length?`<small class="eb-sc">${sets((E.scenes.find(x=>x.n===r.z)||{}).id).map((p,i)=>`${addMin(r.t,i*25)} ${esc(p.name)}`).join(' · ')}</small>`:''}${r.kind==='set'&&clashes().some(c=>c[1]===r.artist)?'<small class="eb-hot">пересекается с предыдущим сетом</small>':''}</button></li>`;}).join('')}</ol>`:`<div class="card eb-empty"><p class="secondary">Тайминг пуст. Добавь монтаж, двери и демонтаж — сеты артистов встанут сами.</p></div>`}`;}
 
 /* ---- список событий ---- */
-function events(){return `<div class="eb-list-head"><h1>Мои события</h1><button type="button" class="primary eb-btn" data-cmd="create">Создать</button></div><button type="button" class="card eb-ai" data-cmd="ai"><span class="eb-ai-i" aria-hidden="true">✦</span><span class="eb-need-t"><b>Собрать с ИИ-помощником</b><small>«Техно-вечеринка на 300 человек в конце ноября, бюджет 400 тысяч» — и черновик готов</small></span></button>
+function events(){return `<div class="eb-list-head"><h1>Мои события</h1><button type="button" class="primary eb-btn" data-cmd="create">Создать</button></div>${(()=>{const a=window.djAccess&&djAccess.signed&&djAccess.active();return a&&a.type!=='personal'?`<p class="eb-as">От имени <b>${esc(a.name)}</b> · сменить — по аватарке внизу</p>`:'';})()}<button type="button" class="card eb-ai" data-cmd="ai"><span class="eb-ai-i" aria-hidden="true">✦</span><span class="eb-need-t"><b>Собрать с ИИ-помощником</b><small>«Техно-вечеринка на 300 человек в конце ноября, бюджет 400 тысяч» — и черновик готов</small></span></button>
  ${EVENTS.map(ev=>{const prev=E;E=ev;const be=breakEven(true),w=waiting().length+shortlist().length,done=[0,1,2,3,4,5,6].filter(stepDone).length;const html=`<button type="button" class="card eb-ecard" data-cmd="openev:${ev.id}">${ev.cover?`<img src="${coverSrc(ev.cover)}" alt="">`:'<span class="eb-ecard-ph"></span>'}<span class="eb-ecard-b"><span class="eb-badge">${ev.fresh?`Черновик · готово ${done} из 7`:phase()===2?'Продажи идут':'Подготовка'+(ev.announce?' · анонс '+dm(ev.announce):'')}</span><b class="eb-ecard-n">${esc(ev.name||'Без названия')}</b>${ev.date?`<span class="eb-date sm">${dm(ev.date)}, ${WD[ev.date.getDay()]}</span>`:'<span class="eb-date sm eb-nodate">Дата не выбрана</span>'}<span class="caption">${esc(ev.city)}${venue()?' · '+esc(venue().name)+' · '+cap()+' мест':''}</span>${ev.sales&&ev.sales.length?`<span class="eb-ecard-sold">Продано <b>${soldTotal()}</b> из ${cap()}</span>`:''}${w||be?`<span class="eb-ecard-next">${[w?w+' ждут ответа':'',be?(ev.sales&&ev.sales.length&&soldTotal()>=be?'<b class="eb-ok">окупилось</b>':'окупаемость с '+be+' билетов'):''].filter(Boolean).join(' · ')}</span>`:''}</span></button>`;E=prev;return html;}).join('')}`;}
 
 /* ================= КАРТОЧКИ (нижний лист) ================= */
@@ -678,7 +679,7 @@ document.addEventListener('click',e=>{const t=e.target;
  const c=t.closest('[data-cmd]');if(!c)return;const [cmd,a,b,d]=c.dataset.cmd.split(':');const A1=a&&decodeURIComponent(a),B1=b&&decodeURIComponent(b);
  const P=id=>E.people.find(p=>p.id===id);
  switch(cmd){
-  case 'create':{toast='';const n=initEv(blank());EVENTS.unshift(n);E=n;location.hash='build/0';return;}
+  case 'create':{const go=()=>{toast='';const n=initEv(blank());EVENTS.unshift(n);E=n;location.hash='build/0';};if(window.djAccess){djAccess.require('Войди, чтобы собрать событие',go,{need:['org','venue','company'],needTitle:'Событие собирается от имени организатора'});return;}go();return;}
   case 'openev':E=EVENTS.find(x=>x.id===a);location.hash=E.fresh?'build/0':'summary';render();return;
   case 'next':{const s=+a;if(s===0&&!E.name.trim()){say('Назови событие — остальное можно позже');document.querySelector('[data-bind="E.name"]')?.focus();return;}location.hash='build/'+(s+1);return;}
   case 'goto':location.hash='build/'+a;return;
@@ -790,8 +791,14 @@ function pubEvent(ev){const s=E;E=ev;try{const v=venue(),sb=(E.sales||[]).length
   draft:!!ev.fresh,published:!ev.fresh&&!!ev.date&&!!ev.announce&&ev.announce<=TODAY,venue:v?{name:v.name,cap:v.cap||0}:null,mode:ev.ticketMode,cap:cap(),sold:soldTotal(),min:minPrice(),
   scenes:(ev.scenes||[]).map(sc=>({n:sc.n,sets:L.filter(p=>sceneOf(p.scene).id===sc.id).sort((a,b)=>tkey(a.set||'').localeCompare(tkey(b.set||''))).map(p=>({name:p.name,img:p.img||null,set:p.set||'',end:p.set?setEnd(p):'',role:p.role}))})).filter(sc=>sc.sets.length),
   tickets:ev.ticketMode==='reg'?[{id:'reg',n:'Регистрация',price:0,qty:cap(),sold:soldTotal(),desc:'Бесплатный вход по регистрации'}]:ev.tickets.map((t,i)=>({id:t.id,n:t.n||'Билет',price:tPrice(t),qty:t.qty||0,sold:sb[i]||0,desc:t.desc||''})),
+  people:ev.people.map(p=>({name:p.name,group:p.group,role:p.role,img:p.img||null,stage:p.stage,contract:p.contract,fee:p.fee,paid:p.paid,set:p.set||'',end:p.set?setEnd(p):'',scene:p.group==='artist'?sceneOf(p.scene).n:'',rider:!!p.rider,riderAsked:p.riderAsked||''})),
+  reqs:reqs().map(r=>({name:r.name,role:r.role,st:r.st,tech:r.tech.map(n=>n.label+' × '+n.qty),hosp:r.hosp.length,base:r.base})),todo:actionList().map(a=>a.t),fresh:!!ev.fresh,
   codes:(ev.codes||[]).filter(c=>c.code).map(c=>({code:c.code,pct:c.pct||0})),track:(ev.channels||[]).map(c=>c.code).filter(Boolean)};}finally{E=s;}}
 window.djEvents={today:TODAY,all:()=>EVENTS.map(pubEvent)};
+/* #ev/<id> — открыть конкретное событие (из монитора в профиле) */
+function evHash(){const m=location.hash.match(/^#ev\/(.+)$/);if(!m)return false;const x=EVENTS.find(e=>e.id===m[1]);if(!x)return false;E=x;history.replaceState(null,'','#'+(x.fresh?'build/0':'summary'));return true;}
+evHash();addEventListener('hashchange',()=>{if(evHash())render();});
+document.addEventListener('dj-access',()=>render());
 render();
 })();
 
