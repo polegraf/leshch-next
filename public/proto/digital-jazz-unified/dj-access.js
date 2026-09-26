@@ -9,7 +9,7 @@ const BASE=new URL('.',document.currentScript.src),url=p=>new URL(p,BASE).href,K
 /* загрузчик: неоновый знак Digital Jazz, небольшой, на чёрном — один раз за сессию, пока грузится страница */
 (()=>{let seen=false;try{seen=sessionStorage.getItem('dj-loader')==='1';sessionStorage.setItem('dj-loader','1');}catch{}if(seen)return;
  const calm=matchMedia('(prefers-reduced-motion: reduce)').matches,t0=performance.now(),el=document.createElement('div');el.className='dja-loader';el.setAttribute('role','status');el.setAttribute('aria-label','Загрузка');
- el.innerHTML=calm?`<img src="${url('assets/loader.png')}" alt="">`:`<video autoplay muted loop playsinline preload="auto" poster="${url('assets/loader.png')}"><source src="${url('assets/loader.webm')}" type="video/webm"><source src="${url('assets/loader.mp4')}" type="video/mp4"></video>`;
+ el.innerHTML=calm?`<img src="${url('assets/loader.png')}" alt="">`:`<video autoplay muted loop playsinline preload="auto" poster="${url('assets/loader.png')}"><source src="${url('assets/loader.mp4')}" type="video/mp4"></video>`;
  document.body.append(el);const hide=()=>{const wait=Math.max(0,2500-(performance.now()-t0));setTimeout(()=>{el.classList.add('out');setTimeout(()=>el.remove(),400);},wait);};
  if(document.readyState==='complete')hide();else addEventListener('load',hide,{once:true});setTimeout(hide,4500);})();
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));

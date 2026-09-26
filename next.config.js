@@ -1,5 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      { source: '/proto/digital-jazz-unified', destination: '/proto/digital-jazz-unified/index.html', permanent: false },
+    ];
+  },
   async rewrites() {
     return [
       { source: '/lola', destination: '/lola/index.html' },
