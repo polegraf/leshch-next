@@ -1,11 +1,18 @@
 import { NextResponse } from 'next/server';
 
 export function middleware(request) {
-  // Do not apply any auth middleware
   return NextResponse.next();
 }
 
-// Empty matcher = middleware doesn't run at all
 export const config = {
-  matcher: [],
+  matcher: ['/api/:path*'],
+};
+import { NextResponse } from 'next/server';
+
+export function middleware(request) {
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: ['/api/:path*'],  // Только для API, не трогаем прото
 };
