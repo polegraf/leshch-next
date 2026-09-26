@@ -9,7 +9,7 @@ const BASE=new URL('.',document.currentScript.src),url=p=>new URL(p,BASE).href,K
 /* загрузчик: неоновый знак Digital Jazz, небольшой, на чёрном — один раз за сессию, пока грузится страница */
 (()=>{let seen=false;try{seen=sessionStorage.getItem('dj-loader')==='1';}catch{}if(seen)return;
  const calm=matchMedia('(prefers-reduced-motion: reduce)').matches,t0=performance.now(),el=document.createElement('div');el.className='dja-loader';el.setAttribute('role','status');el.setAttribute('aria-label','Загрузка');
- el.innerHTML=calm?`<img src="${url('assets/loader.png')}" alt="">`:`<video autoplay muted loop playsinline preload="auto" poster="${url('assets/loader.png')}"><source src="${url('assets/loader.mp4')}" type="video/mp4"></video>`;
+ el.innerHTML=calm?`<img src="${url('assets/loader-poster.png')}" alt="">`:`<video autoplay muted loop playsinline preload="auto" poster="${url('assets/loader-poster.png')}"><source src="${url('assets/loader.mp4')}" type="video/mp4"></video>`;
  document.body.append(el);
  /* держим загрузчик минимум один полный цикл ролика (rotter ≈ 5 с); отметку «видел» ставим только после показа — иначе редирект с index.html съедал загрузчик */
  const v=el.querySelector('video');let cycle=calm?1200:5100,loaded=document.readyState==='complete',gone=false;
@@ -175,7 +175,7 @@ const hideRole=()=>{if(S.signed)document.querySelectorAll('.role-wrap').forEach(
 /* ---------- API ---------- */
 function require(reason,cb,opt={}){after=cb||null;if(S.signed){if(opt.need){sheet={need:opt.need,needTitle:opt.needTitle};next();return;}done();return;}open({v:'auth',reason,need:opt.need,needTitle:opt.needTitle});}
 window.djAccess={home,get signed(){return S.signed;},active,profiles:()=>S.profiles.slice(),email:()=>S.email||'',require,profilesMenu:()=>open({v:'profiles'}),create:(type,cb,title)=>{after=cb||null;open({v:'create',type,title});}};
-const st=document.createElement('link');st.rel='stylesheet';st.href=url('dj-access.css?v=9');document.head.append(st);
+const st=document.createElement('link');st.rel='stylesheet';st.href=url('dj-access.css?v=10');document.head.append(st);
 /* ---------- вход вернувшегося пользователя: Face ID, раз за сессию (имитация в демо) ---------- */
 let lockWait=false;
 const unlocked=()=>{try{sessionStorage.setItem('dj-unlocked','1');}catch{}};
