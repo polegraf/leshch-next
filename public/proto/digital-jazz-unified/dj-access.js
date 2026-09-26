@@ -132,7 +132,14 @@ document.addEventListener('submit',e=>{const f=e.target.closest('[data-dja-form]
 document.addEventListener('keydown',e=>{if(e.key==='Escape'&&sheet)close();});
 document.addEventListener('input',e=>{if(!e.target.matches('[data-dja-typed]')||!sheet)return;sheet.typed=e.target.value;const p=S.profiles.find(x=>x.id===sheet.id);const b=mount().querySelector('[data-dja="del-go"]');if(b&&p)b.disabled=sheet.typed.trim().toLowerCase()!==p.name.trim().toLowerCase();});
 /* аватарка в нижней навигации — меню профилей (перехватываем раньше общих переходов прототипа) */
-addEventListener('click',e=>{const lg=e.target.closest('.topbar-logo');if(!lg)return;e.preventDefault();e.stopImmediatePropagation();location.href=home();},true);
+/* клик по лого: один полный цикл загрузчика, потом переход на главную */
+function loaderThen(go){if(document.querySelector('.dja-loader'))return;const calm=matchMedia('(prefers-reduced-motion: reduce)').matches,el=document.createElement('div');el.className='dja-loader';el.setAttribute('role','status');el.setAttribute('aria-label','Загрузка');
+ el.innerHTML=calm?`<img src="${url('assets/loader-poster.png')}" alt="">`:`<video autoplay muted playsinline preload="auto" poster="${url('assets/loader-poster.png')}"><source src="${url('assets/loader.mp4')}" type="video/mp4"></video>`;
+ el.style.opacity='0';document.body.append(el);requestAnimationFrame(()=>{el.style.opacity='';});
+ try{sessionStorage.setItem('dj-loader','1');}catch{}
+ let left=false;const leave=()=>{if(left)return;left=true;go();};const v=el.querySelector('video');
+ if(v){v.addEventListener('ended',leave,{once:true});v.addEventListener('error',()=>setTimeout(leave,600),{once:true});setTimeout(leave,9000);}else setTimeout(leave,1200);}
+addEventListener('click',e=>{const lg=e.target.closest('.topbar-logo');if(!lg)return;e.preventDefault();e.stopImmediatePropagation();const to=home();loaderThen(()=>{location.href=to;});},true);
 addEventListener('click',e=>{const av=e.target.closest('.nav-avatar');if(!av)return;e.preventDefault();e.stopImmediatePropagation();if(S.signed)fan(av);else require('Войди, чтобы у тебя был профиль',()=>open({v:'profiles'}));},true);
 
 /* ---------- демо: сброс, готовые аккаунты, сценарии показа ---------- */
