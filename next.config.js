@@ -10,6 +10,7 @@ const nextConfig = {
       { source: '/lola', destination: '/lola/index.html' },
       { source: '/proto/digital-jazz', destination: '/proto/digital-jazz/index.html' },
       { source: '/proto/digital-jazz-color', destination: '/proto/digital-jazz-color/index.html' },
+      { source: '/proto/dj-neon-check', destination: '/proto/dj-neon-check/index.html' },
     ];
   },
   images: {
