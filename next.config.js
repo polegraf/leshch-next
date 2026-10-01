@@ -12,6 +12,7 @@ const nextConfig = {
       { source: '/proto/digital-jazz-color', destination: '/proto/digital-jazz-color/index.html' },
       { source: '/proto/dj-neon-check', destination: '/proto/dj-neon-check/index.html' },
       { source: '/proto/fxpro', destination: '/proto/fxpro/index.html' },
+      { source: '/proto/fxpro', destination: '/proto/fxpro/index.html' },
     ];
   },
   images: {
