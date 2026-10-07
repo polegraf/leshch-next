@@ -458,6 +458,8 @@ h1{margin:10px 0 0;color:var(--h);font-weight:600;font-size:clamp(40px,4.8vw,76p
 .pl-dots button{width:8px;height:8px;border-radius:999px;border:0;padding:0;background:rgba(255,255,255,.28);transition:width .3s,background .3s;position:relative}
 .pl-dots button::before{content:"";position:absolute;inset:-14px -6px}
 .pl-dots button.on{width:28px;background:#C0FA35}
+.amb-dots{display:flex!important}
+.amb-ctrl{margin-top:14px}
 @media (max-width:980px){.pl-dots{display:flex}}
 
 /* видеоуроки — YouTube */
@@ -616,7 +618,7 @@ p,li{text-wrap:pretty}
   .hdr-sheet a:active{background:rgba(255,255,255,.06)}
   .hdr-sheet .hb{margin-top:8px;font-size:17px;height:52px}
 }
-@media (max-width:520px){.hdr-act .hb.prim{display:none}.hdr .lock span{display:none}}
+@media (max-width:520px){.hdr-act .hb.prim{display:none}.hdr .lock{font-size:20px;gap:9px}.hdr .lock svg{width:27px;height:27px}}@media (max-width:340px){.hdr .lock span{display:none}}
 /* ===== футер ===== */
 .ftr{position:relative;z-index:5;background:var(--bg);border-top:1px solid rgba(255,255,255,.08);padding:72px clamp(16px,4vw,48px) calc(40px + env(safe-area-inset-bottom,0px));color:var(--t2);overflow:hidden}
 .ftr::before{content:"";position:absolute;left:50%;top:-240px;width:900px;height:420px;margin-left:-450px;background:radial-gradient(closest-side,rgba(123,59,255,.22),transparent);pointer-events:none}
@@ -946,6 +948,15 @@ p,li{text-wrap:pretty}
 .ap small{position:absolute;left:10px;bottom:8px;z-index:1;font-size:10px;font-weight:600;color:#fff;letter-spacing:.04em}
 .ap i{position:absolute;right:8px;bottom:7px;z-index:1;font-style:normal;font-size:9px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#0B0811;background:#A375FF;padding:2px 6px;border-radius:999px}
 @media (prefers-reduced-motion:reduce){.ad-track{animation:none}}
+
+/* iOS Safari: размытые/вращающиеся градиенты вылезали за скруглённые углы — жёстко обрезаем по радиусу */
+.pl{clip-path:inset(0 round 30px)}
+.ac{clip-path:inset(0 round 28px)}
+.ac .ph{clip-path:inset(0 round 20px)}
+.th,.cv,.cr-v,.ap{clip-path:inset(0 round 16px)}
+.vt-main{clip-path:inset(0 round 28px)}
+.fx{clip-path:inset(0 round 28px)}
+@media (max-width:640px){.pl,.ac,.fx{clip-path:inset(0 round 24px)}.vt-main{clip-path:inset(0 round 20px)}}
 /* ===================== MOBILE (≤640px): система в духе apple.com/iphone =====================
    сетка 20px по краям · заголовок 32/1.1 · подзаголовок 17/1.41 · текст карточек 16/1.42 · подписи 12 caps
    секции ≈ один экран, отступы 64/72, кнопки и чипы ≥ 44px по высоте */
@@ -1172,7 +1183,7 @@ document.addEventListener('DOMContentLoaded',function(){
       <div class="bd"><span class="role">DJ</span><b>DJ Shadow</b><span class="city">Сан-Франциско</span><q>Я не считаю, что электронная музыка должна быть бездушной.</q></div>
     </article>
   </div>
-  <div class="amb-ctrl"><button type="button" class="pp" id="ambPP" aria-label="Пауза">❚❚</button></div>
+  <div class="amb-ctrl"><button type="button" class="pp" id="ambPP" aria-label="Пауза" hidden>❚❚</button><div class="pl-dots amb-dots" id="ambDots"></div></div>
 </section>
 
 
@@ -1589,7 +1600,13 @@ document.addEventListener('DOMContentLoaded',function(){
   rail.addEventListener('keydown',function(e){if(e.key==='ArrowRight'||e.key==='ArrowLeft'){pos+=(e.key==='ArrowRight'?1:-1)*424;wrap();rail.scrollTo({left:pos,behavior:'smooth'});e.preventDefault();}});
   function setPP(){pp.textContent=paused?'▶':'❚❚';pp.setAttribute('aria-label',paused?'Продолжить':'Пауза');}
   pp.onclick=function(){paused=!paused;pos=rail.scrollLeft;setPP();};setPP();
-  var j0=rail.querySelector('.ac-join');pos=rail.scrollLeft=Math.max(0,j0?j0.offsetLeft-rail.offsetLeft-(rail.clientWidth-j0.offsetWidth)/2-orig[0].offsetWidth*0.5:(orig[0].offsetWidth+24)*2-(rail.clientWidth-orig[0].offsetWidth)/2);   // при загрузке приглашение чуть правее центра — лента подвозит его к середине
+  var j0=innerWidth<760?null:rail.querySelector('.ac-join');pos=rail.scrollLeft=Math.max(0,j0?j0.offsetLeft-rail.offsetLeft-(rail.clientWidth-j0.offsetWidth)/2-orig[0].offsetWidth*0.5:(innerWidth<760?(rail.children[0].offsetLeft-rail.offsetLeft-20):(orig[0].offsetWidth+24)*2-(rail.clientWidth-orig[0].offsetWidth)/2));   // при загрузке приглашение чуть правее центра — лента подвозит его к середине
+  // точки-листалка, как у тарифов: число = уникальные карточки, активная = та, что ближе к центру
+  (function(){var dd=document.getElementById('ambDots');if(!dd)return;var kids=[].slice.call(rail.children),N=Math.round(kids.length/2)||kids.length;
+    var maxD=innerWidth<760?7:N;   // на мобиле не больше 7 точек
+    for(var i=0;i<Math.min(N,maxD);i++){var b=document.createElement('button');b.type='button';b.setAttribute('aria-label','Карточка '+(i+1));(function(i){b.onclick=function(){var step=kids[1].offsetLeft-kids[0].offsetLeft,base=Math.floor(pos/(step*N))*step*N;pos=base+i*Math.round(N/Math.min(N,maxD))*step-(rail.clientWidth-kids[0].offsetWidth)/2;wrap();rail.scrollTo({left:pos,behavior:'smooth'});hold=1;clearTimeout(tt);tt=setTimeout(function(){pos=rail.scrollLeft;hold=0},2500);};})(i);dd.appendChild(b);}
+    function mk(){var step=kids[1].offsetLeft-kids[0].offsetLeft,c=(rail.scrollLeft+rail.clientWidth/2-kids[0].offsetLeft-kids[0].offsetWidth/2)/step,idx=((Math.round(c)%N)+N)%N,di=Math.floor(idx*Math.min(N,maxD)/N);[].forEach.call(dd.children,function(b,k){b.classList.toggle('on',k===di)});requestAnimationFrame(mk);}
+    requestAnimationFrame(mk);})();
   requestAnimationFrame(frame);
 })();
 </script>
