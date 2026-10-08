@@ -1139,7 +1139,7 @@ p,li{text-wrap:pretty}
 
   /* «покажи себя»: телефон вписывается в экран по высоте */
   .show-grid{margin-top:28px!important}
-  .dev{transform:none!important;margin-bottom:0!important;zoom:var(--dz,.78)}
+  .dev{zoom:1!important;transform:scale(var(--dz,.9))!important;transform-origin:top center!important;margin-bottom:var(--dzm,-70px)!important}
   .show-tabs{margin-top:20px!important}
   .show-tabs button{font-size:15px!important;height:44px!important;padding:0 16px!important}
   .show-txt h3{font-size:24px!important}
@@ -1856,8 +1856,8 @@ document.addEventListener('DOMContentLoaded',function(){
   // фон раздела: лайм + мягкие пятна + фиолетовые волны в форме телефона, которые растекаются по мере удаления.
   // Рисуется в маленький canvas и растягивается — размытие получается бесплатно, анимации экранов не тормозят.
   var sec=document.getElementById('show'),cv=document.getElementById('showBg');if(!cv)return;
-  var x=cv.getContext('2d'),K=6,W=0,H=0,ph={x:0,y:0,w:40,h:86},reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,run=true;
-  function size(){var r=sec.getBoundingClientRect();W=Math.max(40,Math.round(r.width/K));H=Math.max(40,Math.round(r.height/K));cv.width=W;cv.height=H;
+  var x=cv.getContext('2d'),K=innerWidth<=640?4:6,W=0,H=0,ph={x:0,y:0,w:40,h:86},reduce=matchMedia('(prefers-reduced-motion: reduce)').matches,run=true;
+  function size(){K=innerWidth<=640?4:6;var r=sec.getBoundingClientRect();W=Math.max(40,Math.round(r.width/K));H=Math.max(40,Math.round(r.height/K));cv.width=W;cv.height=H;
     var d=sec.querySelector('.dev').getBoundingClientRect();ph={x:(d.left+d.width/2-r.left)/K,y:(d.top+d.height/2-r.top)/K,w:d.width/K,h:d.height/K};}
   function blob(cx,cy,rad,c0,c1){var g=x.createRadialGradient(cx,cy,0,cx,cy,rad);g.addColorStop(0,c0);g.addColorStop(1,c1);x.fillStyle=g;x.beginPath();x.arc(cx,cy,rad,0,7);x.fill();}
   function shape(k,ph0,t){ // от скруглённого прямоугольника телефона к жидкой капле
@@ -1872,16 +1872,16 @@ document.addEventListener('DOMContentLoaded',function(){
     blob(W*(.25+.14*Math.sin(t*.32)),H*(.2+.1*Math.cos(t*.37)),W*.4,'rgba(214,255,90,.9)','rgba(214,255,90,0)');
     blob(W*(.7+.12*Math.cos(t*.26)),H*(.85+.08*Math.sin(t*.34)),W*.5,'rgba(120,230,0,.95)','rgba(120,230,0,0)');
     blob(W*(.55+.16*Math.sin(t*.22)),H*(.05+.06*Math.sin(t*.41)),W*.3,'rgba(236,255,150,.75)','rgba(236,255,150,0)');
-    blob(W*(.06+.1*Math.sin(t*.29)),H*(.55+.2*Math.cos(t*.23)),W*.3,'rgba(132,60,255,1)','rgba(132,60,255,0)');
-    blob(W*(.94+.08*Math.cos(t*.27)),H*(.3+.2*Math.sin(t*.2)),W*.28,'rgba(132,60,255,1)','rgba(132,60,255,0)');
-    blob(W*(.5+.4*Math.sin(t*.15)),H*(.95+.05*Math.cos(t*.3)),W*.22,'rgba(163,117,255,.85)','rgba(163,117,255,0)');
+    var mob=W*K<=640;blob(W*(.06+.1*Math.sin(t*.29)),H*(.55+.2*Math.cos(t*.23)),W*(mob?.14:.3),'rgba(132,60,255,1)','rgba(132,60,255,0)');
+    blob(W*(.94+.08*Math.cos(t*.27)),H*(.3+.2*Math.sin(t*.2)),W*(mob?.14:.28),'rgba(132,60,255,1)','rgba(132,60,255,0)');
+    blob(W*(.5+.4*Math.sin(t*.15)),H*(.95+.05*Math.cos(t*.3)),W*(mob?.12:.22),'rgba(163,117,255,.85)','rgba(163,117,255,0)');
     // абстрактный радар: широкий мягкий луч-веер и жидкие волны, расходящиеся из-под телефона
     var cx=ph.x,cy=ph.y,R=Math.hypot(Math.max(cx,W-cx),Math.max(cy,H-cy))*1.05,ang=reduce?-0.8:(t*0.5)%(Math.PI*2);
     // жидкие волны: круги с колышущимся краем, толстые, яркие у центра
     for(var r=0;r<3;r++){var k=((t*0.13+r/3)%1);if(reduce)k=.2+r*.25;var base=ph.h*0.42+k*R*0.95,amp=base*(0.05+k*0.12);
       x.beginPath();for(var i=0;i<=72;i++){var th=i/72*Math.PI*2,w=Math.sin(3*th+t*0.9+r*2)*0.55+Math.sin(5*th-t*0.7+r)*0.45,rr=base+amp*w;var px=cx+Math.cos(th)*rr,py=cy+Math.sin(th)*rr;i?x.lineTo(px,py):x.moveTo(px,py);}x.closePath();
-      var al=k<.1?k/.1:Math.pow(1-k,1.2);x.strokeStyle='rgba(140,75,255,'+(0.95*al)+')';x.lineWidth=(6+k*26);x.stroke();
-      x.strokeStyle='rgba(205,170,255,'+(0.6*al)+')';x.lineWidth=(2+k*8);x.stroke();}
+      var al=k<.1?k/.1:Math.pow(1-k,1.2);var LS=mob?6/K*1.15:1;x.strokeStyle='rgba(140,75,255,'+(0.95*al)+')';x.lineWidth=(6+k*26)*LS;x.stroke();
+      x.strokeStyle='rgba(205,170,255,'+(0.6*al)+')';x.lineWidth=(2+k*8)*LS;x.stroke();}
     if(reduce)run=false;}
   size();addEventListener('resize',size);new ResizeObserver(size).observe(sec);
   var io=new IntersectionObserver(function(es){var v=es[0].isIntersecting;if(v&&!run&&!reduce){run=true;requestAnimationFrame(frame);}if(!v)run=false;});io.observe(sec);
@@ -2000,7 +2000,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script>
 (function(){ // телефон в блоке «покажи себя» вписывается в высоту экрана
   // высота берётся один раз (и при смене ширины/ориентации): адресная строка iOS меняет innerHeight при скролле, телефон не должен прыгать
-  var W=0,Hs=0;function z(){var d=document.querySelector('.dev');if(!d)return;if(innerWidth===W)return;W=innerWidth;Hs=Math.max(innerHeight,document.documentElement.clientHeight);var v=Math.min(.86,Math.max(.6,(Hs*.66)/693),(W-40)/320);document.documentElement.style.setProperty('--dz',v.toFixed(3));}
+  var W=0,Hs=0;function z(){var d=document.querySelector('.dev');if(!d)return;if(innerWidth===W)return;W=innerWidth;Hs=Math.max(innerHeight,document.documentElement.clientHeight);var v=Math.min(1,Math.max(.7,(Hs*.8)/d.offsetHeight),(W-48)/d.offsetWidth);document.documentElement.style.setProperty('--dz',v.toFixed(3));document.documentElement.style.setProperty('--dzm',Math.round(d.offsetHeight*(v-1))+'px');}
   z();addEventListener('resize',z);addEventListener('orientationchange',function(){W=0;setTimeout(z,300)});
 })();
 </script>
