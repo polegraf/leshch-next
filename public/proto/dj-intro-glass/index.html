@@ -1557,7 +1557,7 @@ document.addEventListener('DOMContentLoaded',function(){
 <script id="showPar">
 (function(){
   // параллакс лаймового блока: фон, заголовок и телефон движутся с разной скоростью
-  var sec=document.getElementById('show');if(!sec||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+  var sec=document.getElementById('show');if(!sec||matchMedia('(prefers-reduced-motion: reduce)').matches||innerWidth<=640)return;
   var bg=sec.querySelector('.bgc'),h=sec.querySelector('.show-head'),ph=sec.querySelector('.show-phone'),tk=false;
   [bg,h,ph].forEach(function(e){if(e)e.style.willChange='transform'});
   function upd(){tk=false;var r=sec.getBoundingClientRect(),vh=innerHeight;if(r.bottom<0||r.top>vh)return;
@@ -1997,8 +1997,9 @@ document.addEventListener('DOMContentLoaded',function(){
 </script>
 <script>
 (function(){ // телефон в блоке «покажи себя» вписывается в высоту экрана
-  function z(){var d=document.querySelector('.dev');if(!d)return;var v=Math.min(.86,Math.max(.6,(innerHeight*.66)/693),(innerWidth-40)/320);document.documentElement.style.setProperty('--dz',v.toFixed(3));}
-  z();addEventListener('resize',z);
+  // высота берётся один раз (и при смене ширины/ориентации): адресная строка iOS меняет innerHeight при скролле, телефон не должен прыгать
+  var W=0,Hs=0;function z(){var d=document.querySelector('.dev');if(!d)return;if(innerWidth===W)return;W=innerWidth;Hs=Math.max(innerHeight,document.documentElement.clientHeight);var v=Math.min(.86,Math.max(.6,(Hs*.66)/693),(W-40)/320);document.documentElement.style.setProperty('--dz',v.toFixed(3));}
+  z();addEventListener('resize',z);addEventListener('orientationchange',function(){W=0;setTimeout(z,300)});
 })();
 </script>
 <script type="text/plain" id="obj">mtllib Asset 1dj1.mtl
