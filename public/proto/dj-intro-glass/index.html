@@ -1347,6 +1347,8 @@ p,li{text-wrap:pretty}
 @media (max-width:980px){.vt-it{align-items:start!important;align-content:start!important}.vt-it>div:not(.th){align-self:start}.vt-it strong{min-height:2.4em}}
 .c-feed .m{transition:none!important}.c-feed .m.vis{opacity:1;transform:none}
 @media (max-width:640px){.mo-k small{letter-spacing:.02em!important}}
+.hdr{transition:transform .45s cubic-bezier(.22,1,.36,1)}
+@media (max-width:640px){.hdr.hid{transform:translateY(calc(-100% - 12px))}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -1378,7 +1380,7 @@ p,li{text-wrap:pretty}
 <script>
 (function(){
   var h=document.getElementById('hdr'),b=h.querySelector('.hdr-burg');
-  function st(){h.classList.toggle('on',scrollY>40)}st();addEventListener('scroll',st,{passive:true});
+  var ly=scrollY,acc=0;function st(){var y=scrollY;h.classList.toggle('on',y>40);if(innerWidth<=640&&!h.classList.contains('open')){var d=y-ly;acc=(d>0)===(acc>0)?acc+d:d;if(y<80||acc<-24)h.classList.remove('hid');else if(acc>24)h.classList.add('hid');}else h.classList.remove('hid');ly=y;}st();addEventListener('scroll',st,{passive:true});
   b.onclick=function(){var o=h.classList.toggle('open');b.setAttribute('aria-expanded',o)};
   [].forEach.call(document.querySelectorAll('a.lock'),function(l){l.addEventListener('click',function(e){e.preventDefault();h.classList.remove('open');scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});if(history.replaceState)history.replaceState(null,'',location.pathname+location.search)})});
   [].forEach.call(h.querySelectorAll('.hdr-sheet a'),function(a){a.addEventListener('click',function(){h.classList.remove('open');b.setAttribute('aria-expanded','false')})});
