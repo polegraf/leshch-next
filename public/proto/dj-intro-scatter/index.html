@@ -1345,6 +1345,7 @@ p,li{text-wrap:pretty}
 @media (max-width:640px){.ftr-col{display:none!important}.ftr-bot{margin-top:32px!important}}
 @media (max-width:640px){.ai-facts{gap:22px!important}.ai-facts li{gap:4px!important}.ai-facts b{font-size:16px!important;line-height:1.3!important;font-weight:600!important;letter-spacing:0!important}.ai-facts span{font-size:16px!important;line-height:1.3!important;font-weight:500!important;color:#C7C3D6!important}}
 @media (max-width:980px){.vt-it{align-items:start!important;align-content:start!important}.vt-it>div:not(.th){align-self:start}.vt-it strong{min-height:2.4em}}
+.c-feed .m{transition:none!important}.c-feed .m.vis{opacity:1;transform:none}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
@@ -1525,20 +1526,20 @@ document.addEventListener('DOMContentLoaded',function(){
   // живой диалог
   var feed=document.getElementById('cFeed'),typ=document.getElementById('cType'),ct=[],cp=false,cq=[],ci=0;
   var SCRIPT=[
-    [150,'in','Привет! Собираем вторую сцену на Digital Jazz Night, твой сет идеально ложится на 23:00.'],
-    [700,'offer'],
-    [650,'type','Беру. Райдер в профиле актуальный'],
-    [1250,'out','Беру. Райдер в профиле актуальный, CDJ-3000 × 2.'],
-    [450,'accept'],
-    [550,'typing'],
-    [750,'in','Отлично! Договор и тайминг пришлю сегодня 🙌'],
+    [60,'in','Привет! Собираем вторую сцену на Digital Jazz Night, твой сет идеально ложится на 23:00.'],
+    [520,'offer'],
+    [480,'type','Беру. Райдер в профиле актуальный'],
+    [980,'out','Беру. Райдер в профиле актуальный, CDJ-3000 × 2.'],
+    [380,'accept'],
+    [420,'typing'],
+    [620,'in','Отлично! Договор и тайминг пришлю сегодня 🙌'],
   ];
-  function add(h){var d=document.createElement('div');d.innerHTML=h;var n=d.firstChild;feed.appendChild(n);requestAnimationFrame(function(){n.classList.add('vis')});feed.scrollTo({top:feed.scrollHeight,behavior:'smooth'});return n;}
-  function runChat(){ct.forEach(clearTimeout);ct=[];feed.innerHTML='';feed.innerHTML='<div class="c-day">Вчера</div><div class="m out vis">Привет! Видел афишу Digital Jazz Night. Ищете ещё артистов?</div><div class="m in vis">Да, как раз собираем лайн-ап. Посмотрю профиль и вернусь 👍</div><div class="m out vis">Отлично, свободен 24 и 25 октября.</div><div class="c-day">Сегодня</div>';typ.textContent='Сообщение…';typ.classList.remove('act');ci=0;cq=SCRIPT.slice();playNext();}
+  function add(h){var d=document.createElement('div');d.innerHTML=h;var n=d.firstChild;var kids=[].slice.call(feed.children),tops=kids.map(function(e){return e.getBoundingClientRect().top});feed.appendChild(n);n.classList.add('vis');var E='cubic-bezier(.22,1,.36,1)';kids.forEach(function(e,i){var dy=tops[i]-e.getBoundingClientRect().top;if(dy&&e.animate)e.animate([{transform:'translateY('+dy+'px)'},{transform:'none'}],{duration:620,easing:E});});if(n.animate)n.animate([{opacity:0,transform:'translateY(18px) scale(.97)'},{opacity:1,transform:'none'}],{duration:620,easing:E,fill:'backwards'});return n;}
+  function runChat(){ct.forEach(clearTimeout);ct=[];feed.innerHTML='';feed.innerHTML='<div class="c-day">Пн, 13 окт</div><div class="m in vis">Добрый день! Мы организаторы Powerhouse Concert. Нравится ваш последний релиз.</div><div class="m out vis">Спасибо! Рад знакомству 🙌</div><div class="c-day">Вчера</div><div class="m out vis">Привет! Видел афишу Digital Jazz Night. Ищете ещё артистов?</div><div class="m in vis">Да, как раз собираем лайн-ап. Посмотрю профиль и вернусь 👍</div><div class="m out vis">Отлично, свободен 24 и 25 октября.</div><div class="c-day">Сегодня</div>';typ.textContent='Сообщение…';typ.classList.remove('act');ci=0;cq=SCRIPT.slice();playNext();}
   function playNext(){if(ci>=cq.length)return;var s=cq[ci];ct.push(setTimeout(function(){if(cp){ct.push(setTimeout(playNext,200));return;}ci++;doStep(s);playNext();},s[0]));}
   var typingEl=null,offerEl=null;
   function doStep(s){
-    if(typingEl&&s[1]!=='typing'){typingEl.remove();typingEl=null;}
+    if(typingEl&&s[1]!=='typing'){typingEl.style.display='none';typingEl.remove();typingEl=null;}
     if(s[1]==='in')add('<div class="m in">'+s[2]+'</div>');
     if(s[1]==='out'){typ.textContent='Сообщение…';typ.classList.remove('act');add('<div class="m out">'+s[2]+'</div>');}
     if(s[1]==='typing')typingEl=add('<div class="m in tp"><i></i><i></i><i></i></div>');
