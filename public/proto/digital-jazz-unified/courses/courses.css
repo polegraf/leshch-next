@@ -1,0 +1,87 @@
+/* Курсы — надстройка поверх ui.css/tokens.css/dj-kit.css. Новых токенов не вводим. */
+.screen{display:none}
+.screen.is-on{display:block}
+
+/* ---- каталог: фильтры ---- */
+.c-level-row{display:flex;gap:8px;overflow-x:auto;margin:-2px -16px 0;padding:2px 16px 2px}
+.c-level-row::-webkit-scrollbar{display:none}
+.c-level-row .chip{flex:0 0 auto;white-space:nowrap}
+
+/* ---- карточка курса: обложка-градиент с крупным инициалом темы ---- */
+.t-card-cover-grad .c-mono{font-size:40px;font-weight:600;color:rgba(6,4,11,.55);letter-spacing:-.02em}
+/* подписи фактов курса ("уроков", "учеников") длиннее, чем у турнирных карточек — не влезают в фикс. 52px колонку */
+[data-course-id] .t-card-facts dl{grid-template-columns:max-content minmax(0,1fr)}
+
+/* ---- страница курса: шапка ---- */
+.c-hero-cover{aspect-ratio:16/9;border-radius:var(--dj-radius);overflow:hidden;position:relative;display:flex;align-items:flex-end;padding:18px}
+.c-hero-cover .aud-badge{position:relative}
+.c-price-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-top:4px}
+.c-price{font-size:32px;font-weight:600;color:var(--dj-lime);font-variant-numeric:tabular-nums;white-space:nowrap;flex-shrink:0}
+.c-price-row>.secondary{min-width:0}
+.c-price.is-free{color:var(--dj-text-body)}
+.c-instructor{display:flex;align-items:center;gap:12px}
+.c-instructor .portrait{width:48px;height:48px;flex:0 0 48px;font-size:18px}
+
+/* ---- "чему научишься" ---- */
+.c-learn{display:grid;gap:10px;margin:0;padding:0;list-style:none}
+.c-learn li{display:flex;gap:10px;align-items:flex-start;font-size:17px;line-height:1.3;color:var(--dj-text-body)}
+.c-learn li::before{content:'';flex:0 0 18px;width:18px;height:18px;margin-top:2px;border-radius:50%;background:var(--dj-lime-fill);border:1px solid var(--dj-lime-line);background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C0FA35' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:center;background-size:11px}
+
+/* ---- модуль / список уроков ---- */
+.c-module{padding:14px 16px}
+.c-module+.c-module{margin-top:12px}
+.c-module-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px;margin-bottom:10px}
+.c-module-head h3{font-size:19px}
+.c-module-head .caption{white-space:nowrap}
+.c-lesson{display:flex;align-items:center;gap:12px;padding:10px 0;min-height:44px}
+.c-lesson+.c-lesson{border-top:1px solid rgba(255,255,255,.07)}
+.c-lesson-icon{flex:0 0 32px;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.06);color:var(--dj-text-muted)}
+.c-lesson-icon svg{width:16px;height:16px}
+.c-lesson.is-done .c-lesson-icon{background:var(--dj-lime-fill);color:var(--dj-lime)}
+.c-lesson.is-current .c-lesson-icon{background:var(--dj-lime);color:var(--dj-lime-ink)}
+.c-lesson-body{flex:1;min-width:0;display:grid;gap:2px}
+.c-lesson-title{font-size:17px;color:var(--dj-text-body);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.c-lesson.is-locked .c-lesson-title{color:var(--dj-text-faint)}
+.c-lesson-meta{font-size:14px;color:var(--dj-text-faint)}
+.c-lesson-trail{flex:0 0 auto;color:var(--dj-text-quiet)}
+.c-lesson[role="button"]{cursor:pointer;width:100%;text-align:left;background:none;border:0;font-family:inherit}
+
+/* ---- прогресс ---- */
+.c-progress{height:6px;border-radius:3px;background:var(--dj-line);overflow:hidden}
+.c-progress>i{display:block;height:100%;border-radius:3px;background:var(--dj-lime)}
+.c-progress-row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;gap:10px}
+.c-progress-row b{font-size:20px;color:var(--dj-lime);font-variant-numeric:tabular-nums}
+
+/* ---- проигрыватель урока ---- */
+.c-player{aspect-ratio:16/9;border-radius:var(--dj-radius);background:linear-gradient(155deg,#1c1530,#0b0812 65%);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.c-player-play{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.12);backdrop-filter:blur(8px);display:grid;place-items:center;border:1px solid var(--dj-line);color:#fff}
+.c-player-play svg{width:24px;height:24px}
+.c-player-time{position:absolute;right:14px;bottom:12px;font-size:13px;color:var(--dj-text-2);background:rgba(6,4,11,.55);padding:4px 9px;border-radius:999px}
+
+/* ---- роль-переключатель вверху (кабинет автора/ученика ↔ каталог) ---- */
+.c-role-link{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:13px 16px;margin-bottom:18px}
+.c-role-link .caption{margin:0}
+
+/* ---- кабинет автора: статы ---- */
+.c-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.c-stat{padding:14px 12px;text-align:left}
+.c-stat b{display:block;font-size:24px;color:var(--dj-lime);font-variant-numeric:tabular-nums;line-height:1.1}
+.c-stat span{font-size:13px;color:var(--dj-text-faint);letter-spacing:.03em}
+
+/* ---- ростер учеников ---- */
+.c-student-row{display:flex;align-items:center;gap:12px;padding:12px 0}
+.c-student-row+.c-student-row{border-top:1px solid var(--dj-line)}
+.c-student-row .portrait{width:44px;height:44px;flex:0 0 44px;font-size:16px}
+.c-student-info{flex:1;min-width:0;display:grid;gap:3px}
+.c-student-progress{display:flex;align-items:center;gap:8px;min-width:0}
+.c-student-progress .c-progress{flex:1;min-width:40px}
+.c-student-progress span{font-size:13px;color:var(--dj-text-faint);flex:0 0 auto}
+
+/* ---- конструктор курса: перетаскивание модулей (как в турах) ---- */
+.c-editor-module{display:flex;align-items:center;gap:10px;padding:14px;touch-action:none}
+.c-editor-module.dragging{opacity:.55}
+.c-editor-module .grow{flex:1;min-width:0}
+.c-editor-module h3{font-size:19px}
+.c-editor-module .caption{margin-top:2px}
+
+@media(max-width:360px){.c-stat-row{gap:8px}.c-stat{padding:12px 8px}.c-stat b{font-size:20px}}
