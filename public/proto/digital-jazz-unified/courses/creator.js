@@ -37,15 +37,23 @@
   }
 
   /* ================= главный экран кабинета ================= */
+  /* Цифры строками: подпись слева, значение справа целиком (как «Гонорары … 1 190 000 ₽» в турах) —
+     сумма в рублях никогда не переносится посередине. money — лаймовым. */
+  function kpi(rows) {
+    return '<div class="card c-kpi">' + rows.map(function (r) {
+      return '<div class="c-kpi-row"><span>' + r[0] + '</span><b' + (r[2] ? ' class="is-money"' : '') + '>' + r[1] + '</b></div>';
+    }).join('') + '</div>';
+  }
   function renderStats() {
     var mine = myCourses();
     var students = mine.reduce(function (n, c) { return n + c.students; }, 0);
     var month = mine.reduce(function (n, c) { return n + c.revenueMonth; }, 0);
     var total = mine.reduce(function (n, c) { return n + c.revenueTotal; }, 0);
-    $('#authorStats').innerHTML =
-      '<div class="card c-stat"><b>' + students + '</b><span>УЧЕНИКОВ</span></div>'
-      + '<div class="card c-stat"><b>' + DJC.fmtRub(month) + '</b><span>ЗА МЕСЯЦ</span></div>'
-      + '<div class="card c-stat"><b>' + DJC.fmtRub(total) + '</b><span>ВСЕГО</span></div>';
+    $('#authorStats').innerHTML = kpi([
+      ['Учеников', students],
+      ['За месяц', DJC.fmtRub(month), true],
+      ['Заработано', DJC.fmtRub(total), true],
+    ]);
   }
   function cardFor(c) {
     var stage = DJC.stageFor(c);
@@ -103,7 +111,7 @@
       + '<div class="stack" style="margin-top:18px">'
         + '<div><p class="caption">' + esc(c.topic) + ' · ' + esc(c.level) + '</p><h1 style="margin-top:4px">' + esc(c.title) + '</h1></div>'
         + (draft ? '<p class="secondary">Черновик виден только вам. Пройдите шаги 1–4 и опубликуйте — курс появится в каталоге.</p>'
-                 : '<div class="c-stat-row"><div class="card c-stat"><b>' + c.students + '</b><span>УЧЕНИКОВ</span></div><div class="card c-stat"><b>' + c.completion + '%</b><span>ДОХОДИМОСТЬ</span></div><div class="card c-stat"><b>' + DJC.fmtRub(c.revenueTotal) + '</b><span>ЗАРАБОТАНО</span></div></div>')
+                 : kpi([['Учеников', c.students], ['Доходят до конца', c.completion + '%'], ['Заработано', DJC.fmtRub(c.revenueTotal), true]]))
         + (draft ? '' : '<div class="menu-links">'
             + '<a href="#" data-open="review"><div><h3 style="font-size:19px">Проверка заданий</h3><p class="caption" style="margin-top:3px">' + (pend ? '<span class="c-tag">' + pend + ' ' + DJC.plural(pend, ['ответ ждёт', 'ответа ждут', 'ответов ждут']) + ' проверки</span>' : 'Новых ответов нет') + '</p></div><span class="chevron">→</span></a>'
             + '<a href="#" data-open="students"><div><h3 style="font-size:19px">Ученики</h3><p class="caption" style="margin-top:3px">Кто записан и как идёт</p></div><span class="chevron">→</span></a>'

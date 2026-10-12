@@ -65,7 +65,7 @@
 /* ---- кабинет автора: статы ---- */
 .c-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
 .c-stat{padding:14px 12px;text-align:left;min-width:0}
-.c-stat b{display:block;font-size:24px;color:var(--dj-lime);font-variant-numeric:tabular-nums;line-height:1.1;overflow-wrap:anywhere}
+.c-stat b{display:block;font-size:24px;color:var(--dj-lime);font-variant-numeric:tabular-nums;line-height:1.1}
 .c-stat span{font-size:13px;color:var(--dj-text-faint);letter-spacing:.03em}
 
 /* ---- ростер учеников ---- */
@@ -169,3 +169,11 @@
   .c-cert,.c-cert *{visibility:visible}
   .c-cert{position:absolute;left:0;top:0;width:100%;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 }
+
+/* ---- цифры кабинета автора: строки «подпись — значение», значение не переносится (как финансы в турах) ---- */
+.c-kpi{padding:4px 18px}
+.c-kpi-row{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:13px 0}
+.c-kpi-row+.c-kpi-row{border-top:1px solid var(--dj-line)}
+.c-kpi-row span{font-size:17px;color:var(--dj-text-muted);min-width:0}
+.c-kpi-row b{font-size:24px;font-weight:600;line-height:1.1;color:var(--dj-text-headline);font-variant-numeric:tabular-nums;white-space:nowrap}
+.c-kpi-row b.is-money{color:var(--dj-lime)}
