@@ -160,6 +160,8 @@ function wipe(){['dj-account','dj-afisha-orders','dj-afisha-reminders'].forEach(
 function seed(k){const p=PERSONAS.find(x=>x[0]===k);wipe();S={signed:true,via:'yandex',email:'dmitry@yandex.ru',profiles:JSON.parse(JSON.stringify(p[3])),active:p[4]};save();
  if(k==='viewer'||k==='trio'){try{localStorage.setItem('dj-afisha-orders',JSON.stringify([{id:'demo0yeti0000',ev:'yeti',name:'Yeti Disco',cover:'../dj-event-builder/covers/yeti-djs.jpg',dateText:'26 сентября, сб',iso:new Date(2026,8,26).toISOString(),time:'23:00',venue:'16 Тонн',reg:false,items:[{n:'Стандарт',q:2,price:1800}],count:2,disc:0,code:'',total:3600}]));}catch{}}}
 const hint=t=>{try{sessionStorage.setItem('dja-hint',t);}catch{}};
+/* прямая ссылка на демо-аккаунт: profile/index.html?as=tactics — войти как «Артист · DJ Tactics» и открыть его кабинет */
+(()=>{const k=new URLSearchParams(location.search).get('as');if(!k||!PERSONAS.some(x=>x[0]===k))return;seed(k);hint('Ты вошёл как '+active().name);const u=new URL(location.href);u.searchParams.delete('as');location.replace(u.pathname+u.search+u.hash);})();
 function demoBody(){return `<p class="dja-cap">Демо · вход и профили</p><h2 id="dja-t">Показать прототип</h2>
  <button type="button" class="primary dja-btn" data-dja-demo="fresh">Начать с нуля</button><p class="dja-note">Сотрёт вход, билеты и напоминания в этом браузере и снова покажет загрузчик.</p>
  <p class="dja-gt">Сценарии показа</p><ul class="dja-list">${SCEN.map(([k,t,d])=>`<li><button type="button" class="dja-prof" data-dja-demo="${k}"><span class="dja-ava">${SCEN.findIndex(x=>x[0]===k)+1}</span><span class="dja-prof-t"><b>${t}</b><small class="wrap">${d}</small></span></button></li>`).join('')}</ul>
