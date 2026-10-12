@@ -1,4 +1,5 @@
 (()=>{
+if(window.DJ_REAL_ACTIVE)return; /* реальный профиль: турниров в его данных нет — демо не подмешиваем */
 const name=new URLSearchParams(location.search).get('name')||(location.pathname.includes('/public-profile/')?'Судья Вектор':'Участник A');
 const isJudge=['Судья Пульс','Судья Контур','Судья Искра','Судья Вектор','Судья Спектр'].includes(name);
 const all=[{id:0,title:'Scratch Duel',category:'Диджеинг',judges:['Судья Вектор','Судья Спектр'],status:'Приём заявок',tone:'open',url:'event.html?id=0',roster:2},{id:1,title:'Beat Session',category:'Аудиопродакшн',judges:['Судья Пульс','Судья Контур'],status:'Приём работ',tone:'pending',url:'event.html?id=1',roster:6},{id:2,title:'Новый голос',category:'Вокал',judges:['Судья Искра','Судья Контур'],status:'Приём заявок',tone:'open',url:'voice.html',roster:8},{id:4,title:'Beat Video',category:'Аудиопродакшн',judges:['Судья Пульс','Судья Контур'],status:'Завершён',tone:'ready',url:'battle.html',roster:2}];

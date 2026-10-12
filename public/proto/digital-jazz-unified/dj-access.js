@@ -92,7 +92,7 @@ function createProfile(f){const t=f.type||'artist',p={id:uid(),type:t,name:f.nam
 /* ---------- отметка «действуешь от имени» в хидере ---------- */
 const PORTRAIT={'Нокс':'a','Вольт':'b','Лофи':'c','Грув':'d','Рифф':'e','Эхо':'f','Хэт':'g','Сэмпл':'h'};
 const TLABEL={personal:'зритель',artist:'артист',org:'промоутер',company:'компания',venue:'площадка'};
-const avaSrc=p=>p.type==='personal'?url('assets/nav.jpg'):PORTRAIT[p.name]?url('assets/portraits/participant-'+PORTRAIT[p.name]+'.png'):null;
+const avaSrc=p=>p.avatar?p.avatar:p.type==='personal'?url('assets/nav.jpg'):PORTRAIT[p.name]?url('assets/portraits/participant-'+PORTRAIT[p.name]+'.png'):null;
 const avaHTML=(p,cls)=>{const s=avaSrc(p);return s?`<img class="${cls}" src="${s}" alt="">`:`<span class="${cls} dja-ini">${esc((p.name||'?')[0])}</span>`;};
 function chip(){document.querySelectorAll('.dja-as').forEach(n=>n.remove());const a=active();if(!S.signed||!a||a.type==='personal')return;
  /* от чьего имени — видно на аватарке в нижней навигации: портрет или буква активного профиля */
@@ -148,6 +148,7 @@ const PERSONAS=[['trio','Дмитрий · три профиля','Зрител�
  ['viewer','Зритель · Дмитрий','Личный профиль, один купленный билет',[P0],'me'],
  ['org','Организатор · Jazz Promo','5 событий в мониторе, дела, продажи',[P0,{id:'org',type:'org',name:'Jazz Promo',city:'Москва'}],'org'],
  ['artist','Артист · Нокс','Сеты, оплата, турнир Digital Jazz Cup',[P0,{id:'nox',type:'artist',name:'Нокс',roles:['Диджей'],genres:['Электроника'],city:'Москва'}],'nox'],
+ ['tactics','Артист · DJ Tactics','Реальный профиль из Digital Jazz: райдер, статистика, дискография',[P0,{id:'tactics',type:'artist',name:'DJ Tactics',real:'djtactics',avatar:'https://storage.yandexcloud.net/digitaljazz-avatars/40d11963-428a-4d05-847e-c256796422c1/avatar.jpg',roles:['Диджей','Битмейкинг'],genres:['Хип-Хоп/Рэп','Дрилл','Фанк'],city:'Москва'}],'tactics'],
  ['riff','Артист · Рифф','Приглашение с гонораром — принять или отказаться',[P0,{id:'riff',type:'artist',name:'Рифф',roles:['Вокалист'],genres:['Рок'],city:'Москва'}],'riff'],
  ['venue','Площадка · Цех 01','Бронь на 24 октября, договор на подписи',[P0,{id:'ceh',type:'venue',name:'Цех 01',cap:350,city:'Москва'}],'ceh'],
  ['vendor','Подрядчик · Звуковой склад','Запросы от событий и договоры',[P0,{id:'snd',type:'company',name:'Звуковой склад',biz:'Прокат',city:'Москва'}],'snd']];
