@@ -51,14 +51,30 @@ window.DJC = (function () {
     video: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5.5" width="14" height="13" rx="2.5"/><path d="M17 10.2l4-2.4v8.4l-4-2.4"/></svg>',
     task: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 19.5l1-4L15 6l3 3-9.5 9.5-4 1Z"/><path d="M13 8l3 3"/></svg>',
     doc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h8l4 4V20a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M14 3.5V8h4"/></svg>',
+    test: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.8a2.4 2.4 0 1 1 3.4 2.2c-.9.5-1 1-1 2"/><circle cx="12" cy="16.9" r=".35" fill="currentColor" stroke="none"/></svg>',
   };
   function lessonIcon(kind) { return ICONS[kind] || ICONS.video; }
+
+  var KIND_LABEL = { video: 'Видео', doc: 'Текст', task: 'Задание', test: 'Тест' };
+  function kindLabel(kind) { return KIND_LABEL[kind] || KIND_LABEL.video; }
+
+  function accessLabel(c) {
+    var a = c.access || { durationType: 'unlimited' };
+    return a.durationType === 'timed' ? ('доступ ' + a.days + ' ' + plural(a.days, ['день', 'дня', 'дней'])) : 'доступ бессрочно';
+  }
+  function priceLabel(c) {
+    return (c.access && c.access.free) ? 'Бесплатно' : fmtRub(c.price);
+  }
 
   var ICON_PLAY = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5.5v13l11-6.5z"/></svg>';
   var ICON_LOCK = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="10.5" width="14" height="9" rx="2.5"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>';
   var ICON_CHECK = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>';
 
-  return { plural: plural, fmtRub: fmtRub, initials: initials, glyph: glyph, stageFor: stageFor, lessonIcon: lessonIcon, ICON_PLAY: ICON_PLAY, ICON_LOCK: ICON_LOCK, ICON_CHECK: ICON_CHECK };
+  return {
+    plural: plural, fmtRub: fmtRub, initials: initials, glyph: glyph, stageFor: stageFor,
+    lessonIcon: lessonIcon, kindLabel: kindLabel, accessLabel: accessLabel, priceLabel: priceLabel,
+    ICON_PLAY: ICON_PLAY, ICON_LOCK: ICON_LOCK, ICON_CHECK: ICON_CHECK,
+  };
 })();
 
 /* Открытие/закрытие шапочного и сервисного меню — свой минимальный вариант shell.js:

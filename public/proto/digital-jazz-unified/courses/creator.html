@@ -55,6 +55,8 @@
 
   <div class="screen" id="t-course"></div>
   <div class="screen" id="t-editor"></div>
+  <div class="screen" id="t-module"></div>
+  <div class="screen" id="t-lesson-edit"></div>
   <div class="screen" id="t-students"></div>
   <div class="screen" id="t-earnings"></div>
 
@@ -144,6 +146,7 @@
           + (c.status!=='draft' ? '<a href="#" data-open="earnings"><div><h3 style="font-size:19px">Доход</h3><p class="caption" style="margin-top:3px">'+DJC.fmtRub(c.revenueMonth)+' за этот месяц</p></div><span class="chevron">→</span></a>' : '')
         + '</div>'
         + '<p class="secondary">'+c.summary+'</p>'
+        + renderAccessCard(c)
         + '<button class="'+(c.status==='draft'?'primary':'secondary-button')+' full" id="publishBtn">'+(c.status==='draft'?'Опубликовать курс':'Снять с публикации')+'</button>'
       + '</div>';
 
@@ -161,39 +164,70 @@
       say(c.status==='draft' ? 'Курс снят с публикации' : 'Курс опубликован — виден в каталоге');
       renderMine(); renderStats(); renderCourse(c);
     });
+    wireAccessCard(c);
   }
 
-  function renderEditor(c){
-    $('#t-editor').innerHTML =
-      '<div class="row" style="margin-bottom:16px"><button class="icon" data-go="t-course" aria-label="Назад">←</button></div>'
-      + '<div class="heading"><h1 style="font-size:26px">Программа курса</h1></div>'
-      + '<p class="caption" style="margin-bottom:14px">Перетащите модуль за ручку, чтобы изменить порядок</p>'
-      + '<div class="stack" id="modulesList">'
-      + c.modules.map(function(m, i){
-          return '<div class="dj-card card c-editor-module" data-module="'+i+'">'
-            + '<span class="dj-handle" data-drag-handle aria-label="Перетащить"><svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>'
-            + '<span class="grow"><h3>'+m.name+'</h3><p class="caption">'+m.lessons.length+' '+DJC.plural(m.lessons.length,['урок','урока','уроков'])+'</p></span>'
-            + '<span class="chevron">⋯</span>'
-            + '</div>';
-        }).join('')
+  /* ---- Условия доступа: бесплатно/платно + цена, бессрочно/на срок + дни ---- */
+  function renderAccessCard(c){
+    if(!c.access) c.access = { free:false, durationType:'unlimited', days:30 };
+    var a = c.access;
+    return '<div class="card" id="accessCard">'
+      + '<div class="heading" style="margin-bottom:14px"><h3 style="font-size:19px">Условия доступа</h3></div>'
+      + '<div class="row" style="justify-content:space-between">'
+        + '<span>Бесплатный курс</span>'
+        + '<span class="switch"><input type="checkbox" id="accFree"'+(a.free?' checked':'')+'><i></i></span>'
       + '</div>'
-      + '<button class="text-button" id="addModuleBtn" style="margin-top:8px">+ Добавить модуль</button>';
+      + '<div class="field" id="accPriceField" style="margin-top:14px'+(a.free?';display:none':'')+'">'
+        + '<label for="accPrice">Цена</label>'
+        + '<input class="input" id="accPrice" type="number" inputmode="numeric" min="0" step="100" value="'+c.price+'">'
+      + '</div>'
+      + '<div class="row" style="justify-content:space-between;margin-top:14px">'
+        + '<span>Ограничить доступ по времени</span>'
+        + '<span class="switch"><input type="checkbox" id="accTimed"'+(a.durationType==='timed'?' checked':'')+'><i></i></span>'
+      + '</div>'
+      + '<div class="field" id="accDaysField" style="margin-top:14px'+(a.durationType==='timed'?'':';display:none')+'">'
+        + '<label for="accDays">Доступ открыт, дней с момента записи</label>'
+        + '<input class="input" id="accDays" type="number" min="1" step="1" value="'+(a.days||30)+'">'
+      + '</div>'
+    + '</div>';
+  }
+  function wireAccessCard(c){
+    var free = $('#accFree'), timed = $('#accTimed'), price = $('#accPrice'), days = $('#accDays');
+    var priceField = $('#accPriceField'), daysField = $('#accDaysField');
+    if(!free) return;
+    free.addEventListener('change', function(){
+      c.access.free = free.checked;
+      priceField.style.display = free.checked ? 'none' : '';
+      say(free.checked ? 'Курс сделан бесплатным' : 'Курс платный, цена из поля ниже');
+    });
+    timed.addEventListener('change', function(){
+      c.access.durationType = timed.checked ? 'timed' : 'unlimited';
+      daysField.style.display = timed.checked ? '' : 'none';
+      say(timed.checked ? 'Доступ ограничен по сроку' : 'Доступ сделан бессрочным');
+    });
+    price.addEventListener('change', function(){
+      c.price = Math.max(0, parseInt(price.value,10) || 0);
+      say('Цена сохранена: '+DJC.fmtRub(c.price));
+    });
+    days.addEventListener('change', function(){
+      c.access.days = Math.max(1, parseInt(days.value,10) || 30);
+      say('Срок доступа сохранён: '+c.access.days+' дн.');
+    });
+  }
 
-    $('#addModuleBtn').addEventListener('click', function(){ say('Добавление модуля — демо'); });
-    $$('#modulesList .c-editor-module .chevron').forEach(function(ch){ ch.addEventListener('click', function(){ say('Редактирование уроков модуля — демо'); }); });
-
-    var list = $('#modulesList');
+  /* Перетаскивание карточек за ручку [data-drag-handle] внутри list — общий код для модулей и уроков. */
+  function makeSortable(list, itemSelector, onReorder){
     var dragging=null, startY=0, startTop=0;
-    function rects(){ return $$(':scope > *', list).map(function(el){ var r=el.getBoundingClientRect(); return {el:el, top:r.top, bottom:r.bottom}; }); }
-    list.addEventListener('pointerdown', function(e){
+    function rects(){ return $$(':scope > '+itemSelector, list).map(function(el){ var r=el.getBoundingClientRect(); return {el:el, top:r.top, bottom:r.bottom}; }); }
+    function onDown(e){
       var handle = e.target.closest('[data-drag-handle]'); if(!handle) return;
-      var card = handle.closest('.dj-card'); if(!card || card.parentNode!==list) return;
+      var card = handle.closest(itemSelector); if(!card || card.parentNode!==list) return;
       e.preventDefault();
       dragging=card; startY=e.clientY; startTop=card.getBoundingClientRect().top;
       card.classList.add('dragging'); card.style.position='relative'; card.style.zIndex=50;
       handle.classList.add('is-dragging'); handle.setPointerCapture(e.pointerId);
       document.addEventListener('pointermove', onMove); document.addEventListener('pointerup', onUp);
-    });
+    }
     function onMove(e){
       if(!dragging) return;
       var dy = e.clientY - startY;
@@ -218,11 +252,198 @@
       dragging=null;
       document.removeEventListener('pointermove', onMove); document.removeEventListener('pointerup', onUp);
       card.style.position='';
-      var order = $$('#modulesList .c-editor-module').map(function(el){ return parseInt(el.dataset.module,10); });
-      c.modules = order.map(function(i){ return c.modules[i]; });
-      $$('#modulesList .c-editor-module').forEach(function(el,i){ el.dataset.module = i; });
-      say('Порядок модулей обновлён');
+      var order = $$(':scope > '+itemSelector, list).map(function(el){ return parseInt(el.dataset.idx,10); });
+      $$(':scope > '+itemSelector, list).forEach(function(el,i){ el.dataset.idx = i; });
+      onReorder(order);
     }
+    list.addEventListener('pointerdown', onDown);
+  }
+
+  function renderEditor(c){
+    $('#t-editor').innerHTML =
+      '<div class="row" style="margin-bottom:16px"><button class="icon" data-go="t-course" aria-label="Назад">←</button></div>'
+      + '<div class="heading"><h1 style="font-size:26px">Программа курса</h1></div>'
+      + '<p class="caption" style="margin-bottom:14px">Нажмите на модуль, чтобы открыть уроки · перетащите за ручку, чтобы изменить порядок</p>'
+      + '<div class="stack" id="modulesList">'
+      + c.modules.map(function(m, i){
+          return '<div class="dj-card card c-editor-module" data-idx="'+i+'">'
+            + '<span class="dj-handle" data-drag-handle aria-label="Перетащить"><svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>'
+            + '<span class="grow" data-open-module="'+i+'" role="button" tabindex="0"><h3>'+m.name+'</h3><p class="caption">'+m.lessons.length+' '+DJC.plural(m.lessons.length,['урок','урока','уроков'])+'</p></span>'
+            + '<span class="chevron" data-open-module="'+i+'" role="button" tabindex="0">→</span>'
+            + '</div>';
+        }).join('')
+      + '</div>'
+      + '<button class="text-button" id="addModuleBtn" style="margin-top:8px">+ Добавить модуль</button>';
+
+    $$('#modulesList [data-open-module]').forEach(function(el){
+      el.addEventListener('click', function(){ renderModule(c, parseInt(el.dataset.openModule,10)); go('t-module'); });
+    });
+    $('#addModuleBtn').addEventListener('click', function(){
+      c.modules.push({ name: 'Новый модуль', lessons: [] });
+      renderEditor(c);
+      renderModule(c, c.modules.length-1); go('t-module');
+      say('Модуль добавлен — переименуйте и добавьте уроки');
+    });
+
+    makeSortable($('#modulesList'), '.c-editor-module', function(order){
+      c.modules = order.map(function(i){ return c.modules[i]; });
+      say('Порядок модулей обновлён');
+    });
+  }
+
+  /* ---- экран модуля: название, список уроков, добавление/перетаскивание уроков ---- */
+  function renderModule(c, mi){
+    var m = c.modules[mi];
+    $('#t-module').innerHTML =
+      '<div class="row" style="margin-bottom:16px"><button class="icon" id="moduleBack" aria-label="Назад">←</button></div>'
+      + '<div class="field" style="margin-bottom:18px"><label for="moduleName">Название модуля</label><input class="input" id="moduleName" type="text" value="'+m.name.replace(/"/g,'&quot;')+'" style="font-size:19px;font-weight:600"></div>'
+      + '<div class="stack" id="lessonsList">'
+      + (m.lessons.length ? m.lessons.map(function(l, li){
+          return '<div class="dj-card card c-editor-module" data-idx="'+li+'">'
+            + '<span class="dj-handle" data-drag-handle aria-label="Перетащить"><svg width="27" height="27" viewBox="0 0 24 24" fill="currentColor"><circle cx="9" cy="6" r="1.6"/><circle cx="15" cy="6" r="1.6"/><circle cx="9" cy="12" r="1.6"/><circle cx="15" cy="12" r="1.6"/><circle cx="9" cy="18" r="1.6"/><circle cx="15" cy="18" r="1.6"/></svg></span>'
+            + '<span class="c-lesson-icon" aria-hidden="true">'+DJC.lessonIcon(l.kind)+'</span>'
+            + '<span class="grow" data-open-lesson="'+li+'" role="button" tabindex="0"><h3 style="font-size:17px">'+l.title+'</h3><p class="caption">'+DJC.kindLabel(l.kind)+' · '+l.min+' мин</p></span>'
+            + '<span class="chevron" data-open-lesson="'+li+'" role="button" tabindex="0">→</span>'
+            + '</div>';
+        }).join('') : '<div class="empty"><p class="secondary">В модуле пока нет уроков</p></div>')
+      + '</div>'
+      + '<button class="text-button" id="addLessonBtn" style="margin-top:8px">+ Добавить урок</button>'
+      + '<button class="secondary-button full" id="deleteModuleBtn" style="margin-top:22px">Удалить модуль</button>';
+
+    $('#moduleBack').addEventListener('click', function(){ renderEditor(c); go('t-editor'); });
+    $('#moduleName').addEventListener('change', function(e){ m.name = e.target.value || 'Модуль'; say('Название модуля сохранено'); });
+    $$('#lessonsList [data-open-lesson]').forEach(function(el){
+      el.addEventListener('click', function(){ renderLessonEdit(c, mi, parseInt(el.dataset.openLesson,10)); go('t-lesson-edit'); });
+    });
+    $('#addLessonBtn').addEventListener('click', function(){ renderLessonEdit(c, mi, null); go('t-lesson-edit'); });
+    $('#deleteModuleBtn').addEventListener('click', function(){
+      c.modules.splice(mi,1);
+      say('Модуль удалён');
+      renderEditor(c); go('t-editor');
+    });
+
+    if(m.lessons.length){
+      makeSortable($('#lessonsList'), '.c-editor-module', function(order){
+        m.lessons = order.map(function(i){ return m.lessons[i]; });
+        say('Порядок уроков обновлён');
+      });
+    }
+  }
+
+  /* ---- экран урока: тип, длительность, контент по типу (видео/текст/задание/тест) ---- */
+  function blankLesson(){ return { title:'', kind:'video', min:5, video:{ note:'' } }; }
+
+  function lessonContentFields(l){
+    if(l.kind==='doc'){
+      var d = l.doc || {};
+      return '<div class="field"><label for="lfDocText">Текст урока</label><textarea id="lfDocText" rows="8" placeholder="Материал, который читает ученик">'+(d.text||'')+'</textarea></div>';
+    }
+    if(l.kind==='task'){
+      var t = l.task || {};
+      return '<div class="field"><label for="lfTaskText">Описание задания</label><textarea id="lfTaskText" rows="5" placeholder="Что нужно сделать">'+(t.task||'')+'</textarea></div>'
+        + '<div class="field"><label for="lfTaskDeliverable">Что прислать на проверку</label><input class="input" id="lfTaskDeliverable" type="text" value="'+(t.deliverable||'').replace(/"/g,'&quot;')+'" placeholder="Видео, ссылка, файл…"></div>';
+    }
+    if(l.kind==='test'){
+      var qs = (l.test && l.test.questions) || [];
+      var pass = (l.test && l.test.passScore) || 70;
+      return '<div class="field"><label for="lfPassScore">Проходной балл, %</label><input class="input" id="lfPassScore" type="number" min="1" max="100" value="'+pass+'"></div>'
+        + '<div class="stack" id="questionsList">'+qs.map(questionRow).join('')+'</div>'
+        + '<button class="text-button" id="addQuestionBtn" style="margin-top:4px">+ Добавить вопрос</button>';
+    }
+    var v = l.video || {};
+    return '<div class="field"><label for="lfVideoNote">О чём видео</label><textarea id="lfVideoNote" rows="4" placeholder="Короткое описание содержания">'+(v.note||'')+'</textarea></div>'
+      + '<div class="field"><label for="lfVideoUrl">Ссылка на видео (необязательно)</label><input class="input" id="lfVideoUrl" type="text" value="'+(v.url||'').replace(/"/g,'&quot;')+'" placeholder="https://…"></div>';
+  }
+
+  function questionRow(q, qi){
+    q = q || { q:'', options:['','',''], correct:0 };
+    return '<div class="card" data-question="'+qi+'" style="padding:14px">'
+      + '<div class="field" style="margin-bottom:10px"><label>Вопрос '+(qi+1)+'</label><input class="input lfq-text" type="text" value="'+(q.q||'').replace(/"/g,'&quot;')+'" placeholder="Текст вопроса"></div>'
+      + '<div class="stack" style="gap:8px">'
+      + [0,1,2].map(function(oi){
+          return '<label class="row" style="gap:10px"><input type="radio" name="correct-'+qi+'" class="lfq-correct" value="'+oi+'"'+(q.correct===oi?' checked':'')+'>'
+            + '<input class="input lfq-option" type="text" style="flex:1" value="'+((q.options&&q.options[oi])||'').replace(/"/g,'&quot;')+'" placeholder="Вариант ответа '+(oi+1)+'"></label>';
+        }).join('')
+      + '</div>'
+      + '<button class="text-button lfq-remove" style="margin-top:8px">Удалить вопрос</button>'
+    + '</div>';
+  }
+
+  function readQuestionsFromDom(){
+    return $$('#questionsList [data-question]').map(function(card){
+      var opts = $$('.lfq-option', card).map(function(i){ return i.value; });
+      var correct = 0;
+      $$('.lfq-correct', card).forEach(function(r){ if(r.checked) correct = parseInt(r.value,10); });
+      return { q: $('.lfq-text', card).value, options: opts, correct: correct };
+    });
+  }
+
+  function wireQuestionEvents(){
+    $$('#questionsList .lfq-remove').forEach(function(btn){
+      btn.addEventListener('click', function(){ btn.closest('[data-question]').remove(); renumberQuestions(); });
+    });
+  }
+  function renumberQuestions(){
+    $$('#questionsList [data-question]').forEach(function(card,i){
+      card.dataset.question = i;
+      card.querySelector('label').textContent = 'Вопрос '+(i+1);
+      $$('.lfq-correct', card).forEach(function(r){ r.name = 'correct-'+i; });
+    });
+  }
+
+  function renderLessonEdit(c, mi, li){
+    var isNew = li===null || li===undefined;
+    var l = isNew ? blankLesson() : c.modules[mi].lessons[li];
+    $('#t-lesson-edit').innerHTML =
+      '<div class="row" style="margin-bottom:16px"><button class="icon" id="lessonBack" aria-label="Назад">←</button></div>'
+      + '<div class="heading" style="margin-bottom:18px"><h1 style="font-size:26px">'+(isNew?'Новый урок':'Урок')+'</h1></div>'
+      + '<div class="field"><label for="lfTitle">Название урока</label><input class="input" id="lfTitle" type="text" value="'+(l.title||'').replace(/"/g,'&quot;')+'" placeholder="Например: Постановка руки"></div>'
+      + '<div class="row" style="gap:10px;align-items:stretch">'
+        + '<div class="field" style="flex:1"><label for="lfKind">Тип урока</label><select id="lfKind">'
+          + ['video','doc','task','test'].map(function(k){ return '<option value="'+k+'"'+(l.kind===k?' selected':'')+'>'+DJC.kindLabel(k)+'</option>'; }).join('')
+        + '</select></div>'
+        + '<div class="field" style="width:110px;flex:0 0 110px"><label for="lfMin">Мин.</label><input class="input" id="lfMin" type="number" min="1" value="'+(l.min||5)+'"></div>'
+      + '</div>'
+      + '<div id="lessonContentFields">'+lessonContentFields(l)+'</div>'
+      + '<button class="primary full" id="saveLessonBtn" style="margin-top:4px">Сохранить урок</button>'
+      + (isNew ? '' : '<button class="secondary-button full" id="deleteLessonBtn" style="margin-top:12px">Удалить урок</button>');
+
+    if(l.kind==='test') wireQuestionEvents();
+
+    $('#lessonBack').addEventListener('click', function(){ renderModule(c, mi); go('t-module'); });
+    $('#lfKind').addEventListener('change', function(e){
+      l = Object.assign({}, l, { kind: e.target.value });
+      $('#lessonContentFields').innerHTML = lessonContentFields(l);
+      if(l.kind==='test') wireQuestionEvents();
+      wireAddQuestion();
+    });
+    wireAddQuestion();
+    function wireAddQuestion(){
+      var btn = $('#addQuestionBtn'); if(!btn) return;
+      btn.addEventListener('click', function(){
+        var list = $('#questionsList');
+        list.insertAdjacentHTML('beforeend', questionRow({q:'',options:['','',''],correct:0}, list.children.length));
+        wireQuestionEvents();
+      });
+    }
+
+    $('#saveLessonBtn').addEventListener('click', function(){
+      var kind = $('#lfKind').value;
+      var lesson = { title: $('#lfTitle').value || 'Без названия', kind: kind, min: Math.max(1, parseInt($('#lfMin').value,10)||5) };
+      if(kind==='video'){ lesson.video = { note: $('#lfVideoNote').value, url: $('#lfVideoUrl').value }; }
+      if(kind==='doc'){ lesson.doc = { text: $('#lfDocText').value }; }
+      if(kind==='task'){ lesson.task = { task: $('#lfTaskText').value, deliverable: $('#lfTaskDeliverable').value }; }
+      if(kind==='test'){ lesson.test = { questions: readQuestionsFromDom(), passScore: Math.max(1, parseInt($('#lfPassScore').value,10)||70) }; }
+      if(isNew) c.modules[mi].lessons.push(lesson); else c.modules[mi].lessons[li] = lesson;
+      say(isNew ? 'Урок добавлен' : 'Урок сохранён');
+      renderModule(c, mi); go('t-module');
+    });
+    var delBtn = $('#deleteLessonBtn');
+    if(delBtn) delBtn.addEventListener('click', function(){
+      c.modules[mi].lessons.splice(li,1);
+      say('Урок удалён');
+      renderModule(c, mi); go('t-module');
+    });
   }
 
   function renderStudents(c){
@@ -246,7 +467,7 @@
       '<div class="row" style="margin-bottom:16px"><button class="icon" data-go="t-course" aria-label="Назад">←</button></div>'
       + '<div class="heading"><h1 style="font-size:26px">Доход</h1></div>'
       + '<div class="card"><p class="caption">Всего заработано на «'+c.title+'»</p><p class="c-price" style="margin:6px 0 14px">'+DJC.fmtRub(c.revenueTotal)+'</p><button class="secondary-button full" id="payoutBtn">Вывести</button></div>'
-      + '<div class="card" style="margin-top:14px"><div class="c-price-row"><span class="secondary">За этот месяц</span><span class="c-price">'+DJC.fmtRub(c.revenueMonth)+'</span></div><p class="caption" style="margin-top:8px">'+c.students+' '+DJC.plural(c.students,['ученик','ученика','учеников'])+' · '+DJC.fmtRub(c.price)+' за курс</p></div>';
+      + '<div class="card" style="margin-top:14px"><div class="c-price-row"><span class="secondary">За этот месяц</span><span class="c-price">'+DJC.fmtRub(c.revenueMonth)+'</span></div><p class="caption" style="margin-top:8px">'+c.students+' '+DJC.plural(c.students,['ученик','ученика','учеников'])+' · '+DJC.priceLabel(c)+' за курс · '+DJC.accessLabel(c)+'</p></div>';
     $('#payoutBtn').addEventListener('click', function(){ say('Вывод средств — демо, без реальной выплаты'); });
   }
 

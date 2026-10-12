@@ -154,7 +154,7 @@
       stageLabel: stage.label, stageTone: stage.tone,
       topic: c.topic, level: c.level,
       title: c.title,
-      big: DJC.fmtRub(c.price),
+      big: DJC.priceLabel(c),
       facts: [['Автор', c.instructor], ['Уроков', String(lessons)]],
       role: c.status === 'enrolling' ? 'Набор только открылся' : (c.students + ' ' + DJC.plural(c.students, ['записался','записались','записались'])),
     });
@@ -192,10 +192,11 @@
         + '<div><p class="caption">'+c.topic+' · '+c.level+'</p><h1 style="margin-top:4px">'+c.title+'</h1></div>'
         + '<div class="c-instructor"><span class="portrait alt">'+DJC.initials(c.instructor)+'</span><div><h3 style="font-size:17px">'+c.instructor+'</h3><p class="caption">'+c.students+' '+DJC.plural(c.students,['ученик','ученика','учеников'])+'</p></div></div>'
         + '<div class="card">'
-          + '<div class="c-price-row"><span class="c-price">'+DJC.fmtRub(c.price)+'</span><span class="caption">'+lessonsTotal+' '+DJC.plural(lessonsTotal,['урок','урока','уроков'])+' · '+c.modules.length+' '+DJC.plural(c.modules.length,['модуль','модуля','модулей'])+'</span></div>'
+          + '<div class="c-price-row"><span class="c-price'+(c.access&&c.access.free?' is-free':'')+'">'+DJC.priceLabel(c)+'</span><span class="caption">'+lessonsTotal+' '+DJC.plural(lessonsTotal,['урок','урока','уроков'])+' · '+c.modules.length+' '+DJC.plural(c.modules.length,['модуль','модуля','модулей'])+'</span></div>'
+          + '<p class="caption" style="margin-top:4px">'+DJC.accessLabel(c)+'</p>'
           + '<div style="margin-top:14px">'+(enrolled
               ? '<a class="secondary-button full" href="student.html">Открыть в «Мои курсы» →</a>'
-              : '<button class="primary full" id="enrollBtn">Записаться за '+DJC.fmtRub(c.price)+'</button>')
+              : '<button class="primary full" id="enrollBtn">'+((c.access&&c.access.free)?'Записаться бесплатно':'Записаться за '+DJC.fmtRub(c.price))+'</button>')
             +'</div>'
         + '</div>'
         + '<p class="secondary">'+c.summary+'</p>'

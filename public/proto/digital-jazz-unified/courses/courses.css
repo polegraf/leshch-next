@@ -64,8 +64,8 @@
 
 /* ---- кабинет автора: статы ---- */
 .c-stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.c-stat{padding:14px 12px;text-align:left}
-.c-stat b{display:block;font-size:24px;color:var(--dj-lime);font-variant-numeric:tabular-nums;line-height:1.1}
+.c-stat{padding:14px 12px;text-align:left;min-width:0}
+.c-stat b{display:block;font-size:24px;color:var(--dj-lime);font-variant-numeric:tabular-nums;line-height:1.1;overflow-wrap:anywhere}
 .c-stat span{font-size:13px;color:var(--dj-text-faint);letter-spacing:.03em}
 
 /* ---- ростер учеников ---- */
@@ -77,11 +77,35 @@
 .c-student-progress .c-progress{flex:1;min-width:40px}
 .c-student-progress span{font-size:13px;color:var(--dj-text-faint);flex:0 0 auto}
 
-/* ---- конструктор курса: перетаскивание модулей (как в турах) ---- */
+/* ---- конструктор курса: перетаскивание модулей и уроков (как в турах) ---- */
 .c-editor-module{display:flex;align-items:center;gap:10px;padding:14px;touch-action:none}
 .c-editor-module.dragging{opacity:.55}
-.c-editor-module .grow{flex:1;min-width:0}
+.c-editor-module .grow{flex:1;min-width:0;cursor:pointer}
 .c-editor-module h3{font-size:19px}
 .c-editor-module .caption{margin-top:2px}
+.c-editor-module .chevron{cursor:pointer}
+.c-editor-module .c-lesson-icon{flex:0 0 32px;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.06);color:var(--dj-text-muted)}
+.c-editor-module .c-lesson-icon svg{width:16px;height:16px}
+
+/* ---- условия доступа (бесплатно/платно, бессрочно/на срок) — переключатель как в турах ---- */
+.switch{width:44px;height:26px;border-radius:999px;background:var(--dj-line);position:relative;flex-shrink:0;transition:background .15s}
+.switch input{position:absolute;inset:0;opacity:0;margin:0;cursor:pointer}
+.switch i{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:var(--dj-text-faint);transition:transform .15s,background .15s;pointer-events:none}
+.switch input:checked{}
+.switch input:checked+i{transform:translateX(18px);background:var(--dj-bg-raised)}
+.switch:has(input:checked){background:var(--dj-lime)}
+#accessCard .row{min-height:44px}
+#accessCard .field textarea,#accessCard .field input{margin-top:0}
+
+/* ---- редактор урока: вопросы теста ---- */
+#questionsList .lfq-correct{appearance:none;width:20px;height:20px;flex:0 0 20px;border:1px solid var(--dj-line-3);border-radius:50%;margin:0}
+#questionsList .lfq-correct:checked{border-color:var(--dj-lime);background:var(--dj-lime);box-shadow:inset 0 0 0 4px var(--dj-bg-raised)}
+#lessonContentFields textarea{min-height:110px;resize:vertical}
+
+/* ---- урок-тест на стороне ученика ---- */
+#testForm .tq-opt{appearance:none;width:20px;height:20px;flex:0 0 20px;border:1px solid var(--dj-line-3);border-radius:50%;margin:0}
+#testForm .tq-opt:checked{border-color:var(--dj-lime);background:var(--dj-lime);box-shadow:inset 0 0 0 4px var(--dj-bg-raised)}
+#testForm label.row{align-items:flex-start}
+#testForm label.row span{font-size:17px;color:var(--dj-text-body)}
 
 @media(max-width:360px){.c-stat-row{gap:8px}.c-stat{padding:12px 8px}.c-stat b{font-size:20px}}
