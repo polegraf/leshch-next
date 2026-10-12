@@ -9,6 +9,7 @@ const nextConfig = {
   async redirects() {
     return [
       { source: '/proto/digital-jazz-unified', destination: '/proto/digital-jazz-unified/index.html', permanent: false },
+      { source: '/proto/digital-jazz-unified/courses', destination: '/proto/digital-jazz-unified/courses/index.html', permanent: false },
     ];
   },
   async rewrites() {
