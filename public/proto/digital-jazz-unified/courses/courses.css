@@ -177,3 +177,33 @@
 .c-kpi-row span{font-size:17px;color:var(--dj-text-muted);min-width:0}
 .c-kpi-row b{font-size:24px;font-weight:600;line-height:1.1;color:var(--dj-text-headline);font-variant-numeric:tabular-nums;white-space:nowrap}
 .c-kpi-row b.is-money{color:var(--dj-lime)}
+
+/* ---- редактор урока: блоки ---- */
+.c-block{padding:14px 16px 16px}
+.c-block-head{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.c-block-head b{flex:1;min-width:0;font-size:17px;font-weight:600;color:var(--dj-text-headline)}
+.c-block-head .text-button{min-height:36px;padding:4px 0;font-size:15px}
+.c-block .dj-handle{touch-action:none;cursor:grab}
+.c-block.dragging{opacity:.55}
+.c-block .c-lesson-icon{flex:0 0 32px;width:32px;height:32px;border-radius:10px;display:grid;place-items:center;background:rgba(255,255,255,.06);color:var(--dj-text-muted)}
+.c-block .c-lesson-icon svg,.c-add-blocks .c-lesson-icon svg{width:16px;height:16px}
+.c-question+.c-question{padding-top:16px;border-top:1px solid var(--dj-line)}
+.c-question .lfq-correct{appearance:none;width:20px;height:20px;flex:0 0 20px;border:1px solid var(--dj-line-3);border-radius:50%;margin:0}
+.c-question .lfq-correct:checked{border-color:var(--dj-lime);background:var(--dj-lime);box-shadow:inset 0 0 0 4px var(--dj-bg-raised)}
+.c-block textarea{resize:vertical}
+.c-add-blocks{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.c-add-blocks .secondary-button{justify-content:flex-start;gap:10px;padding:8px 12px;color:var(--dj-text-body)}
+.c-add-blocks .c-lesson-icon{flex:0 0 28px;width:28px;height:28px;border-radius:9px;display:grid;place-items:center;background:rgba(255,255,255,.06);color:var(--dj-lime)}
+
+/* ---- урок у ученика: блоки подряд ---- */
+.c-lesson-block+.c-lesson-block{margin-top:26px}
+.c-block-label{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--dj-text-faint)}
+.c-block-label svg{width:15px;height:15px}
+/* тест внутри урока у ученика: те же радиокнопки и разбор, что и раньше */
+.c-lesson-block .tq-opt{appearance:none;width:20px;height:20px;flex:0 0 20px;border:1px solid var(--dj-line-3);border-radius:50%;margin:0}
+.c-lesson-block .tq-opt:checked{border-color:var(--dj-lime);background:var(--dj-lime);box-shadow:inset 0 0 0 4px var(--dj-bg-raised)}
+.c-lesson-block .tq-opt:disabled{opacity:.7}
+.c-lesson-block [data-test] label.row{align-items:flex-start}
+.c-lesson-block [data-test] label.row span{font-size:17px;color:var(--dj-text-body)}
+.c-lesson-block .card.is-right{border-color:var(--dj-lime-line)}
+.c-lesson-block .card.is-wrong{border-color:rgba(255,0,229,.45)}

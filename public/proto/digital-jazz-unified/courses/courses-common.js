@@ -53,7 +53,11 @@ window.DJC = (function () {
     doc: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3.5h8l4 4V20a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4.5a1 1 0 0 1 1-1Z"/><path d="M14 3.5V8h4"/></svg>',
     test: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8.5"/><path d="M9.6 9.8a2.4 2.4 0 1 1 3.4 2.2c-.9.5-1 1-1 2"/><circle cx="12" cy="16.9" r=".35" fill="currentColor" stroke="none"/></svg>',
   };
-  function lessonIcon(kind) { return ICONS[kind] || ICONS.video; }
+  /* значок по типу блока; для урока — по первому блоку */
+  function lessonIcon(x) {
+    var k = typeof x === 'string' ? x : (x && x.blocks && x.blocks[0] ? x.blocks[0].type : 'video');
+    return ICONS[k] || ICONS.video;
+  }
 
   var KIND_LABEL = { video: 'Видео', doc: 'Текст', task: 'Задание', test: 'Тест' };
   function kindLabel(kind) { return KIND_LABEL[kind] || KIND_LABEL.video; }
@@ -91,29 +95,59 @@ window.DJC = (function () {
   function enrollment(courseId) {
     return (window.ENROLLMENTS || []).find(function (e) { return e.courseId === courseId; });
   }
-  function submission(courseId, lessonId, student) {
+  /* ---- урок = набор блоков: видео, текст, задание, тест (в любом порядке и количестве) ---- */
+  function blocksOf(l) { return (l && l.blocks) || []; }
+  function lessonMeta(l) {
+    var seen = [];
+    blocksOf(l).forEach(function (b) { var t = kindLabel(b.type); if (seen.indexOf(t) < 0) seen.push(t); });
+    return seen.join(' + ') || 'Пустой урок';
+  }
+  function allBlocks(c, type) {
+    var out = [];
+    flat(c).forEach(function (x) { blocksOf(x.lesson).forEach(function (b) { if (!type || b.type === type) out.push({ x: x, lesson: x.lesson, block: b }); }); });
+    return out;
+  }
+  function submission(courseId, blockId, student) {
     student = student || window.STUDENT_NAME;
-    var list = (window.SUBMISSIONS || []).filter(function (s) { return s.courseId === courseId && s.lessonId === lessonId && s.student === student; });
+    var list = (window.SUBMISSIONS || []).filter(function (s) { return s.courseId === courseId && s.blockId === blockId && s.student === student; });
     return list[list.length - 1];
   }
-  /* done — пройден; pending — задание ждёт проверки; returned — задание на доработке;
-     failed — тест не сдан, попытки закончились; todo — ещё не пройден */
-  function lessonState(c, en, l) {
-    if (!en) return 'todo';
-    var inDone = en.done.indexOf(l.id) >= 0;
-    if (l.kind === 'task') {
-      var s = submission(c.id, l.id);
+  /* состояние блока: задание — todo | pending (на проверке) | returned (на доработку) | done (принято);
+     тест — todo | done (сдан) | failed (попытки кончились); видео и текст — none (не отслеживаются) */
+  function blockState(c, en, b) {
+    if (b.type === 'task') {
+      var s = en && submission(c.id, b.id);
       if (!s) return 'todo';
       return s.status === 'accepted' ? 'done' : s.status === 'returned' ? 'returned' : 'pending';
     }
-    if (l.kind === 'test') {
-      var t = en.tests && en.tests[l.id];
+    if (b.type === 'test') {
+      var t = en && en.tests && en.tests[b.id];
       if (t && t.passed) return 'done';
-      return inDone ? 'failed' : 'todo';
+      var limit = c.grading.testAttempts || 0;
+      if (t && limit && t.attempts >= limit) return 'failed';
+      return 'todo';
     }
-    return inDone ? 'done' : 'todo';
+    return 'none';
   }
-  /* урок «закрыт» для движения дальше, если он в done (видео/текст отмечены, задание отправлено, тест сдан или попытки кончились) */
+  /* урок можно завершить, когда все задания отправлены, а все тесты сданы (или попытки кончились) */
+  function lessonReady(c, en, l) {
+    var left = [];
+    blocksOf(l).forEach(function (b) {
+      var st = blockState(c, en, b);
+      if (b.type === 'task' && st === 'todo') left.push('отправьте задание');
+      if (b.type === 'test' && st === 'todo') left.push('сдайте тест');
+    });
+    return { ok: !left.length, left: left.filter(function (v, i) { return left.indexOf(v) === i; }) };
+  }
+  /* итог по уроку для списков: todo | done | pending | returned | failed */
+  function lessonState(c, en, l) {
+    if (!en || en.done.indexOf(l.id) < 0) return 'todo';
+    var st = blocksOf(l).map(function (b) { return blockState(c, en, b); });
+    if (st.indexOf('returned') >= 0) return 'returned';
+    if (st.indexOf('pending') >= 0) return 'pending';
+    if (st.indexOf('failed') >= 0) return 'failed';
+    return 'done';
+  }
   function progress(c, en) {
     var f = flat(c), done = 0, frontier = -1;
     f.forEach(function (x) {
@@ -123,23 +157,23 @@ window.DJC = (function () {
     return { flat: f, total: f.length, done: done, pct: f.length ? Math.round(done / f.length * 100) : 0, frontier: frontier };
   }
   function certStatus(c, en) {
-    var f = flat(c), p = progress(c, en), items = [];
+    var p = progress(c, en), items = [];
     items.push({ label: 'Пройти все уроки', ok: p.total > 0 && p.done === p.total, note: p.done + ' из ' + p.total });
-    var tests = f.filter(function (x) { return x.lesson.kind === 'test'; });
+    var tests = allBlocks(c, 'test');
     if (c.certificate.requireTests && tests.length) {
-      var passed = tests.filter(function (x) { return lessonState(c, en, x.lesson) === 'done'; }).length;
+      var passed = tests.filter(function (t) { return blockState(c, en, t.block) === 'done'; }).length;
       items.push({ label: 'Сдать тесты', ok: passed === tests.length, note: passed + ' из ' + tests.length });
     }
-    var tasks = f.filter(function (x) { return x.lesson.kind === 'task'; });
+    var tasks = allBlocks(c, 'task');
     if (c.certificate.requireTasks && tasks.length) {
-      var acc = tasks.filter(function (x) { return lessonState(c, en, x.lesson) === 'done'; }).length;
+      var acc = tasks.filter(function (t) { return blockState(c, en, t.block) === 'done'; }).length;
       items.push({ label: 'Задания приняты автором', ok: acc === tasks.length, note: acc + ' из ' + tasks.length });
     }
     return { enabled: !!c.certificate.enabled, items: items, eligible: !!c.certificate.enabled && items.every(function (i) { return i.ok; }) };
   }
   function kindCounts(c) {
     var n = { video: 0, doc: 0, task: 0, test: 0 };
-    flat(c).forEach(function (x) { n[x.lesson.kind] = (n[x.lesson.kind] || 0) + 1; });
+    allBlocks(c).forEach(function (t) { n[t.block.type] = (n[t.block.type] || 0) + 1; });
     var parts = [];
     if (n.video) parts.push(n.video + ' видео');
     if (n.doc) parts.push(n.doc + ' ' + plural(n.doc, ['текст', 'текста', 'текстов']));
@@ -184,6 +218,7 @@ window.DJC = (function () {
     lessonIcon: lessonIcon, kindLabel: kindLabel, accessLabel: accessLabel, priceLabel: priceLabel,
     esc: esc, fmtDate: fmtDate, today: today, certNumber: certNumber, certHtml: certHtml,
     flat: flat, enrollment: enrollment, submission: submission, lessonState: lessonState,
+    blocksOf: blocksOf, lessonMeta: lessonMeta, allBlocks: allBlocks, blockState: blockState, lessonReady: lessonReady,
     progress: progress, certStatus: certStatus, kindCounts: kindCounts, accessUntil: accessUntil, enroll: enroll,
     ICON_PLAY: ICON_PLAY, ICON_LOCK: ICON_LOCK, ICON_CHECK: ICON_CHECK,
   };

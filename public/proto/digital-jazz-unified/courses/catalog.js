@@ -52,13 +52,13 @@
     var f = DJC.flat(c);
     rows.push(['Уроки', DJC.kindCounts(c) || 'скоро появятся']);
     rows.push(['Порядок', 'уроки открываются по очереди']);
-    if (f.some(function (x) { return x.lesson.kind === 'task'; })) rows.push(['Задания', c.grading.reviewTasks ? 'проверяет автор, с комментарием' : 'засчитываются сразу']);
-    if (f.some(function (x) { return x.lesson.kind === 'test'; })) rows.push(['Тесты', c.grading.testAttempts ? c.grading.testAttempts + ' ' + DJC.plural(c.grading.testAttempts, ['попытка', 'попытки', 'попыток']) + ' на тест' : 'пересдавать можно без ограничений']);
+    if (DJC.allBlocks(c, 'task').length) rows.push(['Задания', c.grading.reviewTasks ? 'проверяет автор, с комментарием' : 'засчитываются сразу']);
+    if (DJC.allBlocks(c, 'test').length) rows.push(['Тесты', c.grading.testAttempts ? c.grading.testAttempts + ' ' + DJC.plural(c.grading.testAttempts, ['попытка', 'попытки', 'попыток']) + ' на тест' : 'пересдавать можно без ограничений']);
     rows.push(['Доступ', DJC.accessLabel(c).replace('доступ ', '') + (c.access.durationType === 'timed' ? ' с момента записи' : '')]);
     if (c.certificate.enabled) {
       var cond = ['все уроки'];
-      if (c.certificate.requireTests && f.some(function (x) { return x.lesson.kind === 'test'; })) cond.push('сданы тесты');
-      if (c.certificate.requireTasks && f.some(function (x) { return x.lesson.kind === 'task'; })) cond.push('приняты задания');
+      if (c.certificate.requireTests && DJC.allBlocks(c, 'test').length) cond.push('сданы тесты');
+      if (c.certificate.requireTasks && DJC.allBlocks(c, 'task').length) cond.push('приняты задания');
       rows.push(['Сертификат', 'когда пройдены ' + cond.join(', ')]);
     }
     return '<div class="card"><h3 style="font-size:19px;margin-bottom:6px">Как проходит обучение</h3>'
@@ -77,8 +77,8 @@
         + m.lessons.map(function (l) {
             var open = l.id === firstId || !!en;
             return '<div class="c-lesson' + (open ? '' : ' is-locked') + '" role="button" tabindex="0" data-lesson-id="' + l.id + '"' + (open ? '' : ' data-locked="1"') + '>'
-              + '<span class="c-lesson-icon">' + DJC.lessonIcon(l.kind) + '</span>'
-              + '<span class="c-lesson-body"><span class="c-lesson-title">' + esc(l.title) + '</span><span class="c-lesson-meta">' + DJC.kindLabel(l.kind) + ' · ' + l.min + ' мин' + (l.id === firstId && !en ? ' · бесплатный просмотр' : '') + '</span></span>'
+              + '<span class="c-lesson-icon">' + DJC.lessonIcon(l) + '</span>'
+              + '<span class="c-lesson-body"><span class="c-lesson-title">' + esc(l.title) + '</span><span class="c-lesson-meta">' + DJC.lessonMeta(l) + ' · ' + l.min + ' мин' + (l.id === firstId && !en ? ' · бесплатный просмотр' : '') + '</span></span>'
               + '<span class="c-lesson-trail">' + (open ? DJC.ICON_PLAY : DJC.ICON_LOCK) + '</span></div>';
           }).join('')
         + '</div>';
@@ -132,13 +132,16 @@
   /* ---- бесплатный предпросмотр первого урока ---- */
   function renderPreview(c, lessonId) {
     var l = DJC.flat(c).find(function (x) { return x.lesson.id === lessonId; }).lesson;
-    var body;
-    if (l.kind === 'video') body = '<div class="c-player"><div class="c-player-play">' + DJC.ICON_PLAY.replace('width="16" height="16"', 'width="24" height="24"') + '</div><span class="c-player-time">0:00 / ' + l.min + ':00</span></div>' + (l.video && l.video.note ? '<p class="secondary" style="margin-top:12px">' + esc(l.video.note) + '</p>' : '');
-    else if (l.kind === 'doc') body = '<div class="card"><p class="secondary" style="white-space:pre-line;color:var(--dj-text-body)">' + esc(l.doc.text) + '</p></div>';
-    else if (l.kind === 'task') body = '<div class="card"><p class="caption" style="margin-bottom:6px">Задание</p><p class="secondary">' + esc(l.task.task) + '</p></div>';
-    else body = '<div class="card"><p class="secondary">Тест из ' + l.test.questions.length + ' ' + DJC.plural(l.test.questions.length, ['вопроса', 'вопросов', 'вопросов']) + ', проходной балл ' + l.test.passScore + '%. Доступен после записи.</p></div>';
+    var body = DJC.blocksOf(l).map(function (b) {
+      var inner;
+      if (b.type === 'video') inner = '<div class="c-player"><div class="c-player-play">' + DJC.ICON_PLAY.replace('width="16" height="16"', 'width="24" height="24"') + '</div></div>' + (b.note ? '<p class="secondary" style="margin-top:12px">' + esc(b.note) + '</p>' : '');
+      else if (b.type === 'doc') inner = '<div class="card"><p class="secondary" style="white-space:pre-line;color:var(--dj-text-body)">' + esc(b.text) + '</p></div>';
+      else if (b.type === 'task') inner = '<div class="card"><p class="secondary" style="color:var(--dj-text-body)">' + esc(b.task) + '</p><p class="caption" style="margin-top:8px">Ответ можно отправить после записи на курс</p></div>';
+      else inner = '<div class="card"><p class="secondary">' + b.questions.length + ' ' + DJC.plural(b.questions.length, ['вопрос', 'вопроса', 'вопросов']) + ', проходной балл ' + b.passScore + '%. Доступен после записи.</p></div>';
+      return '<section class="c-lesson-block"><p class="c-block-label">' + DJC.lessonIcon(b.type) + DJC.kindLabel(b.type) + '</p>' + inner + '</section>';
+    }).join('');
     $('#c-preview').innerHTML = back('c-course')
-      + '<p class="caption">Бесплатный просмотр · ' + DJC.kindLabel(l.kind) + ' · ' + l.min + ' мин</p><h1 style="margin:4px 0 16px;font-size:26px">' + esc(l.title) + '</h1>'
+      + '<p class="caption">Бесплатный просмотр · ' + DJC.lessonMeta(l) + ' · ' + l.min + ' мин</p><h1 style="margin:4px 0 16px;font-size:26px">' + esc(l.title) + '</h1>'
       + body
       + '<div class="card" style="margin-top:18px"><p class="secondary">Остальные ' + (DJC.flat(c).length - 1) + ' уроков — после записи.</p>'
       + (c.status === 'draft' ? '' : '<button class="primary full" style="margin-top:12px" data-go="c-course">' + ((c.access && c.access.free) ? 'Записаться бесплатно' : 'Купить за ' + DJC.fmtRub(c.price)) + '</button>') + '</div>';

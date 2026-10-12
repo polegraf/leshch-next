@@ -84,7 +84,7 @@
   /* ================= страница курса: шаги настройки ================= */
   function gradingNote(c) {
     var parts = [];
-    var tests = DJC.flat(c).filter(function (x) { return x.lesson.kind === 'test'; }).length;
+    var tests = DJC.allBlocks(c, 'test').length;
     if (tests) parts.push(c.grading.testAttempts ? c.grading.testAttempts + ' ' + DJC.plural(c.grading.testAttempts, ['попытка', 'попытки', 'попыток']) + ' на тест' : 'попыток без ограничений');
     parts.push(c.grading.reviewTasks ? 'задания проверяете вы' : 'задания засчитываются сразу');
     parts.push(c.certificate.enabled ? 'сертификат выдаётся' : 'без сертификата');
@@ -98,7 +98,7 @@
       { key: 'info', title: 'Описание и обложка', ok: !!(c.title && c.summary),
         note: c.summary ? c.topic + ' · ' + c.level + (c.learn.length ? ' · ' + c.learn.length + ' ' + DJC.plural(c.learn.length, ['пункт', 'пункта', 'пунктов']) + ' «чему научитесь»' : '') : 'Добавьте описание — его видно в каталоге' },
       { key: 'editor', title: 'Программа и уроки', ok: n > 0,
-        note: n ? c.modules.length + ' ' + DJC.plural(c.modules.length, ['модуль', 'модуля', 'модулей']) + ' · ' + DJC.kindCounts(c) : 'Пока нет уроков — добавьте видео, текст, задание или тест' },
+        note: n ? c.modules.length + ' ' + DJC.plural(c.modules.length, ['модуль', 'модуля', 'модулей']) + ' · ' + DJC.kindCounts(c) : 'Пока нет уроков — добавьте урок и соберите его из блоков' },
       { key: 'grading', title: 'Оценки и сертификат', ok: true, note: gradingNote(c) },
       { key: 'price', title: 'Цена и доступ', ok: true,
         note: DJC.priceLabel(c) + (!free && c.oldPrice > c.price ? ' вместо ' + DJC.fmtRub(c.oldPrice) : '') + ' · ' + DJC.accessLabel(c) },
@@ -144,8 +144,10 @@
     $('#publishBtn').addEventListener('click', function () {
       if (c.status === 'draft') {
         if (!lessonsCount(c)) { window.say('Сначала добавьте хотя бы один урок — шаг 2'); return; }
-        var emptyTest = DJC.flat(c).find(function (x) { return x.lesson.kind === 'test' && !(x.lesson.test && x.lesson.test.questions.length); });
-        if (emptyTest) { window.say('В тесте «' + esc(emptyTest.lesson.title) + '» нет вопросов'); return; }
+        var emptyLesson = DJC.flat(c).find(function (x) { return !DJC.blocksOf(x.lesson).length; });
+        if (emptyLesson) { window.say('Урок «' + esc(emptyLesson.lesson.title) + '» пустой — добавьте в него блоки'); return; }
+        var emptyTest = DJC.allBlocks(c, 'test').find(function (t) { return !(t.block.questions && t.block.questions.length); });
+        if (emptyTest) { window.say('В тесте урока «' + esc(emptyTest.lesson.title) + '» нет вопросов'); return; }
         c.status = 'published';
         save('Курс опубликован — он уже в каталоге');
       } else {
@@ -215,16 +217,16 @@
 
   /* ================= шаг 3: оценки и сертификат ================= */
   function renderGrading(c) {
-    var tests = DJC.flat(c).filter(function (x) { return x.lesson.kind === 'test'; });
+    var tests = DJC.allBlocks(c, 'test');
     var g = c.grading, cert = c.certificate;
     $('#t-grading').innerHTML =
       back('t-course') + title('Оценки и сертификат')
       + '<div class="card"><h3 style="font-size:19px">Тесты</h3><p class="caption" style="margin:4px 0 10px">Вопросы и проходной балл задаются в самом тесте</p>'
-        + (tests.length ? tests.map(function (x) {
-            var q = (x.lesson.test && x.lesson.test.questions.length) || 0;
-            return '<a href="#" class="c-lesson" data-test-mi="' + x.mi + '" data-test-li="' + x.li + '"><span class="c-lesson-icon">' + DJC.lessonIcon('test') + '</span>'
-              + '<span class="c-lesson-body"><span class="c-lesson-title">' + esc(x.lesson.title) + '</span><span class="c-lesson-meta">проходной балл ' + ((x.lesson.test && x.lesson.test.passScore) || 70) + '% · ' + q + ' ' + DJC.plural(q, ['вопрос', 'вопроса', 'вопросов']) + '</span></span><span class="c-lesson-trail">→</span></a>';
-          }).join('') : '<p class="secondary" style="margin-bottom:10px">В программе пока нет тестов — добавьте урок с типом «Тест»</p>')
+        + (tests.length ? tests.map(function (t) {
+            var q = (t.block.questions || []).length;
+            return '<a href="#" class="c-lesson" data-test-mi="' + t.x.mi + '" data-test-li="' + t.x.li + '"><span class="c-lesson-icon">' + DJC.lessonIcon('test') + '</span>'
+              + '<span class="c-lesson-body"><span class="c-lesson-title">' + esc(t.lesson.title) + '</span><span class="c-lesson-meta">проходной балл ' + (t.block.passScore || 70) + '% · ' + q + ' ' + DJC.plural(q, ['вопрос', 'вопроса', 'вопросов']) + '</span></span><span class="c-lesson-trail">→</span></a>';
+          }).join('') : '<p class="secondary" style="margin-bottom:10px">В уроках пока нет тестов — добавьте блок «Тест» в нужный урок</p>')
         + '<div class="field" style="margin:14px 0 0"><label for="grAttempts">Попыток на каждый тест</label><select id="grAttempts">'
           + [[0, 'Без ограничений'], [1, '1 попытка'], [2, '2 попытки'], [3, '3 попытки'], [5, '5 попыток']].map(function (o) { return '<option value="' + o[0] + '"' + (g.testAttempts === o[0] ? ' selected' : '') + '>' + o[1] + '</option>'; }).join('')
         + '</select></div>'
@@ -321,44 +323,58 @@
   /* ================= шаг 2: программа — модули и уроки ================= */
   /* Перетаскивание карточек за ручку [data-drag-handle] внутри list — общий код для модулей и уроков (как в турах). */
   function makeSortable(list, itemSelector, onReorder) {
-    var dragging = null, startY = 0, startTop = 0;
-    function rects() { return $$(':scope > ' + itemSelector, list).map(function (el) { var r = el.getBoundingClientRect(); return { el: el, top: r.top, bottom: r.bottom }; }); }
+    /* карточка едет за пальцем; у края экрана страница прокручивается сама —
+       блоки урока высокие, иначе их не перетащить дальше одного экрана */
+    var dragging = null, grabOffset = 0, lastY = 0, raf = 0;
+    function items() { return $$(':scope > ' + itemSelector, list); }
+    function update() {
+      if (!dragging) return;
+      dragging.style.transform = '';
+      var natural = dragging.getBoundingClientRect().top;
+      var desired = lastY - grabOffset;
+      dragging.style.transform = 'translateY(' + (desired - natural) + 'px)';
+      var mid = desired + dragging.offsetHeight / 2;
+      var others = items();
+      for (var i = 0; i < others.length; i++) {
+        var el = others[i]; if (el === dragging) continue;
+        var r = el.getBoundingClientRect();
+        if (mid > r.top && mid < r.bottom) {
+          var di = others.indexOf(dragging), ti = i;
+          if (di < ti && mid > r.top + r.height / 2) { list.insertBefore(dragging, el.nextSibling); update(); return; }
+          if (di > ti && mid < r.top + r.height / 2) { list.insertBefore(dragging, el); update(); return; }
+        }
+      }
+    }
+    function autoscroll() {
+      if (!dragging) return;
+      var top = 90, bottom = window.innerHeight - 170, v = 0;
+      if (lastY < top) v = -Math.min(18, (top - lastY) / 3 + 3);
+      else if (lastY > bottom) v = Math.min(18, (lastY - bottom) / 3 + 3);
+      if (v) { window.scrollBy(0, v); update(); }
+      raf = requestAnimationFrame(autoscroll);
+    }
     function onDown(e) {
       var handle = e.target.closest('[data-drag-handle]'); if (!handle) return;
       var card = handle.closest(itemSelector); if (!card || card.parentNode !== list) return;
       e.preventDefault();
-      dragging = card; startY = e.clientY; startTop = card.getBoundingClientRect().top;
+      dragging = card; lastY = e.clientY; grabOffset = e.clientY - card.getBoundingClientRect().top;
       card.classList.add('dragging'); card.style.position = 'relative'; card.style.zIndex = 50;
       handle.classList.add('is-dragging'); handle.setPointerCapture(e.pointerId);
-      document.addEventListener('pointermove', onMove); document.addEventListener('pointerup', onUp);
+      document.addEventListener('pointermove', onMove); document.addEventListener('pointerup', onUp); document.addEventListener('pointercancel', onUp);
+      raf = requestAnimationFrame(autoscroll);
     }
-    function onMove(e) {
-      if (!dragging) return;
-      var dy = e.clientY - startY;
-      dragging.style.transform = 'translateY(' + dy + 'px)';
-      var rr = rects(); var dr = dragging.getBoundingClientRect(); var mid = dr.top + dr.height / 2;
-      for (var i = 0; i < rr.length; i++) {
-        var r = rr[i]; if (r.el === dragging) continue;
-        if (mid > r.top && mid < r.bottom) {
-          var di = Array.prototype.indexOf.call(list.children, dragging);
-          var ti = Array.prototype.indexOf.call(list.children, r.el);
-          if (di < ti) list.insertBefore(dragging, r.el.nextSibling); else list.insertBefore(dragging, r.el);
-          var newTop = dragging.getBoundingClientRect().top; var visualTop = startTop + dy;
-          startTop = newTop; startY = e.clientY; dragging.style.transform = 'translateY(' + (visualTop - newTop) + 'px)';
-          break;
-        }
-      }
-    }
+    function onMove(e) { if (!dragging) return; lastY = e.clientY; update(); }
     function onUp() {
       if (!dragging) return;
-      var card = dragging; card.style.transform = 'translateY(0px)'; card.classList.remove('dragging'); card.style.zIndex = '';
+      cancelAnimationFrame(raf);
+      var card = dragging; dragging = null;
+      card.style.transform = ''; card.style.position = ''; card.style.zIndex = '';
+      card.classList.remove('dragging');
       var h = card.querySelector('[data-drag-handle]'); if (h) h.classList.remove('is-dragging');
-      dragging = null;
-      document.removeEventListener('pointermove', onMove); document.removeEventListener('pointerup', onUp);
-      card.style.position = '';
-      var order = $$(':scope > ' + itemSelector, list).map(function (el) { return parseInt(el.dataset.idx, 10); });
-      $$(':scope > ' + itemSelector, list).forEach(function (el, i) { el.dataset.idx = i; });
-      onReorder(order);
+      document.removeEventListener('pointermove', onMove); document.removeEventListener('pointerup', onUp); document.removeEventListener('pointercancel', onUp);
+      var order = items().map(function (el) { return parseInt(el.dataset.idx, 10); });
+      items().forEach(function (el, i) { el.dataset.idx = i; });
+      if (order.some(function (v, i) { return v !== i; })) onReorder(order);
     }
     list.addEventListener('pointerdown', onDown);
   }
@@ -367,7 +383,7 @@
     var n = lessonsCount(c);
     $('#t-editor').innerHTML =
       back('t-course')
-      + title('Программа курса', n ? c.modules.length + ' ' + DJC.plural(c.modules.length, ['модуль', 'модуля', 'модулей']) + ' · ' + DJC.kindCounts(c) : 'Курс состоит из модулей, в модуле — уроки. Откройте модуль и добавьте уроки: видео, текст, задание или тест.')
+      + title('Программа курса', n ? c.modules.length + ' ' + DJC.plural(c.modules.length, ['модуль', 'модуля', 'модулей']) + ' · ' + DJC.kindCounts(c) : 'Курс → модули → уроки. Урок собирается из блоков: видео, текст, задание, тест. Откройте модуль и добавьте урок.')
       + '<div class="stack" id="modulesList">'
       + c.modules.map(function (m, i) {
           return '<div class="dj-card card c-editor-module" data-idx="' + i + '">' + HANDLE
@@ -401,11 +417,11 @@
       + '<div class="stack" id="lessonsList">'
       + (m.lessons.length ? m.lessons.map(function (l, li) {
           return '<div class="dj-card card c-editor-module" data-idx="' + li + '">' + HANDLE
-            + '<span class="c-lesson-icon" aria-hidden="true">' + DJC.lessonIcon(l.kind) + '</span>'
-            + '<span class="grow" data-open-lesson="' + li + '" role="button" tabindex="0"><h3 style="font-size:17px">' + esc(l.title) + '</h3><p class="caption">' + DJC.kindLabel(l.kind) + ' · ' + l.min + ' мин</p></span>'
+            + '<span class="c-lesson-icon" aria-hidden="true">' + DJC.lessonIcon(l) + '</span>'
+            + '<span class="grow" data-open-lesson="' + li + '" role="button" tabindex="0"><h3 style="font-size:17px">' + esc(l.title) + '</h3><p class="caption">' + DJC.lessonMeta(l) + ' · ' + l.min + ' мин</p></span>'
             + '<span class="chevron" data-open-lesson="' + li + '" role="button" tabindex="0">→</span>'
             + '</div>';
-        }).join('') : '<div class="card"><p class="secondary">В модуле пока нет уроков. Урок бывает четырёх типов: <b>видео</b> — ролик с описанием, <b>текст</b> — материал для чтения, <b>задание</b> — ученик присылает ответ вам на проверку, <b>тест</b> — вопросы с вариантами и проходным баллом.</p></div>')
+        }).join('') : '<div class="card"><p class="secondary">В модуле пока нет уроков. Каждый урок собирается из блоков: <b>видео</b>, <b>текст</b>, <b>задание</b> (ответ придёт вам на проверку) и <b>тест</b> (вопросы с проходным баллом) — в любом порядке и количестве.</p></div>')
       + '</div>'
       + '<button class="primary full" id="addLessonBtn" style="margin-top:14px">+ Добавить урок</button>'
       + '<button class="secondary-button full" id="deleteModuleBtn" style="margin-top:12px">Удалить модуль</button>';
@@ -434,138 +450,163 @@
     }
   }
 
-  /* ---- урок: тип, длительность, содержимое по типу ---- */
-  var KIND_HINT = {
-    video: 'Ученик смотрит ролик и отмечает «Просмотрено».',
-    doc: 'Ученик читает материал и отмечает «Прочитано».',
-    task: 'Ученик присылает ответ — он придёт вам в «Проверку заданий».',
-    test: 'Ученик отвечает на вопросы. Сдал, если набрал проходной балл. Число попыток — в «Оценки и сертификат».',
+  /* ---- урок = лента блоков: видео, текст, задание, тест в любом порядке и количестве ---- */
+  var BLOCK_HINT = {
+    video: 'Ролик со ссылкой и коротким описанием под плеером.',
+    doc: 'Материал для чтения. Пустая строка — новый абзац.',
+    task: 'Ученик пишет ответ или присылает ссылку — ответ придёт вам в «Проверку заданий».',
+    test: 'Вопросы с вариантами. Отметьте кружком правильный ответ. Число попыток — в «Оценки и сертификат».',
   };
-  function lessonContentFields(l) {
-    var hint = '<p class="caption" style="margin:-6px 0 18px">' + KIND_HINT[l.kind] + '</p>';
-    if (l.kind === 'doc') {
-      var d = l.doc || {};
-      return hint + '<div class="field"><label for="lfDocText">Текст урока</label><textarea id="lfDocText" rows="9" placeholder="Материал, который читает ученик. Пустая строка — новый абзац.">' + esc(d.text) + '</textarea></div>';
-    }
-    if (l.kind === 'task') {
-      var t = l.task || {};
-      return hint + '<div class="field"><label for="lfTaskText">Что нужно сделать</label><textarea id="lfTaskText" rows="5" placeholder="Например: снимите руку сверху 20 секунд baby scratch">' + esc(t.task) + '</textarea></div>'
-        + '<div class="field"><label for="lfTaskDeliverable">Что прислать на проверку</label><input class="input" id="lfTaskDeliverable" type="text" value="' + esc(t.deliverable) + '" placeholder="Видео, ссылка, файл…"></div>';
-    }
-    if (l.kind === 'test') {
-      var qs = (l.test && l.test.questions) || [];
-      var pass = (l.test && l.test.passScore) || 70;
-      return hint + '<div class="field"><label for="lfPassScore">Проходной балл, % правильных ответов</label><input class="input" id="lfPassScore" type="number" min="1" max="100" value="' + pass + '"></div>'
-        + '<p class="caption" style="margin:-8px 0 12px">Отметьте кружком правильный вариант в каждом вопросе</p>'
-        + '<div class="stack" id="questionsList">' + qs.map(questionRow).join('') + '</div>'
-        + '<button class="text-button" id="addQuestionBtn" style="margin:4px 0 14px">+ Добавить вопрос</button>';
-    }
-    var v = l.video || {};
-    return hint + '<div class="field"><label for="lfVideoUrl">Ссылка на видео</label><input class="input" id="lfVideoUrl" type="text" value="' + esc(v.url) + '" placeholder="YouTube, Vimeo, Kinescope…"></div>'
-      + '<div class="field"><label for="lfVideoNote">О чём видео</label><textarea id="lfVideoNote" rows="4" placeholder="Коротко — ученик увидит это под плеером">' + esc(v.note) + '</textarea></div>';
+  function newBlock(type) {
+    var b = { id: 'b' + Date.now().toString(36) + Math.random().toString(36).slice(2, 5), type: type };
+    if (type === 'video') { b.url = ''; b.note = ''; }
+    if (type === 'doc') b.text = '';
+    if (type === 'task') { b.task = ''; b.deliverable = ''; }
+    if (type === 'test') { b.passScore = 70; b.questions = [{ q: '', options: ['', '', ''], correct: 0 }]; }
+    return b;
   }
-  function questionRow(q, qi) {
-    q = q || { q: '', options: ['', '', ''], correct: 0 };
-    return '<div class="card" data-question="' + qi + '" style="padding:14px">'
-      + '<div class="field" style="margin-bottom:10px"><label>Вопрос ' + (qi + 1) + '</label><input class="input lfq-text" type="text" value="' + esc(q.q) + '" placeholder="Текст вопроса"></div>'
+  function questionRow(b, q, qi) {
+    var opts = (q.options || []).slice(); while (opts.length < 3) opts.push('');
+    return '<div class="c-question" data-question="' + qi + '">'
+      + '<div class="field" style="margin-bottom:10px"><label>Вопрос ' + (qi + 1) + '</label><input class="input bq-text" type="text" value="' + esc(q.q) + '" placeholder="Текст вопроса"></div>'
       + '<div class="stack" style="gap:8px">'
       + [0, 1, 2].map(function (oi) {
-          return '<label class="row" style="gap:10px"><input type="radio" name="correct-' + qi + '" class="lfq-correct" value="' + oi + '"' + (q.correct === oi ? ' checked' : '') + ' aria-label="Правильный ответ">'
-            + '<input class="input lfq-option" type="text" style="flex:1;min-width:0" value="' + esc(q.options && q.options[oi]) + '" placeholder="Вариант ' + (oi + 1) + '"></label>';
+          return '<label class="row" style="gap:10px"><input type="radio" name="correct-' + b.id + '-' + qi + '" class="lfq-correct" value="' + oi + '"' + (q.correct === oi ? ' checked' : '') + ' aria-label="Правильный ответ">'
+            + '<input class="input bq-option" type="text" style="flex:1;min-width:0" value="' + esc(opts[oi]) + '" placeholder="Вариант ' + (oi + 1) + '"></label>';
         }).join('')
       + '</div>'
-      + '<button class="text-button lfq-remove" style="margin-top:8px">Удалить вопрос</button>'
+      + '<button type="button" class="text-button" data-q-remove="' + qi + '" style="margin-top:6px">Удалить вопрос</button>'
       + '</div>';
   }
-  function readQuestionsFromDom() {
-    return $$('#questionsList [data-question]').map(function (card) {
-      var correct = 0;
-      $$('.lfq-correct', card).forEach(function (r) { if (r.checked) correct = parseInt(r.value, 10); });
-      return { q: $('.lfq-text', card).value.trim(), options: $$('.lfq-option', card).map(function (i) { return i.value.trim(); }), correct: correct };
-    });
+  function blockFields(b) {
+    if (b.type === 'doc') return '<div class="field" style="margin:0"><label>Текст</label><textarea class="bf-text" rows="7" placeholder="Материал, который читает ученик">' + esc(b.text) + '</textarea></div>';
+    if (b.type === 'task') return '<div class="field"><label>Что нужно сделать</label><textarea class="bf-task" rows="4" placeholder="Например: снимите руку сверху 20 секунд baby scratch">' + esc(b.task) + '</textarea></div>'
+      + '<div class="field" style="margin:0"><label>Что прислать на проверку</label><input class="input bf-deliv" type="text" value="' + esc(b.deliverable) + '" placeholder="Видео, ссылка, файл…"></div>';
+    if (b.type === 'test') return '<div class="field"><label>Проходной балл, % правильных ответов</label><input class="input bf-pass" type="number" min="1" max="100" value="' + (b.passScore || 70) + '"></div>'
+      + '<div class="stack" style="gap:18px">' + (b.questions || []).map(function (q, qi) { return questionRow(b, q, qi); }).join('') + '</div>'
+      + '<button type="button" class="text-button" data-q-add style="margin-top:6px">+ Добавить вопрос</button>';
+    return '<div class="field"><label>Ссылка на видео</label><input class="input bf-url" type="text" value="' + esc(b.url) + '" placeholder="YouTube, Vimeo, Kinescope…"></div>'
+      + '<div class="field" style="margin:0"><label>О чём видео</label><textarea class="bf-note" rows="3" placeholder="Коротко — ученик увидит это под плеером">' + esc(b.note) + '</textarea></div>';
   }
-  function renumberQuestions() {
-    $$('#questionsList [data-question]').forEach(function (card, i) {
-      card.dataset.question = i;
-      card.querySelector('label').textContent = 'Вопрос ' + (i + 1);
-      $$('.lfq-correct', card).forEach(function (r) { r.name = 'correct-' + i; });
-    });
+  function blockCard(b, i) {
+    return '<div class="card c-block" data-idx="' + i + '" data-bid="' + b.id + '">'
+      + '<div class="c-block-head">' + HANDLE
+        + '<span class="c-lesson-icon" aria-hidden="true">' + DJC.lessonIcon(b.type) + '</span>'
+        + '<b>' + (i + 1) + '. ' + DJC.kindLabel(b.type) + '</b>'
+        + '<button type="button" class="text-button" data-b-remove style="color:var(--dj-text-faint)">Удалить</button>'
+      + '</div>'
+      + '<p class="caption" style="margin:-4px 0 14px">' + BLOCK_HINT[b.type] + '</p>'
+      + blockFields(b)
+      + '</div>';
   }
 
   function renderLessonEdit(c, mi, li, backTo) {
     var isNew = li === null || li === undefined;
     var orig = isNew ? null : c.modules[mi].lessons[li];
-    var l = orig || { title: '', kind: 'video', min: 10, video: { note: '', url: '' } };
+    var draft = orig ? JSON.parse(JSON.stringify(orig.blocks || [])) : [];
+
     $('#t-lesson-edit').innerHTML =
       '<div class="row" style="margin-bottom:16px"><button class="icon" id="lessonBack" aria-label="Назад">←</button></div>'
       + title(isNew ? 'Новый урок' : 'Урок', esc(c.modules[mi].name))
-      + '<div class="field"><label for="lfTitle">Название урока</label><input class="input" id="lfTitle" type="text" value="' + esc(l.title) + '" placeholder="Например: Постановка руки"></div>'
       + '<div class="row" style="gap:10px;align-items:stretch">'
-        + '<div class="field" style="flex:1;min-width:0"><label for="lfKind">Тип урока</label><select id="lfKind">'
-          + ['video', 'doc', 'task', 'test'].map(function (k) { return '<option value="' + k + '"' + (l.kind === k ? ' selected' : '') + '>' + DJC.kindLabel(k) + '</option>'; }).join('')
-        + '</select></div>'
-        + '<div class="field" style="width:110px;flex:0 0 110px"><label for="lfMin">Минут</label><input class="input" id="lfMin" type="number" min="1" value="' + (l.min || 10) + '"></div>'
+        + '<div class="field" style="flex:1;min-width:0"><label for="lfTitle">Название урока</label><input class="input" id="lfTitle" type="text" value="' + esc(orig ? orig.title : '') + '" placeholder="Например: Постановка руки"></div>'
+        + '<div class="field" style="width:96px;flex:0 0 96px"><label for="lfMin">Минут</label><input class="input" id="lfMin" type="number" min="1" value="' + ((orig && orig.min) || 10) + '"></div>'
       + '</div>'
-      + '<div id="lessonContentFields">' + lessonContentFields(l) + '</div>'
-      + '<button class="primary full" id="saveLessonBtn">Сохранить урок</button>'
+      + '<h2 style="font-size:20px;margin:8px 0 4px">Содержание урока</h2>'
+      + '<p class="caption" style="margin-bottom:14px">Урок собирается из блоков — ученик проходит их сверху вниз. Порядок меняется за ручку слева.</p>'
+      + '<div class="stack" id="blocksList"></div>'
+      + '<p class="caption" style="margin:18px 0 10px">Добавить блок</p>'
+      + '<div class="c-add-blocks">'
+        + ['video', 'doc', 'task', 'test'].map(function (t) { return '<button type="button" class="secondary-button" data-add-block="' + t + '"><span class="c-lesson-icon" aria-hidden="true">' + DJC.lessonIcon(t) + '</span>' + DJC.kindLabel(t) + '</button>'; }).join('')
+      + '</div>'
+      + '<button class="primary full" id="saveLessonBtn" style="margin-top:24px">Сохранить урок</button>'
       + (isNew ? '' : '<button class="secondary-button full" id="deleteLessonBtn" style="margin-top:12px">Удалить урок</button>');
 
-    function wireContent() {
-      $$('#questionsList .lfq-remove').forEach(function (btn) {
-        btn.onclick = function () { btn.closest('[data-question]').remove(); renumberQuestions(); };
+    var list = $('#blocksList');
+
+    /* значения полей → черновик (до любого перерисовывания) */
+    function sync() {
+      $$('.c-block', list).forEach(function (card) {
+        var b = draft.find(function (x) { return x.id === card.dataset.bid; }); if (!b) return;
+        if (b.type === 'video') { b.url = $('.bf-url', card).value.trim(); b.note = $('.bf-note', card).value.trim(); }
+        if (b.type === 'doc') b.text = $('.bf-text', card).value.trim();
+        if (b.type === 'task') { b.task = $('.bf-task', card).value.trim(); b.deliverable = $('.bf-deliv', card).value.trim(); }
+        if (b.type === 'test') {
+          b.passScore = Math.min(100, Math.max(1, parseInt($('.bf-pass', card).value, 10) || 70));
+          b.questions = $$('.c-question', card).map(function (qc) {
+            var correct = 0;
+            $$('.lfq-correct', qc).forEach(function (r) { if (r.checked) correct = +r.value; });
+            return { q: $('.bq-text', qc).value.trim(), options: $$('.bq-option', qc).map(function (i) { return i.value.trim(); }), correct: correct };
+          });
+        }
       });
-      var add = $('#addQuestionBtn');
-      if (add) add.onclick = function () {
-        var list = $('#questionsList');
-        list.insertAdjacentHTML('beforeend', questionRow(null, list.children.length));
-        wireContent();
-        $('.lfq-text', list.lastElementChild).focus();
-      };
     }
-    wireContent();
+    function renderBlocks() {
+      list.innerHTML = draft.length ? draft.map(blockCard).join('')
+        : '<div class="card"><p class="secondary">Урок пока пустой. Добавьте блоки ниже — например, видео, под ним текст-конспект и в конце задание или тест.</p></div>';
+      $$('.c-block', list).forEach(function (card) {
+        var b = draft.find(function (x) { return x.id === card.dataset.bid; });
+        var rm = $('[data-b-remove]', card);
+        rm.addEventListener('click', function () {
+          if (!rm.dataset.sure) { rm.dataset.sure = '1'; rm.textContent = 'Точно удалить?'; rm.style.color = 'var(--dj-magenta)'; return; }
+          sync(); draft = draft.filter(function (x) { return x !== b; }); renderBlocks();
+        });
+        var addQ = $('[data-q-add]', card);
+        if (addQ) addQ.addEventListener('click', function () {
+          sync(); b.questions.push({ q: '', options: ['', '', ''], correct: 0 }); renderBlocks();
+          var qs = $$('[data-bid="' + b.id + '"] .bq-text', list); qs[qs.length - 1].focus();
+        });
+        $$('[data-q-remove]', card).forEach(function (btn) {
+          btn.addEventListener('click', function () { sync(); b.questions.splice(+btn.dataset.qRemove, 1); renderBlocks(); });
+        });
+      });
+    }
+    renderBlocks();
+    makeSortable(list, '.c-block', function (order) {
+      sync(); draft = order.map(function (i) { return draft[i]; }); renderBlocks();
+    });
+
+    $$('[data-add-block]').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        sync();
+        var b = newBlock(btn.dataset.addBlock);
+        draft.push(b); renderBlocks();
+        var card = $('[data-bid="' + b.id + '"]', list);
+        card.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        var f = $('input, textarea', card); if (f) f.focus({ preventScroll: true });
+      });
+    });
 
     function goBack() {
       if (backTo === 't-grading') { renderGrading(c); go('t-grading'); }
       else { renderModule(c, mi); go('t-module'); }
     }
     $('#lessonBack').addEventListener('click', goBack);
-    $('#lfKind').addEventListener('change', function (e) {
-      l = Object.assign({}, l, { kind: e.target.value });
-      $('#lessonContentFields').innerHTML = lessonContentFields(l);
-      wireContent();
-      if (l.kind === 'test' && !$('#questionsList').children.length) $('#addQuestionBtn').click();
-    });
+
     $('#saveLessonBtn').addEventListener('click', function () {
-      var kind = $('#lfKind').value;
-      var lesson = {
-        id: orig ? orig.id : 'n' + Date.now().toString(36),
-        title: $('#lfTitle').value.trim(), kind: kind, min: Math.max(1, parseInt($('#lfMin').value, 10) || 10),
-      };
-      if (!lesson.title) { window.say('Введите название урока'); $('#lfTitle').focus(); return; }
-      if (kind === 'video') lesson.video = { url: $('#lfVideoUrl').value.trim(), note: $('#lfVideoNote').value.trim() };
-      if (kind === 'doc') {
-        lesson.doc = { text: $('#lfDocText').value.trim() };
-        if (!lesson.doc.text) { window.say('Добавьте текст урока'); return; }
-      }
-      if (kind === 'task') {
-        lesson.task = { task: $('#lfTaskText').value.trim(), deliverable: $('#lfTaskDeliverable').value.trim() };
-        if (!lesson.task.task) { window.say('Опишите, что нужно сделать'); return; }
-      }
-      if (kind === 'test') {
-        var qs = readQuestionsFromDom();
-        if (!qs.length) { window.say('Добавьте хотя бы один вопрос'); return; }
-        for (var i = 0; i < qs.length; i++) {
-          if (!qs[i].q) { window.say('Заполните текст вопроса ' + (i + 1)); return; }
-          if (qs[i].options.filter(Boolean).length < 2) { window.say('В вопросе ' + (i + 1) + ' нужно минимум 2 варианта'); return; }
-          if (!qs[i].options[qs[i].correct]) { window.say('В вопросе ' + (i + 1) + ' отмечен пустой вариант'); return; }
+      sync();
+      var t = $('#lfTitle').value.trim();
+      if (!t) { window.say('Введите название урока'); $('#lfTitle').focus(); return; }
+      if (!draft.length) { window.say('Добавьте в урок хотя бы один блок'); return; }
+      for (var i = 0; i < draft.length; i++) {
+        var b = draft[i], n = 'Блок ' + (i + 1) + ' (' + DJC.kindLabel(b.type).toLowerCase() + '): ';
+        if (b.type === 'doc' && !b.text) { window.say(n + 'добавьте текст'); return; }
+        if (b.type === 'task' && !b.task) { window.say(n + 'опишите, что сделать'); return; }
+        if (b.type === 'test') {
+          if (!b.questions.length) { window.say(n + 'добавьте вопрос'); return; }
+          for (var q = 0; q < b.questions.length; q++) {
+            var qq = b.questions[q];
+            if (!qq.q) { window.say(n + 'заполните вопрос ' + (q + 1)); return; }
+            if (qq.options.filter(Boolean).length < 2) { window.say(n + 'в вопросе ' + (q + 1) + ' нужно минимум 2 варианта'); return; }
+            if (!qq.options[qq.correct]) { window.say(n + 'в вопросе ' + (q + 1) + ' отмечен пустой вариант'); return; }
+          }
         }
-        qs.forEach(function (q) {
-          var right = q.options[q.correct];
-          q.options = q.options.filter(Boolean);
-          q.correct = q.options.indexOf(right);
-        });
-        lesson.test = { questions: qs, passScore: Math.min(100, Math.max(1, parseInt($('#lfPassScore').value, 10) || 70)) };
       }
+      draft.forEach(function (b) {
+        if (b.type !== 'test') return;
+        b.questions.forEach(function (q) { var right = q.options[q.correct]; q.options = q.options.filter(Boolean); q.correct = q.options.indexOf(right); });
+      });
+      var lesson = { id: orig ? orig.id : 'n' + Date.now().toString(36), title: t, min: Math.max(1, parseInt($('#lfMin').value, 10) || 10), blocks: draft };
       if (isNew) c.modules[mi].lessons.push(lesson); else c.modules[mi].lessons[li] = lesson;
       save(isNew ? 'Урок добавлен' : 'Урок сохранён');
       goBack();
@@ -588,15 +629,16 @@
       .slice().sort(function (a, b) { return a.at < b.at ? 1 : -1; });
 
     $('#t-review').innerHTML =
-      back(scope.back) + title('Проверка заданий', 'Ответы учеников на уроки-задания. Примите или верните на доработку — ученик увидит ваш комментарий.')
+      back(scope.back) + title('Проверка заданий', 'Ответы учеников на задания в уроках. Примите или верните на доработку — ученик увидит ваш комментарий.')
       + '<div class="seg" id="reviewSeg"><button type="button" data-seg="pending" aria-pressed="' + (reviewSeg === 'pending') + '">На проверке · ' + pending.length + '</button><button type="button" data-seg="done" aria-pressed="' + (reviewSeg === 'done') + '">Проверено</button></div>'
       + '<div class="stack">'
       + (list.length ? list.map(function (s) {
           var c = window.courseById(s.courseId), l = findLesson(c, s.lessonId);
+          var tb = l && DJC.blocksOf(l).find(function (b) { return b.id === s.blockId; });
           return '<div class="card" data-sub="' + s.id + '">'
             + '<div class="c-review-head"><span class="portrait">' + DJC.initials(s.student) + '</span><div><h3 style="font-size:17px">' + esc(s.student) + '</h3><p class="caption">' + DJC.fmtDate(s.at).replace(/ \d{4}.*$/, '') + (scope.ids.length > 1 ? ' · ' + esc(c.title) : '') + '</p></div></div>'
             + '<p class="secondary" style="color:var(--dj-text-body);margin-bottom:4px">' + esc(l ? l.title : 'Урок удалён') + '</p>'
-            + (l && l.task ? '<p class="caption" style="margin-bottom:8px">Задание: ' + esc(l.task.task) + '</p>' : '')
+            + (tb ? '<p class="caption" style="margin-bottom:8px">Задание: ' + esc(tb.task) + '</p>' : '')
             + '<div class="c-answer">' + esc(s.answer) + '</div>'
             + (s.status === 'pending'
               ? '<div class="field" style="margin:14px 0 12px"><label for="rv-' + s.id + '">Комментарий ученику</label><textarea id="rv-' + s.id + '" rows="3" placeholder="Что получилось, что поправить"></textarea></div>'

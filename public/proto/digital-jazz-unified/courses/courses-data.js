@@ -22,43 +22,50 @@ window.COURSES = [
     learn: ['Держать ритм без метронома на слух', 'Три базовых скретча и их склейки', 'Собрать 30-секундный номер под бит', 'Разбирать чужие сеты по технике'],
     modules: [
       { name: 'Матчасть и постановка руки', lessons: [
-        { title: 'Пластинка, слипмат, игла — что от чего зависит', kind: 'video', min: 9,
-          video: { note: 'Разбираем три влияющих на скретч параметра: вес иглы, скольжение слипмата, натяжение пластинки.' } },
-        { title: 'Постановка руки: разбор частых ошибок', kind: 'video', min: 14,
-          video: { note: 'Съёмка руки сверху в замедлении + три типичные ошибки новичков.' } },
-        { title: 'Домашнее задание: видео постановки руки', kind: 'task', min: 5,
-          task: { task: 'Снимите руку сверху 20 секунд baby scratch на свободном тайминге.', deliverable: 'Видео-файл или ссылка на загрузку' } },
+        { id: '1-0-0', title: 'Пластинка, слипмат, игла — что от чего зависит', min: 9, blocks: [
+          { id: '1-0-0-b0', type: 'video', url: '', note: 'Три параметра, от которых зависит скретч: вес иглы, скольжение слипмата, натяжение пластинки.' },
+        ]},
+        { id: '1-0-1', title: 'Постановка руки', min: 25, blocks: [
+          { id: '1-0-1-b0', type: 'video', url: '', note: 'Съёмка руки сверху в замедлении и три типичные ошибки новичков.' },
+          { id: '1-0-1-b1', type: 'doc', text: 'Чек-лист постановки:\n\n— кисть расслаблена, пальцы лежат на краю пластинки, а не на этикетке;\n— локоть свободный, движение идёт от предплечья;\n— пластинку не давим: она скользит вместе со слипматом.' },
+          { id: '1-0-1-b2', type: 'task', task: 'Снимите руку сверху 20 секунд baby scratch на свободном тайминге.', deliverable: 'Видео или ссылка на загрузку' },
+        ]},
       ]},
       { name: 'Baby scratch и chirp', lessons: [
-        { title: 'Baby scratch — техника и ритм', kind: 'video', min: 11,
-          video: { note: 'Движение вперёд-назад под метроном на 4 скорости.' } },
-        { title: 'Chirp: добавляем щелчок кроссфейдером', kind: 'video', min: 13,
-          video: { note: 'Синхронизация руки на пластинке с щелчком кроссфейдера.' } },
-        { title: 'Материалы: разбор движения по кадрам', kind: 'doc', min: 4,
-          doc: { text: 'Покадровая раскладка baby scratch и chirp.\n\n1. Рука толкает пластинку вперёд на полтакта — звук идёт вверх по тону.\n2. Возврат руки — звук идёт вниз. Кроссфейдер в это время держим открытым.\n3. Для chirp добавляем короткое закрытие кроссфейдера ровно в момент смены направления руки — получается щелчок.\n\nЧастая ошибка — щёлкать кроссфейдером с опережением. Тренируйте отдельно руку и отдельно фейдер, потом соединяйте.' } },
+        { id: '1-1-0', title: 'Baby scratch — техника и ритм', min: 15, blocks: [
+          { id: '1-1-0-b0', type: 'video', url: '', note: 'Движение вперёд-назад под метроном на четырёх скоростях.' },
+          { id: '1-1-0-b1', type: 'doc', text: 'Покадровая раскладка.\n\n1. Рука толкает пластинку вперёд на полтакта — звук идёт вверх по тону.\n2. Возврат руки — звук идёт вниз. Кроссфейдер открыт.\n\nЧастая ошибка — торопить возврат. Считайте вслух «раз-и».' },
+        ]},
+        { id: '1-1-1', title: 'Chirp: щелчок кроссфейдером', min: 18, blocks: [
+          { id: '1-1-1-b0', type: 'video', url: '', note: 'Синхронизация руки на пластинке с закрытием кроссфейдера.' },
+          { id: '1-1-1-b1', type: 'doc', text: 'Щёлкайте кроссфейдером ровно в момент смены направления руки — не раньше. Тренируйте отдельно руку и отдельно фейдер, потом соединяйте.' },
+          { id: '1-1-1-b2', type: 'test', passScore: 100, questions: [
+            { q: 'Когда закрывать кроссфейдер в chirp?', options: ['В момент смены направления руки', 'В начале движения вперёд', 'Когда звук затих'], correct: 0 },
+          ]},
+        ]},
       ]},
       { name: 'Transformer и flare', lessons: [
-        { title: 'Transformer scratch', kind: 'video', min: 16,
-          video: { note: 'Рваный ритм кроссфейдером без движения пластинки.' } },
-        { title: 'Flare: три варианта щелчка', kind: 'video', min: 15,
-          video: { note: 'Flare на 2, 3 и 4 щелчка — от простого к сложному.' } },
+        { id: '1-2-0', title: 'Transformer scratch', min: 16, blocks: [
+          { id: '1-2-0-b0', type: 'video', url: '', note: 'Рваный ритм кроссфейдером без движения пластинки.' },
+        ]},
+        { id: '1-2-1', title: 'Flare: три варианта щелчка', min: 15, blocks: [
+          { id: '1-2-1-b0', type: 'video', url: '', note: 'Flare на 2, 3 и 4 щелчка — от простого к сложному.' },
+        ]},
       ]},
       { name: 'Собираем номер', lessons: [
-        { title: 'Склейка скретчей в фразу', kind: 'video', min: 12,
-          video: { note: 'Соединяем baby scratch, chirp и transformer во фразу на 8 тактов.' } },
-        { title: 'Выбор бита под номер', kind: 'video', min: 8,
-          video: { note: 'На что смотреть при выборе бита: темп, пустое место под скретч, тональность.' } },
-        { title: 'Финальное задание: 30 секунд под бит', kind: 'task', min: 5,
-          task: { task: 'Соберите номер на 30 секунд под любой бит, используя минимум 3 изученные техники.', deliverable: 'Видео или аудиозапись номера' } },
-        { title: 'Финальный тест: термины и техника', kind: 'test', min: 6,
-          test: {
-            questions: [
-              { q: 'Что отличает chirp от baby scratch?', options: ['Щелчок кроссфейдером в момент смены направления руки', 'Более тяжёлая игла', 'Скретч только одной рукой'], correct: 0 },
-              { q: 'Transformer scratch делается в основном за счёт…', options: ['Движения пластинки вперёд-назад', 'Ритмичной работы кроссфейдером', 'Смены скорости вращения'], correct: 1 },
-              { q: 'Сколько базовых вариантов щелчка разобрано в уроке про flare?', options: ['Два', 'Три', 'Пять'], correct: 1 },
-            ],
-            passScore: 70,
-          } },
+        { id: '1-3-0', title: 'Склейка скретчей в фразу', min: 14, blocks: [
+          { id: '1-3-0-b0', type: 'video', url: '', note: 'Соединяем baby scratch, chirp и transformer во фразу на 8 тактов.' },
+          { id: '1-3-0-b1', type: 'doc', text: 'Как выбрать бит под номер: темп 85–95 BPM, пустое место под скретч, тональность, которая не спорит с пластинкой.' },
+        ]},
+        { id: '1-3-1', title: 'Финал: 30 секунд под бит', min: 20, blocks: [
+          { id: '1-3-1-b0', type: 'doc', text: 'Финальная работа курса. Соберите короткий номер и пройдите итоговый тест — после проверки номера автором откроется сертификат.' },
+          { id: '1-3-1-b1', type: 'task', task: 'Соберите номер на 30 секунд под любой бит, используя минимум 3 изученные техники.', deliverable: 'Видео или аудиозапись номера' },
+          { id: '1-3-1-b2', type: 'test', passScore: 70, questions: [
+            { q: 'Что отличает chirp от baby scratch?', options: ['Щелчок кроссфейдером в момент смены направления руки', 'Более тяжёлая игла', 'Скретч только одной рукой'], correct: 0 },
+            { q: 'Transformer scratch делается в основном за счёт…', options: ['Движения пластинки вперёд-назад', 'Ритмичной работы кроссфейдером', 'Смены скорости вращения'], correct: 1 },
+            { q: 'Сколько вариантов щелчка разобрано в уроке про flare?', options: ['Два', 'Три', 'Пять'], correct: 1 },
+          ]},
+        ]},
       ]},
     ],
   },
@@ -163,35 +170,47 @@ window.normalizeCourses = function () {
     c.certificate = c.certificate || { enabled: true, requireTests: true, requireTasks: true };
     c.learn = c.learn || [];
     c.modules.forEach(function (m, mi) {
-      m.lessons.forEach(function (l, li) { if (!l.id) l.id = c.id + '-' + mi + '-' + li; });
+      m.lessons.forEach(function (l, li) {
+        if (!l.id) l.id = c.id + '-' + mi + '-' + li;
+        /* старый формат «один урок = один тип» → урок из одного блока */
+        if (!l.blocks) {
+          var k = l.kind || 'video', src = l[k] || {}, b = { id: l.id + '-b0', type: k };
+          if (k === 'video') { b.url = src.url || ''; b.note = src.note || ''; }
+          if (k === 'doc') b.text = src.text || '';
+          if (k === 'task') { b.task = src.task || ''; b.deliverable = src.deliverable || ''; }
+          if (k === 'test') { b.questions = src.questions || []; b.passScore = src.passScore || 70; }
+          l.blocks = [b];
+          delete l.kind; delete l[k];
+        }
+        l.blocks.forEach(function (b, bi) { if (!b.id) b.id = l.id + '-b' + bi; });
+      });
     });
   });
+  (window.SUBMISSIONS || []).forEach(function (s) { if (!s.blockId) s.blockId = s.lessonId + '-b0'; });
 };
-window.normalizeCourses();
-window.COURSES[1].grading.testAttempts = 3;
 
 /* Запись ученика на курсы: done — id пройденных уроков, tests — результаты тестов по id урока */
 window.ENROLLMENTS = [
-  { courseId: 1, status: 'active', startedAt: '2026-09-02', done: ['1-0-0', '1-0-1', '1-0-2', '1-1-0', '1-1-1'], tests: {} },
+  { courseId: 1, status: 'active', startedAt: '2026-09-02', done: ['1-0-0', '1-0-1', '1-1-0'], tests: {} },
   { courseId: 3, status: 'done', startedAt: '2026-08-10', done: ['3-0-0', '3-0-1', '3-1-0', '3-1-1', '3-2-0', '3-2-1'], tests: {}, certAt: '2026-09-28' },
 ];
 window.WISHLIST = [2];
 
 /* Сдачи заданий: status 'pending' (ждёт проверки) | 'accepted' (принято) | 'returned' (на доработку) */
 window.SUBMISSIONS = [
-  { id: 's1', courseId: 1, lessonId: '1-0-2', student: 'DJ Леший', at: '2026-09-04', status: 'accepted',
+  { id: 's1', courseId: 1, lessonId: '1-0-1', blockId: '1-0-1-b2', student: 'DJ Леший', at: '2026-09-04', status: 'accepted',
     answer: 'Снял сверху на телефон, 20 секунд baby scratch: youtu.be/demo-hand',
     comment: 'Рука стоит ровно, кисть расслаблена — принято. Следи за локтем на быстрых движениях.' },
   { id: 's2', courseId: 3, lessonId: '3-1-1', student: 'DJ Леший', at: '2026-08-20', status: 'accepted',
     answer: 'Трек-лист на час для бара «Ласточка»: open.spotify.com/demo — разогрев до 0:20, пик 0:20–0:45, спад после.',
     comment: 'Хорошая драматургия, пик чуть затянут — но засчитываю.' },
-  { id: 's3', courseId: 1, lessonId: '1-0-2', student: 'Аня К.', at: '2026-10-11', status: 'pending',
+  { id: 's3', courseId: 1, lessonId: '1-0-1', blockId: '1-0-1-b2', student: 'Аня К.', at: '2026-10-11', status: 'pending',
     answer: 'Видео постановки руки: drive.google.com/demo-anya — снимала сверху, 20 секунд, темп 90.' },
-  { id: 's4', courseId: 1, lessonId: '1-0-2', student: 'Тимур С.', at: '2026-10-12', status: 'pending',
+  { id: 's4', courseId: 1, lessonId: '1-0-1', blockId: '1-0-1-b2', student: 'Тимур С.', at: '2026-10-12', status: 'pending',
     answer: 'youtu.be/demo-timur — на быстром темпе рука уходит в сторону, не могу удержать.' },
-  { id: 's5', courseId: 1, lessonId: '1-3-2', student: 'Оля Д.', at: '2026-10-05', status: 'accepted',
+  { id: 's5', courseId: 1, lessonId: '1-3-1', blockId: '1-3-1-b1', student: 'Оля Д.', at: '2026-10-05', status: 'accepted',
     answer: 'Номер на 30 секунд под бит 92 BPM: youtu.be/demo-olya', comment: 'Чисто, flare уверенный. Принято!' },
-  { id: 's6', courseId: 1, lessonId: '1-3-2', student: 'Марго Л.', at: '2026-10-09', status: 'returned',
+  { id: 's6', courseId: 1, lessonId: '1-3-1', blockId: '1-3-1-b1', student: 'Марго Л.', at: '2026-10-09', status: 'returned',
     answer: 'youtu.be/demo-margo', comment: 'Только две техники из трёх — добавь transformer и пришли снова.' },
 ];
 
@@ -208,11 +227,14 @@ window.ROSTER = {
   5: [],
 };
 
+window.normalizeCourses();
+window.COURSES[1].grading.testAttempts = 3;
+
 /* Демо-состояние живёт в браузере (localStorage): созданный автором курс, правки программы, цена,
    оценки, запись, прогресс и сдачи заданий не пропадают при переходе между каталогом,
    кабинетом автора и кабинетом ученика. resetCourses() возвращает исходные демо-данные. */
 (function () {
-  var KEY = 'dj-courses-v2';
+  var KEY = 'dj-courses-v3';
   try {
     var saved = JSON.parse(localStorage.getItem(KEY) || 'null');
     if (saved && Array.isArray(saved.courses)) {
