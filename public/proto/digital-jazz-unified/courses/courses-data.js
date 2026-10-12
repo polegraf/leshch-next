@@ -64,7 +64,7 @@ window.COURSES = [
   },
   {
     id: 2, slug: 'mixing-mastering', title: 'Сведение и мастеринг в Ableton', instructor: 'DJ Вектор',
-    topic: 'Продюсирование', level: 'Средний', price: 7900, grad: 'var(--dj-avatar-3)',
+    topic: 'Продюсирование', level: 'Средний', price: 7900, oldPrice: 9900, grad: 'var(--dj-avatar-3)',
     status: 'published', students: 89, revenueTotal: 703100, revenueMonth: 47400, completion: 48,
     access: { free: false, durationType: 'timed', days: 180 },
     summary: 'От сырого микса до трека, который не стыдно отдать на мастеринг: громкость, панорама, компрессия шины, референс-трек. Доступ открыт на 180 дней — курс обновляется под актуальную версию Ableton, старые записи закрываются.',
@@ -149,12 +149,51 @@ window.COURSES = [
 
 window.courseById = id => window.COURSES.find(c => String(c.id) === String(id));
 
-/* Запись ученика DJ Леший (демо-профиль этой сборки) на курсы — общее состояние для student.html */
+/* Демо-профиль ученика этой сборки */
+window.STUDENT_NAME = 'DJ Леший';
+
+/* Настройки по умолчанию + постоянные id уроков (прогресс и сдачи привязаны к id, а не к порядку,
+   поэтому автор может переставлять уроки, не ломая прогресс учеников).
+   grading:     { reviewTasks — задания проверяет автор (иначе засчитываются сразу), testAttempts — попыток на тест, 0 = без ограничений }
+   certificate: { enabled, requireTests — все тесты сданы, requireTasks — все задания приняты } */
+window.normalizeCourses = function () {
+  window.COURSES.forEach(function (c) {
+    c.access = c.access || { free: false, durationType: 'unlimited', days: 30 };
+    c.grading = c.grading || { reviewTasks: true, testAttempts: 0 };
+    c.certificate = c.certificate || { enabled: true, requireTests: true, requireTasks: true };
+    c.learn = c.learn || [];
+    c.modules.forEach(function (m, mi) {
+      m.lessons.forEach(function (l, li) { if (!l.id) l.id = c.id + '-' + mi + '-' + li; });
+    });
+  });
+};
+window.normalizeCourses();
+window.COURSES[1].grading.testAttempts = 3;
+
+/* Запись ученика на курсы: done — id пройденных уроков, tests — результаты тестов по id урока */
 window.ENROLLMENTS = [
-  { courseId: 1, progress: 42, status: 'active', lastLesson: { module: 1, lesson: 1 }, nextLesson: { module: 2, lesson: 1 } },
-  { courseId: 3, progress: 100, status: 'done' },
+  { courseId: 1, status: 'active', startedAt: '2026-09-02', done: ['1-0-0', '1-0-1', '1-0-2', '1-1-0', '1-1-1'], tests: {} },
+  { courseId: 3, status: 'done', startedAt: '2026-08-10', done: ['3-0-0', '3-0-1', '3-1-0', '3-1-1', '3-2-0', '3-2-1'], tests: {}, certAt: '2026-09-28' },
 ];
 window.WISHLIST = [2];
+
+/* Сдачи заданий: status 'pending' (ждёт проверки) | 'accepted' (принято) | 'returned' (на доработку) */
+window.SUBMISSIONS = [
+  { id: 's1', courseId: 1, lessonId: '1-0-2', student: 'DJ Леший', at: '2026-09-04', status: 'accepted',
+    answer: 'Снял сверху на телефон, 20 секунд baby scratch: youtu.be/demo-hand',
+    comment: 'Рука стоит ровно, кисть расслаблена — принято. Следи за локтем на быстрых движениях.' },
+  { id: 's2', courseId: 3, lessonId: '3-1-1', student: 'DJ Леший', at: '2026-08-20', status: 'accepted',
+    answer: 'Трек-лист на час для бара «Ласточка»: open.spotify.com/demo — разогрев до 0:20, пик 0:20–0:45, спад после.',
+    comment: 'Хорошая драматургия, пик чуть затянут — но засчитываю.' },
+  { id: 's3', courseId: 1, lessonId: '1-0-2', student: 'Аня К.', at: '2026-10-11', status: 'pending',
+    answer: 'Видео постановки руки: drive.google.com/demo-anya — снимала сверху, 20 секунд, темп 90.' },
+  { id: 's4', courseId: 1, lessonId: '1-0-2', student: 'Тимур С.', at: '2026-10-12', status: 'pending',
+    answer: 'youtu.be/demo-timur — на быстром темпе рука уходит в сторону, не могу удержать.' },
+  { id: 's5', courseId: 1, lessonId: '1-3-2', student: 'Оля Д.', at: '2026-10-05', status: 'accepted',
+    answer: 'Номер на 30 секунд под бит 92 BPM: youtu.be/demo-olya', comment: 'Чисто, flare уверенный. Принято!' },
+  { id: 's6', courseId: 1, lessonId: '1-3-2', student: 'Марго Л.', at: '2026-10-09', status: 'returned',
+    answer: 'youtu.be/demo-margo', comment: 'Только две техники из трёх — добавь transformer и пришли снова.' },
+];
 
 /* Ростер — выборка последних активных учеников (демо, не весь список) */
 window.ROSTER = {
@@ -168,3 +207,32 @@ window.ROSTER = {
   ],
   5: [],
 };
+
+/* Демо-состояние живёт в браузере (localStorage): созданный автором курс, правки программы, цена,
+   оценки, запись, прогресс и сдачи заданий не пропадают при переходе между каталогом,
+   кабинетом автора и кабинетом ученика. resetCourses() возвращает исходные демо-данные. */
+(function () {
+  var KEY = 'dj-courses-v2';
+  try {
+    var saved = JSON.parse(localStorage.getItem(KEY) || 'null');
+    if (saved && Array.isArray(saved.courses)) {
+      window.COURSES = saved.courses;
+      if (Array.isArray(saved.enrollments)) window.ENROLLMENTS = saved.enrollments;
+      if (Array.isArray(saved.wishlist)) window.WISHLIST = saved.wishlist;
+      if (Array.isArray(saved.submissions)) window.SUBMISSIONS = saved.submissions;
+      window.normalizeCourses();
+    }
+  } catch (e) {}
+  window.saveCourses = function () {
+    try {
+      localStorage.setItem(KEY, JSON.stringify({
+        courses: window.COURSES, enrollments: window.ENROLLMENTS,
+        wishlist: window.WISHLIST, submissions: window.SUBMISSIONS,
+      }));
+    } catch (e) {}
+  };
+  window.resetCourses = function () {
+    try { localStorage.removeItem(KEY); } catch (e) {}
+    location.reload();
+  };
+})();
