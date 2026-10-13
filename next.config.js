@@ -25,6 +25,7 @@ const nextConfig = {
       { source: '/proto/dj-intro-scatter', destination: '/proto/dj-intro-scatter/index.html' },
       { source: '/proto/dj-intro-v4', destination: '/proto/dj-intro-v4/index.html' },
       { source: '/proto/dj-intro-v5', destination: '/proto/dj-intro-v5/index.html' },
+      { source: '/proto/dj-intro-v6', destination: '/proto/dj-intro-v6/index.html' },
       { source: '/proto/dj-intro-ui', destination: '/proto/dj-intro-ui/index.html' },
     ];
   },
