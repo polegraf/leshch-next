@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Win Their Hearts - Interactive 3D</title>
-  <script>/* ?embed=1 — режим плитки на главной: без текста и без скролла */
+  <script>/* ?embed=1 — режим плитки на главной: без скролла, сильнее реакция */
     window.EMBED = /[?&]embed=1/.test(location.search);
     if (window.EMBED) document.documentElement.classList.add('embed');
   </script>
@@ -53,7 +53,6 @@
       opacity: 0.9;
     }
     html.embed body { min-height: 0; height: 100%; overflow: hidden; }
-    html.embed .overlay { display: none; }
   </style>
   <script>/**
  * @license
@@ -126,6 +125,13 @@
       setPointer(e.clientX, e.clientY);
       burst = 1;
     }, { passive: true });
+    // Плитка на главной (десктоп): iframe не ловит мышь, координаты присылает родитель
+    window.addEventListener('message', (e) => {
+      const d = e.data;
+      if (!d || d.type !== 'tile-pointer') return;
+      setPointer(d.x * window.innerWidth, d.y * window.innerHeight);
+      if (d.down) burst = 1;
+    });
     // touchmove дополнительно: надёжно работает во время прокрутки пальцем
     window.addEventListener('touchmove', (e) => {
       const t = e.touches[0];
@@ -261,8 +267,9 @@
       heartMaterial.uniforms.uMouse.value.set(mouse.x, mouse.y);
       heartMaterial.uniforms.uBoost.value = burst;
 
-      heartMesh.rotation.y = mouse.x * 0.4;
-      heartMesh.rotation.x = -mouse.y * 0.4;
+      const ROT = window.EMBED ? 0.7 : 0.4;
+      heartMesh.rotation.y = mouse.x * ROT;
+      heartMesh.rotation.x = -mouse.y * ROT;
 
       // Указатель в мировых координатах: частицы точно следуют за курсором/пальцем
       const halfH = TAN_HALF_FOV * camera.position.z;

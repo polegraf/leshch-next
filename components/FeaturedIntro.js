@@ -36,7 +36,16 @@ const withQuery = (url, q) => url + (url.includes('?') ? '&' : '?') + q;
 
 export function IntroThumb({ src, poster, ratio, interactive }) {
   const box = useRef(null);
+  const frame = useRef(null);
   const [live, setLive] = useState(false);
+
+  // Десктоп: iframe без pointer-events, поэтому передаём курсор внутрь сообщением (x, y — доли плитки 0..1)
+  const sendPointer = (e, down) => {
+    const w = frame.current && frame.current.contentWindow;
+    if (!w || !box.current) return;
+    const r = box.current.getBoundingClientRect();
+    w.postMessage({ type: 'tile-pointer', x: (e.clientX - r.left) / r.width, y: (e.clientY - r.top) / r.height, down: !!down }, '*');
+  };
 
   useEffect(() => {
     if (!box.current) return;
@@ -48,10 +57,13 @@ export function IntroThumb({ src, poster, ratio, interactive }) {
   return (
     <div
       ref={box}
+      onMouseMove={interactive ? undefined : (e) => sendPointer(e)}
+      onMouseEnter={interactive ? undefined : (e) => sendPointer(e, true)}
       style={{ position: 'relative', width: '100%', aspectRatio: ratio || '4 / 5', background: `#06040B ${poster ? `url(${poster}) center / cover` : ''}`, overflow: 'hidden' }}
     >
       {live && (
         <iframe
+          ref={frame}
           src={withQuery(src, 'embed=1')}
           title="Preview"
           tabIndex={-1}
