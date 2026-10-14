@@ -53,6 +53,8 @@
       opacity: 0.9;
     }
     html.embed body { min-height: 0; height: 100%; overflow: hidden; }
+    /* плитка на мобиле: горизонтальный палец остаётся у анимации, вертикальный листает страницу */
+    html.embed, html.embed body, html.embed canvas { touch-action: pan-y; }
   </style>
   <script>/**
  * @license
@@ -114,9 +116,12 @@
     let lastInput = -Infinity;   // performance.now() последнего касания/движения
     let burst = 0;               // импульс брызг при нажатии/тапе
 
+    // В плитке поле маленькое: усиливаем отклик, полный поворот уже на ~70% ширины
+    const GAIN = window.EMBED ? 1.45 : 1;
+    const clamp1 = (v) => Math.max(-1, Math.min(1, v));
     function setPointer(cx, cy) {
-      mouse.targetX = (cx / window.innerWidth) * 2 - 1;
-      mouse.targetY = -(cy / window.innerHeight) * 2 + 1;
+      mouse.targetX = clamp1(((cx / window.innerWidth) * 2 - 1) * GAIN);
+      mouse.targetY = clamp1((-(cy / window.innerHeight) * 2 + 1) * GAIN);
       lastInput = performance.now();
     }
 
@@ -132,6 +137,10 @@
       setPointer(d.x * window.innerWidth, d.y * window.innerHeight);
       if (d.down) burst = 1;
     });
+    window.addEventListener('touchstart', (e) => {
+      const t = e.touches[0];
+      if (t) { setPointer(t.clientX, t.clientY); burst = 1; }
+    }, { passive: true });
     // touchmove дополнительно: надёжно работает во время прокрутки пальцем
     window.addEventListener('touchmove', (e) => {
       const t = e.touches[0];
