@@ -1,6 +1,7 @@
 'use client';
 import { useState, useRef, useEffect } from 'react';
 import { saveProjects, saveSettings, toSlug } from '@/lib/db';
+import { INTRO_ITEM, INTRO_SRC } from './FeaturedIntro';
 
 const HN = { fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" };
 const R2_PUBLIC_URL = 'https://pub-1d609b9fa58348d39ec4c351d671a989.r2.dev';
@@ -42,7 +43,7 @@ function CoverMedia({ project, style }) {
 
 function ThumbMedia({ project }) {
   const src = project.thumbnail || project.cover;
-  const type = project.thumbnail ? (project.thumbType || 'image') : project.coverType;
+  const type = project.thumbType === 'embed' ? 'image' : project.thumbnail ? (project.thumbType || 'image') : project.coverType;
   if (!src) return <div style={{ width: '100%', height: '100%', background: '#111' }} />;
   if (type === 'video') return <video src={src} autoPlay muted loop playsInline style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
   return <img src={src} alt={project.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />;
@@ -233,6 +234,17 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
     setEditId(id);
   };
 
+  // Плитка Digital Jazz: создаётся первой в списке (= первой в сетке), дальше — как обычный проект
+  const addIntro = async () => {
+    const item = { ...INTRO_ITEM, id: Date.now() };
+    const newProjects = [item, ...projects];
+    setProjects(newProjects);
+    setSaving(true);
+    try { await saveProjects(newProjects, adminPassword); }
+    catch (e) { alert('Save failed: ' + e.message); }
+    setSaving(false);
+  };
+
   const saveProject = async () => {
     const updated = { ...form, category: form.categoryStr.split(',').map(s => s.trim()).filter(Boolean) };
     const newProjects = projects.find(p => p.id === form.id)
@@ -345,7 +357,13 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
           <div style={{ maxWidth: 780 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: 24 }}>
               <h2 style={{ fontSize: 26, fontWeight: 700, letterSpacing: '-.03em' }}>Projects <span style={{ fontSize: 13, color: 'rgba(255,255,255,.25)', fontWeight: 400 }}>({projects.length})</span></h2>
-              <button onClick={startNew} style={{ padding: '9px 20px', background: '#fff', color: '#000', border: 'none', fontSize: 10, fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer', ...HN }}>+ New</button>
+              <div style={{ display: 'flex', gap: 8 }}>
+                {!projects.some(p => p.thumbType === 'embed' && p.embedUrl === INTRO_SRC) && (
+                  <button onClick={addIntro} title="Добавить плитку Digital Jazz в базу — дальше она редактируется и двигается как обычный проект"
+                    style={{ padding: '9px 16px', background: 'transparent', color: '#C0FA35', border: '1px solid rgba(192,250,53,.5)', fontSize: 10, fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer', ...HN }}>+ Digital Jazz intro</button>
+                )}
+                <button onClick={startNew} style={{ padding: '9px 20px', background: '#fff', color: '#000', border: 'none', fontSize: 10, fontWeight: 700, letterSpacing: '.08em', textTransform: 'uppercase', cursor: 'pointer', ...HN }}>+ New</button>
+              </div>
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               {projects.map(p => (
@@ -420,15 +438,30 @@ export default function AdminPanel({ projects: initialProjects, seo: initialSeo,
             <div style={{ marginBottom: 20 }}>
               <label style={labelStyle}>Thumbnail — index grid</label>
               <div style={{ display: 'flex', gap: 8, marginBottom: 10 }}>
-                {['image', 'video'].map(t => (
-                  <button key={t} onClick={() => setForm({ ...form, thumbType: t })}
+                {['image', 'video', 'embed'].map(t => (
+                  <button key={t} onClick={() => setForm({ ...form, thumbType: t, ...(t === 'embed' && !form.embedUrl ? { embedUrl: INTRO_SRC } : {}) })}
                     style={{ padding: '5px 14px', background: (form.thumbType || 'image') === t ? '#fff' : 'transparent', color: (form.thumbType || 'image') === t ? '#000' : 'rgba(255,255,255,.4)', border: '1px solid rgba(255,255,255,.15)', fontSize: 10, cursor: 'pointer', ...HN, fontWeight: 700, letterSpacing: '.06em', textTransform: 'uppercase', borderRadius: 2 }}>{t}</button>
                 ))}
               </div>
+              {form.thumbType === 'embed' && (
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 140px', gap: 10, marginBottom: 10 }}>
+                  <div>
+                    <label style={labelStyle}>Embed URL — живая страница в плитке, по клику на весь экран</label>
+                    <input value={form.embedUrl || ''} onChange={e => setForm({ ...form, embedUrl: e.target.value })} placeholder={INTRO_SRC} style={inputStyle} />
+                  </div>
+                  <div>
+                    <label style={labelStyle}>Ratio</label>
+                    <select value={form.embedRatio || '4 / 5'} onChange={e => setForm({ ...form, embedRatio: e.target.value })} style={selectStyle}>
+                      {['4 / 5', '1 / 1', '3 / 4', '16 / 9'].map(r => <option key={r} value={r}>{r.replace(/ /g, '')}</option>)}
+                    </select>
+                  </div>
+                  <div style={{ gridColumn: '1 / -1', fontSize: 10, color: 'rgba(255,255,255,.35)', letterSpacing: '.04em' }}>Картинка ниже — постер, пока страница грузится.</div>
+                </div>
+              )}
               <input ref={thumbRef} type="file" accept={(form.thumbType || 'image') === 'video' ? 'video/*' : 'image/*'} style={{ display: 'none' }} onChange={handleThumb} />
               <div style={{ width: '100%', height: 160, background: '#0a0a0a', border: '1px dashed rgba(255,255,255,.1)', cursor: 'pointer', overflow: 'hidden' }} onClick={() => thumbRef.current?.click()}>
                 {form.thumbnail
-                  ? <CoverMedia project={{ ...form, cover: form.thumbnail, coverType: form.thumbType || 'image' }} style={{ width: '100%', height: '100%' }} />
+                  ? <CoverMedia project={{ ...form, cover: form.thumbnail, coverType: form.thumbType === 'video' ? 'video' : 'image' }} style={{ width: '100%', height: '100%' }} />
                   : <div style={{ height: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
                       <div style={{ fontSize: 22, color: 'rgba(255,255,255,.15)' }}>+</div>
                       <div style={{ fontSize: 10, color: 'rgba(255,255,255,.25)', letterSpacing: '.07em', textTransform: 'uppercase' }}>Upload thumbnail</div>

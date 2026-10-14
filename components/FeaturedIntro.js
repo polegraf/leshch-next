@@ -1,21 +1,40 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 
-// Digital Jazz — заходная анимация (WebGL) как плитка в сетке работ.
-// IntroThumb — превью для плитки: постер + живой iframe, пока плитка рядом с экраном.
-// IntroOverlay — та же анимация на весь экран (десктоп), закрытие крестиком или Esc.
+// Плитка-«встраивание» в сетке работ: живая страница в iframe (например, WebGL-интро Digital Jazz).
+// Проект в админке: Thumbnail type = embed, Embed URL, постер — обычная загрузка thumbnail.
+// IntroThumb — превью в плитке (iframe монтируется, только когда плитка рядом с экраном).
+// IntroOverlay — та же страница на весь экран (десктоп), закрытие крестиком или Esc.
 export const INTRO_SRC = '/proto/dj-intro-en/index.html';
+export const INTRO_POSTER = '/proto/dj-intro-en/poster-tile.webp';
 
+// Шаблон для кнопки «+ Digital Jazz intro» в админке и запасной вариант на главной,
+// пока такой проект не создан в базе.
 export const INTRO_ITEM = {
   id: 'dj-intro',
-  __intro: true,
   title: 'Digital Jazz — Landing Intro',
   subtitle: 'Art direction · UI · WebGL',
-  year: 2026,
-  ready: true,
+  year: '2026',
+  location: '',
+  category: ['ui', 'motion'],
+  type: 'work',
+  thumbType: 'embed',
+  embedUrl: INTRO_SRC,
+  thumbnail: INTRO_POSTER,
+  embedRatio: '4 / 5',
+  coverType: 'image',
+  cover: '',
+  desc: '',
+  blocks: [],
+  featured: false,
+  ready: false,
 };
 
-export function IntroThumb({ isMobile }) {
+export const isEmbed = (p) => p && p.thumbType === 'embed' && !!p.embedUrl;
+
+const withQuery = (url, q) => url + (url.includes('?') ? '&' : '?') + q;
+
+export function IntroThumb({ src, poster, ratio }) {
   const box = useRef(null);
   const [live, setLive] = useState(false);
 
@@ -29,12 +48,12 @@ export function IntroThumb({ isMobile }) {
   return (
     <div
       ref={box}
-      style={{ position: 'relative', width: '100%', aspectRatio: '4 / 5', background: '#06040B url(/proto/dj-intro-en/poster-tile.webp) center / cover', overflow: 'hidden' }}
+      style={{ position: 'relative', width: '100%', aspectRatio: ratio || '4 / 5', background: `#06040B ${poster ? `url(${poster}) center / cover` : ''}`, overflow: 'hidden' }}
     >
       {live && (
         <iframe
-          src={`${INTRO_SRC}?embed=1`}
-          title="Digital Jazz — landing intro (preview)"
+          src={withQuery(src, 'embed=1')}
+          title="Preview"
           tabIndex={-1}
           aria-hidden="true"
           style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0, pointerEvents: 'none', display: 'block' }}
@@ -47,7 +66,7 @@ export function IntroThumb({ isMobile }) {
   );
 }
 
-export function IntroOverlay({ onClose }) {
+export function IntroOverlay({ src, title, onClose }) {
   useEffect(() => {
     const onKey = (e) => { if (e.key === 'Escape') onClose(); };
     const prev = document.body.style.overflow;
@@ -57,8 +76,8 @@ export function IntroOverlay({ onClose }) {
   }, [onClose]);
 
   return (
-    <div role="dialog" aria-modal="true" aria-label="Digital Jazz — landing intro" style={{ position: 'fixed', inset: 0, zIndex: 1000, background: '#06040B' }}>
-      <iframe src={INTRO_SRC} title="Digital Jazz — landing intro" style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} />
+    <div role="dialog" aria-modal="true" aria-label={title || 'Preview'} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: '#06040B' }}>
+      <iframe src={src} title={title || 'Preview'} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} />
       <button
         onClick={onClose}
         aria-label="Close"
