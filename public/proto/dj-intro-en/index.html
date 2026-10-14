@@ -2638,7 +2638,7 @@ function layoutS(e){
   // сборка завершается к 60% прокрутки; дальше стена едет по горизонтали и чуть по вертикали
   var pe=Math.max(0,(e-0.3)/0.7);pe=pe*pe*(3-2*pe);
   // без повторов: стена конечная, после сборки лишь мягко смещается по горизонтали и чуть по вертикали
-  var px=Math.max(-SC.cw*(TOUCHE?1.8:0.6),Math.min(SC.cw*(TOUCHE?1.8:0.6),dragX*(TOUCHE?0.5:0.3)))+(0.5-pe)*(SC.cw*0.5+SC.over)+hs*SC.cw*0.35, py=(pe-0.5)*SC.ch*0.18+my*SC.ch*0.08;
+  var px=(TOUCHE?0:Math.max(-SC.cw*0.6,Math.min(SC.cw*0.6,dragX*0.3)))+(0.5-pe)*(SC.cw*0.5+SC.over)+hs*SC.cw*0.35, py=(pe-0.5)*SC.ch*0.18+my*SC.ch*0.08;
   SC.items.forEach(function(m){var s=m.userData.s;
     var k=Math.min(1,Math.max(0,(e-s.d*0.3)/0.4));k=k*k*k*(k*(k*6-15)+10);var fx=1;if(s.extra){fx=1-Math.min(1,e/0.3);fx=fx*fx;k=0;}
     var fl=(1-k)*0.12;
@@ -2688,11 +2688,18 @@ var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
 var TOUCHE=!!window.__EMBED&&matchMedia('(pointer: coarse)').matches; // плитка на телефоне: вертикаль — скролл страницы, горизонталь — анимация
 var spin=0,vel=0,drag=false,px=0,mx=0,my=0,tmx=0,tmy=0,prog=0;
 var cv=renderer.domElement;
-cv.addEventListener('pointerdown',function(e){drag=true;px=e.clientX;});
-addEventListener('pointerup',function(e){drag=false;if(e.pointerType==='touch'){tmx=0;tmy=0;}});addEventListener('pointercancel',function(){drag=false;tmx=0;tmy=0});
-addEventListener('pointermove',function(e){tmx=(e.clientX/innerWidth-.5)*(TOUCHE?1.7:1);tmy=e.clientY/innerHeight-.5;if(drag){vel+=(e.clientX-px)*(TOUCHE?0.008:0.0024);px=e.clientX;}});
+cv.addEventListener('pointerdown',function(e){drag=true;px=e.clientX;QX=e.clientX;QT=performance.now();QS=[];QV=0;});
+addEventListener('pointerup',function(e){if(TOUCHE&&drag){var now=performance.now();QS=QS.filter(function(q){return now-q[0]<120});if(QS.length>1){var sum=0;QS.forEach(function(q){sum+=q[1]});QV=sum/Math.max(0.03,(now-QS[0][0])/1000);}else QV=0;}drag=false;if(e.pointerType==='touch'&&!TOUCHE){tmx=0;tmy=0;}});addEventListener('pointercancel',function(){drag=false;tmx=0;tmy=0});
+addEventListener('pointermove',function(e){
+  if(TOUCHE){if(!drag)return;var now=performance.now(),dx=e.clientX-QX,dt=Math.max(8,now-QT)/1000,du=-dx/(innerWidth*1.4);
+    QU+=du;QS.push([now,du]);while(QS.length&&now-QS[0][0]>120)QS.shift();QX=e.clientX;QT=now;tmx=Math.max(-.5,Math.min(.5,tmx-dx/innerWidth*0.6));return;}
+  tmx=e.clientX/innerWidth-.5;tmy=e.clientY/innerHeight-.5;if(drag){vel+=(e.clientX-px)*0.0024;px=e.clientX;}});
 var T0=performance.now(),MAN=-1e9,mp=0;
-function progress(){var now=performance.now();if(now-MAN<3500)return mp;
+// телефон (плитка): горизонтальный свайп листает цикл «разлёт → стена → разлёт» по кругу, с инерцией
+var QU=0,QV=0,QT=0,QX=0,QS=[];
+function shapeU(x){x=x-Math.floor(x);if(x<0.08)return 0;if(x<0.42)return sm((x-0.08)/0.34);if(x<0.58)return 1;if(x<0.92)return 1-sm((x-0.58)/0.34);return 0;}
+function touchStep(dt){if(!drag){QV+=(1/CYCLE-QV)*(1-Math.exp(-dt*3.2));QU+=QV*dt;}}
+function progress(){if(TOUCHE)return shapeU(QU);var now=performance.now();if(now-MAN<3500)return mp;
   var c=((now-T0)/1000)%CYCLE,p;
   if(c<HOLD0)p=0;else if(c<HOLD0+RAMP)p=sm((c-HOLD0)/RAMP);else if(c<HOLD0+RAMP+HOLD1)p=1;else p=1-sm((c-HOLD0-RAMP-HOLD1)/RAMP);
   return p;}
@@ -2713,13 +2720,14 @@ function frame(){
   // когда заходной экран полностью перекрыт следующими разделами — не рисуем 3D, чтобы не тормозить анимации ниже
   var vis=heroVisible();if(vis===heroOff){heroOff=!vis;document.getElementById('c').style.visibility=heroOff?'hidden':'';var gg=document.getElementById('g');if(gg)gg.style.visibility=heroOff?'hidden':'';}
   if(heroOff)return;
+  if(TOUCHE){var _n=performance.now(),_d=Math.min(0.1,(_n-(window._ut||_n))/1000);window._ut=_n;if(Math.abs(QV)>1.6)QV=1.6*Math.sign(QV);touchStep(_d);if(!drag)tmx*=Math.exp(-_d*2);}
   prog=progress();
   lp+=(prog-lp)*0.08;var e=ease(lp);
   mx+=(tmx-mx)*0.09;my+=(tmy-my)*0.09;
   if(!reduce&&!drag)spin+=0.0006;
   spin+=vel;vel*=0.955;
-  hs+=(mx*0.9-hs)*0.08;TM.value=performance.now()/1000;var nowS=performance.now(),dtS=Math.min(0.1,(nowS-(window._lt||nowS))/1000);window._lt=nowS;SP+=(prog-SP)*(1-Math.exp(-dtS*2.4));layoutS(SP);   // плавное следование за прокруткой, не зависит от частоты кадров
-  dragX+=vel*6;vel*=0.9;if(TOUCHE&&!drag)dragX*=0.97;
+  hs+=(mx*0.9-hs)*0.08;TM.value=performance.now()/1000;var nowS=performance.now(),dtS=Math.min(0.1,(nowS-(window._lt||nowS))/1000);window._lt=nowS;SP+=(prog-SP)*(1-Math.exp(-dtS*(TOUCHE?7:2.4)));layoutS(SP);   // плавное следование за прокруткой, не зависит от частоты кадров
+  dragX+=vel*6;vel*=0.9;
   tube.rotation.x=my*0.08;
   tube.rotation.z=0;tube.rotation.y=mx*0.06;
   tube.position.y=0;
