@@ -28,6 +28,7 @@
 .cap b{color:var(--h);font-weight:600}
 .hint{letter-spacing:.04em;text-transform:none;font-size:14px}
 html.embed .ui{display:none}
+html.embed #c{touch-action:pan-y}
 @media (max-width:640px){.lock{font-size:18px}.lock svg{width:24px;height:24px}.cap{font-size:11px}.hint{display:none}}
 </style>
 </head><body>
@@ -2637,7 +2638,7 @@ function layoutS(e){
   // сборка завершается к 60% прокрутки; дальше стена едет по горизонтали и чуть по вертикали
   var pe=Math.max(0,(e-0.3)/0.7);pe=pe*pe*(3-2*pe);
   // без повторов: стена конечная, после сборки лишь мягко смещается по горизонтали и чуть по вертикали
-  var px=Math.max(-SC.cw*0.6,Math.min(SC.cw*0.6,dragX*0.3))+(0.5-pe)*(SC.cw*0.5+SC.over)+hs*SC.cw*0.35, py=(pe-0.5)*SC.ch*0.18+my*SC.ch*0.08;
+  var px=Math.max(-SC.cw*(TOUCHE?1.8:0.6),Math.min(SC.cw*(TOUCHE?1.8:0.6),dragX*(TOUCHE?0.5:0.3)))+(0.5-pe)*(SC.cw*0.5+SC.over)+hs*SC.cw*0.35, py=(pe-0.5)*SC.ch*0.18+my*SC.ch*0.08;
   SC.items.forEach(function(m){var s=m.userData.s;
     var k=Math.min(1,Math.max(0,(e-s.d*0.3)/0.4));k=k*k*k*(k*(k*6-15)+10);var fx=1;if(s.extra){fx=1-Math.min(1,e/0.3);fx=fx*fx;k=0;}
     var fl=(1-k)*0.12;
@@ -2684,11 +2685,12 @@ function resize(){var w=innerWidth,h=innerHeight;mobile=w<760;gc.width=Math.roun
 addEventListener('resize',resize);resize();
 
 var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var TOUCHE=!!window.__EMBED&&matchMedia('(pointer: coarse)').matches; // плитка на телефоне: вертикаль — скролл страницы, горизонталь — анимация
 var spin=0,vel=0,drag=false,px=0,mx=0,my=0,tmx=0,tmy=0,prog=0;
 var cv=renderer.domElement;
 cv.addEventListener('pointerdown',function(e){drag=true;px=e.clientX;});
-addEventListener('pointerup',function(e){drag=false;if(e.pointerType==='touch'){tmx=0;tmy=0;}});addEventListener('pointercancel',function(){drag=false});
-addEventListener('pointermove',function(e){tmx=e.clientX/innerWidth-.5;tmy=e.clientY/innerHeight-.5;if(drag){vel+=(e.clientX-px)*0.0024;px=e.clientX;}});
+addEventListener('pointerup',function(e){drag=false;if(e.pointerType==='touch'){tmx=0;tmy=0;}});addEventListener('pointercancel',function(){drag=false;tmx=0;tmy=0});
+addEventListener('pointermove',function(e){tmx=(e.clientX/innerWidth-.5)*(TOUCHE?1.7:1);tmy=e.clientY/innerHeight-.5;if(drag){vel+=(e.clientX-px)*(TOUCHE?0.008:0.0024);px=e.clientX;}});
 var T0=performance.now(),MAN=-1e9,mp=0;
 function progress(){var now=performance.now();if(now-MAN<3500)return mp;
   var c=((now-T0)/1000)%CYCLE,p;
@@ -2717,7 +2719,7 @@ function frame(){
   if(!reduce&&!drag)spin+=0.0006;
   spin+=vel;vel*=0.955;
   hs+=(mx*0.9-hs)*0.08;TM.value=performance.now()/1000;var nowS=performance.now(),dtS=Math.min(0.1,(nowS-(window._lt||nowS))/1000);window._lt=nowS;SP+=(prog-SP)*(1-Math.exp(-dtS*2.4));layoutS(SP);   // плавное следование за прокруткой, не зависит от частоты кадров
-  dragX+=vel*6;vel*=0.9;
+  dragX+=vel*6;vel*=0.9;if(TOUCHE&&!drag)dragX*=0.97;
   tube.rotation.x=my*0.08;
   tube.rotation.z=0;tube.rotation.y=mx*0.06;
   tube.position.y=0;

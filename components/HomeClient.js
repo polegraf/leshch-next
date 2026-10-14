@@ -41,7 +41,7 @@ function RevealCard({ children, delay = 0, style = {}, ...props }) {
 }
 
 function ThumbMedia({ project, isMobile }) {
-  if (isEmbed(project)) return <IntroThumb src={project.embedUrl} poster={project.thumbnail} ratio={project.embedRatio} />;
+  if (isEmbed(project)) return <IntroThumb src={project.embedUrl} poster={project.thumbnail} ratio={project.embedRatio} interactive={isMobile} />;
   const src = project.thumbnail || project.cover;
   const type = project.thumbnail ? (project.thumbType || 'image') : project.coverType;
   if (!src) return <div style={{ width: '100%', height: 240, background: '#111' }} />;
@@ -70,8 +70,8 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
 
   const handleProjectClick = (p) => {
     if (isEmbed(p)) {
-      if (isMobile) window.location.href = p.embedUrl;
-      else setEmbedOpen(p);
+      // На телефоне анимация живёт прямо в плитке (свайп по горизонтали), на весь экран — только десктоп
+      if (!isMobile) setEmbedOpen(p);
       return;
     }
     if (p.ready) {
@@ -103,7 +103,7 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
         {isMobile ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
             {filtered.map((p) => (
-              <RevealCard key={p.id} delay={0} onClick={() => handleProjectClick(p)} style={{ cursor: (p.ready || p.linkTo || isEmbed(p)) ? 'pointer' : 'default' }}>
+              <RevealCard key={p.id} delay={0} onClick={() => handleProjectClick(p)} style={{ cursor: (p.ready || p.linkTo) ? 'pointer' : 'default' }}>
                 <ThumbMedia project={p} isMobile={isMobile} />
                 <div style={{ padding: '12px 0 4px' }}>
                   <div style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-.02em', lineHeight: 1.3 }}>{p.title}</div>
