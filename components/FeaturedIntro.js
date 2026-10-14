@@ -59,6 +59,7 @@ export function IntroThumb({ src, poster, ratio, interactive }) {
       ref={box}
       onMouseMove={interactive ? undefined : (e) => sendPointer(e)}
       onMouseEnter={interactive ? undefined : (e) => sendPointer(e, true)}
+      onMouseLeave={interactive ? undefined : () => frame.current?.contentWindow?.postMessage({ type: 'tile-leave' }, '*')}
       style={{ position: 'relative', width: '100%', aspectRatio: ratio || '4 / 5', background: `#06040B ${poster ? `url(${poster}) center / cover` : ''}`, overflow: 'hidden' }}
     >
       {live && (
