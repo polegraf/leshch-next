@@ -13,12 +13,16 @@ pause.onclick=()=>{state.paused=!state.paused;label()};
 document.querySelector('#depth').oninput=e=>state.amount=Number(e.target.value)/100;
 document.querySelector('#reset').onclick=()=>{state.tx=state.ty=0;state.amount=1;document.querySelector('#depth').value=100;};
 const stage=document.querySelector('.stage');
-stage.addEventListener('pointermove',e=>{const r=stage.getBoundingClientRect();state.tx=Math.max(-1,Math.min(1,2*(e.clientX-r.left)/r.width-1));state.ty=Math.max(-1,Math.min(1,1-2*(e.clientY-r.top)/r.height));});
-stage.addEventListener('pointerleave',()=>{state.tx=state.ty=0});
+let touchOrigin=null;
+const clampPointer=v=>Math.max(-1,Math.min(1,v));
+stage.addEventListener('pointermove',e=>{const r=stage.getBoundingClientRect();if(e.pointerType==='touch'&&touchOrigin){state.tx=clampPointer(touchOrigin.tx+(e.clientX-touchOrigin.x)/r.width*5);state.ty=clampPointer(touchOrigin.ty-(e.clientY-touchOrigin.y)/r.height*5);}else{state.tx=clampPointer((2*(e.clientX-r.left)/r.width-1)*1.65);state.ty=clampPointer((1-2*(e.clientY-r.top)/r.height)*1.65);}});
+stage.addEventListener('pointerleave',()=>{if(!touchOrigin)state.tx=state.ty=0});
 // Плитка на главной (десктоп): курсор приходит от родителя сообщением, x/y — доли плитки 0..1
-addEventListener('message',e=>{const d=e.data;if(!d)return;if(d.type==='tile-leave'){state.tx=state.ty=0;return}if(d.type!=='tile-pointer')return;state.tx=Math.max(-1,Math.min(1,2*d.x-1));state.ty=Math.max(-1,Math.min(1,1-2*d.y));});
-stage.addEventListener('pointerdown',e=>{if(e.pointerType==='touch')stage.setPointerCapture(e.pointerId)});
-stage.addEventListener('pointerup',e=>{if(e.pointerType==='touch'){state.tx=state.ty=0;}});
+addEventListener('message',e=>{const d=e.data;if(!d)return;if(d.type==='tile-leave'){state.tx=state.ty=0;return}if(d.type!=='tile-pointer')return;state.tx=clampPointer((2*d.x-1)*1.65);state.ty=clampPointer((1-2*d.y)*1.65);});
+stage.addEventListener('pointerdown',e=>{if(e.pointerType==='touch'){touchOrigin={x:e.clientX,y:e.clientY,tx:state.tx,ty:state.ty};stage.setPointerCapture(e.pointerId)}});
+function releasePointer(e){if(e.pointerType==='touch'){touchOrigin=null;state.tx=state.ty=0;}}
+stage.addEventListener('pointerup',releasePointer);
+stage.addEventListener('pointercancel',releasePointer);
 stage.addEventListener('keydown',e=>{if(['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key)){e.preventDefault();state.tx=Math.max(-1,Math.min(1,state.tx+(e.key==='ArrowRight'?.2:e.key==='ArrowLeft'?-.2:0)));state.ty=Math.max(-1,Math.min(1,state.ty+(e.key==='ArrowUp'?.2:e.key==='ArrowDown'?-.2:0)));}});
 reduce.addEventListener('change',e=>{state.paused=e.matches;label()});
 function fail(error){console.error(error);canvas.hidden=true;fallback.hidden=false;status.textContent='Статичный просмотр — WebGL недоступен';document.querySelector('.controls').hidden=true;}
@@ -43,24 +47,16 @@ float band(float x,float a,float b){return smoothstep(a,a+.018,x)*(1.-smoothstep
 vec3 liveChart(vec3 color,vec2 q,vec4 box,float candles){
  vec2 z=(q-box.xy)/(box.zw-box.xy);
  float mask=band(z.x,0.,1.)*band(z.y,0.,1.);
- float sweep=exp(-pow((z.x-fract(time*.16))*18.,2.));
- float wave=.62-.3*z.x+.095*sin(z.x*14.+time*1.8)+.045*sin(z.x*30.5-time*2.3);
- float line=exp(-pow((z.y-wave)*100.,2.));
- float glow=exp(-pow((z.y-wave)*24.,2.));
- float cell=floor(z.x*9.);
- float center=.58-.27*cell/9.+.12*sin(cell*.83+time*.8);
- float height=.05+.035*sin(cell*1.7+time*1.1);
- float wick=(1.-smoothstep(.015,.026,abs(fract(z.x*9.)-.5)))*band(z.y,center-height-.08,center+height+.08);
- float body=(1.-smoothstep(.21,.3,abs(fract(z.x*9.)-.5)))*band(z.y,center-height,center+height);
- vec3 cyan=vec3(.55,1.,.89);vec3 ink=mix(cyan,vec3(1.,.34,.67),step(0.,sin(cell*.83+time*.8)));
- vec3 animated=mix(color,color*.87+cyan*(line*.8+glow*.18),1.-candles);
- animated=mix(animated,ink,clamp((body*.72+wick*.48)*candles,0.,1.));
- animated+=cyan*sweep*.09;
- return mix(color,animated,mask);
+ float sweep=exp(-pow((z.x-fract(time*.085))*8.,2.));
+ float bright=smoothstep(.62,.95,max(color.r,max(color.g,color.b)));
+ return color+vec3(.04,.06,.055)*sweep*mask*bright;
 }
 
 float edge(vec2 a,vec2 b,vec2 p){vec2 e=b-a;return -(e.x*(p.y-a.y)-e.y*(p.x-a.x))/length(e);}
-void main(){vec3 c=texture2D(image,vUv).rgb;float d=1.;
+void main(){vec2 graphQ=vec2((vUv.x-.313-(.91-vUv.y)*.17)/.253,(.91-vUv.y)/.79);
+float graphMask=band(graphQ.x,.12,.88)*band(graphQ.y,.25,.44);
+vec2 photoUV=vUv+vec2(0.,sin(time*.85+graphQ.x*3.)*.0025*graphMask);
+vec3 c=texture2D(image,photoUV).rgb;float d=1.;
 d=min(d,edge(vec2(0.3164062,0.8476562),vec2(0.3154730,0.8564973),vUv));
 d=min(d,edge(vec2(0.3154730,0.8564973),vec2(0.3155593,0.8649179),vUv));
 d=min(d,edge(vec2(0.3155593,0.8649179),vec2(0.3165995,0.8728638),vUv));
@@ -128,22 +124,14 @@ float band(float x,float a,float b){return smoothstep(a,a+.018,x)*(1.-smoothstep
 vec3 liveChart(vec3 color,vec2 q,vec4 box,float candles){
  vec2 z=(q-box.xy)/(box.zw-box.xy);
  float mask=band(z.x,0.,1.)*band(z.y,0.,1.);
- float sweep=exp(-pow((z.x-fract(time*.16))*18.,2.));
- float wave=.62-.3*z.x+.095*sin(z.x*14.+time*1.8)+.045*sin(z.x*30.5-time*2.3);
- float line=exp(-pow((z.y-wave)*100.,2.));
- float glow=exp(-pow((z.y-wave)*24.,2.));
- float cell=floor(z.x*9.);
- float center=.58-.27*cell/9.+.12*sin(cell*.83+time*.8);
- float height=.05+.035*sin(cell*1.7+time*1.1);
- float wick=(1.-smoothstep(.015,.026,abs(fract(z.x*9.)-.5)))*band(z.y,center-height-.08,center+height+.08);
- float body=(1.-smoothstep(.21,.3,abs(fract(z.x*9.)-.5)))*band(z.y,center-height,center+height);
- vec3 cyan=vec3(.55,1.,.89);vec3 ink=mix(cyan,vec3(1.,.34,.67),step(0.,sin(cell*.83+time*.8)));
- vec3 animated=mix(color,color*.87+cyan*(line*.8+glow*.18),1.-candles);
- animated=mix(animated,ink,clamp((body*.72+wick*.48)*candles,0.,1.));
- animated+=cyan*sweep*.09;
- return mix(color,animated,mask);
+ float sweep=exp(-pow((z.x-fract(time*.085))*8.,2.));
+ float bright=smoothstep(.62,.95,max(color.r,max(color.g,color.b)));
+ return color+vec3(.04,.06,.055)*sweep*mask*bright;
 }
-void main(){vec2 q=abs(vLocal-.5)-vec2(.455);float d=length(max(q,0.))+min(max(q.x,q.y),0.)-.045;float alpha=1.-smoothstep(-.003,.001,d);if(alpha<.01)discard;vec2 sampleUV=sourceCenter+(vUv-sourceCenter)*.91;vec3 c=texture2D(image,sampleUV).rgb;float l=dot(c,vec3(.2126,.7152,.0722));c=mix(vec3(l),c,1.35);c=(c-.5)*1.04+.52;float textLight=smoothstep(.7,.96,max(c.r,max(c.g,c.b)));c=mix(c*vec3(.66,.48,.83),c,textLight);c=liveChart(c,vec2(vLocal.x,1.-vLocal.y),vec4(.1,.43,.85,.87),1.);float rim=1.-smoothstep(.0005,.004,-d);vec3 glassRim=mix(vec3(1.,.91,.94),vec3(.87,.98,1.),vLocal.x);c=mix(c,glassRim,rim*.9);gl_FragColor=vec4(clamp(c,0.,1.),alpha);}`);
+void main(){vec2 q=abs(vLocal-.5)-vec2(.455);float d=length(max(q,0.))+min(max(q.x,q.y),0.)-.045;float alpha=1.-smoothstep(-.003,.001,d);if(alpha<.01)discard;vec2 sampleUV=sourceCenter+(vUv-sourceCenter)*.91;vec2 chartQ=vec2(vLocal.x,1.-vLocal.y);
+float chartMask=band(chartQ.x,.1,.85)*band(chartQ.y,.43,.87);
+sampleUV.y+=sin(time*.9+chartQ.x*4.)*.0035*chartMask;
+vec3 c=texture2D(image,sampleUV).rgb;float l=dot(c,vec3(.2126,.7152,.0722));c=mix(vec3(l),c,1.35);c=(c-.5)*1.04+.52;float textLight=smoothstep(.7,.96,max(c.r,max(c.g,c.b)));c=mix(c*vec3(.66,.48,.83),c,textLight);c=liveChart(c,vec2(vLocal.x,1.-vLocal.y),vec4(.1,.43,.85,.87),1.);float rim=1.-smoothstep(.0005,.004,-d);vec3 glassRim=mix(vec3(1.,.91,.94),vec3(.87,.98,1.),vLocal.x);c=mix(c,glassRim,rim*.9);gl_FragColor=vec4(clamp(c,0.,1.),alpha);}`);
 
 const star=program(`attribute vec3 position;attribute vec3 normal;uniform mat4 mvp;uniform mat4 model;varying vec3 vN;varying vec3 vP;void main(){vN=normalize(mat3(model)*normal);vP=(model*vec4(position,1.)).xyz;gl_Position=mvp*vec4(position,1.);}`,`precision highp float;uniform sampler2D backdrop;uniform vec2 resolution;uniform vec3 tint;varying vec3 vN;varying vec3 vP;void main(){vec3 n=normalize(vN);vec3 view=normalize(vec3(0.,0.,30.)-vP);float nd=abs(dot(n,view));float edge=pow(1.-nd,2.2);vec2 uv=gl_FragCoord.xy/resolution;vec2 offset=n.xy*(.008+.017*edge);vec3 through=texture2D(backdrop,clamp(uv+offset,vec2(.002),vec2(.998))).rgb;vec3 color=mix(through,through*tint,0.07+edge*.22);vec3 l1=normalize(vec3(-.65,.8,1.));vec3 l2=normalize(vec3(.8,-.2,.7));float h1=pow(max(dot(n,normalize(l1+view)),0.),95.);float h2=pow(max(dot(n,normalize(l2+view)),0.),140.);float strip=pow(max(0.,1.-abs(dot(reflect(-view,n),normalize(vec3(.6,.8,.3)))-.24)*4.),12.);color=mix(color,tint,.36+edge*.34);color=mix(vec3(dot(color,vec3(.2126,.7152,.0722))),color,1.3);color+=vec3(1.,.97,.98)*(h1*.85+h2*.55+strip*.32);color+=edge*.1;gl_FragColor=vec4(clamp(color,0.,1.),1.);}`);
 const planePos=buffer(new Float32Array([-22.15,-14.77,0,22.15,-14.77,0,22.15,14.77,0,-22.15,-14.77,0,22.15,14.77,0,-22.15,14.77,0]));
@@ -161,13 +149,13 @@ const specs=[[.185,.235,.64,.26,-.36,.28,1],[.91,.145,.37,-.25,.5,-.34,0],[.095,
 let w=0,h=0,previous=performance.now();
 function resize(){const r=canvas.getBoundingClientRect(),d=Math.min(devicePixelRatio||1,window.EMBED?1.5:1.75),nw=Math.round(r.width*d),nh=Math.round(r.height*d);if(nw===w&&nh===h)return;w=canvas.width=nw;h=canvas.height=nh;gl.bindTexture(gl.TEXTURE_2D,backTex);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,w,h,0,gl.RGBA,gl.UNSIGNED_BYTE,null);gl.viewport(0,0,w,h)}
 function drawPlane(vp){gl.useProgram(plane);gl.uniform1f(loc(plane,'time'),state.time);gl.useProgram(plane);attribute(plane,'position',planePos,3);attribute(plane,'uv',planeUV,2);gl.uniformMatrix4fv(loc(plane,'mvp'),false,vp);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,sourceTex);gl.uniform1i(loc(plane,'image'),0);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,paletteTex);gl.uniform1i(loc(plane,'palette'),1);gl.activeTexture(gl.TEXTURE0);gl.drawArrays(gl.TRIANGLES,0,6)}
-function drawPanels(pv,global,t,a){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.useProgram(panel);gl.uniform1f(loc(panel,'time'),t);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,panelTex);gl.uniform1i(loc(panel,'image'),0);for(let i=0;i<panels.length;i++){const p=panels[i],sign=i===0?1:-1,phase=i*2.4;const driftX=Math.sin(t*(i? .57:.43)+phase)*1.05*a,driftY=Math.sin(t*(i?.7:.51)+phase)*1.3*a;const model=mul(global,mul(translate(p.x+p.px*(i?1.2:.8)*a+driftX,p.y+p.py*(i?.8:1.3)*a+driftY,Math.sin(t*.6+phase)*.65*a),rotate(-p.py*(i?.15:.24)*a,p.px*(i?.25:.17)*a,sign*Math.sin(t*.48+phase)*.11*a)));gl.uniform2f(loc(panel,'sourceCenter'),p.cx,p.cy);attribute(panel,'position',p.p,3);attribute(panel,'uv',p.uv,2);attribute(panel,'local',p.local,2);gl.uniformMatrix4fv(loc(panel,'mvp'),false,mul(pv,model));gl.drawArrays(gl.TRIANGLES,0,6)}gl.disable(gl.BLEND);const la=gl.getAttribLocation(panel,'local');gl.disableVertexAttribArray(la);}
-function draw(now){if(document.hidden){previous=now;requestAnimationFrame(draw);return}const dt=Math.min((now-previous)/1000,.05);previous=now;resize();if(!state.paused){state.time+=dt;const k=1-Math.exp(-dt*5);state.x+=(state.tx-state.x)*k;state.y+=(state.ty-state.y)*k;for(let i=0;i<panels.length;i++){const p=panels[i],ease=1-Math.exp(-dt*(i?2.5:4.2));p.px+=(state.tx-p.px)*ease;p.py+=(state.ty-p.py)*ease;}}const t=state.time,a=state.amount;const global=mul(translate(Math.sin(t*.52)*.28*a,Math.sin(t*.68)*.4*a,0),rotate((-state.y*.13+Math.sin(t*.46)*.028)*a,(state.x*.17+Math.sin(t*.38)*.038)*a,Math.sin(t*.41)*.014*a)),view=translate(0,0,-30),pv=mul(perspective(w/h),view),vp=mul(pv,global);
+function drawPanels(pv,global,t,a){gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.useProgram(panel);gl.uniform1f(loc(panel,'time'),t);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,panelTex);gl.uniform1i(loc(panel,'image'),0);for(let i=0;i<panels.length;i++){const p=panels[i],sign=i===0?1:-1,phase=i*2.4;const driftX=Math.sin(t*(i? .57:.43)+phase)*1.05*a,driftY=Math.sin(t*(i?.7:.51)+phase)*1.3*a;const model=mul(global,mul(translate(p.x+p.px*(i?2.4:1.8)*a+driftX,p.y+p.py*(i?1.7:2.6)*a+driftY,Math.sin(t*.6+phase)*.65*a),rotate(-p.py*(i?.3:.42)*a,p.px*(i?.45:.34)*a,sign*Math.sin(t*.48+phase)*.11*a)));gl.uniform2f(loc(panel,'sourceCenter'),p.cx,p.cy);attribute(panel,'position',p.p,3);attribute(panel,'uv',p.uv,2);attribute(panel,'local',p.local,2);gl.uniformMatrix4fv(loc(panel,'mvp'),false,mul(pv,model));gl.drawArrays(gl.TRIANGLES,0,6)}gl.disable(gl.BLEND);const la=gl.getAttribLocation(panel,'local');gl.disableVertexAttribArray(la);}
+function draw(now){if(document.hidden){previous=now;requestAnimationFrame(draw);return}const dt=Math.min((now-previous)/1000,.05);previous=now;resize();if(!state.paused){state.time+=dt;const k=1-Math.exp(-dt*11);state.x+=(state.tx-state.x)*k;state.y+=(state.ty-state.y)*k;for(let i=0;i<panels.length;i++){const p=panels[i],ease=1-Math.exp(-dt*(i?7:9));p.px+=(state.tx-p.px)*ease;p.py+=(state.ty-p.py)*ease;}}const t=state.time,a=state.amount;const global=mul(translate(Math.sin(t*.52)*.28*a,Math.sin(t*.68)*.4*a,0),rotate((-state.y*.26+Math.sin(t*.46)*.028)*a,(state.x*.34+Math.sin(t*.38)*.038)*a,Math.sin(t*.41)*.014*a)),view=translate(0,0,-30),pv=mul(perspective(w/h),view),vp=mul(pv,global);
 gl.disable(gl.DEPTH_TEST);gl.disable(gl.BLEND);gl.disable(gl.CULL_FACE);gl.bindFramebuffer(gl.FRAMEBUFFER,fb);gl.clearColor(.03,.02,.07,1);gl.clear(gl.COLOR_BUFFER_BIT);drawPlane(vp);drawPanels(pv,global,t,a);
 gl.bindFramebuffer(gl.FRAMEBUFFER,null);gl.clear(gl.COLOR_BUFFER_BIT|gl.DEPTH_BUFFER_BIT);drawPlane(vp);drawPanels(pv,global,t,a);
 gl.enable(gl.DEPTH_TEST);gl.enable(gl.CULL_FACE);gl.cullFace(gl.BACK);gl.useProgram(star);attribute(star,'position',starPos,3);attribute(star,'normal',starNormal,3);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,backTex);gl.uniform1i(loc(star,'backdrop'),0);gl.uniform2f(loc(star,'resolution'),w,h);
-for(let i=0;i<specs.length;i++){const [x,y,s,rx,ry,rz,red]=specs[i],phase=i*1.73,hover=Math.sin(t*.92+phase)*1.2*a;const position=translate((x-.5)*41.967+Math.sin(t*.63+phase)*.8*a+state.x*(.75+i*.12)*a,(.5-y)*27.978+hover+state.y*.7*a,.5+Math.sin(phase)*.25+Math.sin(t*.71+phase)*.8*a);const rotation=rotate(rx+Math.sin(t*.66+phase)*.46*a-state.y*.28*a,ry+Math.sin(t*.57+phase)*.62*a+state.x*.36*a,rz+Math.sin(t*.51+phase)*.32*a);const model=mul(global,mul(position,mul(rotation,scale(s))));gl.uniformMatrix4fv(loc(star,'model'),false,model);gl.uniformMatrix4fv(loc(star,'mvp'),false,mul(pv,model));gl.uniform3f(loc(star,'tint'),red?1.:.38,red?.25:.94,red?.68:1.);gl.drawArrays(gl.TRIANGLES,0,count)}
-if(!state.ready){state.ready=true;document.body.classList.add('ready');status.textContent='Живые графики · двигайте курсор или касайтесь';window.__sceneInfo={renderer:gl.getParameter(gl.RENDERER),starCount:5,vertices:count,mesh:'original OBJ',ready:true,independentPanels:2,version:12,animatedScreens:true,palette:"neon-noir"};}requestAnimationFrame(draw)}
+for(let i=0;i<specs.length;i++){const [x,y,s,rx,ry,rz,red]=specs[i],phase=i*1.73,hover=Math.sin(t*.92+phase)*1.2*a;const position=translate((x-.5)*41.967+Math.sin(t*.63+phase)*.8*a+state.x*(1.7+i*.2)*a,(.5-y)*27.978+hover+state.y*1.5*a,.5+Math.sin(phase)*.25+Math.sin(t*.71+phase)*.8*a);const rotation=rotate(rx+Math.sin(t*.66+phase)*.46*a-state.y*.5*a,ry+Math.sin(t*.57+phase)*.62*a+state.x*.65*a,rz+Math.sin(t*.51+phase)*.32*a);const model=mul(global,mul(position,mul(rotation,scale(s))));gl.uniformMatrix4fv(loc(star,'model'),false,model);gl.uniformMatrix4fv(loc(star,'mvp'),false,mul(pv,model));gl.uniform3f(loc(star,'tint'),red?1.:.38,red?.25:.94,red?.68:1.);gl.drawArrays(gl.TRIANGLES,0,count)}
+if(!state.ready){state.ready=true;document.body.classList.add('ready');status.textContent='Живые графики · двигайте курсор или касайтесь';window.__sceneInfo={renderer:gl.getParameter(gl.RENDERER),starCount:5,vertices:count,mesh:'original OBJ',ready:true,independentPanels:2,version:13,animatedScreens:true,palette:"neon-noir"};}requestAnimationFrame(draw)}
 requestAnimationFrame(draw);
 canvas.addEventListener('webglcontextlost',e=>{e.preventDefault();fail('WebGL context lost')});
 }
