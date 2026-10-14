@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Nav from './Nav';
 import Footer from './Footer';
 import { toSlug } from '@/lib/db';
+import { INTRO_ITEM, IntroThumb, IntroOverlay } from './FeaturedIntro';
 
 const HN = { fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" };
 
@@ -39,7 +40,8 @@ function RevealCard({ children, delay = 0, style = {}, ...props }) {
   );
 }
 
-function ThumbMedia({ project }) {
+function ThumbMedia({ project, isMobile }) {
+  if (project.__intro) return <IntroThumb isMobile={isMobile} />;
   const src = project.thumbnail || project.cover;
   const type = project.thumbnail ? (project.thumbType || 'image') : project.coverType;
   if (!src) return <div style={{ width: '100%', height: 240, background: '#111' }} />;
@@ -52,6 +54,7 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
   const [seo] = useState(initialSeo);
   const [filter, setFilter] = useState('all');
   const [hovered, setHovered] = useState(null);
+  const [introOpen, setIntroOpen] = useState(false);
   const isMobile = useIsMobile();
   const router = useRouter();
   const px = isMobile ? '20px' : '40px';
@@ -60,11 +63,17 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
   const works = projects.filter((p) => !p.type || p.type === 'work');
   // Теги — регистронезависимо: Branding / branding / BRANDING = один чип
   const allCategories = Array.from(new Set(works.flatMap((p) => (p.category || []).map((c) => String(c).toLowerCase()))));
+  // Плитка Digital Jazz (WebGL-интро) — первой в сетке, только во вкладке ALL
   const filtered = filter === 'all'
-    ? works
+    ? [INTRO_ITEM, ...works]
     : works.filter((p) => (p.category || []).some((c) => String(c).toLowerCase() === filter));
 
   const handleProjectClick = (p) => {
+    if (p.__intro) {
+      if (isMobile) window.location.href = '/proto/dj-intro-en/index.html';
+      else setIntroOpen(true);
+      return;
+    }
     if (p.ready) {
       router.push(`/project/${toSlug(p.title)}`);
     } else if (p.linkTo) {
@@ -95,7 +104,7 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
             {filtered.map((p) => (
               <RevealCard key={p.id} delay={0} onClick={() => handleProjectClick(p)} style={{ cursor: (p.ready || p.linkTo) ? 'pointer' : 'default' }}>
-                <ThumbMedia project={p} />
+                <ThumbMedia project={p} isMobile={isMobile} />
                 <div style={{ padding: '12px 0 4px' }}>
                   <div style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-.02em', lineHeight: 1.3 }}>{p.title}</div>
                   <div style={{ fontSize: 13, color: 'rgba(255,255,255,.45)', letterSpacing: '.03em', textTransform: 'uppercase', marginTop: 4 }}>{p.subtitle}{p.location || p.year ? ` · ${[p.location, p.year].filter(Boolean).join(' ')}` : ''}</div>
@@ -115,7 +124,7 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
                     style={{ cursor: (p.ready || p.linkTo) ? 'pointer' : 'default', position: 'relative' }}>
                     <div style={{ overflow: 'hidden', background: '#111' }}>
                       <div style={{ transition: 'transform .6s cubic-bezier(.16,1,.3,1)', transform: hovered === p.id ? 'scale(1.03)' : 'scale(1)' }}>
-                        <ThumbMedia project={p} />
+                        <ThumbMedia project={p} isMobile={isMobile} />
                       </div>
                     </div>
                     <div style={{ padding: '12px 0 18px', background: '#000' }}>
@@ -135,6 +144,7 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
       </div>
 
       <Footer seo={seo} isMobile={isMobile} />
+      {introOpen && <IntroOverlay onClose={() => setIntroOpen(false)} />}
     </div>
   );
 }
