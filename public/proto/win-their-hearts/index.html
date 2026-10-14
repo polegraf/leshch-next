@@ -4,6 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Win Their Hearts - Interactive 3D</title>
+  <script>/* ?embed=1 — режим плитки на главной: без текста и без скролла */
+    window.EMBED = /[?&]embed=1/.test(location.search);
+    if (window.EMBED) document.documentElement.classList.add('embed');
+  </script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
@@ -48,6 +52,8 @@
       letter-spacing: -0.01em;
       opacity: 0.9;
     }
+    html.embed body { min-height: 0; height: 100%; overflow: hidden; }
+    html.embed .overlay { display: none; }
   </style>
   <script>/**
  * @license
@@ -101,7 +107,7 @@
 
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, window.EMBED ? 1.5 : 2));
     container.appendChild(renderer.domElement);
 
     // Координаты указателя: мышь, перо и палец (pointer + touch)

@@ -28,6 +28,7 @@ const nextConfig = {
       { source: '/proto/dj-intro-v6', destination: '/proto/dj-intro-v6/index.html' },
       { source: '/proto/dj-intro-ui', destination: '/proto/dj-intro-ui/index.html' },
       { source: '/proto/dj-intro-en', destination: '/proto/dj-intro-en/index.html' },
+      { source: '/proto/win-their-hearts', destination: '/proto/win-their-hearts/index.html' },
     ];
   },
   images: {
