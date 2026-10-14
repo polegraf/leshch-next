@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import Nav from './Nav';
 import Footer from './Footer';
 import { toSlug } from '@/lib/db';
-import { INTRO_ITEM, IntroThumb, IntroOverlay } from './FeaturedIntro';
+import { IntroThumb, IntroOverlay, isEmbed } from './FeaturedIntro';
 
 const HN = { fontFamily: "'Helvetica Neue', Helvetica, Arial, sans-serif" };
 
@@ -41,7 +41,7 @@ function RevealCard({ children, delay = 0, style = {}, ...props }) {
 }
 
 function ThumbMedia({ project, isMobile }) {
-  if (project.__intro) return <IntroThumb isMobile={isMobile} />;
+  if (isEmbed(project)) return <IntroThumb src={project.embedUrl} poster={project.thumbnail} ratio={project.embedRatio} />;
   const src = project.thumbnail || project.cover;
   const type = project.thumbnail ? (project.thumbType || 'image') : project.coverType;
   if (!src) return <div style={{ width: '100%', height: 240, background: '#111' }} />;
@@ -54,24 +54,24 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
   const [seo] = useState(initialSeo);
   const [filter, setFilter] = useState('all');
   const [hovered, setHovered] = useState(null);
-  const [introOpen, setIntroOpen] = useState(false);
+  const [embedOpen, setEmbedOpen] = useState(null);
   const isMobile = useIsMobile();
   const router = useRouter();
   const px = isMobile ? '20px' : '40px';
 
   // Главная показывает только Works; бренды/шоп — в своих разделах.
+  // Плитка Digital Jazz — обычный проект из админки (Thumbnail: embed), без запасных копий в коде.
   const works = projects.filter((p) => !p.type || p.type === 'work');
   // Теги — регистронезависимо: Branding / branding / BRANDING = один чип
   const allCategories = Array.from(new Set(works.flatMap((p) => (p.category || []).map((c) => String(c).toLowerCase()))));
-  // Плитка Digital Jazz (WebGL-интро) — первой в сетке, только во вкладке ALL
   const filtered = filter === 'all'
-    ? [INTRO_ITEM, ...works]
+    ? works
     : works.filter((p) => (p.category || []).some((c) => String(c).toLowerCase() === filter));
 
   const handleProjectClick = (p) => {
-    if (p.__intro) {
-      if (isMobile) window.location.href = '/proto/dj-intro-en/index.html';
-      else setIntroOpen(true);
+    if (isEmbed(p)) {
+      if (isMobile) window.location.href = p.embedUrl;
+      else setEmbedOpen(p);
       return;
     }
     if (p.ready) {
@@ -103,7 +103,7 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
         {isMobile ? (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 40 }}>
             {filtered.map((p) => (
-              <RevealCard key={p.id} delay={0} onClick={() => handleProjectClick(p)} style={{ cursor: (p.ready || p.linkTo) ? 'pointer' : 'default' }}>
+              <RevealCard key={p.id} delay={0} onClick={() => handleProjectClick(p)} style={{ cursor: (p.ready || p.linkTo || isEmbed(p)) ? 'pointer' : 'default' }}>
                 <ThumbMedia project={p} isMobile={isMobile} />
                 <div style={{ padding: '12px 0 4px' }}>
                   <div style={{ fontSize: 17, fontWeight: 600, letterSpacing: '-.02em', lineHeight: 1.3 }}>{p.title}</div>
@@ -119,9 +119,9 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
                 {filtered.filter((_, i) => i % 3 === col).map((p, rowIdx) => (
                   <RevealCard key={p.id} delay={col * 80 + rowIdx * 40}
                     onClick={() => handleProjectClick(p)}
-                    onMouseEnter={() => (p.ready || p.linkTo) && setHovered(p.id)}
+                    onMouseEnter={() => (p.ready || p.linkTo || isEmbed(p)) && setHovered(p.id)}
                     onMouseLeave={() => setHovered(null)}
-                    style={{ cursor: (p.ready || p.linkTo) ? 'pointer' : 'default', position: 'relative' }}>
+                    style={{ cursor: (p.ready || p.linkTo || isEmbed(p)) ? 'pointer' : 'default', position: 'relative' }}>
                     <div style={{ overflow: 'hidden', background: '#111' }}>
                       <div style={{ transition: 'transform .6s cubic-bezier(.16,1,.3,1)', transform: hovered === p.id ? 'scale(1.03)' : 'scale(1)' }}>
                         <ThumbMedia project={p} isMobile={isMobile} />
@@ -144,7 +144,7 @@ export default function HomeClient({ projects: initialProjects, seo: initialSeo 
       </div>
 
       <Footer seo={seo} isMobile={isMobile} />
-      {introOpen && <IntroOverlay onClose={() => setIntroOpen(false)} />}
+      {embedOpen && <IntroOverlay src={embedOpen.embedUrl} title={embedOpen.title} onClose={() => setEmbedOpen(null)} />}
     </div>
   );
 }
