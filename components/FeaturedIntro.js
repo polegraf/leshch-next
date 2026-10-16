@@ -121,19 +121,39 @@ function SwipeHint({ visible, label }) {
 }
 
 export function IntroOverlay({ src, title, onClose }) {
+  // Оверлей — отдельная запись в истории браузера: кнопка «Назад» закрывает его
+  // и оставляет на главной, а не уводит с сайта. Крестик и Esc тоже идут через history.back(),
+  // чтобы в истории не оставалось лишней записи.
+  const closeRef = useRef(onClose);
+  closeRef.current = onClose;
+  const pushed = useRef(false);
+
   useEffect(() => {
-    const onKey = (e) => { if (e.key === 'Escape') onClose(); };
+    history.pushState({ ...(history.state || {}), lhOverlay: true }, '');
+    pushed.current = true;
+    const onPop = () => { pushed.current = false; closeRef.current(); };
+    addEventListener('popstate', onPop);
+    return () => removeEventListener('popstate', onPop);
+  }, []);
+
+  const requestClose = () => {
+    if (pushed.current && history.state && history.state.lhOverlay) history.back();
+    else closeRef.current();
+  };
+
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') requestClose(); };
     const prev = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
     addEventListener('keydown', onKey);
     return () => { document.body.style.overflow = prev; removeEventListener('keydown', onKey); };
-  }, [onClose]);
+  }, []);
 
   return (
     <div role="dialog" aria-modal="true" aria-label={title || 'Preview'} style={{ position: 'fixed', inset: 0, zIndex: 1000, background: '#06040B' }}>
       <iframe src={src} title={title || 'Preview'} style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 0 }} />
       <button
-        onClick={onClose}
+        onClick={requestClose}
         aria-label="Close"
         style={{ position: 'absolute', top: 24, right: 28, width: 64, height: 64, borderRadius: '50%', border: '1px solid rgba(255,255,255,.4)', background: 'rgba(0,0,0,.55)', backdropFilter: 'blur(10px)', color: '#fff', cursor: 'pointer', display: 'grid', placeItems: 'center' }}
       >
