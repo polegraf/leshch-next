@@ -40,10 +40,14 @@
     }
     h1 {
       font-size: clamp(3rem, 8vw, 6.5rem);
-      font-weight: 800;
+      /* 700, а не 800: у Helvetica Neue нет начертания 800, браузер дорисовывал
+         «ложный жирный» и буквы слипались. Трекинг ослаблен, кернинг шрифта включён. */
+      font-weight: 700;
+      font-synthesis: none;
+      font-kerning: normal;
       line-height: 0.95;
       text-transform: capitalize;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.005em;
     }
     p {
       margin-top: 1.5rem;
