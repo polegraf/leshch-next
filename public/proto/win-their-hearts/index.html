@@ -47,8 +47,10 @@
       font-kerning: normal;
       line-height: 0.95;
       text-transform: capitalize;
-      letter-spacing: -0.005em;
+      letter-spacing: 0;
     }
+    /* ручной кернинг пары «rt»: в Helvetica Neue Bold на крупном кегле плечо r касается t */
+    h1 .kr { margin-right: 0.035em; }
     p {
       margin-top: 1.5rem;
       font-size: clamp(1rem, 2.5vw, 1.8rem);
@@ -98,7 +100,7 @@
 
   <div class="overlay">
     <div class="content" id="parallax-text">
-      <h1>Win<br>Their<br>Hearts</h1>
+      <h1>Win<br>Their<br>Hea<span class="kr">r</span>ts</h1>
       <p>precision design<br>for effective<br>marketing</p>
     </div>
   </div>
