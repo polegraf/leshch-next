@@ -31,6 +31,7 @@ const nextConfig = {
       { source: '/proto/win-their-hearts', destination: '/proto/win-their-hearts/index.html' },
       { source: '/proto/fintech-webgl', destination: '/proto/fintech-webgl/index.html' },
       { source: '/proto/fxpro-glass', destination: '/proto/fxpro-glass/index.html' },
+      { source: '/proto/710s', destination: '/proto/710s/index.html' },
     ];
   },
   images: {

@@ -1,0 +1,193 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="color-scheme" content="light"><title>710s — Amber liquid animation</title><style>html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#faf5ef}</style></head><body>
+<style id="sale-intro-style">#saleIntro{position:fixed;inset:0;z-index:1000;overflow:hidden;background:#faf5ef;color:#28201d;font-family:-apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;transition:opacity .65s,transform .75s cubic-bezier(.22,.8,.2,1)}#saleIntro:focus{outline:none}#saleIntro.leaving{opacity:0;transform:scale(1.025);pointer-events:none}.sale-scene{position:absolute;inset:0;touch-action:none;cursor:grab}.sale-scene:active{cursor:grabbing}.sale-scene canvas{display:block;width:100%;height:100%}.sale-copy{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.sale-actions{position:absolute;z-index:2;bottom:max(28px,env(safe-area-inset-bottom));left:50%;transform:translateX(-50%);width:min(340px,calc(100% - 48px));display:flex;flex-direction:column;gap:12px}.sale-actions button{display:flex;align-items:center;justify-content:center;min-height:48px;border-radius:999px;border:0;padding:12px 24px;font:500 17px/1.2 -apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;cursor:pointer;transition:transform .2s,background .2s}#saleBuy{background:#fff6dfdf;color:#2e211b;box-shadow:inset 0 1px 0 #fff,0 3px 12px #553b1d08}#saleExplore{background:#713800;color:#fff}.sale-actions button:hover{transform:scale(1.025)}.sale-actions :focus-visible{outline:3px solid #b66b19;outline-offset:4px}@media(min-width:800px){.sale-actions{bottom:40px}}@media(max-height:560px){.sale-actions{bottom:16px;gap:8px}.sale-actions button{min-height:40px;padding:10px 20px}}@media(prefers-reduced-motion:reduce){#saleIntro,.sale-actions button{transition:none}}.sale-form-panel{position:absolute;inset:0;z-index:3;display:grid;place-items:center;padding:24px;background:rgba(249,228,186,.85);backdrop-filter:blur(24px);overflow-y:auto}.sale-form-panel[hidden]{display:none}.sale-form{width:min(100%,420px);position:relative;color:#24201e}.sale-form h2{font-size:32px;line-height:1.1;letter-spacing:-.03em;font-weight:500;margin:0 48px 28px 0}.sale-form label{display:block;font-size:17px;margin:16px 0 8px}.sale-form input,.sale-form textarea{box-sizing:border-box;width:100%;border:1px solid #24201e20;border-radius:16px;background:#ffffffb8;padding:14px 16px;font:17px/1.4 -apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;color:#24201e}.sale-form textarea{resize:vertical;min-height:100px}.sale-form input:focus,.sale-form textarea:focus{outline:2px solid #24201e;outline-offset:2px}.sale-form .sale-submit{width:100%;margin-top:24px;padding:16px;border:0;border-radius:999px;background:#28211e;color:#fff;font:500 17px/1.2 -apple-system,BlinkMacSystemFont,'Helvetica Neue',Arial,sans-serif;cursor:pointer}.sale-submit:disabled{opacity:.4;cursor:default}.sale-form-close{position:absolute;right:0;top:0;border:0;width:36px;height:36px;border-radius:50%;background:#24201e10;font:24px/1 system-ui;cursor:pointer}.sale-form-status{font:16px/1.4 system-ui;margin:16px 0 0}.sale-form-status:empty{display:none}
+
+
+#saleIntro .sale-actions{width:auto;max-width:calc(100% - 40px);flex-direction:row;align-items:center;gap:12px;bottom:max(40px,env(safe-area-inset-bottom))}
+#saleIntro .sale-actions button{min-height:48px;padding:14px 26px;white-space:nowrap;font-size:17px;font-weight:500;letter-spacing:-.02em;line-height:1.2;transition:background .2s,transform .2s,box-shadow .2s}
+#saleIntro #saleBuy{background:#352617;color:#fff8ea;box-shadow:inset 0 1px 0 #ffffff14,0 4px 14px #49280012}
+#saleIntro #saleExplore{background:#ffffff80;color:#352617;border:1px solid #ffffffb8;backdrop-filter:blur(20px) saturate(140%);-webkit-backdrop-filter:blur(20px) saturate(140%);box-shadow:inset 0 1px 0 #ffffffb8,0 4px 14px #49280008}
+#saleIntro .sale-actions button:hover{transform:translateY(-1px);filter:brightness(1.07)}
+#saleIntro .sale-actions button:active{transform:scale(.97)}
+@media(max-width:380px){#saleIntro .sale-actions{gap:10px}#saleIntro .sale-actions button{padding:14px 20px}}
+@media(max-height:560px){#saleIntro .sale-actions{bottom:20px}}
+@media(prefers-reduced-motion:reduce){#saleIntro .sale-actions button{transition:none}}
+#saleIntro .sale-actions{gap:14px;bottom:max(44px,calc(env(safe-area-inset-bottom) + 20px))}
+#saleIntro .sale-actions button{min-height:62px;padding:18px 36px;font-size:20px;font-weight:600;letter-spacing:-.025em}
+@media(max-width:480px){#saleIntro .sale-actions{left:20px;right:20px;width:auto;max-width:none;transform:none}#saleIntro .sale-actions button{flex:1 1 0;padding:18px 14px;font-size:19px}#saleIntro #saleBuy{flex:.7 1 0}}
+@media(max-height:560px){#saleIntro .sale-actions button{min-height:52px;padding:14px 24px;font-size:18px}}
+</style>
+<div id="saleIntro" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="saleTitle"><div class="sale-scene" id="saleScene" aria-hidden="true"><canvas id="liquidCanvas"></canvas></div><div class="sale-copy"><h1 id="saleTitle">710s.com is for sale</h1></div><div class="sale-actions"><button id="saleBuy" type="button" aria-haspopup="dialog">Buy</button><button id="saleExplore" type="button">Explore the site</button></div><div class="sale-form-panel" id="saleFormPanel" hidden role="dialog" aria-modal="true" aria-labelledby="saleFormTitle"><form class="sale-form" id="saleForm"><button type="button" class="sale-form-close" id="saleFormClose" aria-label="Close form">×</button><h2 id="saleFormTitle">Buy 710s.com</h2><label for="saleName">Name</label><input id="saleName" name="name" autocomplete="name" required maxlength="120"><label for="saleEmail">Email</label><input id="saleEmail" name="email" type="email" autocomplete="email" required maxlength="254"><label for="saleMessage">Message or offer</label><textarea id="saleMessage" name="message" required maxlength="4000" rows="4"></textarea><button type="submit" class="sale-submit" id="saleSubmit" disabled>Send inquiry</button><p class="sale-form-status" id="saleFormStatus" role="status"></p></form></div>
+</div>
+<script id="sale-intro-code">
+(()=>{
+const overlay=document.getElementById('saleIntro'),scene=document.getElementById('saleScene'),explore=document.getElementById('saleExplore'),buy=document.getElementById('saleBuy');
+const saleRecipient='';
+const formPanel=document.getElementById('saleFormPanel'),saleForm=document.getElementById('saleForm'),formClose=document.getElementById('saleFormClose'),submit=document.getElementById('saleSubmit'),formStatus=document.getElementById('saleFormStatus');
+submit.disabled=!saleRecipient;
+buy.addEventListener('click',()=>{formPanel.hidden=false;document.getElementById('saleName').focus();});
+function closeForm(){formPanel.hidden=true;buy.focus();}formClose.addEventListener('click',closeForm);
+saleForm.addEventListener('submit',event=>{event.preventDefault();if(!saleRecipient||!saleForm.reportValidity())return;const values=new FormData(saleForm);const body='Name: '+values.get('name')+'\nEmail: '+values.get('email')+'\n\n'+values.get('message');window.location.href='mailto:'+saleRecipient+'?subject='+encodeURIComponent('Purchase inquiry: 710s.com')+'&body='+encodeURIComponent(body);formStatus.textContent='Your inquiry is ready in your email app. Send the email to complete your request.';});
+
+const reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canvas=document.getElementById('liquidCanvas'),ctx=canvas.getContext('2d',{alpha:false}),buffer=document.createElement('canvas'),art=buffer.getContext('2d',{alpha:false});
+let W=1,H=1,D=1,last=0,raf=0,running=true,drag=null;
+const warmth={x:.5,y:.5,energy:0};
+const colourTrail=[];
+const pointer={x:0,y:0,px:0,py:0,vx:0,vy:0,active:false,down:false};
+const lens={x:0,y:0,rx:0,ry:0,angle:0,strength:0,r:30,vr:0,stretch:1,flow:0};
+const refracted=document.createElement('canvas'),glass=refracted.getContext('2d');
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const bubbles=Array.from({length:32},(_,i)=>({i,x:0,y:0,tx:0,ty:0,vx:0,vy:0,r:0,hue:32+(i*7)%13,phase:i*2.399,qx:0,qy:0,qvx:0,qvy:0,q3:0,q3v:0,s:0,tail:0,angle:0}));
+const rings=[];let touched=false,idleSince=0,lastBeat=-1;
+function resize(){W=scene.clientWidth;H=scene.clientHeight;D=Math.min(devicePixelRatio||1,2);canvas.width=buffer.width=Math.round(W*D);canvas.height=buffer.height=Math.round(H*D);const unit=Math.min(W*.115,H*.065,54);bubbles.forEach((p,i)=>{const row=Math.floor(i/7),col=i%7;p.r=unit*(.26+((i*7)%13)/22);p.tx=W/2+(col-3)*unit*.94*(1-row*.12)+Math.sin(i*2)*unit*.14;p.ty=H*.065+row*unit*.86;p.x=p.tx;p.y=p.ty;p.vx=p.vy=0;});lens.x=W/2;lens.y=H*.615;lens.r=Math.min(W*.29,H*.176,210);lens.vr=0;lens.strength=.7;pointer.x=lens.x;pointer.y=lens.y;draw(0);}
+function dropPath(c,p,keep){
+const t=p.tail,st=p.s,ca=Math.cos(p.angle),sa=Math.sin(p.angle);
+if(!keep)c.beginPath();for(let k=0;k<=64;k++){const a=k/64*Math.PI*2,cx=Math.cos(a),sy=Math.sin(a),back=Math.max(0,-cx);
+let lx=cx*(1+st)-t*.6*back*back*back,ly=sy/(1+st)*(1-t*.62*back*back);
+const w=1+p.qx*Math.cos(2*a)+p.qy*Math.sin(2*a)+p.q3*Math.cos(3*a+p.phase);lx*=w;ly*=w;
+const x=(lx*ca-ly*sa)*p.r,y=(lx*sa+ly*ca)*p.r;k?c.lineTo(x,y):c.moveTo(x,y);}c.closePath();
+}
+function deform(p,angle,impulse){const kick=clamp(impulse,-.06,.06),rel=angle-p.angle;p.qvx+=Math.cos(2*rel)*kick;p.qvy+=Math.sin(2*rel)*kick;p.q3v+=Math.sin(3*rel)*kick*.5;}
+function ball(c,p,t){const r=p.r;c.save();c.translate(p.x,p.y);dropPath(c,p);
+c.shadowColor='rgba(153,79,0,.12)';c.shadowBlur=r*.3*D;c.shadowOffsetY=r*.12*D;
+c.save();c.rotate(p.angle);c.scale(1+p.s,1/(1+p.s));c.rotate(-p.angle);
+const g=c.createRadialGradient(-r*.22,-r*.3,r*.05,0,0,r*1.15);
+g.addColorStop(0,'rgba(255,222,120,.62)');g.addColorStop(.4,`hsla(${p.hue+6},100%,70%,.55)`);g.addColorStop(1,`hsla(${p.hue-2},100%,52%,.8)`);
+c.fillStyle=g;c.fill();c.restore();c.shadowColor='transparent';c.shadowBlur=c.shadowOffsetY=0;
+c.save();c.clip();
+const inner=(color,blur)=>{c.beginPath();c.rect(-r*2.4,-r*2.4,r*4.8,r*4.8);dropPath(c,p,true);c.shadowColor=color;c.shadowBlur=blur*D;c.fillStyle='#000';c.fill('evenodd');};
+inner('rgba(214,98,0,.85)',r*.55);
+c.shadowColor='transparent';c.shadowBlur=0;
+dropPath(c,p);c.lineJoin='round';c.lineWidth=r*.2;c.strokeStyle='rgba(255,206,80,.32)';c.stroke();
+const caus=c.createRadialGradient(r*.22,r*.48,0,r*.22,r*.48,r*.55);caus.addColorStop(0,'rgba(255,236,150,.5)');caus.addColorStop(1,'rgba(255,220,120,0)');c.fillStyle=caus;c.fillRect(-r*2,-r*2,r*4,r*4);
+const gl=c.createRadialGradient(-r*.34,-r*.44,0,-r*.34,-r*.44,r*.34);gl.addColorStop(0,'rgba(255,255,250,.92)');gl.addColorStop(.3,'rgba(255,253,238,.42)');gl.addColorStop(1,'rgba(255,250,230,0)');c.fillStyle=gl;c.fillRect(-r*2,-r*2,r*4,r*4);
+c.restore();c.restore();
+}
+
+function draw(time){art.setTransform(D,0,0,D,0,0);const bg=art.createLinearGradient(W*warmth.x*.3,0,W*(.7+warmth.x*.3),H);
+bg.addColorStop(0,'#d8bcff');bg.addColorStop(.42,'#ffe9a0');bg.addColorStop(1,'#ffc06e');art.fillStyle=bg;art.fillRect(0,0,W,H);
+const pool=(x,y,r,inner,outer)=>{const g=art.createRadialGradient(x,y,0,x,y,r);g.addColorStop(0,inner);g.addColorStop(1,outer);art.fillStyle=g;art.fillRect(0,0,W,H);};
+const span=Math.max(W,H);
+const tt=reduced?0:time*.00042;
+pool(W*warmth.x,H*warmth.y,span*.6,'rgba(255,253,232,'+(.5+warmth.energy*.25)+')','rgba(255,235,170,0)');
+pool(W*(1-warmth.x*.7+.14*Math.sin(tt*1.3)),H*(.9-warmth.y*.45+.09*Math.cos(tt)),span*.72,'rgba(255,124,0,.6)','rgba(255,150,0,0)');
+pool(W*(.15+warmth.y*.25+.16*Math.cos(tt*.9)),H*(.2+warmth.x*.45+.11*Math.sin(tt*1.1)),span*.5,'rgba(255,196,0,.58)','rgba(255,205,36,0)');
+pool(W*(.18+warmth.x*.32+.22*Math.sin(tt)),H*(.22+warmth.y*.25+.13*Math.cos(tt*1.4)),span*.46,'rgba(152,88,255,.5)','rgba(152,88,255,0)');
+pool(W*(.82-warmth.y*.27+.18*Math.cos(tt*1.2)),H*(.64-warmth.x*.22+.13*Math.sin(tt*.8)),span*.44,'rgba(255,86,86,.46)','rgba(255,86,86,0)');
+pool(W*(.5+.32*Math.sin(tt*.7+2)),H*(.46+.26*Math.cos(tt*.6+1)),span*.34,'rgba(255,64,168,.28)','rgba(255,64,168,0)');
+for(const drop of colourTrail){
+const age=Math.max(0,(time-drop.time)/1800),fade=Math.pow(Math.max(0,1-age),2);
+if(!fade)continue;
+const radius=drop.radius*(1+age*.9),x=drop.x+drop.vx*age*12,y=drop.y+drop.vy*age*12;
+art.save();art.translate(x,y);art.rotate(drop.angle);art.scale(1.5, .72);
+const pigment=art.createRadialGradient(0,0,0,0,0,radius);
+pigment.addColorStop(0,`hsla(${drop.hue},100%,62%,${fade*.42})`);
+pigment.addColorStop(.45,`hsla(${drop.hue+18},100%,68%,${fade*.24})`);
+pigment.addColorStop(1,`hsla(${drop.hue+18},95%,72%,0)`);
+art.fillStyle=pigment;art.fillRect(-radius,-radius,radius*2,radius*2);art.restore();
+}
+for(const p of bubbles)ball(art,p,time);
+const FONT=z=>`800 ${z}px -apple-system, BlinkMacSystemFont, "Helvetica Neue", Arial, sans-serif`,LS='letterSpacing' in art;
+let size=Math.min(124,Math.max(46,W*.2),H*.105);const setF=()=>{art.font=FONT(size);if(LS)art.letterSpacing=(-size*.03)+'px';};setF();
+const L1='710s.com',L2='is for sale',maxW=W*.8;let m1=art.measureText(L1),m2=art.measureText(L2);
+const inkW=m=>m.actualBoundingBoxLeft+m.actualBoundingBoxRight,widest=Math.max(inkW(m1),inkW(m2));
+if(widest>maxW){size*=maxW/widest;setF();m1=art.measureText(L1);m2=art.measureText(L2);}
+art.fillStyle='#3a210c';art.textAlign='left';art.textBaseline='alphabetic';
+const lead=size*1.04,blockH=m1.actualBoundingBoxAscent+lead+m2.actualBoundingBoxDescent,base1=H*.5-blockH/2+m1.actualBoundingBoxAscent;
+const inkX=m=>W/2-inkW(m)/2+m.actualBoundingBoxLeft;
+art.fillText(L1,inkX(m1),base1);art.fillText(L2,inkX(m2),base1+lead);if(LS)art.letterSpacing='0px';
+ctx.setTransform(1,0,0,1,0,0);ctx.drawImage(buffer,0,0);ctx.setTransform(D,0,0,D,0,0);
+const R=lens.r,stretch=lens.stretch,ca=Math.cos(lens.angle),sa=Math.sin(lens.angle);
+const pad=Math.ceil(R*stretch*1.18+6),left=lens.x-pad,top=lens.y-pad;
+const res=Math.min(360,Math.ceil(pad*2*D)),scale=pad*2/res;
+if(refracted.width!==res){refracted.width=refracted.height=res;}
+const x0=Math.max(0,Math.floor(left*D)),y0=Math.max(0,Math.floor(top*D));
+const x1=Math.min(buffer.width,Math.ceil((lens.x+pad)*D)),y1=Math.min(buffer.height,Math.ceil((lens.y+pad)*D));
+if(x1<=x0||y1<=y0)return;
+const source=art.getImageData(x0,y0,x1-x0,y1-y0),pixels=source.data,out=glass.createImageData(res,res),dst=out.data;
+const sample=(x,y,c)=>{const sx=clamp(Math.round(x*D-x0),0,source.width-1),sy=clamp(Math.round(y*D-y0),0,source.height-1);return pixels[(sy*source.width+sx)*4+c];};
+const squish=1/Math.sqrt(stretch),wobble=Math.min(.12,Math.abs(lens.vr)*.012+Math.hypot(lens.rx,lens.ry)*.002);
+for(let y=0;y<res;y++)for(let x=0;x<res;x++){
+const dx=(x+.5)*scale-pad,dy=(y+.5)*scale-pad;
+const ux=(dx*ca+dy*sa)/stretch,uy=(-dx*sa+dy*ca)/squish;
+const angle=Math.atan2(uy,ux),contour=R*(1+wobble*Math.sin(angle*3-lens.flow)+.055*lens.strength*Math.cos(angle));
+const n=Math.hypot(ux,uy)/contour;if(n>=1)continue;
+const i=(y*res+x)*4,depth=Math.sqrt(1-n*n);
+const bend=1/(1+.8*depth)+.18*Math.exp(-Math.pow((n-.86)/.10,2));
+const rim=Math.exp(-Math.pow((n-.84)/.115,2));
+const dispersion=(1.2+R*.045)*rim;
+const nx=dx/(Math.hypot(dx,dy)||1),ny=dy/(Math.hypot(dx,dy)||1);
+const sx=lens.x+dx*bend,sy=lens.y+dy*bend;
+let red=sample(sx+nx*dispersion*.4,sy+ny*dispersion*.4,0),green=sample(sx,sy,1),blue=sample(sx-nx*dispersion*.15,sy-ny*dispersion*.15,2);
+const worldAngle=Math.atan2(dy,dx),direction=1.3+Math.sin(lens.flow)*.22;
+const crescent=Math.pow(Math.max(0,Math.cos(worldAngle-direction)),3);
+const band=n+.07*Math.sin(worldAngle*2+lens.flow);
+const violet=Math.exp(-Math.pow((band-.83)/.035,2))*crescent;
+const cyan=Math.exp(-Math.pow((band-.76)/.04,2))*crescent;
+const amber=Math.exp(-Math.pow((band-.9)/.035,2))*crescent;
+const colour=.8*(.35+.65*lens.strength);
+const gold=Math.max(violet,cyan*.65)*colour;
+red=red+(255-red)*gold;
+green=green+(159-green)*violet*colour+(220-green)*cyan*.48;
+blue=blue+(3-blue)*gold;
+red+=(237-red)*amber*.5;green+=(112-green)*amber*.5;blue+=(0-blue)*amber*.5;
+const highlight=Math.pow(n,22)*.6+Math.exp(-Math.pow((n-.92)/.045,2))*Math.max(0,-ny)*.2;
+dst[i]=red+(255-red)*highlight;dst[i+1]=green+(255-green)*highlight;dst[i+2]=blue+(255-blue)*highlight;
+dst[i+3]=255*clamp((1-n)*R/1.3,0,1);
+}
+glass.putImageData(out,0,0);ctx.drawImage(refracted,left,top,pad*2,pad*2);
+for(const ring of rings){const age=(time-ring.t)/1400;if(age<0||age>1)continue;const e=1-Math.pow(1-age,3),rad=lens.r+e*lens.r*1.1;
+ctx.beginPath();ctx.arc(lens.x,lens.y,rad,0,Math.PI*2);ctx.lineWidth=3*(1-age)+.6;ctx.strokeStyle=`rgba(255,250,232,${(1-age)*.95})`;ctx.stroke();
+ctx.beginPath();ctx.arc(lens.x,lens.y,rad+3,0,Math.PI*2);ctx.lineWidth=1.2;ctx.strokeStyle=`rgba(200,104,0,${(1-age)*.45})`;ctx.stroke();}
+}
+
+function step(time){if(!running)return;const dt=Math.min((time-last)/16.667||1,2);last=time;
+while(colourTrail.length&&time-colourTrail[0].time>1800)colourTrail.shift();
+warmth.x+=((pointer.active?pointer.x/W:.5)-warmth.x)*.035*dt;
+warmth.y+=((pointer.active?pointer.y/H:.5)-warmth.y)*.035*dt;
+warmth.energy+=((pointer.active?1:0)-warmth.energy)*.04*dt;
+const idle=!reduced&&!pointer.active&&(!touched||time-idleSince>4500);
+const ph=(time%1600)/1600,pulse=idle?Math.exp(-Math.pow((ph-.08)/.06,2))+.55*Math.exp(-Math.pow((ph-.26)/.06,2)):0;
+const beat=Math.floor(time/1600);if(idle&&beat!==lastBeat){rings.push({t:time});rings.push({t:time+290});if(rings.length>8)rings.splice(0,2);}lastBeat=beat;
+const targetX=pointer.active?pointer.x:W/2,targetY=pointer.active?pointer.y:H*.615+(reduced?0:Math.sin(time*.0013)*6);lens.rx+=(targetX-lens.x)*.11*dt;lens.ry+=(targetY-lens.y)*.11*dt;
+lens.rx*=Math.pow(.64,dt);lens.ry*=Math.pow(.64,dt);lens.x+=lens.rx*dt;lens.y+=lens.ry*dt;
+const speed=Math.hypot(lens.rx,lens.ry);
+if(speed>.3){const angle=Math.atan2(lens.ry,lens.rx);lens.angle+=Math.atan2(Math.sin(angle-lens.angle),Math.cos(angle-lens.angle))*.12;}
+lens.strength+=((pointer.down?1:pointer.active?.7:.7+pulse*.3)-lens.strength)*.18*dt;
+const rest=Math.min(W*.1,44),expanded=Math.min(W*.36,H*.24,200);
+const targetR=pointer.active?rest+(expanded-rest)*lens.strength:Math.min(W*.29,H*.176,210)*(1+.08*pulse);
+lens.vr+=(targetR-lens.r)*.09*dt;lens.vr*=Math.pow(.78,dt);lens.r=clamp(lens.r+lens.vr*dt,rest*.7,expanded*1.12);
+lens.stretch+=(1+Math.min(.5,speed*.025)-lens.stretch)*.12*dt;
+lens.flow+=.012*dt+speed*.002;
+
+for(const p of bubbles){
+const v=Math.hypot(p.vx,p.vy);
+if(v>.15){const ang=Math.atan2(p.vy,p.vx);p.angle+=Math.atan2(Math.sin(ang-p.angle),Math.cos(ang-p.angle))*Math.min(1,.3*dt);}
+p.s+=(Math.min(.17,v*.012)-p.s)*.18*dt;
+p.tail+=(Math.min(.3,Math.max(0,v-2)*.025)-p.tail)*.14*dt;
+p.qvx-=p.qx*.16*dt;p.qvy-=p.qy*.16*dt;p.q3v-=p.q3*.24*dt;
+const damp=Math.pow(.925,dt);p.qvx*=damp;p.qvy*=damp;p.q3v*=damp;p.qx+=p.qvx*dt;p.qy+=p.qvy*dt;p.q3+=p.q3v*dt;
+const amplitude=Math.hypot(p.qx,p.qy);if(amplitude>.2){p.qx*=.2/amplitude;p.qy*=.2/amplitude;}p.q3=clamp(p.q3,-.07,.07);
+if(!reduced){p.qvx+=Math.sin(time*.0021+p.phase)*.0004*dt;p.qvy+=Math.cos(time*.0017+p.phase*1.3)*.0004*dt;}
+if(p===drag){p.vx+=(pointer.x-p.x)*.25;p.vy+=(pointer.y-p.y)*.25;}else{p.vx+=(p.tx-p.x)*.0016*dt;p.vy+=(p.ty-p.y)*.0016*dt;if(pointer.active){const dx=p.x-lens.x,dy=p.y-lens.y,d=Math.hypot(dx,dy)||1,reach=p.r+lens.r*lens.stretch+28;if(d<reach){const impulse=(reach-d)*.12;p.vx+=dx/d*impulse+pointer.vx*.09;p.vy+=dy/d*impulse+pointer.vy*.09;deform(p,Math.atan2(dy,dx),-impulse*.006);}else if(d<reach*2.3){const f=1-(d-reach)/(reach*1.3);p.vx+=pointer.vx*.06*f;p.vy+=pointer.vy*.06*f;}}}
+const cap=Math.hypot(p.vx,p.vy);if(cap>30){p.vx*=30/cap;p.vy*=30/cap;}p.vx*=Math.pow(.955,dt);p.vy*=Math.pow(.955,dt);p.x+=p.vx*dt;p.y+=p.vy*dt;}
+for(let pass=0;pass<2;pass++)for(let i=0;i<bubbles.length;i++)for(let j=i+1;j<bubbles.length;j++){const a=bubbles[i],b=bubbles[j],dx=b.x-a.x,dy=b.y-a.y,d=Math.hypot(dx,dy)||.1,min=a.r+b.r+1;if(d<min){const nx=dx/d,ny=dy/d,shift=(min-d)*.32;a.x-=nx*shift;a.y-=ny*shift;b.x+=nx*shift;b.y+=ny*shift;const closing=(b.vx-a.vx)*nx+(b.vy-a.vy)*ny;if(pass===0){const impact=Math.min(.06,(min-d)*.003+Math.max(0,-closing)*.004);const axis=Math.atan2(ny,nx);deform(a,axis,-impact);deform(b,axis,-impact);}
+if(closing<0){a.vx+=closing*nx*.52;a.vy+=closing*ny*.52;b.vx-=closing*nx*.52;b.vy-=closing*ny*.52;}}}
+for(const p of bubbles){if(p.x<p.r){deform(p,0,-Math.abs(p.vx)*.01);p.x=p.r;p.vx=Math.abs(p.vx)*.65;}if(p.x>W-p.r){deform(p,0,-Math.abs(p.vx)*.01);p.x=W-p.r;p.vx=-Math.abs(p.vx)*.65;}if(p.y<p.r){deform(p,Math.PI/2,-Math.abs(p.vy)*.01);p.y=p.r;p.vy=Math.abs(p.vy)*.65;}if(p.y>H*.78-p.r){deform(p,Math.PI/2,-Math.abs(p.vy)*.01);p.y=H*.78-p.r;p.vy=-Math.abs(p.vy)*.65;}}pointer.vx*=.85;pointer.vy*=.85;draw(time);raf=requestAnimationFrame(step);}
+function move(e){const r=scene.getBoundingClientRect();const x=e.clientX-r.left,y=e.clientY-r.top;pointer.vx=x-pointer.x;pointer.vy=y-pointer.y;pointer.x=x;pointer.y=y;pointer.active=true;touched=true;
+if(!reduced){const previous=colourTrail[colourTrail.length-1];
+if(!previous||Math.hypot(x-previous.x,y-previous.y)>7){
+const velocity=Math.hypot(pointer.vx,pointer.vy);
+colourTrail.push({x,y,time:last,vx:clamp(pointer.vx,-6,6),vy:clamp(pointer.vy,-6,6),angle:Math.atan2(pointer.vy,pointer.vx),radius:Math.min(W*.23,120)+Math.min(velocity,40),hue:32+Math.sin(x/W*5+y/H*4)*145});
+if(colourTrail.length>48)colourTrail.shift();
+}}
+if(reduced){warmth.x=x/W;warmth.y=y/H;warmth.energy=1;lens.x=x;lens.y=y;lens.strength=1;lens.r=Math.min(W*.34,H*.23,190);draw(0);}}
+scene.addEventListener('pointerdown',e=>{move(e);pointer.down=true;drag=bubbles.find(p=>Math.hypot(p.x-pointer.x,p.y-pointer.y)<p.r)||null;scene.setPointerCapture(e.pointerId);});scene.addEventListener('pointermove',move);function release(){if(drag)deform(drag,drag.angle,.035);pointer.down=false;pointer.active=false;drag=null;idleSince=last;}scene.addEventListener('pointerup',release);scene.addEventListener('pointercancel',release);scene.addEventListener('pointerleave',()=>{if(!pointer.down)release();});
+const lock=()=>document.querySelectorAll('iframe').forEach(f=>f.inert=true);lock();const guard=new MutationObserver(lock);guard.observe(document.body,{childList:true});
+function dismiss(){window.location.href='/proto/710s/site.html#concentrates/overview';}
+explore.addEventListener('click',dismiss);overlay.addEventListener('keydown',e=>{if(!formPanel.hidden){if(e.key==='Escape'){e.preventDefault();closeForm();}if(e.key==='Tab'){const fields=[...saleForm.querySelectorAll('button:not(:disabled),input,textarea')],first=fields[0],last=fields[fields.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus();}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus();}}return;}if(e.key==='Escape')dismiss();if(e.key==='Tab'){e.preventDefault();(document.activeElement===explore?buy:explore).focus();}});
+const observer=new ResizeObserver(resize);observer.observe(scene);resize();if(!reduced)raf=requestAnimationFrame(step);overlay.focus({preventScroll:true});
+})();
+</script>
+</body></html>
