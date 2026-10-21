@@ -19,6 +19,8 @@ const nextConfig = {
       { source: '/proto/digital-jazz-color', destination: '/proto/digital-jazz-color/index.html' },
       { source: '/proto/dj-neon-check', destination: '/proto/dj-neon-check/index.html' },
       { source: '/proto/dj-neon-logo', destination: '/proto/dj-neon-logo/index.html' },
+      { source: '/proto/dj-logo-lightbox', destination: '/proto/dj-logo-lightbox/index.html' },
+      { source: '/proto/dj-logo-lightbox-flat', destination: '/proto/dj-logo-lightbox-flat/index.html' },
       { source: '/proto/fxpro', destination: '/proto/fxpro/index.html' },
       { source: '/proto/dj-intro', destination: '/proto/dj-intro/index.html' },
       { source: '/proto/dj-intro-glass', destination: '/proto/dj-intro-glass/index.html' },
