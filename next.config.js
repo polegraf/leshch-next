@@ -4,6 +4,7 @@ const nextConfig = {
     // прототипы обновляются часто: браузер и CDN всегда перепроверяют, не отдают старую копию
     return [
       { source: '/proto/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }] },
+      { source: '/playground/:path*', headers: [{ key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' }] },
     ];
   },
   async redirects() {
@@ -11,6 +12,8 @@ const nextConfig = {
       { source: '/proto/digital-jazz-unified', destination: '/proto/digital-jazz-unified/index.html', permanent: false },
       { source: '/proto/secton', destination: '/proto/secton/index.html', permanent: false },
       { source: '/proto/digital-jazz-unified/courses', destination: '/proto/digital-jazz-unified/courses/index.html', permanent: false },
+      { source: '/playground/secton', destination: '/playground/webgl/shader-study/index.html?land=dots&map=particles', permanent: false },
+      { source: '/playground/webgl', destination: '/playground/webgl/shader-study/index.html?land=dots&map=particles', permanent: false },
     ];
   },
   async rewrites() {
